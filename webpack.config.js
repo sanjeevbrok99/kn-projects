@@ -54,6 +54,7 @@ module.exports = {
     port: 8001, // port number
     historyApiFallback: true,
     quiet: true,
+    hot: true,
   },
   externals: {
     // global app config object
