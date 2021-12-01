@@ -6,24 +6,24 @@ import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const Sidebar = (props) => {
-  useEffect(() => {
-    document.querySelectorAll('.submenu a').forEach((e) => {
-      // e.outerHTML = e.outerHTML;
-      e.addEventListener('click', (e) => {
-        const currentSiblingState = e.target.nextElementSibling.style.display;
-        setTimeout(() => {
-          if (
-            currentSiblingState == e.target.nextElementSibling.style.display
-          ) {
-            e.target.nextElementSibling.style.display =
-              e.target.nextElementSibling.style.display == 'block'
-                ? 'none'
-                : 'block';
-          }
-        });
-      });
-    });
-  }, []);
+  // useEffect(() => {
+  //   document.querySelectorAll('.submenu a').forEach((e) => {
+  //     // e.outerHTML = e.outerHTML;
+  //     e.addEventListener('click', (e) => {
+  //       const currentSiblingState = e.target.nextElementSibling.style.display;
+  //       setTimeout(() => {
+  //         if (
+  //           currentSiblingState == e.target.nextElementSibling.style.display
+  //         ) {
+  //           e.target.nextElementSibling.style.display =
+  //             e.target.nextElementSibling.style.display == 'block'
+  //               ? 'none'
+  //               : 'block';
+  //         }
+  //       });
+  //     });
+  //   });
+  // }, []);
   const isAdmin = sessionStorage.getItem('authType');
   let pathname = props.location.pathname;
   return (
