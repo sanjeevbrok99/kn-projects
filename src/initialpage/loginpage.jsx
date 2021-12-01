@@ -5,7 +5,7 @@
 import React, { Component, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { Applogo } from '../Entryfile/imagepath.jsx';
+import { headerlogo } from '../Entryfile/imagepath.jsx';
 
 const Loginpage = () => {
   useEffect(() => {
@@ -25,7 +25,7 @@ const Loginpage = () => {
           {/* Account Logo */}
           <div className="account-logo">
             <Link to="/app/main/dashboard">
-              <img src={Applogo} alt="Dreamguy's Technologies" />
+              <img src={headerlogo} alt="Dreamguy's Technologies" />
             </Link>
           </div>
           {/* /Account Logo */}

@@ -48,13 +48,13 @@ const Jobdetails = () => {
         {/* /Logo */}
         {/* Header Title */}
         <div className="page-title-box float-left">
-          <h3>Dreamguy's Technologies</h3>
+          <h3>KN Multiprojects</h3>
         </div>
         {/* /Header Title */}
         {/* Header Menu */}
         <ul className="nav user-menu">
           {/* Search */}
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <div className="top-nav-search">
               <a href=";" className="responsive-search">
                 <i className="fa fa-search" />
@@ -70,10 +70,10 @@ const Jobdetails = () => {
                 </button>
               </form>
             </div>
-          </li>
+          </li> */}
           {/* /Search */}
           {/* Flag */}
-          <li className="nav-item dropdown has-arrow flag-nav">
+          {/* <li className="nav-item dropdown has-arrow flag-nav">
             <a
               className="nav-link dropdown-toggle"
               data-toggle="dropdown"
@@ -96,7 +96,7 @@ const Jobdetails = () => {
                 <img src={lnGerman} alt="" height={16} /> German
               </a>
             </div>
-          </li>
+          </li> */}
           {/* /Flag */}
           <li className="nav-item">
             <Link className="nav-link" to="/login">
@@ -246,7 +246,7 @@ const Jobdetails = () => {
                     <i className="fa fa-money" />
                   </span>
                   <h5>Salary</h5>
-                  <p>$32k - $38k</p>
+                  <p>Rs. 32k - Rs. 38k</p>
                 </div>
                 <div className="info-list">
                   <span>
@@ -269,10 +269,10 @@ const Jobdetails = () => {
                   <h5>Location</h5>
                   <p>
                     {' '}
-                    Dreamguy's Technologies
-                    <br /> 3864 Quiet Valley Lane,
-                    <br /> Sherman Oaks,
-                    <br /> California, 91403
+                    KN Multiprojects
+                    <br />
+                    Banglore,
+                    <br /> India
                   </p>
                 </div>
                 <div className="info-list">
