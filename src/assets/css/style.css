@@ -1364,7 +1364,7 @@ table.dataTable thead > tr > td.sorting {
 -----------------------*/
 
 .header {
-  background: #f43b48;
+  background: #34444c;
   /* background: -moz-linear-gradient(left, #be185a 0%, #b91c23 100%);
   background: -webkit-linear-gradient(left, #be185a 0%, #b91c23 100%);
   background: -ms-linear-gradient(left, #be185a 0%, #b91c23 100%);
@@ -1926,10 +1926,10 @@ table.dataTable thead > tr > td.sorting {
 }
 .account-box .account-btn {
   background: #f43b48;
-  background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  /* background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
   background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
   background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
-  background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+  background: linear-gradient(to right, #f43b48 0%, #453a94 100%); */
   border: 0;
   border-radius: 4px;
   display: block;
@@ -5681,10 +5681,10 @@ table.table-inbox tbody tr.checked {
 
 .apply-btn {
   background: #f43b48;
-  background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  /* background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
   background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
   background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
-  background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+  background: linear-gradient(to right, #f43b48 0%, #453a94 100%); */
   border-color: transparent;
   box-shadow: 0 6px 15px rgba(36, 37, 38, 0.08);
   color: #fff;
@@ -5757,6 +5757,10 @@ table.table-inbox tbody tr.checked {
   display: inline-block;
   padding: 6px 12px;
   text-align: center;
+}
+.job-types:hover {
+  background-color: #f43b48;
+  color:white;
 }
 
 /*-----------------
@@ -6760,6 +6764,7 @@ ul.comment-list li ul.children {
   flex-direction: row;
   flex-grow: 1;
 }
+
 .dash-card-icon {
   align-items: center;
   display: flex;
@@ -6815,6 +6820,11 @@ ul.comment-list li ul.children {
   height: auto;
   padding: 15px;
 }
+.dash-info-list:hover {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
 .dash-card-content p {
   font-size: 22px;
   margin-bottom: 0;

@@ -32,13 +32,13 @@ const JobsList = () => {
         {/* /Logo */}
         {/* Header Title */}
         <div className="page-title-box float-left">
-          <h3>Dreamguy's Technologies</h3>
+          <h3>KN Multiprojects</h3>
         </div>
         {/* /Header Title */}
         {/* Header Menu */}
         <ul className="nav user-menu">
           {/* Search */}
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <div className="top-nav-search">
               <a to="" className="responsive-search">
                 <i className="fa fa-search" />
@@ -54,10 +54,10 @@ const JobsList = () => {
                 </button>
               </form>
             </div>
-          </li>
+          </li> */}
           {/* /Search */}
           {/* Flag */}
-          <li className="nav-item dropdown has-arrow flag-nav">
+          {/* <li className="nav-item dropdown has-arrow flag-nav">
             <a
               className="nav-link dropdown-toggle"
               data-toggle="dropdown"
@@ -80,7 +80,7 @@ const JobsList = () => {
                 <img src={lnGerman} alt="" height={16} /> German
               </a>
             </div>
-          </li>
+          </li> */}
           {/* /Flag */}
           <li className="nav-item">
             <Link className="nav-link" to="/login">
@@ -150,10 +150,10 @@ const JobsList = () => {
                 <div className="job-list-footer">
                   <ul>
                     <li>
-                      <i className="fa fa-map-signs" /> California
+                      <i className="fa fa-map-signs" /> India
                     </li>
                     <li>
-                      <i className="fa fa-money" /> $35000-$38000
+                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
                     </li>
                     <li>
                       <i className="fa fa-clock-o" /> 2 days ago
@@ -176,10 +176,10 @@ const JobsList = () => {
                 <div className="job-list-footer">
                   <ul>
                     <li>
-                      <i className="fa fa-map-signs" /> California
+                      <i className="fa fa-map-signs" /> India
                     </li>
                     <li>
-                      <i className="fa fa-money" /> $35000-$38000
+                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
                     </li>
                     <li>
                       <i className="fa fa-clock-o" /> 2 days ago
@@ -202,10 +202,10 @@ const JobsList = () => {
                 <div className="job-list-footer">
                   <ul>
                     <li>
-                      <i className="fa fa-map-signs" /> California
+                      <i className="fa fa-map-signs" /> India
                     </li>
                     <li>
-                      <i className="fa fa-money" /> $35000-$38000
+                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
                     </li>
                     <li>
                       <i className="fa fa-clock-o" /> 2 days ago
@@ -228,10 +228,10 @@ const JobsList = () => {
                 <div className="job-list-footer">
                   <ul>
                     <li>
-                      <i className="fa fa-map-signs" /> California
+                      <i className="fa fa-map-signs" /> India
                     </li>
                     <li>
-                      <i className="fa fa-money" /> $35000-$38000
+                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
                     </li>
                     <li>
                       <i className="fa fa-clock-o" /> 2 days ago
@@ -254,10 +254,10 @@ const JobsList = () => {
                 <div className="job-list-footer">
                   <ul>
                     <li>
-                      <i className="fa fa-map-signs" /> California
+                      <i className="fa fa-map-signs" /> India
                     </li>
                     <li>
-                      <i className="fa fa-money" /> $35000-$38000
+                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
                     </li>
                     <li>
                       <i className="fa fa-clock-o" /> 2 days ago
@@ -280,10 +280,10 @@ const JobsList = () => {
                 <div className="job-list-footer">
                   <ul>
                     <li>
-                      <i className="fa fa-map-signs" /> California
+                      <i className="fa fa-map-signs" /> India
                     </li>
                     <li>
-                      <i className="fa fa-money" /> $35000-$38000
+                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
                     </li>
                     <li>
                       <i className="fa fa-clock-o" /> 2 days ago
@@ -306,10 +306,10 @@ const JobsList = () => {
                 <div className="job-list-footer">
                   <ul>
                     <li>
-                      <i className="fa fa-map-signs" /> California
+                      <i className="fa fa-map-signs" /> India
                     </li>
                     <li>
-                      <i className="fa fa-money" /> $35000-$38000
+                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
                     </li>
                     <li>
                       <i className="fa fa-clock-o" /> 2 days ago
@@ -332,10 +332,10 @@ const JobsList = () => {
                 <div className="job-list-footer">
                   <ul>
                     <li>
-                      <i className="fa fa-map-signs" /> California
+                      <i className="fa fa-map-signs" /> India
                     </li>
                     <li>
-                      <i className="fa fa-money" /> $35000-$38000
+                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
                     </li>
                     <li>
                       <i className="fa fa-clock-o" /> 2 days ago

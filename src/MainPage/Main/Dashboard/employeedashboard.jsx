@@ -29,8 +29,8 @@ const EmployeeDashboard = () => {
                 <img alt="" src={Avatar_02} />
               </div>
               <div className="welcome-det">
-                <h3>Welcome, John Doe</h3>
-                <p>Monday, 20 May 2019</p>
+                <h3>Welcome, Meher</h3>
+                <p>Monday, 20 May 2021</p>
               </div>
             </div>
           </div>
@@ -38,16 +38,16 @@ const EmployeeDashboard = () => {
         <div className="row">
           <div className="col-lg-8 col-md-8">
             <section className="dash-section">
-              <h1 className="dash-sec-title">Today</h1>
+              <h1 className="dash-sec-title">Today's News</h1>
               <div className="dash-sec-content">
                 <div className="dash-info-list">
-                  <a href="#" className="dash-card text-danger">
+                  <a href="#" className="dash-card text-danger hover-shadow">
                     <div className="dash-card-container">
                       <div className="dash-card-icon">
                         <i className="fa fa-hourglass-o" />
                       </div>
                       <div className="dash-card-content">
-                        <p>Richard Miles is off sick today</p>
+                        <p>Rakesh Sharma is off sick today</p>
                       </div>
                       <div className="dash-card-avatars">
                         <div className="e-avatar">
@@ -94,7 +94,7 @@ const EmployeeDashboard = () => {
               </div>
             </section>
             <section className="dash-section">
-              <h1 className="dash-sec-title">Tomorrow</h1>
+              <h1 className="dash-sec-title">What's Happening Tomorrow</h1>
               <div className="dash-sec-content">
                 <div className="dash-info-list">
                   <div className="dash-card">
@@ -132,10 +132,10 @@ const EmployeeDashboard = () => {
                       </div>
                       <div className="dash-card-avatars">
                         <a href="#" className="e-avatar">
-                          <img src={Avatar_05} alt="" />
+                          <img src={Avatar_04} alt="" />
                         </a>
                         <a href="#" className="e-avatar">
-                          <img src={Avatar_07} alt="" />
+                          <img src={Avatar_02} alt="" />
                         </a>
                       </div>
                     </div>
