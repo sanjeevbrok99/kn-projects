@@ -491,7 +491,7 @@ table.dataTable thead > tr > td.sorting {
 }
 .bg-purple,
 .badge-purple {
-  background-color: #f43b48  !important;
+  background-color: #7460ee !important;
 }
 .bg-primary,
 .badge-primary {
@@ -1364,11 +1364,11 @@ table.dataTable thead > tr > td.sorting {
 -----------------------*/
 
 .header {
-  background: #34444c;
-  /* background: -moz-linear-gradient(left, #be185a 0%, #b91c23 100%);
-  background: -webkit-linear-gradient(left, #be185a 0%, #b91c23 100%);
-  background: -ms-linear-gradient(left, #be185a 0%, #b91c23 100%);
-  background: #f23945; */
+  background: #f43b48;
+  background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
   border-bottom: 1px solid transparent;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
   height: 60px;
@@ -5760,7 +5760,7 @@ table.table-inbox tbody tr.checked {
 }
 .job-types:hover {
   background-color: #f43b48;
-  color:white;
+  color: white;
 }
 
 /*-----------------
