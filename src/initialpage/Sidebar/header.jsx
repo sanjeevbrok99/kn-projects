@@ -109,7 +109,7 @@ class Header extends Component {
               data-toggle="dropdown"
             >
               <i className="fa fa-bell-o" />{' '}
-              <span className="badge badge-pill">3</span>
+              <span className="badge badge-pill badge-purple">3</span>
             </a>
             <div className="dropdown-menu notifications">
               <div className="topnav-dropdown-header">
@@ -275,7 +275,7 @@ class Header extends Component {
               data-toggle="dropdown"
             >
               <i className="fa fa-comment-o" />{' '}
-              <span className="badge badge-pill">8</span>
+              <span className="badge badge-pill badge-purple">8</span>
             </a>
             <div className="dropdown-menu notifications">
               <div className="topnav-dropdown-header">
@@ -299,7 +299,9 @@ class Header extends Component {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">Richard Miles </span>
+                          <span className="message-author">
+                            Bhupesh Audichya
+                          </span>
                           <span className="message-time">12:28 AM</span>
                           <div className="clearfix" />
                           <span className="message-content">
@@ -368,7 +370,7 @@ class Header extends Component {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">Mike Litorus</span>
+                          <span className="message-author">Jeet Khatri</span>
                           <span className="message-time">3 Mar</span>
                           <div className="clearfix" />
                           <span className="message-content">
