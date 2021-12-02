@@ -103,7 +103,7 @@ const ProjectReport = () => {
                       <td>1</td>
                       <td>
                         <Link to="/app/projects/projects-view">
-                          Hospital Administration
+                          HR Management System
                         </Link>
                       </td>
                       <td>
@@ -182,7 +182,7 @@ const ProjectReport = () => {
                       <td>2</td>
                       <td>
                         <Link to="/app/projects/projects-view">
-                          Office Management
+                          HR Management
                         </Link>
                       </td>
                       <td>

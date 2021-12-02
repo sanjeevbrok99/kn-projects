@@ -514,7 +514,7 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                 )}
-                <li>
+                {!isAdmin && <li>
                   <Link
                     className={pathname.includes('y-view') ? 'active' : ''}
                     to="/app/payroll/salary-view"
@@ -522,7 +522,7 @@ const Sidebar = (props) => {
                     {' '}
                     Payslip{' '}
                   </Link>
-                </li>
+                </li>}
                 {isAdmin && (
                   <li>
                     <Link
@@ -597,7 +597,7 @@ const Sidebar = (props) => {
                       Task Report{' '}
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={pathname.includes('user-') ? 'active' : ''}
                       to="/app/reports/user-reports"
@@ -605,7 +605,7 @@ const Sidebar = (props) => {
                       {' '}
                       User Report{' '}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       className={pathname.includes('employee-') ? 'active' : ''}
@@ -729,7 +729,7 @@ const Sidebar = (props) => {
                     </li>
                   </ul>
                 </li>
-                <li className="submenu">
+                {/* <li className="submenu">
                   <a href="#">
                     <i className="la la-edit" /> <span> Training </span>{' '}
                     <span className="menu-arrow" />
@@ -767,7 +767,7 @@ const Sidebar = (props) => {
                       </Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
                 <li className={pathname.includes('promotion') ? 'active' : ''}>
                   <Link to="/app/performance/promotion">
                     <i className="la la-bullhorn" /> <span>Promotion</span>
@@ -808,7 +808,7 @@ const Sidebar = (props) => {
                   <span className="menu-arrow" />
                 </a>
                 <ul style={{ display: 'none' }}>
-                  <li>
+                  {/* <li>
                     <Link
                       className={
                         pathname.includes('user-dashboard') ||
@@ -829,7 +829,7 @@ const Sidebar = (props) => {
                       {' '}
                       User Dasboard{' '}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       className={
@@ -876,7 +876,7 @@ const Sidebar = (props) => {
                       Shortlist Candidates{' '}
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={
                         pathname === '/app/administrator/interview-questions'
@@ -888,7 +888,7 @@ const Sidebar = (props) => {
                       {' '}
                       Interview Questions{' '}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       className={
@@ -900,7 +900,7 @@ const Sidebar = (props) => {
                       Offer Approvals{' '}
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={
                         pathname.includes('experiance-level') ? 'active' : ''
@@ -910,7 +910,7 @@ const Sidebar = (props) => {
                       {' '}
                       Experience Level{' '}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       className={
@@ -935,7 +935,7 @@ const Sidebar = (props) => {
                       Schedule timing{' '}
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={
                         pathname.includes('apptitude-result') ? 'active' : ''
@@ -945,7 +945,7 @@ const Sidebar = (props) => {
                       {' '}
                       Aptitude Results{' '}
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
             )}

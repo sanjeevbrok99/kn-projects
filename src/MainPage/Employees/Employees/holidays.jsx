@@ -52,116 +52,16 @@ const Holidays = () => {
                 <tbody>
                   <tr className="holiday-completed">
                     <td>1</td>
-                    <td>New Year</td>
-                    <td>1 Jan 2019</td>
+                    <td>Past Holiday</td>
+                    <td>25 March 2021</td>
                     <td>Sunday</td>
-                    <td />
-                  </tr>
-                  <tr className="holiday-completed">
-                    <td>2</td>
-                    <td>Good Friday</td>
-                    <td>14 Apr 2019</td>
-                    <td>Friday</td>
-                    <td />
-                  </tr>
-                  <tr className="holiday-completed">
-                    <td>3</td>
-                    <td>May Day</td>
-                    <td>1 May 2019</td>
-                    <td>Monday</td>
-                    <td className="text-center"></td>
-                  </tr>
-                  <tr className="holiday-completed">
-                    <td>4</td>
-                    <td>Memorial Day</td>
-                    <td>28 May 2019</td>
-                    <td>Monday</td>
-                    <td className="text-center"></td>
-                  </tr>
-                  <tr className="holiday-completed">
-                    <td>5</td>
-                    <td>Ramzon</td>
-                    <td>26 Jun 2019</td>
-                    <td>Monday</td>
                     <td />
                   </tr>
                   <tr className="holiday-upcoming">
                     <td>6</td>
-                    <td>Bakrid</td>
-                    <td>2 Sep 2019</td>
+                    <td>Uocpming Holiday Name</td>
+                    <td>25 Dec 2021</td>
                     <td>Saturday</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_holiday"
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_holiday"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="holiday-upcoming">
-                    <td>7</td>
-                    <td>Deepavali</td>
-                    <td>18 Oct 2019</td>
-                    <td>Wednesday</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_holiday"
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_holiday"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="holiday-upcoming">
-                    <td>8</td>
-                    <td>Christmas</td>
-                    <td>25 Dec 2019</td>
-                    <td>Monday</td>
                     <td className="text-right">
                       <div className="dropdown dropdown-action">
                         <a

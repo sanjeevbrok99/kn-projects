@@ -89,7 +89,7 @@ const TaskReport = () => {
                   <tbody>
                     <tr>
                       <td>1</td>
-                      <td>Hospital Administration</td>
+                      <td>HR Management</td>
                       <td>26 Mar 2019</td>
                       <td>26 Apr 2021</td>
                       <td>
@@ -119,7 +119,7 @@ const TaskReport = () => {
                     </tr>
                     <tr>
                       <td>2</td>
-                      <td>Hospital Administration</td>
+                      <td>HR Management</td>
                       <td>26 Mar 2019</td>
                       <td>26 Apr 2021</td>
                       <td>

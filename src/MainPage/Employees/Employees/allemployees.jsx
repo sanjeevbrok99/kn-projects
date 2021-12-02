@@ -60,14 +60,14 @@ const AllEmployees = () => {
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
-              <a
+              {/* <a
                 href="#"
                 className="btn add-btn"
                 data-toggle="modal"
                 data-target="#add_employee"
               >
                 <i className="fa fa-plus" /> Add Employee
-              </a>
+              </a> */}
               <div className="view-icons">
                 <Link
                   to="/app/employee/allemployees"
