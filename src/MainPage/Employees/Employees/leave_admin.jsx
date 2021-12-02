@@ -33,66 +33,7 @@ const LeaveAdmin = () => {
       reason: 'Going to Hospital',
       status: 'Approved',
     },
-    {
-      id: 2,
-      image: Avatar_09,
-      name: 'Buster Wigton',
-      role: 'Web Developer',
-      leavetype: 'Hospitalisation',
-      from: '15 Jan 2019',
-      to: '25 Jan 2019',
-      noofdays: '10 days',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 3,
-      image: Avatar_03,
-      name: 'Catherine Manseau',
-      role: 'Web Developer',
-      leavetype: 'Maternity Leave',
-      from: '5 Jan 2019',
-      to: '15 Jan 2019',
-      noofdays: '10 days',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 4,
-      image: Avatar_05,
-      name: 'Domenic Houston',
-      role: 'Web Developer',
-      leavetype: 'Casual Leave',
-      from: '10 Jan 2019',
-      to: '11 Jan 2019',
-      noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 5,
-      image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
-      leavetype: 'Casual Leave',
-      from: '9 Jan 2019',
-      to: '10 Jan 2019',
-      noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 6,
-      image: Avatar_08,
-      name: 'John Smith',
-      role: 'Android Developer',
-      leavetype: 'LOP',
-      from: '24 Feb 2019',
-      to: '25 Feb 2019',
-      noofdays: '2 days',
-      reason: 'Personnal',
-      status: 'Approved',
-    },
+
     {
       id: 7,
       image: Avatar_10,
@@ -106,18 +47,6 @@ const LeaveAdmin = () => {
       status: 'Declined',
     },
     {
-      id: 8,
-      image: Avatar_15,
-      name: 'Mike Litorus',
-      role: 'IOS Developer',
-      leavetype: 'Paternity Leave',
-      from: '13 Feb 2019',
-      to: '17 Feb 2019',
-      noofdays: '5 days',
-      reason: 'Going to Hospital',
-      status: 'Declined',
-    },
-    {
       id: 9,
       image: Avatar_20,
       name: 'Richard Miles',
@@ -126,42 +55,6 @@ const LeaveAdmin = () => {
       from: '8 Mar 2019',
       to: '9 Mar 2019',
       noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'New',
-    },
-    {
-      id: 10,
-      image: Avatar_25,
-      name: 'Richard Parker',
-      role: 'Web Developer',
-      leavetype: 'Casual Leave',
-      from: '30 Jan 2019',
-      to: '31 Jan 2019',
-      noofdays: '2 days',
-      reason: 'Personnal',
-      status: 'New',
-    },
-    {
-      id: 11,
-      image: Avatar_10,
-      name: 'Rolland Webber',
-      role: 'Web Developer',
-      leavetype: 'Casual Leave',
-      from: '7 Jan 2019',
-      to: '8 Jan 2019',
-      noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'Declined',
-    },
-    {
-      id: 12,
-      image: Avatar_24,
-      name: 'Tarah Shropshire',
-      role: 'Web Developer',
-      leavetype: 'Paternity Leave',
-      from: '10 Jan 2019',
-      to: '10 Jan 2019',
-      noofdays: '1 day',
       reason: 'Going to Hospital',
       status: 'New',
     },
@@ -321,7 +214,7 @@ const LeaveAdmin = () => {
                 <li className="breadcrumb-item active">Leaves</li>
               </ul>
             </div>
-            <div className="col-auto float-right ml-auto">
+            {/* <div className="col-auto float-right ml-auto">
               <a
                 href="#"
                 className="btn add-btn"
@@ -330,7 +223,7 @@ const LeaveAdmin = () => {
               >
                 <i className="fa fa-plus" /> Add Leave
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* /Page Header */}

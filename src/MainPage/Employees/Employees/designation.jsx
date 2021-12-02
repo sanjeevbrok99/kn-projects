@@ -9,20 +9,7 @@ import '../../antdstyle.css';
 
 const Designations = () => {
   const [data, setData] = useState([
-    { id: 1, department: 'Web Development', designation: 'Web Developer' },
-    {
-      id: 2,
-      department: 'Application Development',
-      designation: 'Application Developer',
-    },
-    { id: 3, department: 'Web Development', designation: 'Web Developer' },
-    { id: 4, department: 'Web Development', designation: 'Web Developer' },
-    { id: 5, department: 'Web Development', designation: 'Web Developer' },
-    {
-      id: 6,
-      department: 'Application Development',
-      designation: 'Application Developer',
-    },
+    { id: 1, department: 'Sales Management', designation: 'Sales Manager' }
   ]);
   useEffect(() => {
     if ($('.select').length > 0) {

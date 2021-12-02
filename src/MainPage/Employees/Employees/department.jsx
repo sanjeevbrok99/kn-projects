@@ -9,12 +9,7 @@ import '../../antdstyle.css';
 
 const Department = () => {
   const [data, setData] = useState([
-    { id: 1, department: 'Web Development' },
-    { id: 2, department: 'Application Development' },
-    { id: 3, department: 'IT Management' },
-    { id: 4, department: 'Accounts Management' },
-    { id: 5, department: 'Support Management' },
-    { id: 6, department: 'Marketing' },
+    { id: 1, department: 'Sales Management' },
   ]);
 
   const columns = [
