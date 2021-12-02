@@ -4,6 +4,7 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+// import app from '../../assets/js/app'
 
 const Sidebar = (props) => {
   // useEffect(() => {
@@ -24,6 +25,11 @@ const Sidebar = (props) => {
   //     });
   //   });
   // }, []);
+  useEffect(() => {
+    import('../../lib/app').then((app) => {
+      app.default();
+    });
+  },[])
   const isAdmin = sessionStorage.getItem('authType');
   let pathname = props.location.pathname;
   return (
