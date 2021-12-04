@@ -24,7 +24,7 @@ const LeaveEmployee = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Meher Superneeth',
       role: 'Web Designer',
       leavetype: 'Medical Leave',
       from: '27 Feb 2019',
@@ -60,7 +60,7 @@ const LeaveEmployee = () => {
     {
       id: 4,
       image: Avatar_05,
-      name: 'Domenic Houston',
+      name: 'Aditi Singh',
       role: 'Web Developer',
       leavetype: 'Casual Leave',
       from: '10 Jan 2019',
@@ -72,7 +72,7 @@ const LeaveEmployee = () => {
     {
       id: 5,
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Meher Superneeth',
       role: 'Web Designer',
       leavetype: 'Casual Leave',
       from: '9 Jan 2019',
@@ -84,7 +84,7 @@ const LeaveEmployee = () => {
     {
       id: 6,
       image: Avatar_08,
-      name: 'John Smith',
+      name: 'Aishwarya Kumari',
       role: 'Android Developer',
       leavetype: 'LOP',
       from: '24 Feb 2019',
@@ -96,7 +96,7 @@ const LeaveEmployee = () => {
     {
       id: 7,
       image: Avatar_10,
-      name: 'Melita Faucher',
+      name: 'Ashika bhatia',
       role: 'Web Developer',
       leavetype: 'Casual Leave',
       from: '13 Jan 2019',
@@ -132,7 +132,7 @@ const LeaveEmployee = () => {
     {
       id: 10,
       image: Avatar_25,
-      name: 'Richard Parker',
+      name: 'Jeetanshi Khatri',
       role: 'Web Developer',
       leavetype: 'Casual Leave',
       from: '30 Jan 2019',

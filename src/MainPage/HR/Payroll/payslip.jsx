@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { Applogo } from '../../../Entryfile/imagepath';
+import { headerlogo } from '../../../Entryfile/imagepath';
 
 const Payslip = () => {
   return (
@@ -45,11 +45,11 @@ const Payslip = () => {
                 </h4>
                 <div className="row">
                   <div className="col-sm-6 m-b-20">
-                    <img src={Applogo} className="inv-logo" alt="" />
+                    <img src={headerlogo} className="inv-logo" alt="" />
                     <ul className="list-unstyled mb-0">
-                      <li>Dreamguy's Technologies</li>
-                      <li>3864 Quiet Valley Lane,</li>
-                      <li>Sherman Oaks, CA, 91403</li>
+                      <li>KN Multiprojects</li>
+                      <li>Banglore,</li>
+                      <li>India</li>
                     </ul>
                   </div>
                   <div className="col-sm-6 m-b-20">
@@ -57,7 +57,7 @@ const Payslip = () => {
                       <h3 className="text-uppercase">Payslip #49029</h3>
                       <ul className="list-unstyled">
                         <li>
-                          Salary Month: <span>March, 2019</span>
+                          Salary Month: <span>March, 2021</span>
                         </li>
                       </ul>
                     </div>
@@ -68,14 +68,14 @@ const Payslip = () => {
                     <ul className="list-unstyled">
                       <li>
                         <h5 className="mb-0">
-                          <strong>John Doe</strong>
+                          <strong>Rakesh Sharma</strong>
                         </h5>
                       </li>
                       <li>
                         <span>Web Designer</span>
                       </li>
                       <li>Employee ID: FT-0009</li>
-                      <li>Joining Date: 1 Jan 2013</li>
+                      <li>Joining Date: 1 Jan 2016</li>
                     </ul>
                   </div>
                 </div>
@@ -90,32 +90,32 @@ const Payslip = () => {
                           <tr>
                             <td>
                               <strong>Basic Salary</strong>{' '}
-                              <span className="float-right">$6500</span>
+                              <span className="float-right">Rs.6500</span>
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>House Rent Allowance (H.R.A.)</strong>{' '}
-                              <span className="float-right">$55</span>
+                              <span className="float-right">Rs.55</span>
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>Conveyance</strong>{' '}
-                              <span className="float-right">$55</span>
+                              <span className="float-right">Rs.55</span>
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>Other Allowance</strong>{' '}
-                              <span className="float-right">$55</span>
+                              <span className="float-right">Rs.55</span>
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>Total Earnings</strong>{' '}
                               <span className="float-right">
-                                <strong>$55</strong>
+                                <strong>Rs.55</strong>
                               </span>
                             </td>
                           </tr>
@@ -133,32 +133,32 @@ const Payslip = () => {
                           <tr>
                             <td>
                               <strong>Tax Deducted at Source (T.D.S.)</strong>{' '}
-                              <span className="float-right">$0</span>
+                              <span className="float-right">Rs.0</span>
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>Provident Fund</strong>{' '}
-                              <span className="float-right">$0</span>
+                              <span className="float-right">Rs.0</span>
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>ESI</strong>{' '}
-                              <span className="float-right">$0</span>
+                              <span className="float-right">Rs.0</span>
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>Loan</strong>{' '}
-                              <span className="float-right">$300</span>
+                              <span className="float-right">Rs.300</span>
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>Total Deductions</strong>{' '}
                               <span className="float-right">
-                                <strong>$59698</strong>
+                                <strong>Rs.59698</strong>
                               </span>
                             </td>
                           </tr>
@@ -168,7 +168,7 @@ const Payslip = () => {
                   </div>
                   <div className="col-sm-12">
                     <p>
-                      <strong>Net Salary: $59698</strong> (Fifty nine thousand
+                      <strong>Net Salary: Rs.59698</strong> (Fifty nine thousand
                       six hundred and ninety eight only.)
                     </p>
                   </div>
