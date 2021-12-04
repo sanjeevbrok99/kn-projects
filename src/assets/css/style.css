@@ -554,16 +554,18 @@ table.dataTable thead > tr > td.sorting {
   border: 1px solid #482fe9;
 }
 .btn-primary {
-  background-color: #f43b48;
-  border: 1px solid #f43b48;
+  background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+  border: 1px solid;
 }
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary.active,
 .btn-primary:active,
 .open > .dropdown-toggle.btn-primary {
-  background-color: #f10e1d;
-  border: 1px solid #f10e1d;
+  border: 1px solid;
 }
 .btn-primary.active.focus,
 .btn-primary.active:focus,
@@ -1925,11 +1927,10 @@ table.dataTable thead > tr > td.sorting {
   margin-bottom: 25px;
 }
 .account-box .account-btn {
-  background: #f43b48;
-  /* background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
   background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
   background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
-  background: linear-gradient(to right, #f43b48 0%, #453a94 100%); */
+  background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
   border: 0;
   border-radius: 4px;
   display: block;
@@ -5680,11 +5681,11 @@ table.table-inbox tbody tr.checked {
 -----------------------*/
 
 .apply-btn {
-  background: #f43b48;
-  /* background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  /* background: #f43b48; */
+  background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
   background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
   background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
-  background: linear-gradient(to right, #f43b48 0%, #453a94 100%); */
+  background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
   border-color: transparent;
   box-shadow: 0 6px 15px rgba(36, 37, 38, 0.08);
   color: #fff;
@@ -5759,7 +5760,10 @@ table.table-inbox tbody tr.checked {
   text-align: center;
 }
 .job-types:hover {
-  background-color: #f43b48;
+  background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
+  background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
   color: white;
 }
 
@@ -6828,6 +6832,7 @@ ul.comment-list li ul.children {
 .dash-card-content p {
   font-size: 18px;
   margin-bottom: 0;
+  word-spacing: 2px;
 }
 .dash-sec-content .dash-info-list + .dash-info-list {
   margin-top: 15px;
