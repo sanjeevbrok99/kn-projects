@@ -16,7 +16,7 @@ import '../assets/js/bootstrap.min.js';
 import '../assets/css/select2.min.css';
 
 import '../assets/js/popper.min.js';
-import '../assets/js/app.js';
+// import '../assets/js/app.js';
 import '../assets/js/select2.min.js';
 import '../assets/js/jquery-3.2.1.min.js';
 
