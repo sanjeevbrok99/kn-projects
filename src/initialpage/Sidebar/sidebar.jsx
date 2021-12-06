@@ -29,7 +29,7 @@ const Sidebar = (props) => {
     import('../../lib/app').then((app) => {
       app.default();
     });
-  },[])
+  }, []);
   const isAdmin = sessionStorage.getItem('authType');
   let pathname = props.location.pathname;
   return (
@@ -389,63 +389,152 @@ const Sidebar = (props) => {
             {isAdmin && (
               <li className="submenu">
                 <a href="#">
-                  <i className="la la-files-o" /> <span> Sales </span>{' '}
+                  <i className="la la-briefcase" /> <span> Jobs </span>{' '}
                   <span className="menu-arrow" />
                 </a>
                 <ul style={{ display: 'none' }}>
-                  <li>
+                  {/* <li>
                     <Link
-                      className={pathname.includes('estimates') ? 'active' : ''}
-                      to="/app/sales/estimates"
+                      className={
+                        pathname.includes('user-dashboard') ||
+                        pathname.includes('user-all-jobs') ||
+                        pathname.includes('saved-jobs') ||
+                        pathname.includes('applied-jobs') ||
+                        pathname.includes('interviewing') ||
+                        pathname.includes('offered-jobs') ||
+                        pathname.includes('visited-jobs') ||
+                        pathname.includes('archived-jobs') ||
+                        pathname.includes('job-aptitude') ||
+                        pathname.includes('questions')
+                          ? 'active'
+                          : ''
+                      }
+                      to="/app/administrator/user-dashboard"
                     >
-                      Estimates
+                      {' '}
+                      User Dasboard{' '}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
-                      className={pathname.includes('invoices') ? 'active' : ''}
-                      to="/app/sales/invoices"
+                      className={
+                        pathname.includes('jobs-dashboard') ? 'active' : ''
+                      }
+                      to="/app/administrator/jobs-dashboard"
                     >
-                      Invoices
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('payments') ? 'active' : ''}
-                      to="/app/sales/payments"
-                    >
-                      Payments
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('expenses') ? 'active' : ''}
-                      to="/app/sales/expenses"
-                    >
-                      Expenses
+                      {' '}
+                      Jobs Dasboard{' '}
                     </Link>
                   </li>
                   <li>
                     <Link
                       className={
-                        pathname.includes('provident-fund') ? 'active' : ''
+                        pathname === '/app/administrator/jobs' ? 'active' : ''
                       }
-                      to="/app/sales/provident-fund"
+                      to="/app/administrator/jobs"
                     >
-                      Provident Fund
+                      {' '}
+                      Manage Jobs{' '}
                     </Link>
                   </li>
                   <li>
                     <Link
-                      className={pathname.includes('taxes') ? 'active' : ''}
-                      to="/app/sales/taxes"
+                      className={
+                        pathname.includes('manage-resumes') ? 'active' : ''
+                      }
+                      to="/app/administrator/manage-resumes"
                     >
-                      Taxes
+                      {' '}
+                      Manage Resumes{' '}
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('shortlist-candidates')
+                          ? 'active'
+                          : ''
+                      }
+                      to="/app/administrator/shortlist-candidates"
+                    >
+                      {' '}
+                      Shortlist Candidates{' '}
+                    </Link>
+                  </li>
+                  {/* <li>
+                    <Link
+                      className={
+                        pathname === '/app/administrator/interview-questions'
+                          ? 'active'
+                          : ''
+                      }
+                      to="/app/administrator/interview-questions"
+                    >
+                      {' '}
+                      Interview Questions{' '}
+                    </Link>
+                  </li> */}
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('offer_approvals') ? 'active' : ''
+                      }
+                      to="/app/administrator/offer_approvals"
+                    >
+                      {' '}
+                      Offer Approvals{' '}
+                    </Link>
+                  </li>
+                  {/* <li>
+                    <Link
+                      className={
+                        pathname.includes('experiance-level') ? 'active' : ''
+                      }
+                      to="/app/administrator/experiance-level"
+                    >
+                      {' '}
+                      Experience Level{' '}
+                    </Link>
+                  </li> */}
+                  <li>
+                    <Link
+                      className={
+                        pathname === '/app/administrator/candidates'
+                          ? 'active'
+                          : ''
+                      }
+                      to="/app/administrator/candidates"
+                    >
+                      {' '}
+                      Candidates List{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('schedule-timing') ? 'active' : ''
+                      }
+                      to="/app/administrator/schedule-timing"
+                    >
+                      {' '}
+                      Schedule timing{' '}
+                    </Link>
+                  </li>
+                  {/* <li>
+                    <Link
+                      className={
+                        pathname.includes('apptitude-result') ? 'active' : ''
+                      }
+                      to="/app/administrator/apptitude-result"
+                    >
+                      {' '}
+                      Aptitude Results{' '}
+                    </Link>
+                  </li> */}
                 </ul>
               </li>
             )}
+
             {isAdmin && (
               <li className="submenu">
                 <a href="#">
@@ -514,15 +603,17 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                 )}
-                {!isAdmin && <li>
-                  <Link
-                    className={pathname.includes('y-view') ? 'active' : ''}
-                    to="/app/payroll/salary-view"
-                  >
-                    {' '}
-                    Payslip{' '}
-                  </Link>
-                </li>}
+                {!isAdmin && (
+                  <li>
+                    <Link
+                      className={pathname.includes('y-view') ? 'active' : ''}
+                      to="/app/payroll/salary-view"
+                    >
+                      {' '}
+                      Payslip{' '}
+                    </Link>
+                  </li>
+                )}
                 {isAdmin && (
                   <li>
                     <Link
@@ -801,154 +892,7 @@ const Sidebar = (props) => {
                 </Link>
               </li>
             )}
-            {isAdmin && (
-              <li className="submenu">
-                <a href="#">
-                  <i className="la la-briefcase" /> <span> Jobs </span>{' '}
-                  <span className="menu-arrow" />
-                </a>
-                <ul style={{ display: 'none' }}>
-                  {/* <li>
-                    <Link
-                      className={
-                        pathname.includes('user-dashboard') ||
-                        pathname.includes('user-all-jobs') ||
-                        pathname.includes('saved-jobs') ||
-                        pathname.includes('applied-jobs') ||
-                        pathname.includes('interviewing') ||
-                        pathname.includes('offered-jobs') ||
-                        pathname.includes('visited-jobs') ||
-                        pathname.includes('archived-jobs') ||
-                        pathname.includes('job-aptitude') ||
-                        pathname.includes('questions')
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/administrator/user-dashboard"
-                    >
-                      {' '}
-                      User Dasboard{' '}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('jobs-dashboard') ? 'active' : ''
-                      }
-                      to="/app/administrator/jobs-dashboard"
-                    >
-                      {' '}
-                      Jobs Dasboard{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname === '/app/administrator/jobs' ? 'active' : ''
-                      }
-                      to="/app/administrator/jobs"
-                    >
-                      {' '}
-                      Manage Jobs{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('manage-resumes') ? 'active' : ''
-                      }
-                      to="/app/administrator/manage-resumes"
-                    >
-                      {' '}
-                      Manage Resumes{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('shortlist-candidates')
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/administrator/shortlist-candidates"
-                    >
-                      {' '}
-                      Shortlist Candidates{' '}
-                    </Link>
-                  </li>
-                  {/* <li>
-                    <Link
-                      className={
-                        pathname === '/app/administrator/interview-questions'
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/administrator/interview-questions"
-                    >
-                      {' '}
-                      Interview Questions{' '}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('offer_approvals') ? 'active' : ''
-                      }
-                      to="/app/administrator/offer_approvals"
-                    >
-                      {' '}
-                      Offer Approvals{' '}
-                    </Link>
-                  </li>
-                  {/* <li>
-                    <Link
-                      className={
-                        pathname.includes('experiance-level') ? 'active' : ''
-                      }
-                      to="/app/administrator/experiance-level"
-                    >
-                      {' '}
-                      Experience Level{' '}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={
-                        pathname === '/app/administrator/candidates'
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/administrator/candidates"
-                    >
-                      {' '}
-                      Candidates List{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('schedule-timing') ? 'active' : ''
-                      }
-                      to="/app/administrator/schedule-timing"
-                    >
-                      {' '}
-                      Schedule timing{' '}
-                    </Link>
-                  </li>
-                  {/* <li>
-                    <Link
-                      className={
-                        pathname.includes('apptitude-result') ? 'active' : ''
-                      }
-                      to="/app/administrator/apptitude-result"
-                    >
-                      {' '}
-                      Aptitude Results{' '}
-                    </Link>
-                  </li> */}
-                </ul>
-              </li>
-            )}
+
             <li className={pathname.includes('knowledgebase') ? 'active' : ''}>
               <Link to="/app/administrator/knowledgebase">
                 <i className="la la-question" /> <span>Knowledgebase</span>
