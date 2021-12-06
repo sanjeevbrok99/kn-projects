@@ -767,17 +767,17 @@ table.dataTable thead > tr > td.sorting {
 }
 .pagination > li > a,
 .pagination > li > span {
-  color: #f43b48;
+  color: blue;
 }
 .page-link:hover {
-  color: #f43b48;
+  color: blue;
 }
 .page-link:focus {
   box-shadow: unset;
 }
 .page-item.active .page-link {
-  background-color: #f43b48;
-  border-color: #f43b48;
+  background-color: blue;
+  border-color: blue;
 }
 .dropdown-menu {
   border: 1px solid rgba(0, 0, 0, 0.1);

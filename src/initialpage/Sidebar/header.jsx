@@ -425,7 +425,7 @@ class Header extends Component {
               data-toggle="dropdown"
             >
               <span className="user-img">
-                <img src={Avatar_21} alt="" />
+                <img src={Avatar_03} alt="" />
                 <span className="status online" />
               </span>
               <span>Admin</span>
