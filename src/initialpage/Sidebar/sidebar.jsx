@@ -643,7 +643,7 @@ const Sidebar = (props) => {
                   <span className="menu-arrow" />
                 </a>
                 <ul style={{ display: 'none' }}>
-                  <li>
+                  {/* <li>
                     <Link
                       className={pathname.includes('expense-') ? 'active' : ''}
                       to="/app/reports/expense-reports"
@@ -651,8 +651,8 @@ const Sidebar = (props) => {
                       {' '}
                       Expense Report{' '}
                     </Link>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <Link
                       className={pathname.includes('invoice-') ? 'active' : ''}
                       to="/app/reports/invoice-reports"
@@ -660,7 +660,7 @@ const Sidebar = (props) => {
                       {' '}
                       Invoice Report{' '}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       className={pathname.includes('payments-') ? 'active' : ''}
@@ -670,7 +670,7 @@ const Sidebar = (props) => {
                       Payments Report{' '}
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={pathname.includes('project-') ? 'active' : ''}
                       to="/app/reports/project-reports"
@@ -678,8 +678,8 @@ const Sidebar = (props) => {
                       {' '}
                       Project Report{' '}
                     </Link>
-                  </li>
-                  <li>
+                  </li> */}
+                  {/* <li>
                     <Link
                       className={pathname.includes('task-') ? 'active' : ''}
                       to="/app/reports/task-reports"
@@ -687,7 +687,7 @@ const Sidebar = (props) => {
                       {' '}
                       Task Report{' '}
                     </Link>
-                  </li>
+                  </li> */}
                   {/* <li>
                     <Link
                       className={pathname.includes('user-') ? 'active' : ''}
