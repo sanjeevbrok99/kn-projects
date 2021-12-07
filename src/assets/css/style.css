@@ -84,7 +84,7 @@ Version      : 3.6
     url(../fonts/MaterialIcons-Regular.woff) format('woff'),
     url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
-@font-face {
+/* @font-face {
   font-family: 'CircularStd';
   font-style: normal;
   font-weight: 400;
@@ -139,7 +139,7 @@ Version      : 3.6
   font-weight: 800;
   src: local('Circular Std Black Italic'),
     url('../fonts/CircularStd-BlackItalic.woff') format('woff');
-}
+} */
 
 /*-----------------
 	1. General
@@ -149,7 +149,7 @@ html {
   height: 100%;
 }
 body {
-  font-family: 'CircularStd', sans-serif;
+  font-family: Roboto, sans-serif;
   font-size: 0.9375rem;
   color: #1f1f1f;
   background-color: #f7f7f7;
@@ -162,7 +162,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: CircularStd;
+  font-family: Roboto,sans-serif;
   margin-top: 0;
   font-weight: 500;
 }
@@ -1608,7 +1608,7 @@ table.dataTable thead > tr > td.sorting {
   padding: 10px 15px;
 }
 .sidebar-menu ul ul a.active {
-  color: #f43b48;
+  color: #05c3dd;
   text-decoration: underline;
 }
 .mobile-user-menu {

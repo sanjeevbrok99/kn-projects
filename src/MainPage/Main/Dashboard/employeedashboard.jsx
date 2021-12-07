@@ -41,7 +41,7 @@ const EmployeeDashboard = () => {
               <h1 className="dash-sec-title">Today's News</h1>
               <div className="dash-sec-content">
                 <div className="dash-info-list">
-                  <a href="#" className="dash-card text-danger hover-shadow">
+                  <a href="#" className="dash-card hover-shadow">
                     <div className="dash-card-container">
                       <div className="dash-card-icon">
                         <i className="fa fa-hourglass-o" />
