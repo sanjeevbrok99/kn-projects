@@ -7,24 +7,6 @@ import { Link } from 'react-router-dom';
 // import app from '../../assets/js/app'
 
 const Sidebar = (props) => {
-  // useEffect(() => {
-  //   document.querySelectorAll('.submenu a').forEach((e) => {
-  //     // e.outerHTML = e.outerHTML;
-  //     e.addEventListener('click', (e) => {
-  //       const currentSiblingState = e.target.nextElementSibling.style.display;
-  //       setTimeout(() => {
-  //         if (
-  //           currentSiblingState == e.target.nextElementSibling.style.display
-  //         ) {
-  //           e.target.nextElementSibling.style.display =
-  //             e.target.nextElementSibling.style.display == 'block'
-  //               ? 'none'
-  //               : 'block';
-  //         }
-  //       });
-  //     });
-  //   });
-  // }, []);
   useEffect(() => {
     import('../../lib/app').then((app) => {
       app.default();
