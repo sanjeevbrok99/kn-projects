@@ -49,7 +49,7 @@ const Sidebar = (props) => {
                     Chat
                   </Link>
                 </li>
-                <li className="submenu">
+                {/* <li className="submenu">
                   <a href="#">
                     <span> Calls</span> <span className="menu-arrow" />
                   </a>
@@ -95,7 +95,7 @@ const Sidebar = (props) => {
                       </Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
                 <li>
                   <Link
                     className={
@@ -106,7 +106,7 @@ const Sidebar = (props) => {
                     Calendar
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link
                     onClick={() => localStorage.setItem('minheight', 'true')}
                     className={pathname.includes('contacts') ? 'active' : ''}
@@ -114,7 +114,7 @@ const Sidebar = (props) => {
                   >
                     Contacts
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link
                     className={
