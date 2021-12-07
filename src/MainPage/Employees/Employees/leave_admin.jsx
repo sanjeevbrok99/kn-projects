@@ -262,7 +262,7 @@ const LeaveAdmin = () => {
         {/* Search Filter */}
         <div className="row filter-row">
           <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-            <div className="form-group form-focus">
+            <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
               <label className="focus-label">Employee Name</label>
             </div>

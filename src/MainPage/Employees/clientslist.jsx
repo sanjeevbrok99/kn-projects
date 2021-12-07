@@ -182,13 +182,13 @@ const Clients = () => {
         {/* Search Filter */}
         <div className="row filter-row">
           <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus">
+            <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
               <label className="focus-label">Client ID</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus">
+            <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
               <label className="focus-label">Client Name</label>
             </div>

@@ -157,7 +157,7 @@ const DailyReport = () => {
           {/* Search Filter */}
           <div className="row filter-row mb-4">
             <div className="col-sm-6 col-md-3">
-              <div className="form-group form-focus">
+              <div className="form-group form-focus focused">
                 <input className="form-control floating" type="text" />
                 <label className="focus-label">Employee</label>
               </div>

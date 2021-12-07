@@ -1975,7 +1975,7 @@ const EmployeeProfile = () => {
                       </h3>
                       <div className="row">
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <input
                               type="text"
                               className="form-control floating"
@@ -1985,7 +1985,7 @@ const EmployeeProfile = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <input
                               type="text"
                               className="form-control floating"
@@ -1995,7 +1995,7 @@ const EmployeeProfile = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <input
                               type="text"
                               className="form-control floating"
@@ -2005,7 +2005,7 @@ const EmployeeProfile = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <div>
                               <input
                                 type="date"
@@ -2017,7 +2017,7 @@ const EmployeeProfile = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <div>
                               <input
                                 type="date"
@@ -2041,7 +2041,7 @@ const EmployeeProfile = () => {
                       </h3>
                       <div className="row">
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <input
                               type="text"
                               className="form-control floating"
@@ -2051,7 +2051,7 @@ const EmployeeProfile = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <input
                               type="text"
                               className="form-control floating"
@@ -2061,7 +2061,7 @@ const EmployeeProfile = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <input
                               type="text"
                               className="form-control floating"
@@ -2071,7 +2071,7 @@ const EmployeeProfile = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <div>
                               <input
                                 type="date"
@@ -2083,7 +2083,7 @@ const EmployeeProfile = () => {
                           </div>
                         </div>
                         <div className="col-md-6">
-                          <div className="form-group form-focus">
+                          <div className="form-group form-focus focused">
                             <div>
                               <input
                                 type="date"
