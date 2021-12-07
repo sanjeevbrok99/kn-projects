@@ -43,7 +43,7 @@ const Settings = () => {
                     <input
                       className="form-control"
                       type="text"
-                      defaultValue="Dreamguy's Technologies"
+                      defaultValue="KN Multiprojects"
                     />
                   </div>
                 </div>

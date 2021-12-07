@@ -176,7 +176,7 @@ const TaskBoard = () => {
                     <div className="kanban-box">
                       <div className="task-board-header">
                         <span className="status-title">
-                          <a href="task-view.html">Website redesign</a>
+                          <a href="task-view.html">Plot Sale</a>
                         </span>
                         <div className="dropdown kanban-task-action">
                           <a href="" data-toggle="dropdown">
@@ -232,7 +232,7 @@ const TaskBoard = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="card panel">
+                  {/* <div className="card panel">
                     <div className="kanban-box">
                       <div className="task-board-header">
                         <span className="status-title">
@@ -292,12 +292,12 @@ const TaskBoard = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="card panel">
                     <div className="kanban-box">
                       <div className="task-board-header">
                         <span className="status-title">
-                          <a href="task-view.html">Website redesign</a>
+                          <a href="task-view.html">Plot Sale</a>
                         </span>
                         <div className="dropdown kanban-task-action">
                           <a href="" data-toggle="dropdown">
@@ -388,7 +388,7 @@ const TaskBoard = () => {
                     <div className="kanban-box">
                       <div className="task-board-header">
                         <span className="status-title">
-                          <a href="task-view.html">Website redesign</a>
+                          <a href="task-view.html">Plot Sale</a>
                         </span>
                         <div className="dropdown kanban-task-action">
                           <a href="" data-toggle="dropdown">
@@ -448,7 +448,7 @@ const TaskBoard = () => {
                     <div className="kanban-box">
                       <div className="task-board-header">
                         <span className="status-title">
-                          <a href="task-view.html">Website redesign</a>
+                          <a href="task-view.html">Plot Sale</a>
                         </span>
                         <div className="dropdown kanban-task-action">
                           <a href="" data-toggle="dropdown">
@@ -563,7 +563,7 @@ const TaskBoard = () => {
                     <div className="kanban-box">
                       <div className="task-board-header">
                         <span className="status-title">
-                          <a href="task-view.html">Website redesign</a>
+                          <a href="task-view.html">Plot Sale</a>
                         </span>
                         <div className="dropdown kanban-task-action">
                           <a href="" data-toggle="dropdown">
@@ -654,7 +654,7 @@ const TaskBoard = () => {
                     <div className="kanban-box">
                       <div className="task-board-header">
                         <span className="status-title">
-                          <a href="task-view.html">Website redesign</a>
+                          <a href="task-view.html">Plot Sale</a>
                         </span>
                         <div className="dropdown kanban-task-action">
                           <a href="" data-toggle="dropdown">
@@ -745,7 +745,7 @@ const TaskBoard = () => {
                     <div className="kanban-box">
                       <div className="task-board-header">
                         <span className="status-title">
-                          <a href="task-view.html">Website redesign</a>
+                          <a href="task-view.html">Plot Sale</a>
                         </span>
                         <div className="dropdown kanban-task-action">
                           <a href="" data-toggle="dropdown">
@@ -1289,7 +1289,7 @@ const TaskBoard = () => {
                   <input
                     type="text"
                     className="form-control"
-                    defaultValue="Website Redesign"
+                    defaultValue="Plot Sale"
                   />
                 </div>
                 <div className="form-group">

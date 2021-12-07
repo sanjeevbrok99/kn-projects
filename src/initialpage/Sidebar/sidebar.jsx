@@ -309,16 +309,16 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                 )}
-                {!isAdmin && (
-                  <li>
-                    <Link
-                      onClick={() => localStorage.setItem('minheight', 'true')}
-                      to="/tasks/tasks"
-                    >
-                      Tasks
-                    </Link>
-                  </li>
-                )}
+
+                <li>
+                  <Link
+                    onClick={() => localStorage.setItem('minheight', 'true')}
+                    to="/tasks"
+                  >
+                    Tasks
+                  </Link>
+                </li>
+
                 {isAdmin && (
                   <li>
                     <Link

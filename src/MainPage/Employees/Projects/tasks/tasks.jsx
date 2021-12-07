@@ -31,7 +31,7 @@ const Tasks = () => {
     <div className="page-wrapper">
       <Helmet>
         <title>Tasks </title>
-        <meta name="description" content="Login page" />
+        <meta name="description" content="Tasks" />
       </Helmet>
       <div className="chat-main-row">
         <div className="chat-main-wrapper">
@@ -101,42 +101,7 @@ const Tasks = () => {
                                     contentEditable="true"
                                     suppressContentEditableWarning={true}
                                   >
-                                    Patient appointment booking
-                                  </span>
-                                  <span className="task-action-btn task-btn-right">
-                                    <span
-                                      className="action-circle large"
-                                      title="Assign"
-                                    >
-                                      <i className="material-icons">
-                                        person_add
-                                      </i>
-                                    </span>
-                                    <span
-                                      className="action-circle large delete-btn"
-                                      title="Delete Task"
-                                    >
-                                      <i className="material-icons">delete</i>
-                                    </span>
-                                  </span>
-                                </div>
-                              </li>
-                              <li className="task">
-                                <div className="task-container">
-                                  <span className="task-action-btn task-check">
-                                    <span
-                                      className="action-circle large complete-btn"
-                                      title="Mark Complete"
-                                    >
-                                      <i className="material-icons">check</i>
-                                    </span>
-                                  </span>
-                                  <span
-                                    className="task-label"
-                                    contentEditable="true"
-                                    suppressContentEditableWarning={true}
-                                  >
-                                    Appointment booking with payment gateway
+                                    Fix meeting with the customer
                                   </span>
                                   <span className="task-action-btn task-btn-right">
                                     <span
@@ -167,112 +132,7 @@ const Tasks = () => {
                                     </span>
                                   </span>
                                   <span className="task-label">
-                                    Doctor available module
-                                  </span>
-                                  <span className="task-action-btn task-btn-right">
-                                    <span
-                                      className="action-circle large"
-                                      title="Assign"
-                                    >
-                                      <i className="material-icons">
-                                        person_add
-                                      </i>
-                                    </span>
-                                    <span
-                                      className="action-circle large delete-btn"
-                                      title="Delete Task"
-                                    >
-                                      <i className="material-icons">delete</i>
-                                    </span>
-                                  </span>
-                                </div>
-                              </li>
-                              <li className="task">
-                                <div className="task-container">
-                                  <span className="task-action-btn task-check">
-                                    <span
-                                      className="action-circle large complete-btn"
-                                      title="Mark Complete"
-                                    >
-                                      <i className="material-icons">check</i>
-                                    </span>
-                                  </span>
-                                  <span
-                                    className="task-label"
-                                    contentEditable="true"
-                                    suppressContentEditableWarning={true}
-                                  >
-                                    Patient and Doctor video conferencing
-                                  </span>
-                                  <span className="task-action-btn task-btn-right">
-                                    <span
-                                      className="action-circle large"
-                                      title="Assign"
-                                    >
-                                      <i className="material-icons">
-                                        person_add
-                                      </i>
-                                    </span>
-                                    <span
-                                      className="action-circle large delete-btn"
-                                      title="Delete Task"
-                                    >
-                                      <i className="material-icons">delete</i>
-                                    </span>
-                                  </span>
-                                </div>
-                              </li>
-                              <li className="task">
-                                <div className="task-container">
-                                  <span className="task-action-btn task-check">
-                                    <span
-                                      className="action-circle large complete-btn"
-                                      title="Mark Complete"
-                                    >
-                                      <i className="material-icons">check</i>
-                                    </span>
-                                  </span>
-                                  <span
-                                    className="task-label"
-                                    contentEditable="true"
-                                    suppressContentEditableWarning={true}
-                                  >
-                                    Private chat module
-                                  </span>
-                                  <span className="task-action-btn task-btn-right">
-                                    <span
-                                      className="action-circle large"
-                                      title="Assign"
-                                    >
-                                      <i className="material-icons">
-                                        person_add
-                                      </i>
-                                    </span>
-                                    <span
-                                      className="action-circle large delete-btn"
-                                      title="Delete Task"
-                                    >
-                                      <i className="material-icons">delete</i>
-                                    </span>
-                                  </span>
-                                </div>
-                              </li>
-                              <li className="task">
-                                <div className="task-container">
-                                  <span className="task-action-btn task-check">
-                                    <span
-                                      className="action-circle large complete-btn"
-                                      title="Mark Complete"
-                                    >
-                                      <i className="material-icons">check</i>
-                                    </span>
-                                  </span>
-                                  <span
-                                    className="task-label"
-                                    contentEditable="true"
-                                    suppressContentEditableWarning={true}
-                                  >
-                                    Patient Profile add
+                                    Meet the customer
                                   </span>
                                   <span className="task-action-btn task-btn-right">
                                     <span

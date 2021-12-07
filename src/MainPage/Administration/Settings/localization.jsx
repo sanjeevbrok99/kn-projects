@@ -7,13 +7,6 @@ import { Helmet } from 'react-helmet';
 
 const Localization = () => {
   useEffect(() => {
-    let selectbox = localStorage.getItem('selectbox');
-    if (selectbox === 'true') {
-      setTimeout(function () {
-        window.location.reload(1);
-        localStorage.removeItem('selectbox');
-      }, 1000);
-    }
     if ($('.select').length > 0) {
       $('.select').select2({
         minimumResultsForSearch: -1,
