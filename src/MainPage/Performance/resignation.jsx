@@ -17,11 +17,11 @@ const Resignation = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       department: 'Web Development',
       reason: 'Lorem ipsum dollar',
-      noticedate: '09 Jan 2019',
-      resignationdate: '09 Jan 2019',
+      noticedate: '09 Jan 2021',
+      resignationdate: '09 Jan 2021',
     },
   ]);
 
@@ -256,7 +256,7 @@ const Resignation = () => {
                   <input
                     className="form-control"
                     type="text"
-                    defaultValue="John Doe"
+                    defaultValue="Prateek Tiwari"
                   />
                 </div>
                 <div className="form-group">
@@ -267,7 +267,7 @@ const Resignation = () => {
                     <input
                       type="date"
                       className="form-control datetimepicker"
-                      defaultValue="28/02/2019"
+                      defaultValue="28/02/2021"
                     />
                   </div>
                 </div>
@@ -279,7 +279,7 @@ const Resignation = () => {
                     <input
                       type="date"
                       className="form-control datetimepicker"
-                      defaultValue="28/02/2019"
+                      defaultValue="28/02/2021"
                     />
                   </div>
                 </div>

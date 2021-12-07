@@ -228,11 +228,11 @@ const AdminDashboard = () => {
                         <span className="text-success">+12.5%</span>
                       </div>
                     </div>
-                    <h3 className="mb-3">$1,42,300</h3>
+                    <h3 className="mb-3">₹1,42,300</h3>
                     <div className="progress mb-2" style={{height: '5px'}}>
                       <div className="progress-bar bg-primary" role="progressbar" style={{width: '70%'}} aria-valuenow={40} aria-valuemin={0} aria-valuemax={100} />
                     </div>
-                    <p className="mb-0">Previous Month <span className="text-muted">$1,15,852</span></p>
+                    <p className="mb-0">Previous Month <span className="text-muted">₹1,15,852</span></p>
                   </div>
                 </div>
                 <div className="card">
@@ -245,11 +245,11 @@ const AdminDashboard = () => {
                         <span className="text-danger">-2.8%</span>
                       </div>
                     </div>
-                    <h3 className="mb-3">$8,500</h3>
+                    <h3 className="mb-3">₹8,500</h3>
                     <div className="progress mb-2" style={{height: '5px'}}>
                       <div className="progress-bar bg-primary" role="progressbar" style={{width: '70%'}} aria-valuenow={40} aria-valuemin={0} aria-valuemax={100} />
                     </div>
-                    <p className="mb-0">Previous Month <span className="text-muted">$7,500</span></p>
+                    <p className="mb-0">Previous Month <span className="text-muted">₹7,500</span></p>
                   </div>
                 </div>
                 <div className="card">
@@ -262,11 +262,11 @@ const AdminDashboard = () => {
                         <span className="text-danger">-75%</span>
                       </div>
                     </div>
-                    <h3 className="mb-3">$1,12,000</h3>
+                    <h3 className="mb-3">₹1,12,000</h3>
                     <div className="progress mb-2" style={{height: '5px'}}>
                       <div className="progress-bar bg-primary" role="progressbar" style={{width: '70%'}} aria-valuenow={40} aria-valuemin={0} aria-valuemax={100} />
                     </div>
-                    <p className="mb-0">Previous Month <span className="text-muted">$1,42,000</span></p>
+                    <p className="mb-0">Previous Month <span className="text-muted">₹1,42,000</span></p>
                   </div>
                 </div>
               </div>
@@ -483,12 +483,12 @@ const AdminDashboard = () => {
                       <img alt="" src={User} />
                     </Link>
                     <div className="media-body">
-                      <div className="text-sm my-0">Martin Lewis</div>
+                      <div className="text-sm my-0">Vikram Bedi</div>
                     </div>
                   </div>
                   <div className="row align-items-center mt-3">
                     <div className="col-6">
-                      <h6 className="mb-0">4 Sep 2019</h6>
+                      <h6 className="mb-0">4 Sep 2021</h6>
                       <span className="text-sm text-muted">Leave Date</span>
                     </div>
                     <div className="col-6 text-right">
@@ -502,12 +502,12 @@ const AdminDashboard = () => {
                       <img alt="" src={User} />
                     </Link>
                     <div className="media-body">
-                      <div className="text-sm my-0">Martin Lewis</div>
+                      <div className="text-sm my-0">Vikram Bedi</div>
                     </div>
                   </div>
                   <div className="row align-items-center mt-3">
                     <div className="col-6">
-                      <h6 className="mb-0">4 Sep 2019</h6>
+                      <h6 className="mb-0">4 Sep 2021</h6>
                       <span className="text-sm text-muted">Leave Date</span>
                     </div>
                     <div className="col-6 text-right">
@@ -550,11 +550,11 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <h2>
-                            <a href="#">Global Technologies</a>
+                            <a href="#">Sunteck Realty Ltd</a>
                           </h2>
                         </td>
-                        <td>11 Mar 2019</td>
-                        <td>$380</td>
+                        <td>11 Mar 2021</td>
+                        <td>₹380</td>
                         <td>
                           <span className="badge bg-inverse-warning">
                             Partially Paid
@@ -567,11 +567,11 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <h2>
-                            <a href="#">Delta Infotech</a>
+                            <a href="#">Godrej Properties Ltd</a>
                           </h2>
                         </td>
-                        <td>8 Feb 2019</td>
-                        <td>$500</td>
+                        <td>8 Feb 2021</td>
+                        <td>₹500</td>
                         <td>
                           <span className="badge bg-inverse-success">Paid</span>
                         </td>
@@ -582,11 +582,11 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <h2>
-                            <a href="#">Cream Inc</a>
+                            <a href="#">Oberoi Realty</a>
                           </h2>
                         </td>
-                        <td>23 Jan 2019</td>
-                        <td>$60</td>
+                        <td>23 Jan 2021</td>
+                        <td>₹60</td>
                         <td>
                           <span className="badge bg-inverse-danger">
                             Unpaid
@@ -626,12 +626,12 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <h2>
-                            <a href="#">Global Technologies</a>
+                            <a href="#">Sunteck Realty Ltd</a>
                           </h2>
                         </td>
-                        <td>Paypal</td>
-                        <td>11 Mar 2019</td>
-                        <td>$380</td>
+                        <td>Net Banking</td>
+                        <td>11 Mar 2021</td>
+                        <td>₹380</td>
                       </tr>
                       <tr>
                         <td>
@@ -639,12 +639,12 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <h2>
-                            <a href="#">Delta Infotech</a>
+                            <a href="#">Godrej Properties Ltd</a>
                           </h2>
                         </td>
-                        <td>Paypal</td>
-                        <td>8 Feb 2019</td>
-                        <td>$500</td>
+                        <td>Net Banking</td>
+                        <td>8 Feb 2021</td>
+                        <td>₹500</td>
                       </tr>
                       <tr>
                         <td>
@@ -652,12 +652,12 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <h2>
-                            <a href="#">Cream Inc</a>
+                            <a href="#">Oberoi Realty</a>
                           </h2>
                         </td>
-                        <td>Paypal</td>
-                        <td>23 Jan 2019</td>
-                        <td>$60</td>
+                        <td>Net Banking</td>
+                        <td>23 Jan 2021</td>
+                        <td>₹60</td>
                       </tr>
                     </tbody>
                   </table>
@@ -1145,7 +1145,7 @@ const AdminDashboard = () => {
                         <td>
                           <h2>
                             <Link to="/app/projects/projects-view">
-                              Hospital Administration
+                              Lovely Faculty
                             </Link>
                           </h2>
                           <small className="block text-ellipsis">

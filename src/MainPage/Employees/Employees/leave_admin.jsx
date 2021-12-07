@@ -24,11 +24,11 @@ const LeaveAdmin = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
+      name: 'Prateek Tiwari',
+      role: 'CIO',
       leavetype: 'Medical Leave',
-      from: '27 Feb 2019',
-      to: '27 Feb 2019',
+      from: '27 Feb 2021',
+      to: '27 Feb 2021',
       noofdays: '1 day',
       reason: 'Going to Hospital',
       status: 'Approved',
@@ -37,11 +37,11 @@ const LeaveAdmin = () => {
     {
       id: 7,
       image: Avatar_10,
-      name: 'Melita Faucher',
-      role: 'Web Developer',
+      name: 'Shital Agarwal',
+      role: 'Product Manager',
       leavetype: 'Casual Leave',
-      from: '13 Jan 2019',
-      to: '14 Jan 2019',
+      from: '13 Jan 2021',
+      to: '14 Jan 2021',
       noofdays: '2 days',
       reason: 'Going to Hospital',
       status: 'Declined',
@@ -49,11 +49,11 @@ const LeaveAdmin = () => {
     {
       id: 9,
       image: Avatar_20,
-      name: 'Richard Miles',
-      role: 'Web Designer',
+      name: 'Shital Agarwal',
+      role: 'CIO',
       leavetype: 'Casual Leave',
-      from: '8 Mar 2019',
-      to: '9 Mar 2019',
+      from: '8 Mar 2021',
+      to: '9 Mar 2021',
       noofdays: '2 days',
       reason: 'Going to Hospital',
       status: 'New',
@@ -453,7 +453,7 @@ const LeaveAdmin = () => {
                   <div>
                     <input
                       className="form-control datetimepicker"
-                      defaultValue="01-01-2019"
+                      defaultValue="01-01-2021"
                       type="date"
                     />
                   </div>
@@ -465,7 +465,7 @@ const LeaveAdmin = () => {
                   <div>
                     <input
                       className="form-control datetimepicker"
-                      defaultValue="01-01-2019"
+                      defaultValue="01-01-2021"
                       type="date"
                     />
                   </div>

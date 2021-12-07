@@ -15,7 +15,7 @@ const Holidays = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Holidays 2019</h3>
+              <h3 className="page-title">Holidays 2021</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
@@ -177,7 +177,7 @@ const Holidays = () => {
                   <div>
                     <input
                       className="form-control datetimepicker"
-                      defaultValue="01-01-2019"
+                      defaultValue="01-01-2021"
                       type="date"
                     />
                   </div>

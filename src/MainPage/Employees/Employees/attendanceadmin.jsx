@@ -76,7 +76,7 @@ const AttendanceAdmin = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>-</option>
-                <option>2019</option>
+                <option>2021</option>
                 <option>2018</option>
                 <option>2017</option>
                 <option>2016</option>
@@ -143,7 +143,7 @@ const AttendanceAdmin = () => {
                           <img alt="" src={Avatar_09} />
                         </Link>
                         <Link to="/app/profile/employee-profile">
-                          Richard Miles
+                          Shital Agarwal
                         </Link>
                       </h2>
                     </td>
@@ -392,7 +392,7 @@ const AttendanceAdmin = () => {
                           <img alt="" src={Avatar_10} />
                         </Link>
                         <Link to="/app/profile/employee-profile">
-                          John Smith
+                          Harvinder
                         </Link>
                       </h2>
                     </td>
@@ -641,7 +641,7 @@ const AttendanceAdmin = () => {
                           <img alt="" src={Avatar_04} />
                         </Link>
                         <Link to="/app/profile/employee-profile">
-                          Loren Gatlin
+                          Kamla Singh
                         </Link>
                       </h2>
                     </td>
@@ -916,11 +916,11 @@ const AttendanceAdmin = () => {
                     <div className="card-body">
                       <h5 className="card-title">
                         Timesheet{' '}
-                        <small className="text-muted">11 Mar 2019</small>
+                        <small className="text-muted">11 Mar 2021</small>
                       </h5>
                       <div className="punch-det">
                         <h6>Punch In at</h6>
-                        <p>Wed, 11th Mar 2019 10.00 AM</p>
+                        <p>Wed, 11th Mar 2021 10.00 AM</p>
                       </div>
                       <div className="punch-info">
                         <div className="punch-hours">
@@ -929,7 +929,7 @@ const AttendanceAdmin = () => {
                       </div>
                       <div className="punch-det">
                         <h6>Punch Out at</h6>
-                        <p>Wed, 20th Feb 2019 9.00 PM</p>
+                        <p>Wed, 20th Feb 2021 9.00 PM</p>
                       </div>
                       <div className="statistics">
                         <div className="row">

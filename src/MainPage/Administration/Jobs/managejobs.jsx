@@ -15,30 +15,30 @@ const Managedjobs = () => {
   const [data, setData] = useState([
     {
       id: 1,
-      jobtitle: 'Web Designer',
+      jobtitle: 'CIO',
       department: 'Development',
-      startdate: '1 Jan 2013',
-      expirydate: '31 May 2019',
+      startdate: '1 Jan 2023',
+      expirydate: '31 May 2021',
       jobtype: 'Full Time',
       status: 'Open',
       applicants: '3 Candidates',
     },
     {
       id: 2,
-      jobtitle: 'Web Developer',
+      jobtitle: 'Product Manager',
       department: 'Designing',
-      startdate: '18 Mar 2014',
-      expirydate: '31 May 2019',
+      startdate: '18 Mar 2024',
+      expirydate: '31 May 2021',
       jobtype: 'Part Time',
       status: 'Closed',
       applicants: '2 Candidates',
     },
     {
       id: 3,
-      jobtitle: 'Android Developer',
+      jobtitle: 'Product Manager',
       department: 'Android',
-      startdate: '1 Apr 2014',
-      expirydate: '31 May 2019',
+      startdate: '1 Apr 2024',
+      expirydate: '31 May 2021',
       jobtype: 'Internship',
       status: 'Cancelled',
       applicants: '1 Candidates',
@@ -447,7 +447,7 @@ const Managedjobs = () => {
                       <input
                         className="form-control"
                         type="text"
-                        defaultValue="Web Developer"
+                        defaultValue="Product Manager"
                       />
                     </div>
                   </div>
@@ -564,7 +564,7 @@ const Managedjobs = () => {
                       <input
                         type="text"
                         className="form-control datetimepicker"
-                        defaultValue="3 Mar 2019"
+                        defaultValue="3 Mar 2021"
                       />
                     </div>
                   </div>
@@ -574,7 +574,7 @@ const Managedjobs = () => {
                       <input
                         type="text"
                         className="form-control datetimepicker"
-                        defaultValue="31 May 2019"
+                        defaultValue="31 May 2021"
                       />
                     </div>
                   </div>

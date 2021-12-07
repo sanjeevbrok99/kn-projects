@@ -247,7 +247,7 @@ const EmployeeDashboard = () => {
                 <div className="card">
                   <div className="card-body text-center">
                     <h4 className="holiday-title mb-0">
-                      Mon 20 May 2019 - Ramzan
+                      Mon 20 May 2021 - Ramzan
                     </h4>
                   </div>
                 </div>

@@ -41,7 +41,7 @@ const Payslip = () => {
             <div className="card">
               <div className="card-body">
                 <h4 className="payslip-title">
-                  Payslip for the month of Feb 2019
+                  Payslip for the month of Feb 2021
                 </h4>
                 <div className="row">
                   <div className="col-sm-6 m-b-20">
@@ -72,7 +72,7 @@ const Payslip = () => {
                         </h5>
                       </li>
                       <li>
-                        <span>Web Designer</span>
+                        <span>CIO</span>
                       </li>
                       <li>Employee ID: FT-0009</li>
                       <li>Joining Date: 1 Jan 2016</li>

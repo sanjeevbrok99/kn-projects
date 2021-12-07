@@ -31,12 +31,14 @@ const TicketView = () => {
                       <span>Status: </span>{' '}
                       <span className="badge badge-warning">New</span>{' '}
                       <span className="m-l-15 text-muted">Client: </span>
-                      <a href="#">Delta Infotech</a>
+                      <a href="#">Godrej Properties Ltd</a>
                       <span className="m-l-15 text-muted">Created: </span>
-                      <span>5 Jan 2019 07:21 AM </span>
+                      <span>5 Jan 2021 07:21 AM </span>
                       <span className="m-l-15 text-muted">Created by:</span>
                       <span>
-                        <Link to="/app/profile/employee-profile">John Doe</Link>
+                        <Link to="/app/profile/employee-profile">
+                          Prateek Tiwari
+                        </Link>
                       </span>
                     </div>
                   </div>
@@ -220,7 +222,7 @@ const TicketView = () => {
                                       <a href="#">Ticket_document.xls</a>
                                     </span>
                                     <span className="file-author">
-                                      <a href="#">John Doe</a>
+                                      <a href="#">Prateek Tiwari</a>
                                     </span>{' '}
                                     <span className="file-date">
                                       May 5th at 8:21 PM
@@ -279,7 +281,7 @@ const TicketView = () => {
                                       <a href="#">Issue_report.xls</a>
                                     </span>
                                     <span className="file-author">
-                                      <a href="#">John Doe</a>
+                                      <a href="#">Prateek Tiwari</a>
                                     </span>{' '}
                                     <span className="file-date">
                                       May 5th at 5:41 PM
@@ -355,7 +357,7 @@ const TicketView = () => {
                       href="#"
                       data-toggle="tooltip"
                       data-placement="bottom"
-                      title="John Doe"
+                      title="Prateek Tiwari"
                       className="avatar"
                     >
                       <img src={Avatar_02} alt="" />
@@ -419,7 +421,9 @@ const TicketView = () => {
                           <div className="chat-body">
                             <div className="chat-bubble">
                               <div className="chat-content">
-                                <span className="task-chat-user">John Doe</span>{' '}
+                                <span className="task-chat-user">
+                                  Prateek Tiwari
+                                </span>{' '}
                                 <span className="chat-time">8:35 am</span>
                                 <p>I'm just looking around.</p>
                                 <p>
@@ -431,7 +435,7 @@ const TicketView = () => {
                         </div>
                         <div className="completed-task-msg">
                           <span className="task-success">
-                            <a href="#">John Doe</a> closed this ticket.
+                            <a href="#">Prateek Tiwari</a> closed this ticket.
                           </span>
                           <span className="task-time">Today at 9:27am</span>
                         </div>
@@ -447,13 +451,15 @@ const TicketView = () => {
                           <div className="chat-body">
                             <div className="chat-bubble">
                               <div className="chat-content">
-                                <span className="task-chat-user">John Doe</span>
+                                <span className="task-chat-user">
+                                  Prateek Tiwari
+                                </span>
                                 <span className="file-attached">
                                   attached 3 files{' '}
                                   <i className="fa fa-paperclip" />
                                 </span>
                                 <span className="chat-time">
-                                  Feb 17, 2019 at 4:32am
+                                  Feb 17, 2021 at 4:32am
                                 </span>
                                 <ul className="attach-list">
                                   <li>
@@ -486,7 +492,7 @@ const TicketView = () => {
                             <div className="chat-bubble">
                               <div className="chat-content">
                                 <span className="task-chat-user">
-                                  Jeffery Lalor
+                                  Sushmita Singh
                                 </span>
                                 <span className="file-attached">
                                   attached file{' '}
@@ -518,7 +524,7 @@ const TicketView = () => {
                             <div className="chat-bubble">
                               <div className="chat-content">
                                 <span className="task-chat-user">
-                                  Jeffery Lalor
+                                  Sushmita Singh
                                 </span>
                                 <span className="file-attached">
                                   attached file{' '}
@@ -544,7 +550,7 @@ const TicketView = () => {
                         <div className="task-information">
                           <span className="task-info-line">
                             <a className="task-user" href="#">
-                              John Doe
+                              Prateek Tiwari
                             </a>
                             <span className="task-info-subject">
                               marked ticket as reopened
@@ -584,7 +590,7 @@ const TicketView = () => {
                   <a
                     href="#"
                     data-toggle="tooltip"
-                    title="Richard Miles"
+                    title="Shital Agarwal"
                     className="avatar"
                   >
                     <img src={Avatar_09} alt="" />
@@ -592,7 +598,7 @@ const TicketView = () => {
                   <a
                     href="#"
                     data-toggle="tooltip"
-                    title="John Smith"
+                    title="Harvinder"
                     className="avatar"
                   >
                     <img src={Avatar_10} alt="" />
@@ -600,7 +606,7 @@ const TicketView = () => {
                   <a
                     href="#"
                     data-toggle="tooltip"
-                    title="Mike Litorus"
+                    title="Shreya Singh"
                     className="avatar"
                   >
                     <img src={Avatar_05} alt="" />
@@ -676,8 +682,8 @@ const TicketView = () => {
                       <label>Assign Staff</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Mike Litorus</option>
-                        <option>John Smith</option>
+                        <option>Shreya Singh</option>
+                        <option>Harvinder</option>
                       </select>
                     </div>
                   </div>
@@ -686,7 +692,7 @@ const TicketView = () => {
                       <label>Client</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Delta Infotech</option>
+                        <option>Godrej Properties Ltd</option>
                         <option>International Software Inc</option>
                       </select>
                     </div>
@@ -721,7 +727,7 @@ const TicketView = () => {
                     <div className="form-group">
                       <label>Ticket Assignee</label>
                       <div className="project-members">
-                        <a title="John Smith" data-toggle="tooltip" href="#">
+                        <a title="Harvinder" data-toggle="tooltip" href="#">
                           <img src={Avatar_10} alt="" />
                         </a>
                       </div>
@@ -740,7 +746,7 @@ const TicketView = () => {
                       <label>Ticket Followers</label>
                       <div className="project-members">
                         <a
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"
@@ -748,7 +754,7 @@ const TicketView = () => {
                           <img src={Avatar_09} alt="" />
                         </a>
                         <a
-                          title="John Smith"
+                          title="Harvinder"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"
@@ -756,7 +762,7 @@ const TicketView = () => {
                           <img src={Avatar_10} alt="" />
                         </a>
                         <a
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"
@@ -868,8 +874,8 @@ const TicketView = () => {
                           <img src={Avatar_09} alt="" />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Richard Miles</div>
-                          <span className="designation">Web Developer</span>
+                          <div className="user-name">Shital Agarwal</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -881,8 +887,8 @@ const TicketView = () => {
                           <img src={Avatar_10} alt="" />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">John Smith</div>
-                          <span className="designation">Android Developer</span>
+                          <div className="user-name">Harvinder</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -894,7 +900,7 @@ const TicketView = () => {
                           <img src={Avatar_10} alt="" />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                       </div>
@@ -949,7 +955,7 @@ const TicketView = () => {
                           <img src={Avatar_10} alt="" />
                         </span>
                         <div className="media-body media-middle text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                       </div>
@@ -962,8 +968,8 @@ const TicketView = () => {
                           <img src={Avatar_08} alt="" />
                         </span>
                         <div className="media-body media-middle text-nowrap">
-                          <div className="user-name">Catherine Manseau</div>
-                          <span className="designation">Android Developer</span>
+                          <div className="user-name">Chinki Singh</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>

@@ -23,46 +23,46 @@ const PerformanceAppraisal = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      designation: 'IOS Developer',
-      department: 'IOS',
-      creatat: '1 Jan 2013',
+      name: 'Prateek Tiwari',
+      designation: 'Marketing Head',
+      department: 'Marketing',
+      creatat: '1 Jan 2023',
       status: 'Active',
     },
     {
       id: 2,
       image: Avatar_05,
-      name: 'Richard Miles',
-      designation: 'Web Designer',
-      department: 'Design',
-      creatat: '18 Mar 2014',
+      name: 'Shital Agarwal',
+      designation: 'CIO',
+      department: 'Operations',
+      creatat: '18 Mar 2024',
       status: 'Active',
     },
     {
       id: 3,
       image: Avatar_11,
-      name: 'John Smith',
-      designation: 'Android Developer',
-      department: 'Android',
-      creatat: '1 Apr 2014',
+      name: 'Harvinder',
+      designation: 'Product Manager',
+      department: 'Product',
+      creatat: '1 Apr 2024',
       status: 'Inactive',
     },
     {
       id: 4,
       image: Avatar_13,
-      name: 'Jeffrey Warden',
-      designation: 'Web Designer',
-      department: 'Design',
-      creatat: '16 Jun 2013',
+      name: 'Yash Singh',
+      designation: 'CIO',
+      department: 'Operations',
+      creatat: '16 Jun 2023',
       status: 'Active',
     },
     {
       id: 5,
       image: Avatar_12,
-      name: 'Bernardo Galaviz',
-      designation: 'Web Designer',
-      department: 'Design',
-      creatat: '1 Jan 2013',
+      name: 'Marathi Manush',
+      designation: 'CIO',
+      department: 'Operations',
+      creatat: '1 Jan 2023',
       status: 'Active',
     },
   ]);
@@ -262,8 +262,8 @@ const PerformanceAppraisal = () => {
                       <label className="col-form-label">Employee</label>
                       <select className="select">
                         <option>Select Employee</option>
-                        <option>John Doe</option>
-                        <option>Mike Litorus</option>
+                        <option>Prateek Tiwari</option>
+                        <option>Shreya Singh</option>
                       </select>
                     </div>
                     <div className="form-group">
@@ -723,8 +723,8 @@ const PerformanceAppraisal = () => {
                       <label className="col-form-label">Employee</label>
                       <select className="select">
                         <option>Select Employee</option>
-                        <option>John Doe</option>
-                        <option>Mike Litorus</option>
+                        <option>Prateek Tiwari</option>
+                        <option>Shreya Singh</option>
                       </select>
                     </div>
                     <div className="form-group">
@@ -734,7 +734,7 @@ const PerformanceAppraisal = () => {
                       <div>
                         <input
                           className="form-control datetimepicker"
-                          defaultValue="7/08/2019"
+                          defaultValue="7/08/2021"
                           type="date"
                         />
                       </div>

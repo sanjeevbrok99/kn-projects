@@ -228,7 +228,7 @@ const Tasks = () => {
                   <div className="chat-wrap-inner">
                     <div className="chat-box">
                       <div className="chats">
-                        <h4>Hospital Administration Phase 1</h4>
+                        <h4>Lovely Faculty Phase 1</h4>
                         <div className="task-header">
                           <div className="assignee-info">
                             <a
@@ -243,7 +243,9 @@ const Tasks = () => {
                                 <div className="task-head-title">
                                   Assigned To
                                 </div>
-                                <div className="task-assignee">John Doe</div>
+                                <div className="task-assignee">
+                                  Prateek Tiwari
+                                </div>
                               </div>
                             </a>
                             <span className="remove-icon">
@@ -263,7 +265,7 @@ const Tasks = () => {
                               </div>
                               <div className="due-info">
                                 <div className="task-head-title">Due Date</div>
-                                <div className="due-date">Mar 26, 2019</div>
+                                <div className="due-date">Mar 26, 2021</div>
                               </div>
                             </a>
                             <span className="remove-icon">
@@ -294,7 +296,7 @@ const Tasks = () => {
                               created task
                             </span>
                           </span>
-                          <div className="task-time">Jan 20, 2019</div>
+                          <div className="task-time">Jan 20, 2021</div>
                         </div>
                         <div className="task-information">
                           <span className="task-info-line">
@@ -302,10 +304,10 @@ const Tasks = () => {
                               Lesley Grauer
                             </a>{' '}
                             <span className="task-info-subject">
-                              added to Hospital Administration
+                              added to Lovely Faculty
                             </span>
                           </span>
-                          <div className="task-time">Jan 20, 2019</div>
+                          <div className="task-time">Jan 20, 2021</div>
                         </div>
                         <div className="task-information">
                           <span className="task-info-line">
@@ -313,16 +315,16 @@ const Tasks = () => {
                               Lesley Grauer
                             </a>{' '}
                             <span className="task-info-subject">
-                              assigned to John Doe
+                              assigned to Prateek Tiwari
                             </span>
                           </span>
-                          <div className="task-time">Jan 20, 2019</div>
+                          <div className="task-time">Jan 20, 2021</div>
                         </div>
                         <hr className="task-line" />
                         <div className="task-information">
                           <span className="task-info-line">
                             <a className="task-user" href="#">
-                              John Doe
+                              Prateek Tiwari
                             </a>{' '}
                             <span className="task-info-subject">
                               changed the due date to Sep 28
@@ -333,7 +335,7 @@ const Tasks = () => {
                         <div className="task-information">
                           <span className="task-info-line">
                             <a className="task-user" href="#">
-                              John Doe
+                              Prateek Tiwari
                             </a>{' '}
                             <span className="task-info-subject">
                               assigned to you
@@ -353,7 +355,9 @@ const Tasks = () => {
                           <div className="chat-body">
                             <div className="chat-bubble">
                               <div className="chat-content">
-                                <span className="task-chat-user">John Doe</span>{' '}
+                                <span className="task-chat-user">
+                                  Prateek Tiwari
+                                </span>{' '}
                                 <span className="chat-time">8:35 am</span>
                                 <p>I'm just looking around.</p>
                                 <p>
@@ -365,7 +369,7 @@ const Tasks = () => {
                         </div>
                         <div className="completed-task-msg">
                           <span className="task-success">
-                            <a href="#">John Doe</a> completed this task.
+                            <a href="#">Prateek Tiwari</a> completed this task.
                           </span>{' '}
                           <span className="task-time">Today at 9:27am</span>
                         </div>
@@ -381,13 +385,15 @@ const Tasks = () => {
                           <div className="chat-body">
                             <div className="chat-bubble">
                               <div className="chat-content">
-                                <span className="task-chat-user">John Doe</span>{' '}
+                                <span className="task-chat-user">
+                                  Prateek Tiwari
+                                </span>{' '}
                                 <span className="file-attached">
                                   attached 3 files{' '}
                                   <i className="fa fa-paperclip" />
                                 </span>{' '}
                                 <span className="chat-time">
-                                  Feb 17, 2019 at 4:32am
+                                  Feb 17, 2021 at 4:32am
                                 </span>
                                 <ul className="attach-list">
                                   <li>
@@ -420,7 +426,7 @@ const Tasks = () => {
                             <div className="chat-bubble">
                               <div className="chat-content">
                                 <span className="task-chat-user">
-                                  Jeffery Lalor
+                                  Sushmita Singh
                                 </span>{' '}
                                 <span className="file-attached">
                                   attached file{' '}
@@ -452,7 +458,7 @@ const Tasks = () => {
                             <div className="chat-bubble">
                               <div className="chat-content">
                                 <span className="task-chat-user">
-                                  Jeffery Lalor
+                                  Sushmita Singh
                                 </span>{' '}
                                 <span className="file-attached">
                                   attached file{' '}
@@ -478,7 +484,7 @@ const Tasks = () => {
                         <div className="task-information">
                           <span className="task-info-line">
                             <a className="task-user" href="#">
-                              John Doe
+                              Prateek Tiwari
                             </a>
                             <span className="task-info-subject">
                               marked task as incomplete
@@ -519,7 +525,7 @@ const Tasks = () => {
                     className="avatar"
                     href="#"
                     data-toggle="tooltip"
-                    title="Jeffery Lalor"
+                    title="Sushmita Singh"
                   >
                     <img alt="" src={Avatar_16} />
                   </a>
@@ -527,7 +533,7 @@ const Tasks = () => {
                     className="avatar"
                     href="#"
                     data-toggle="tooltip"
-                    title="Richard Miles"
+                    title="Shital Agarwal"
                   >
                     <img alt="" src={Avatar_09} />
                   </a>
@@ -535,7 +541,7 @@ const Tasks = () => {
                     className="avatar"
                     href="#"
                     data-toggle="tooltip"
-                    title="John Smith"
+                    title="Harvinder"
                   >
                     <img alt="" src={Avatar_10} />
                   </a>
@@ -543,7 +549,7 @@ const Tasks = () => {
                     className="avatar"
                     href="#"
                     data-toggle="tooltip"
-                    title="Mike Litorus"
+                    title="Shreya Singh"
                   >
                     <img alt="" src={Avatar_05} />
                   </a>
@@ -596,8 +602,8 @@ const Tasks = () => {
                     <div className="form-group">
                       <label>Client</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>
@@ -672,7 +678,7 @@ const Tasks = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="Jeffery Lalor"
+                          title="Sushmita Singh"
                         >
                           <img alt="" src={Avatar_16} />
                         </a>
@@ -695,7 +701,7 @@ const Tasks = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="John Doe"
+                          title="Prateek Tiwari"
                         >
                           <img alt="" src={Avatar_02} />
                         </a>
@@ -703,7 +709,7 @@ const Tasks = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                         >
                           <img alt="" src={Avatar_09} />
                         </a>
@@ -711,7 +717,7 @@ const Tasks = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="John Smith"
+                          title="Harvinder"
                         >
                           <img alt="" src={Avatar_10} />
                         </a>
@@ -719,7 +725,7 @@ const Tasks = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                         >
                           <img alt="" src={Avatar_05} />
                         </a>
@@ -799,8 +805,8 @@ const Tasks = () => {
                           <img alt="" src={Avatar_09} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Richard Miles</div>
-                          <span className="designation">Web Developer</span>
+                          <div className="user-name">Shital Agarwal</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -812,8 +818,8 @@ const Tasks = () => {
                           <img alt="" src={Avatar_10} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">John Smith</div>
-                          <span className="designation">Android Developer</span>
+                          <div className="user-name">Harvinder</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -825,7 +831,7 @@ const Tasks = () => {
                           <img alt="" src={Avatar_16} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                       </div>
@@ -880,7 +886,7 @@ const Tasks = () => {
                           <img alt="" src={Avatar_16} />
                         </span>
                         <div className="media-body media-middle text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                       </div>
@@ -893,8 +899,8 @@ const Tasks = () => {
                           <img alt="" src={Avatar_08} />
                         </span>
                         <div className="media-body media-middle text-nowrap">
-                          <div className="user-name">Catherine Manseau</div>
-                          <span className="designation">Android Developer</span>
+                          <div className="user-name">Chinki Singh</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>

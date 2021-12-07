@@ -17,12 +17,12 @@ const ManagedResumes = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
-      jobtitle: 'Web Designer',
+      name: 'Prateek Tiwari',
+      role: 'CIO',
+      jobtitle: 'CIO',
       department: 'Development',
-      startdate: '1 Jan 2013',
-      expirydate: '31 May 2019',
+      startdate: '1 Jan 2023',
+      expirydate: '31 May 2021',
       jobtype: 'Full Time',
       status: 'Open',
       applicants: '3 Candidates',
@@ -30,12 +30,12 @@ const ManagedResumes = () => {
     {
       id: 2,
       image: Avatar_01,
-      name: 'Richard Miles',
-      role: 'Web Developer',
-      jobtitle: 'Web Developer',
+      name: 'Shital Agarwal',
+      role: 'Product Manager',
+      jobtitle: 'Product Manager',
       department: 'Designing',
-      startdate: '18 Mar 2014',
-      expirydate: '31 May 2019',
+      startdate: '18 Mar 2024',
+      expirydate: '31 May 2021',
       jobtype: 'Part Time',
       status: 'Closed',
       applicants: '2 Candidates',
@@ -43,12 +43,12 @@ const ManagedResumes = () => {
     {
       id: 3,
       image: Avatar_03,
-      name: 'John Smith',
-      role: 'Android Developer',
-      jobtitle: 'Android Developer',
+      name: 'Harvinder',
+      role: 'Product Manager',
+      jobtitle: 'Product Manager',
       department: 'Android',
-      startdate: '1 Apr 2014',
-      expirydate: '31 May 2019',
+      startdate: '1 Apr 2024',
+      expirydate: '31 May 2021',
       jobtype: 'Internship',
       status: 'Cancelled',
       applicants: '1 Candidates',
@@ -313,7 +313,7 @@ const ManagedResumes = () => {
                         <input
                           className="form-control"
                           type="text"
-                          defaultValue="Web Developer"
+                          defaultValue="Product Manager"
                         />
                       </div>
                     </div>
@@ -430,7 +430,7 @@ const ManagedResumes = () => {
                         <input
                           type="text"
                           className="form-control datetimepicker"
-                          defaultValue="3 Mar 2019"
+                          defaultValue="3 Mar 2021"
                         />
                       </div>
                     </div>
@@ -440,7 +440,7 @@ const ManagedResumes = () => {
                         <input
                           type="text"
                           className="form-control datetimepicker"
-                          defaultValue="31 May 2019"
+                          defaultValue="31 May 2021"
                         />
                       </div>
                     </div>

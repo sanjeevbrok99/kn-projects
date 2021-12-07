@@ -81,7 +81,7 @@ const Subscriptionadmin = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Free</h3>
-                          <span className="display-4">$0</span>
+                          <span className="display-4">₹0</span>
                         </div>
                         <ul>
                           <li>
@@ -113,7 +113,7 @@ const Subscriptionadmin = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Professional</h3>
-                          <span className="display-4">$21</span>
+                          <span className="display-4">₹21</span>
                           <span>/mo</span>
                         </div>
                         <ul>
@@ -149,7 +149,7 @@ const Subscriptionadmin = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Enterprise</h3>
-                          <span className="display-4">$38</span>
+                          <span className="display-4">₹38</span>
                           <span>/mo</span>
                         </div>
                         <ul>
@@ -209,8 +209,8 @@ const Subscriptionadmin = () => {
                               <tr>
                                 <td>Free Trial</td>
                                 <td>Monthly</td>
-                                <td>9 Nov 2019</td>
-                                <td>8 Dec 2019</td>
+                                <td>9 Nov 2021</td>
+                                <td>8 Dec 2021</td>
                                 <td>Free</td>
                                 <td>
                                   <Link
@@ -224,9 +224,9 @@ const Subscriptionadmin = () => {
                               <tr>
                                 <td>Professional</td>
                                 <td>Monthly</td>
-                                <td>9 Nov 2019</td>
-                                <td>8 Dec 2019</td>
-                                <td>$21</td>
+                                <td>9 Nov 2021</td>
+                                <td>8 Dec 2021</td>
+                                <td>₹21</td>
                                 <td>
                                   <Link
                                     className="btn btn-info btn-sm"
@@ -239,9 +239,9 @@ const Subscriptionadmin = () => {
                               <tr>
                                 <td>Enterprise</td>
                                 <td>Monthly</td>
-                                <td>9 Nov 2019</td>
-                                <td>8 Dec 2019</td>
-                                <td>$38</td>
+                                <td>9 Nov 2021</td>
+                                <td>8 Dec 2021</td>
+                                <td>₹38</td>
                                 <td>
                                   <Link
                                     className="btn btn-info btn-sm"
@@ -269,7 +269,7 @@ const Subscriptionadmin = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Free</h3>
-                          <span className="display-4">$0</span>
+                          <span className="display-4">₹0</span>
                         </div>
                         <ul>
                           <li>
@@ -298,7 +298,7 @@ const Subscriptionadmin = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Professional</h3>
-                          <span className="display-4">$199</span>
+                          <span className="display-4">₹199</span>
                           <span>/mo</span>
                         </div>
                         <ul>
@@ -334,7 +334,7 @@ const Subscriptionadmin = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Enterprise</h3>
-                          <span className="display-4">$399</span>
+                          <span className="display-4">₹399</span>
                           <span>/mo</span>
                         </div>
                         <ul>
@@ -394,8 +394,8 @@ const Subscriptionadmin = () => {
                               <tr>
                                 <td>Free Trial</td>
                                 <td>Yearly</td>
-                                <td>9 Nov 2019</td>
-                                <td>8 Dec 2019</td>
+                                <td>9 Nov 2021</td>
+                                <td>8 Dec 2021</td>
                                 <td>Free</td>
                                 <td>
                                   <Link
@@ -409,9 +409,9 @@ const Subscriptionadmin = () => {
                               <tr>
                                 <td>Professional</td>
                                 <td>Yearly</td>
-                                <td>9 Nov 2019</td>
-                                <td>8 Dec 2019</td>
-                                <td>$199</td>
+                                <td>9 Nov 2021</td>
+                                <td>8 Dec 2021</td>
+                                <td>₹199</td>
                                 <td>
                                   <Link
                                     className="btn btn-info btn-sm"
@@ -424,9 +424,9 @@ const Subscriptionadmin = () => {
                               <tr>
                                 <td>Enterprise</td>
                                 <td>Yearly</td>
-                                <td>9 Nov 2019</td>
-                                <td>8 Dec 2019</td>
-                                <td>$399</td>
+                                <td>9 Nov 2021</td>
+                                <td>8 Dec 2021</td>
+                                <td>₹399</td>
                                 <td>
                                   <Link
                                     className="btn btn-info btn-sm"

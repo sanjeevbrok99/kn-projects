@@ -223,7 +223,7 @@ const InboxPage = () => {
                               <i className="fa fa-star starred" />
                             </span>
                           </td>
-                          <td className="name">John Doe</td>
+                          <td className="name">Prateek Tiwari</td>
                           <td className="subject">
                             Lorem ipsum dolor sit amet, consectetuer adipiscing
                             elit
@@ -303,7 +303,7 @@ const InboxPage = () => {
                               <i className="fa fa-star-o" />
                             </span>
                           </td>
-                          <td className="name">John Smith</td>
+                          <td className="name">Harvinder</td>
                           <td className="subject">
                             Lorem ipsum dolor sit amet, consectetuer adipiscing
                             elit
@@ -360,7 +360,7 @@ const InboxPage = () => {
                               <i className="fa fa-star-o" />
                             </span>
                           </td>
-                          <td className="name">Richard Miles</td>
+                          <td className="name">Shital Agarwal</td>
                           <td className="subject">
                             Lorem ipsum dolor sit amet, consectetuer adipiscing
                             elit
@@ -382,7 +382,7 @@ const InboxPage = () => {
                               <i className="fa fa-star-o" />
                             </span>
                           </td>
-                          <td className="name">John Smith</td>
+                          <td className="name">Harvinder</td>
                           <td className="subject">
                             Lorem ipsum dolor sit amet, consectetuer adipiscing
                             elit
@@ -402,7 +402,7 @@ const InboxPage = () => {
                               <i className="fa fa-star starred" />
                             </span>
                           </td>
-                          <td className="name">Mike Litorus</td>
+                          <td className="name">Shreya Singh</td>
                           <td className="subject">
                             Lorem ipsum dolor sit amet, consectetuer adipiscing
                             elit

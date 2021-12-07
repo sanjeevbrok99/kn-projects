@@ -17,26 +17,26 @@ const CandidateList = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       mobilenumber: '9876543210',
       email: 'johndoe@example.com',
-      createddate: '1 Jan 2013',
+      createddate: '1 Jan 2023',
     },
     {
       id: 2,
       image: Avatar_01,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       mobilenumber: '9876543210',
       email: 'richardmiles@example.com',
-      createddate: '18 Mar 2014',
+      createddate: '18 Mar 2024',
     },
     {
       id: 3,
       image: Avatar_03,
-      name: 'John Smith',
+      name: 'Harvinder',
       mobilenumber: '9876543210',
       email: 'johnsmith@example.com',
-      createddate: '1 Apr 2014',
+      createddate: '1 Apr 2024',
     },
   ]);
   useEffect(() => {

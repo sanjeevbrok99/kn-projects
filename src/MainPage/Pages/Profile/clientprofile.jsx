@@ -58,7 +58,7 @@ const ClientProfile = () => {
                       <div className="col-md-5">
                         <div className="profile-info-left">
                           <h3 className="user-name m-t-0">
-                            Global Technologies
+                            Sunteck Realty Ltd
                           </h3>
                           <h5 className="company-role m-t-0 mb-0">
                             Barry Cuda
@@ -189,7 +189,7 @@ const ClientProfile = () => {
                         </p>
                         <div className="pro-deadline m-b-15">
                           <div className="sub-title">Deadline:</div>
-                          <div className="text-muted">17 Apr 2019</div>
+                          <div className="text-muted">17 Apr 2021</div>
                         </div>
                         <div className="project-members m-b-15">
                           <div>Project Leader :</div>
@@ -198,7 +198,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Jeffery Lalor"
+                                title="Sushmita Singh"
                               >
                                 <img alt="" src={Avatar_16} />
                               </a>
@@ -212,7 +212,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="John Doe"
+                                title="Prateek Tiwari"
                               >
                                 <img alt="" src={Avatar_02} />
                               </a>
@@ -221,7 +221,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Richard Miles"
+                                title="Shital Agarwal"
                               >
                                 <img alt="" src={Avatar_09} />
                               </a>
@@ -230,7 +230,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="John Smith"
+                                title="Harvinder"
                               >
                                 <img alt="" src={Avatar_10} />
                               </a>
@@ -239,7 +239,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Mike Litorus"
+                                title="Shreya Singh"
                               >
                                 <img alt="" src={Avatar_05} />
                               </a>
@@ -388,7 +388,7 @@ const ClientProfile = () => {
                         </p>
                         <div className="pro-deadline m-b-15">
                           <div className="sub-title">Deadline:</div>
-                          <div className="text-muted">17 Apr 2019</div>
+                          <div className="text-muted">17 Apr 2021</div>
                         </div>
                         <div className="project-members m-b-15">
                           <div>Project Leader :</div>
@@ -397,7 +397,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Jeffery Lalor"
+                                title="Sushmita Singh"
                               >
                                 <img alt="" src={Avatar_16} />
                               </a>
@@ -411,7 +411,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="John Doe"
+                                title="Prateek Tiwari"
                               >
                                 <img alt="" src={Avatar_02} />
                               </a>
@@ -420,7 +420,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Richard Miles"
+                                title="Shital Agarwal"
                               >
                                 <img alt="" src={Avatar_09} />
                               </a>
@@ -429,7 +429,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="John Smith"
+                                title="Harvinder"
                               >
                                 <img alt="" src={Avatar_10} />
                               </a>
@@ -438,7 +438,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Mike Litorus"
+                                title="Shreya Singh"
                               >
                                 <img alt="" src={Avatar_05} />
                               </a>
@@ -587,7 +587,7 @@ const ClientProfile = () => {
                         </p>
                         <div className="pro-deadline m-b-15">
                           <div className="sub-title">Deadline:</div>
-                          <div className="text-muted">17 Apr 2019</div>
+                          <div className="text-muted">17 Apr 2021</div>
                         </div>
                         <div className="project-members m-b-15">
                           <div>Project Leader :</div>
@@ -596,7 +596,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Jeffery Lalor"
+                                title="Sushmita Singh"
                               >
                                 <img alt="" src={Avatar_16} />
                               </a>
@@ -610,7 +610,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="John Doe"
+                                title="Prateek Tiwari"
                               >
                                 <img alt="" src={Avatar_02} />
                               </a>
@@ -619,7 +619,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Richard Miles"
+                                title="Shital Agarwal"
                               >
                                 <img alt="" src={Avatar_09} />
                               </a>
@@ -628,7 +628,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="John Smith"
+                                title="Harvinder"
                               >
                                 <img alt="" src={Avatar_10} />
                               </a>
@@ -637,7 +637,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Mike Litorus"
+                                title="Shreya Singh"
                               >
                                 <img alt="" src={Avatar_05} />
                               </a>
@@ -770,7 +770,7 @@ const ClientProfile = () => {
                         </div>
                         <h4 className="project-title">
                           <Link to="/app/projects/projects-view">
-                            Hospital Administration
+                            Lovely Faculty
                           </Link>
                         </h4>
                         <small className="block text-ellipsis m-b-15">
@@ -786,7 +786,7 @@ const ClientProfile = () => {
                         </p>
                         <div className="pro-deadline m-b-15">
                           <div className="sub-title">Deadline:</div>
-                          <div className="text-muted">17 Apr 2019</div>
+                          <div className="text-muted">17 Apr 2021</div>
                         </div>
                         <div className="project-members m-b-15">
                           <div>Project Leader :</div>
@@ -795,7 +795,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Jeffery Lalor"
+                                title="Sushmita Singh"
                               >
                                 <img alt="" src={Avatar_16} />
                               </a>
@@ -809,7 +809,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="John Doe"
+                                title="Prateek Tiwari"
                               >
                                 <img alt="" src={Avatar_02} />
                               </a>
@@ -818,7 +818,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Richard Miles"
+                                title="Shital Agarwal"
                               >
                                 <img alt="" src={Avatar_09} />
                               </a>
@@ -827,7 +827,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="John Smith"
+                                title="Harvinder"
                               >
                                 <img alt="" src={Avatar_10} />
                               </a>
@@ -836,7 +836,7 @@ const ClientProfile = () => {
                               <a
                                 href="#"
                                 data-toggle="tooltip"
-                                title="Mike Litorus"
+                                title="Shreya Singh"
                               >
                                 <img alt="" src={Avatar_05} />
                               </a>

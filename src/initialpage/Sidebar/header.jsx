@@ -132,8 +132,8 @@ class Header extends Component {
                         </span>
                         <div className="media-body">
                           <p className="noti-details">
-                            <span className="noti-title">John Doe</span> added
-                            new task{' '}
+                            <span className="noti-title">Prateek Tiwari</span>{' '}
+                            added new task{' '}
                             <span className="noti-title">
                               Patient appointment booking
                             </span>
@@ -239,7 +239,7 @@ class Header extends Component {
                         </span>
                         <div className="media-body">
                           <p className="noti-details">
-                            <span className="noti-title">Bernardo Galaviz</span>{' '}
+                            <span className="noti-title">Marathi Manush</span>{' '}
                             added new task{' '}
                             <span className="noti-title">
                               Private chat module
@@ -323,7 +323,7 @@ class Header extends Component {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">John Doe</span>
+                          <span className="message-author">Prateek Tiwari</span>
                           <span className="message-time">6 Mar</span>
                           <div className="clearfix" />
                           <span className="message-content">
@@ -392,10 +392,7 @@ class Header extends Component {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">
-                            {' '}
-                            Catherine Manseau{' '}
-                          </span>
+                          <span className="message-author"> Chinki Singh </span>
                           <span className="message-time">27 Feb</span>
                           <div className="clearfix" />
                           <span className="message-content">

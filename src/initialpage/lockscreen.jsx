@@ -22,7 +22,7 @@ const Lockscreen = () => {
           {/* Account Logo */}
           <div className="account-logo">
             <Link href="/app/main/dashboard">
-              <img src={Applogo} alt="Dreamguy's Technologies" />
+              <img src={Applogo} alt="Oboroi Real Estates" />
             </Link>
           </div>
           {/* /Account Logo */}
@@ -31,7 +31,7 @@ const Lockscreen = () => {
               {/* Lock User Img */}
               <div className="lock-user">
                 <img alt="" src={Avatar_02} className="rounded-circle" />
-                <h4>John Doe</h4>
+                <h4>Prateek Tiwari</h4>
               </div>
               {/* /Lock User Img */}
               {/* Account Form */}

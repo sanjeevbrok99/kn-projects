@@ -23,7 +23,7 @@ const Trainers = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       description: 'Lorem ipsum dollar',
       email: 'johndoe@example.com',
       status: 'Active',
@@ -32,7 +32,7 @@ const Trainers = () => {
     {
       id: 2,
       image: Avatar_05,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       description: 'Lorem ipsum dollar',
       email: 'richardmiles@example.com',
       status: 'Active',
@@ -41,7 +41,7 @@ const Trainers = () => {
     {
       id: 3,
       image: Avatar_11,
-      name: 'John Smith',
+      name: 'Harvinder',
       description: 'Lorem ipsum dollar',
       email: 'johnsmith@example.com	',
       status: 'Active',
@@ -50,7 +50,7 @@ const Trainers = () => {
     {
       id: 4,
       image: Avatar_10,
-      name: 'Mike Litorus',
+      name: 'Shreya Singh',
       description: 'Lorem ipsum dollar',
       email: 'mikelitorus@example.com',
       status: 'Inactive',
@@ -368,7 +368,7 @@ const Trainers = () => {
                       <input
                         className="form-control"
                         type="text"
-                        defaultValue="Web Developer"
+                        defaultValue="Product Manager"
                       />
                     </div>
                   </div>

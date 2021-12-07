@@ -36,7 +36,7 @@ const VideoCall = () => {
                       <Link
                         className="avatar"
                         to="/app/profile/employee-profile"
-                        title="Mike Litorus"
+                        title="Shreya Singh"
                       >
                         <img
                           src={Avatar_05}
@@ -48,7 +48,7 @@ const VideoCall = () => {
                     </div>
                     <div className="user-info float-left">
                       <Link to="/app/profile/employee-profile">
-                        <span>Mike Litorus</span>
+                        <span>Shreya Singh</span>
                       </Link>
                       <span className="last-seen">Online</span>
                     </div>
@@ -208,7 +208,7 @@ const VideoCall = () => {
                                   <div className="call-info">
                                     <div className="call-user-details">
                                       <span className="call-description">
-                                        Jeffrey Warden missed the call
+                                        Yash Singh missed the call
                                       </span>
                                     </div>
                                   </div>
@@ -229,7 +229,9 @@ const VideoCall = () => {
                           <div className="chat-body">
                             <div className="chat-bubble">
                               <div className="chat-content">
-                                <span className="task-chat-user">John Doe</span>{' '}
+                                <span className="task-chat-user">
+                                  Prateek Tiwari
+                                </span>{' '}
                                 <span className="chat-time">8:35 am</span>
                                 <div className="call-details">
                                   <i className="material-icons">call_end</i>
@@ -249,7 +251,7 @@ const VideoCall = () => {
                           </div>
                         </div>
                         <div className="chat-line">
-                          <span className="chat-date">January 29th, 2019</span>
+                          <span className="chat-date">January 29th, 2021</span>
                         </div>
                         <div className="chat chat-left">
                           <div className="chat-avatar">
@@ -268,7 +270,7 @@ const VideoCall = () => {
                             <div className="chat-bubble">
                               <div className="chat-content">
                                 <span className="task-chat-user">
-                                  Richard Miles
+                                  Shital Agarwal
                                 </span>{' '}
                                 <span className="chat-time">8:35 am</span>
                                 <div className="call-details">
@@ -308,7 +310,7 @@ const VideoCall = () => {
                                         className="call-description call-description--linked"
                                         data-qa="call_attachment_link"
                                       >
-                                        Calling John Smith ...
+                                        Calling Harvinder ...
                                       </a>
                                     </div>
                                   </div>
@@ -341,7 +343,7 @@ const VideoCall = () => {
                                   <div className="chat-bubble">
                                     <div className="chat-content">
                                       <span className="task-chat-user">
-                                        John Doe
+                                        Prateek Tiwari
                                       </span>{' '}
                                       <span className="chat-time">8:35 am</span>
                                       <p>I'm just looking around.</p>
@@ -366,14 +368,14 @@ const VideoCall = () => {
                                   <div className="chat-bubble">
                                     <div className="chat-content">
                                       <span className="task-chat-user">
-                                        John Doe
+                                        Prateek Tiwari
                                       </span>{' '}
                                       <span className="file-attached">
                                         attached 3 files{' '}
                                         <i className="fa fa-paperclip" />
                                       </span>{' '}
                                       <span className="chat-time">
-                                        Feb 17, 2019 at 4:32am
+                                        Feb 17, 2021 at 4:32am
                                       </span>
                                       <ul className="attach-list">
                                         <li>
@@ -395,7 +397,7 @@ const VideoCall = () => {
                               </div>
                               <div className="chat-line">
                                 <span className="chat-date">
-                                  January 29th, 2019
+                                  January 29th, 2021
                                 </span>
                               </div>
                               <div className="chat chat-left">
@@ -411,7 +413,7 @@ const VideoCall = () => {
                                   <div className="chat-bubble">
                                     <div className="chat-content">
                                       <span className="task-chat-user">
-                                        Jeffery Lalor
+                                        Sushmita Singh
                                       </span>{' '}
                                       <span className="file-attached">
                                         attached file{' '}
@@ -443,7 +445,7 @@ const VideoCall = () => {
                                   <div className="chat-bubble">
                                     <div className="chat-content">
                                       <span className="task-chat-user">
-                                        Jeffery Lalor
+                                        Sushmita Singh
                                       </span>{' '}
                                       <span className="file-attached">
                                         attached file{' '}
@@ -514,8 +516,10 @@ const VideoCall = () => {
                               <img src={Avatar_09} alt="" />
                               <span className="change-img">Change Image</span>
                             </div>
-                            <h3 className="user-name m-t-10 mb-0">John Doe</h3>
-                            <small className="text-muted">Web Designer</small>
+                            <h3 className="user-name m-t-10 mb-0">
+                              Prateek Tiwari
+                            </h3>
+                            <small className="text-muted">CIO</small>
                             <a href="" className="btn btn-primary edit-btn">
                               <i className="fa fa-pencil" />
                             </a>
@@ -588,7 +592,7 @@ const VideoCall = () => {
                                           Test-Cases.xls
                                         </span>
                                         <span className="file-author">
-                                          <a href="#">Loren Gatlin</a>
+                                          <a href="#">Kamla Singh</a>
                                         </span>{' '}
                                         <span className="file-date">
                                           May 31st at 6:53 PM
@@ -643,7 +647,7 @@ const VideoCall = () => {
                                           Test-Cases.xls
                                         </span>
                                         <span className="file-author">
-                                          <a href="#">John Doe</a>
+                                          <a href="#">Prateek Tiwari</a>
                                         </span>{' '}
                                         <span className="file-date">
                                           May 31st at 6:53 PM
@@ -879,7 +883,7 @@ const VideoCall = () => {
                           <img alt="" src={Avatar_16} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                         <div className="text-nowrap align-self-center">
@@ -895,8 +899,8 @@ const VideoCall = () => {
                           <img alt="" src={Avatar_13} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Bernardo Galaviz</div>
-                          <span className="designation">Web Developer</span>
+                          <div className="user-name">Marathi Manush</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                         <div className="align-self-center text-nowrap">
                           <div className="online-date">3 days ago</div>
@@ -911,8 +915,8 @@ const VideoCall = () => {
                           <img alt="" src={Avatar_02} />
                         </span>
                         <div className="media-body text-nowrap align-self-center">
-                          <div className="user-name">John Doe</div>
-                          <span className="designation">Web Designer</span>
+                          <div className="user-name">Prateek Tiwari</div>
+                          <span className="designation">CIO</span>
                         </div>
                         <div className="align-self-center text-nowrap">
                           <div className="online-date">7 months ago</div>
@@ -961,7 +965,7 @@ const VideoCall = () => {
                       AHA Selfcare Mobile Application Test-Cases.xls
                     </span>
                     <span className="file-author">
-                      <a href="#">Bernardo Galaviz</a>
+                      <a href="#">Marathi Manush</a>
                     </span>{' '}
                     <span className="file-date">May 31st at 6:53 PM</span>
                   </div>

@@ -171,11 +171,11 @@ const BudgetExpense = () => {
                   </div>
                   <div className="col-lg-6">
                     <select name="currency_symbol" className="form-control">
-                      <option value="$ - AUD">$ - Australian Dollar</option>
+                      <option value="$ - AUD">₹ - Australian Dollar</option>
                       <option value="Bs. - VEF">Bs. - Bolívar Fuerte</option>
                       <option value="R$ - BRL">R$ - Brazilian Real</option>
                       <option value="£ - GBP">£ - British Pound</option>
-                      <option value="$ - CAD">$ - Canadian Dollar</option>
+                      <option value="$ - CAD">₹ - Canadian Dollar</option>
                     </select>
                   </div>
                 </div>
@@ -299,11 +299,11 @@ const BudgetExpense = () => {
                   </div>
                   <div className="col-lg-6">
                     <select name="currency_symbol" className="form-control">
-                      <option value="$ - AUD">$ - Australian Dollar</option>
+                      <option value="$ - AUD">₹ - Australian Dollar</option>
                       <option value="Bs. - VEF">Bs. - Bolívar Fuerte</option>
                       <option value="R$ - BRL">R$ - Brazilian Real</option>
                       <option value="£ - GBP">£ - British Pound</option>
-                      <option value="$ - CAD">$ - Canadian Dollar</option>
+                      <option value="$ - CAD">₹ - Canadian Dollar</option>
                     </select>
                   </div>
                 </div>

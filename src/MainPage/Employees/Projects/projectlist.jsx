@@ -99,10 +99,10 @@ const ProjectList = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Roll</option>
-                <option>Web Developer</option>
-                <option>Web Designer</option>
-                <option>Android Developer</option>
-                <option>Ios Developer</option>
+                <option>Product Manager</option>
+                <option>CIO</option>
+                <option>Product Manager</option>
+                <option>Marketing Head</option>
               </select>
               <label className="focus-label">Role</label>
             </div>
@@ -145,7 +145,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -155,28 +155,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members text-nowrap">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -259,7 +263,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -353,7 +357,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -363,28 +367,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -397,7 +405,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -492,7 +500,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -502,28 +510,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -536,7 +548,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -620,7 +632,7 @@ const ProjectList = () => {
                   <tr>
                     <td>
                       <Link to="/app/projects/projects-view">
-                        Hospital Administration
+                        Lovely Faculty
                       </Link>
                     </td>
                     <td>PRO-0004</td>
@@ -630,7 +642,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -640,28 +652,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -674,7 +690,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -768,7 +784,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -778,28 +794,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -812,7 +832,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -906,7 +926,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -916,28 +936,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -950,7 +974,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -1044,7 +1068,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -1054,28 +1078,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -1088,7 +1116,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -1172,7 +1200,7 @@ const ProjectList = () => {
                   <tr>
                     <td>
                       <Link to="/app/projects/projects-view">
-                        Hospital Administration
+                        Lovely Faculty
                       </Link>
                     </td>
                     <td>PRO-0008</td>
@@ -1182,7 +1210,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -1192,28 +1220,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -1226,7 +1258,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -1320,7 +1352,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -1330,28 +1362,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -1364,7 +1400,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -1458,7 +1494,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -1468,28 +1504,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -1502,7 +1542,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -1596,7 +1636,7 @@ const ProjectList = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -1606,28 +1646,32 @@ const ProjectList = () => {
                     <td>
                       <ul className="team-members">
                         <li>
-                          <a href="#" title="John Doe" data-toggle="tooltip">
+                          <a
+                            href="#"
+                            title="Prateek Tiwari"
+                            data-toggle="tooltip"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" title="John Smith" data-toggle="tooltip">
+                          <a href="#" title="Harvinder" data-toggle="tooltip">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
                         <li>
                           <a
                             href="#"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                             data-toggle="tooltip"
                           >
                             <img alt="" src={Avatar_05} />
@@ -1640,7 +1684,7 @@ const ProjectList = () => {
                         </li>
                       </ul>
                     </td>
-                    <td>17 Apr 2019 </td>
+                    <td>17 Apr 2021 </td>
                     <td>
                       <div className="dropdown action-label">
                         <a
@@ -1763,8 +1807,8 @@ const ProjectList = () => {
                     <div className="form-group">
                       <label>Client</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>
@@ -1838,7 +1882,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Jeffery Lalor"
+                          title="Sushmita Singh"
                           className="avatar"
                         >
                           <img src={Avatar_16} alt="" />
@@ -1861,7 +1905,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="John Doe"
+                          title="Prateek Tiwari"
                           className="avatar"
                         >
                           <img src={Avatar_16} alt="" />
@@ -1869,7 +1913,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                           className="avatar"
                         >
                           <img src={Avatar_09} alt="" />
@@ -1877,7 +1921,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="John Smith"
+                          title="Harvinder"
                           className="avatar"
                         >
                           <img src={Avatar_10} alt="" />
@@ -1885,7 +1929,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                           className="avatar"
                         >
                           <img src={Avatar_05} alt="" />
@@ -1966,8 +2010,8 @@ const ProjectList = () => {
                     <div className="form-group">
                       <label>Client</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>
@@ -2042,7 +2086,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Jeffery Lalor"
+                          title="Sushmita Singh"
                           className="avatar"
                         >
                           <img src={Avatar_16} alt="" />
@@ -2065,7 +2109,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="John Doe"
+                          title="Prateek Tiwari"
                           className="avatar"
                         >
                           <img src={Avatar_16} alt="" />
@@ -2073,7 +2117,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                           className="avatar"
                         >
                           <img src={Avatar_09} alt="" />
@@ -2081,7 +2125,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="John Smith"
+                          title="Harvinder"
                           className="avatar"
                         >
                           <img src={Avatar_10} alt="" />
@@ -2089,7 +2133,7 @@ const ProjectList = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                           className="avatar"
                         >
                           <img src={Avatar_05} alt="" />

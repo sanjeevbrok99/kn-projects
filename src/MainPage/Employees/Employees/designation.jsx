@@ -9,7 +9,7 @@ import '../../antdstyle.css';
 
 const Designations = () => {
   const [data, setData] = useState([
-    { id: 1, department: 'Sales Management', designation: 'Sales Manager' }
+    { id: 1, department: 'Sales Management', designation: 'Sales Manager' },
   ]);
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -135,7 +135,7 @@ const Designations = () => {
                 <tbody>
                   <tr>
                     <td>1</td>
-                    <td>Web Designer</td>
+                    <td>CIO</td>
                     <td>Web Development</td>
                     <td className="text-right">
                       <div className="dropdown dropdown-action">
@@ -149,7 +149,7 @@ const Designations = () => {
                   </tr>
                   <tr>
                     <td>2</td>
-                    <td>Web Developer</td>
+                    <td>Product Manager</td>
                     <td>Web Development</td>
                     <td className="text-right">
                       <div className="dropdown dropdown-action">
@@ -163,7 +163,7 @@ const Designations = () => {
                   </tr>
                   <tr>
                     <td>3</td>
-                    <td>Android Developer</td>
+                    <td>Product Manager</td>
                     <td>Application Development</td>
                     <td className="text-right">
                       <div className="dropdown dropdown-action">
@@ -177,7 +177,7 @@ const Designations = () => {
                   </tr>
                   <tr>
                     <td>4</td>
-                    <td>IOS Developer</td>
+                    <td>Marketing Head</td>
                     <td>Application Development</td>
                     <td className="text-right">
                       <div className="dropdown dropdown-action">
@@ -424,7 +424,7 @@ const Designations = () => {
                   </label>
                   <input
                     className="form-control"
-                    defaultValue="Web Developer"
+                    defaultValue="Product Manager"
                     type="text"
                   />
                 </div>

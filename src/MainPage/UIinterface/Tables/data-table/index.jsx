@@ -164,7 +164,7 @@ const DataTable = () => {
     {
       title: 'Salary',
       dataIndex: 'salary',
-      render: (text, record) => <span>$ {text}</span>,
+      render: (text, record) => <span>₹ {text}</span>,
       sorter: (a, b) => a.salary.length - b.salary.length,
     },
   ];

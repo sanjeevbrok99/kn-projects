@@ -90,7 +90,7 @@ const TaskReport = () => {
                     <tr>
                       <td>1</td>
                       <td>HR Management</td>
-                      <td>26 Mar 2019</td>
+                      <td>26 Mar 2021</td>
                       <td>26 Apr 2021</td>
                       <td>
                         <div className="dropdown action-label">
@@ -109,7 +109,7 @@ const TaskReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="Jeffery Lalor"
+                              data-original-title="Sushmita Singh"
                             >
                               <img src={Avatar_16} />
                             </a>
@@ -120,7 +120,7 @@ const TaskReport = () => {
                     <tr>
                       <td>2</td>
                       <td>HR Management</td>
-                      <td>26 Mar 2019</td>
+                      <td>26 Mar 2021</td>
                       <td>26 Apr 2021</td>
                       <td>
                         <div className="dropdown action-label">
@@ -139,7 +139,7 @@ const TaskReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="Jeffery Lalor"
+                              data-original-title="Sushmita Singh"
                             >
                               <img src={Avatar_16} />
                             </a>

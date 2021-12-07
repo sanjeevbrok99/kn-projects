@@ -17,11 +17,11 @@ const Promotion = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       department: 'Web Development',
-      promotiondesignationfrom: 'Web Developer',
-      promotiondesignationto: 'Sr Web Developer',
-      promotiondate: '09 Jan 2019',
+      promotiondesignationfrom: 'Product Manager',
+      promotiondesignationto: 'Sr Product Manager',
+      promotiondate: '09 Jan 2021',
     },
   ]);
   useEffect(() => {
@@ -202,7 +202,7 @@ const Promotion = () => {
                   <input
                     className="form-control"
                     type="text"
-                    defaultValue="Web Developer"
+                    defaultValue="Product Manager"
                     readOnly
                   />
                 </div>
@@ -211,8 +211,8 @@ const Promotion = () => {
                     Promotion To <span className="text-danger">*</span>
                   </label>
                   <select className="select">
-                    <option>Web Developer</option>
-                    <option>Web Designer</option>
+                    <option>Product Manager</option>
+                    <option>CIO</option>
                     <option>SEO Analyst</option>
                   </select>
                 </div>
@@ -264,7 +264,7 @@ const Promotion = () => {
                   <input
                     className="form-control"
                     type="text"
-                    defaultValue="John Doe"
+                    defaultValue="Prateek Tiwari"
                   />
                 </div>
                 <div className="form-group">
@@ -274,7 +274,7 @@ const Promotion = () => {
                   <input
                     className="form-control"
                     type="text"
-                    defaultValue="Web Developer"
+                    defaultValue="Product Manager"
                     readOnly
                   />
                 </div>
@@ -283,8 +283,8 @@ const Promotion = () => {
                     Promotion To <span className="text-danger">*</span>
                   </label>
                   <select className="select">
-                    <option>Web Developer</option>
-                    <option>Web Designer</option>
+                    <option>Product Manager</option>
+                    <option>CIO</option>
                     <option>SEO Analyst</option>
                   </select>
                 </div>

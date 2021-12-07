@@ -153,7 +153,7 @@ const Search = () => {
                           </p>
                           <div className="pro-deadline m-b-15">
                             <div className="sub-title">Deadline:</div>
-                            <div className="text-muted">17 Apr 2019</div>
+                            <div className="text-muted">17 Apr 2021</div>
                           </div>
                           <div className="project-members m-b-15">
                             <div>Project Leader :</div>
@@ -162,7 +162,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Jeffery Lalor"
+                                  title="Sushmita Singh"
                                 >
                                   <img alt="" src={Avatar_16} />
                                 </a>
@@ -176,7 +176,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="John Doe"
+                                  title="Prateek Tiwari"
                                 >
                                   <img alt="" src={Avatar_02} />
                                 </a>
@@ -185,7 +185,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Richard Miles"
+                                  title="Shital Agarwal"
                                 >
                                   <img alt="" src={Avatar_09} />
                                 </a>
@@ -194,7 +194,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="John Smith"
+                                  title="Harvinder"
                                 >
                                   <img alt="" src={Avatar_10} />
                                 </a>
@@ -203,7 +203,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Mike Litorus"
+                                  title="Shreya Singh"
                                 >
                                   <img alt="" src={Avatar_05} />
                                 </a>
@@ -354,7 +354,7 @@ const Search = () => {
                           </p>
                           <div className="pro-deadline m-b-15">
                             <div className="sub-title">Deadline:</div>
-                            <div className="text-muted">17 Apr 2019</div>
+                            <div className="text-muted">17 Apr 2021</div>
                           </div>
                           <div className="project-members m-b-15">
                             <div>Project Leader :</div>
@@ -363,7 +363,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Jeffery Lalor"
+                                  title="Sushmita Singh"
                                 >
                                   <img alt="" src={Avatar_16} />
                                 </a>
@@ -377,7 +377,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="John Doe"
+                                  title="Prateek Tiwari"
                                 >
                                   <img alt="" src={Avatar_02} />
                                 </a>
@@ -386,7 +386,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Richard Miles"
+                                  title="Shital Agarwal"
                                 >
                                   <img alt="" src={Avatar_09} />
                                 </a>
@@ -395,7 +395,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="John Smith"
+                                  title="Harvinder"
                                 >
                                   <img alt="" src={Avatar_10} />
                                 </a>
@@ -404,7 +404,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Mike Litorus"
+                                  title="Shreya Singh"
                                 >
                                   <img alt="" src={Avatar_05} />
                                 </a>
@@ -555,7 +555,7 @@ const Search = () => {
                           </p>
                           <div className="pro-deadline m-b-15">
                             <div className="sub-title">Deadline:</div>
-                            <div className="text-muted">17 Apr 2019</div>
+                            <div className="text-muted">17 Apr 2021</div>
                           </div>
                           <div className="project-members m-b-15">
                             <div>Project Leader :</div>
@@ -564,7 +564,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Jeffery Lalor"
+                                  title="Sushmita Singh"
                                 >
                                   <img alt="" src={Avatar_16} />
                                 </a>
@@ -578,7 +578,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="John Doe"
+                                  title="Prateek Tiwari"
                                 >
                                   <img alt="" src={Avatar_02} />
                                 </a>
@@ -587,7 +587,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Richard Miles"
+                                  title="Shital Agarwal"
                                 >
                                   <img alt="" src={Avatar_09} />
                                 </a>
@@ -596,7 +596,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="John Smith"
+                                  title="Harvinder"
                                 >
                                   <img alt="" src={Avatar_10} />
                                 </a>
@@ -605,7 +605,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Mike Litorus"
+                                  title="Shreya Singh"
                                 >
                                   <img alt="" src={Avatar_05} />
                                 </a>
@@ -740,7 +740,7 @@ const Search = () => {
                           </div>
                           <h4 className="project-title">
                             <Link to="/app/projects/projects-view">
-                              Hospital Administration
+                              Lovely Faculty
                             </Link>
                           </h4>
                           <small className="block text-ellipsis m-b-15">
@@ -756,7 +756,7 @@ const Search = () => {
                           </p>
                           <div className="pro-deadline m-b-15">
                             <div className="sub-title">Deadline:</div>
-                            <div className="text-muted">17 Apr 2019</div>
+                            <div className="text-muted">17 Apr 2021</div>
                           </div>
                           <div className="project-members m-b-15">
                             <div>Project Leader :</div>
@@ -765,7 +765,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Jeffery Lalor"
+                                  title="Sushmita Singh"
                                 >
                                   <img alt="" src={Avatar_16} />
                                 </a>
@@ -779,7 +779,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="John Doe"
+                                  title="Prateek Tiwari"
                                 >
                                   <img alt="" src={Avatar_02} />
                                 </a>
@@ -788,7 +788,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Richard Miles"
+                                  title="Shital Agarwal"
                                 >
                                   <img alt="" src={Avatar_09} />
                                 </a>
@@ -797,7 +797,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="John Smith"
+                                  title="Harvinder"
                                 >
                                   <img alt="" src={Avatar_10} />
                                 </a>
@@ -806,7 +806,7 @@ const Search = () => {
                                 <a
                                   href="#"
                                   data-toggle="tooltip"
-                                  title="Mike Litorus"
+                                  title="Shreya Singh"
                                 >
                                   <img alt="" src={Avatar_05} />
                                 </a>
@@ -952,7 +952,7 @@ const Search = () => {
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link to="/app/profile/client-profile">
-                            Global Technologies
+                            Sunteck Realty Ltd
                           </Link>
                         </h4>
                         <h5 className="user-name m-t-10 mb-0 text-ellipsis">
@@ -1018,7 +1018,7 @@ const Search = () => {
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link to="/app/profile/client-profile">
-                            Delta Infotech
+                            Godrej Properties Ltd
                           </Link>
                         </h4>
                         <h5 className="user-name m-t-10 mb-0 text-ellipsis">
@@ -1084,7 +1084,7 @@ const Search = () => {
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link to="/app/profile/client-profile">
-                            Cream Inc
+                            Oberoi Realty
                           </Link>
                         </h4>
                         <h5 className="user-name m-t-10 mb-0 text-ellipsis">
@@ -1348,12 +1348,12 @@ const Search = () => {
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link to="/app/profile/client-profile">
-                            Mercury Software Inc
+                            Sherwani Legacy
                           </Link>
                         </h4>
                         <h5 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link to="/app/profile/client-profile">
-                            Amanda Warren
+                            Shreya Justin
                           </Link>
                         </h5>
                         <div className="small text-muted">CEO</div>
@@ -1414,12 +1414,12 @@ const Search = () => {
                         </div>
                         <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link to="/app/profile/client-profile">
-                            Carlson Tech
+                            Verma's Housing
                           </Link>
                         </h4>
                         <h5 className="user-name m-t-10 mb-0 text-ellipsis">
                           <Link to="/app/profile/client-profile">
-                            Betty Carlson
+                            Vasudev Verma
                           </Link>
                         </h5>
                         <div className="small text-muted">CEO</div>
@@ -1471,8 +1471,8 @@ const Search = () => {
                             </h2>
                           </td>
                           <td>danielporter@example.com</td>
-                          <td>Dreamguy's Technologies</td>
-                          <td>1 Jan 2013</td>
+                          <td>Oboroi Real Estates</td>
+                          <td>1 Jan 2023</td>
                           <td>
                             <span className="badge bg-inverse-danger">
                               Admin
@@ -1519,13 +1519,13 @@ const Search = () => {
                                 <img alt="" src={Avatar_02} />
                               </Link>
                               <Link to="/app/profile/employee-profile">
-                                John Doe <span>Web Designer</span>
+                                Prateek Tiwari <span>CIO</span>
                               </Link>
                             </h2>
                           </td>
                           <td>johndoe@example.com</td>
-                          <td>Dreamguy's Technologies</td>
-                          <td>1 Jan 2013</td>
+                          <td>Oboroi Real Estates</td>
+                          <td>1 Jan 2023</td>
                           <td>
                             <span className="badge bg-inverse-success">
                               Employee
@@ -1572,13 +1572,13 @@ const Search = () => {
                                 <img alt="" src={Avatar_09} />
                               </Link>
                               <Link to="/app/profile/employee-profile">
-                                Richard Miles <span>Admin</span>
+                                Shital Agarwal <span>Admin</span>
                               </Link>
                             </h2>
                           </td>
                           <td>richardmiles@example.com</td>
-                          <td>Dreamguy's Technologies</td>
-                          <td>1 Jan 2013</td>
+                          <td>Oboroi Real Estates</td>
+                          <td>1 Jan 2023</td>
                           <td>
                             <span className="badge bg-inverse-success">
                               Employee
@@ -1625,13 +1625,13 @@ const Search = () => {
                                 <img alt="" src={Avatar_10} />
                               </Link>
                               <Link to="/app/profile/employee-profile">
-                                John Smith <span>Android Developer</span>
+                                Harvinder <span>Product Manager</span>
                               </Link>
                             </h2>
                           </td>
                           <td>johnsmith@example.com</td>
-                          <td>Dreamguy's Technologies</td>
-                          <td>1 Jan 2013</td>
+                          <td>Oboroi Real Estates</td>
+                          <td>1 Jan 2023</td>
                           <td>
                             <span className="badge bg-inverse-success">
                               Employee
@@ -1678,13 +1678,13 @@ const Search = () => {
                                 <img alt="" src={Avatar_05} />
                               </Link>
                               <Link to="/app/profile/employee-profile">
-                                Mike Litorus <span>IOS Developer</span>
+                                Shreya Singh <span>Marketing Head</span>
                               </Link>
                             </h2>
                           </td>
                           <td>mikelitorus@example.com</td>
-                          <td>Dreamguy's Technologies</td>
-                          <td>1 Jan 2013</td>
+                          <td>Oboroi Real Estates</td>
+                          <td>1 Jan 2023</td>
                           <td>
                             <span className="badge bg-inverse-success">
                               Employee
@@ -1731,13 +1731,13 @@ const Search = () => {
                                 <img alt="" src={Avatar_11} />
                               </Link>
                               <Link to="/app/profile/employee-profile">
-                                Wilmer Deluna <span>Team Leader</span>
+                                Bhadu Vabu<span>Team Leader</span>
                               </Link>
                             </h2>
                           </td>
                           <td>wilmerdeluna@example.com</td>
-                          <td>Dreamguy's Technologies</td>
-                          <td>1 Jan 2013</td>
+                          <td>Oboroi Real Estates</td>
+                          <td>1 Jan 2023</td>
                           <td>
                             <span className="badge bg-inverse-success">
                               Employee
@@ -1784,13 +1784,13 @@ const Search = () => {
                                 <img src={Avatar_19} alt="" />
                               </Link>
                               <Link to="/app/profile/employee-profile">
-                                Barry Cuda <span>Global Technologies</span>
+                                Barry Cuda <span>Sunteck Realty Ltd</span>
                               </Link>
                             </h2>
                           </td>
                           <td>barrycuda@example.com</td>
-                          <td>Global Technologies</td>
-                          <td>1 Jan 2013</td>
+                          <td>Sunteck Realty Ltd</td>
+                          <td>1 Jan 2023</td>
                           <td>
                             <span className="badge bg-inverse-info">
                               Client

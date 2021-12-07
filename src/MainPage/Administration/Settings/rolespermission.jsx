@@ -142,7 +142,7 @@ const RolePermisson = () => {
                 </li>
                 <li>
                   <a href="">
-                    Web Developer
+                    Product Manager
                     <span className="role-action">
                       <span
                         className="action-circle large"
@@ -163,7 +163,7 @@ const RolePermisson = () => {
                 </li>
                 <li>
                   <a href="">
-                    Web Designer
+                    CIO
                     <span className="role-action">
                       <span
                         className="action-circle large"

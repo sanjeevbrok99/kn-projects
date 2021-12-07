@@ -89,7 +89,7 @@ const Interviewing = () => {
                               <tr>
                                 <td>1</td>
                                 <td>
-                                  <a href="#">Web Developer</a>
+                                  <a href="#">Product Manager</a>
                                 </td>
                                 <td>Development</td>
                                 <td className="text-center">
@@ -115,7 +115,7 @@ const Interviewing = () => {
                               <tr>
                                 <td>2</td>
                                 <td>
-                                  <a href="#">Web Developer</a>
+                                  <a href="#">Product Manager</a>
                                 </td>
                                 <td>Development</td>
                                 <td className="text-center">
@@ -189,7 +189,7 @@ const Interviewing = () => {
                               <tr>
                                 <td>1</td>
                                 <td>
-                                  <a href="#">Web Developer</a>
+                                  <a href="#">Product Manager</a>
                                 </td>
                                 <td>Development</td>
                                 <td className="text-center">
@@ -261,7 +261,7 @@ const Interviewing = () => {
                               <tr>
                                 <td>1</td>
                                 <td>
-                                  <a href="#">Web Developer</a>
+                                  <a href="#">Product Manager</a>
                                 </td>
                                 <td>Development</td>
                                 <td className="text-center">

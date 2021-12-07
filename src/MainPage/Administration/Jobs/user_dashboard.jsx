@@ -117,13 +117,13 @@ const UserDashboard = (props) => {
                           </span>
                         </li>
                         <li className="list-group-item list-group-item-action">
-                          Android Developer{' '}
+                          Product Manager{' '}
                           <span className="float-right text-sm text-muted">
                             1 Days ago
                           </span>
                         </li>
                         <li className="list-group-item list-group-item-action">
-                          IOS Developer
+                          Marketing Head
                           <span className="float-right text-sm text-muted">
                             2 Days ago
                           </span>
@@ -153,7 +153,7 @@ const UserDashboard = (props) => {
                           </span>
                         </li>
                         <li className="list-group-item list-group-item-action">
-                          Android Developer
+                          Product Manager
                           <span className="float-right text-sm text-muted">
                             6 Days ago
                           </span>
@@ -188,7 +188,7 @@ const UserDashboard = (props) => {
                           <td>1</td>
                           <td>
                             <Link to="/app/administrator/job-details">
-                              Web Developer
+                              Product Manager
                             </Link>
                           </td>
                           <td>Development</td>
@@ -220,9 +220,7 @@ const UserDashboard = (props) => {
                         <tr>
                           <td>2</td>
                           <td>
-                            <Link to="/app/administrator/job-details">
-                              Web Designer
-                            </Link>
+                            <Link to="/app/administrator/job-details">CIO</Link>
                           </td>
                           <td>Designing</td>
                           <td className="text-center">
@@ -254,7 +252,7 @@ const UserDashboard = (props) => {
                           <td>3</td>
                           <td>
                             <Link to="/app/administrator/job-details">
-                              Android Developer
+                              Product Manager
                             </Link>
                           </td>
                           <td>Android</td>
@@ -316,12 +314,12 @@ const UserDashboard = (props) => {
                           <td>1</td>
                           <td>
                             <Link to="/app/administrator/job-details">
-                              Web Developer
+                              Product Manager
                             </Link>
                           </td>
                           <td>Development</td>
-                          <td>3 Mar 2019</td>
-                          <td>31 May 2019</td>
+                          <td>3 Mar 2021</td>
+                          <td>31 May 2021</td>
                           <td className="text-center">
                             <div className="action-label">
                               <a
@@ -374,13 +372,11 @@ const UserDashboard = (props) => {
                         <tr>
                           <td>2</td>
                           <td>
-                            <Link to="/app/administrator/job-details">
-                              Web Designer
-                            </Link>
+                            <Link to="/app/administrator/job-details">CIO</Link>
                           </td>
                           <td>Designing</td>
-                          <td>3 Mar 2019</td>
-                          <td>31 May 2019</td>
+                          <td>3 Mar 2021</td>
+                          <td>31 May 2021</td>
                           <td className="text-center">
                             <div className="action-label">
                               <a
@@ -434,12 +430,12 @@ const UserDashboard = (props) => {
                           <td>3</td>
                           <td>
                             <Link to="/app/administrator/job-details">
-                              Android Developer
+                              Product Manager
                             </Link>
                           </td>
                           <td>Android</td>
-                          <td>3 Mar 2019</td>
-                          <td>31 May 2019</td>
+                          <td>3 Mar 2021</td>
+                          <td>31 May 2021</td>
                           <td className="text-center">
                             <div className="action-label">
                               <a

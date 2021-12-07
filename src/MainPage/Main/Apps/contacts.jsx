@@ -125,10 +125,10 @@ const Contacts = () => {
                                 </div>
                                 <div className="contact-info">
                                   <span className="contact-name text-ellipsis">
-                                    John Doe
+                                    Prateek Tiwari
                                   </span>
                                   <span className="contact-date">
-                                    Web Developer
+                                    Product Manager
                                   </span>
                                 </div>
                                 <ul className="contact-action">
@@ -182,10 +182,10 @@ const Contacts = () => {
                                 </div>
                                 <div className="contact-info">
                                   <span className="contact-name text-ellipsis">
-                                    Richard Miles
+                                    Shital Agarwal
                                   </span>
                                   <span className="contact-date">
-                                    Web Developer
+                                    Product Manager
                                   </span>
                                 </div>
                                 <ul className="contact-action">
@@ -239,10 +239,10 @@ const Contacts = () => {
                                 </div>
                                 <div className="contact-info">
                                   <span className="contact-name text-ellipsis">
-                                    John Smith
+                                    Harvinder
                                   </span>
                                   <span className="contact-date">
-                                    Android Developer
+                                    Product Manager
                                   </span>
                                 </div>
                                 <ul className="contact-action">
@@ -296,10 +296,10 @@ const Contacts = () => {
                                 </div>
                                 <div className="contact-info">
                                   <span className="contact-name text-ellipsis">
-                                    Mike Litorus
+                                    Shreya Singh
                                   </span>
                                   <span className="contact-date">
-                                    IOS Developer
+                                    Marketing Head
                                   </span>
                                 </div>
                                 <ul className="contact-action">
@@ -410,10 +410,10 @@ const Contacts = () => {
                                 </div>
                                 <div className="contact-info">
                                   <span className="contact-name text-ellipsis">
-                                    Jeffrey Warden
+                                    Yash Singh
                                   </span>
                                   <span className="contact-date">
-                                    Web Developer
+                                    Product Manager
                                   </span>
                                 </div>
                                 <ul className="contact-action">
@@ -467,10 +467,10 @@ const Contacts = () => {
                                 </div>
                                 <div className="contact-info">
                                   <span className="contact-name text-ellipsis">
-                                    Bernardo Galaviz
+                                    Marathi Manush
                                   </span>
                                   <span className="contact-date">
-                                    Web Developer
+                                    Product Manager
                                   </span>
                                 </div>
                                 <ul className="contact-action">
@@ -581,7 +581,7 @@ const Contacts = () => {
                                 </div>
                                 <div className="contact-info">
                                   <span className="contact-name text-ellipsis">
-                                    Jeffery Lalor
+                                    Sushmita Singh
                                   </span>
                                   <span className="contact-date">
                                     Team Leader
@@ -638,10 +638,10 @@ const Contacts = () => {
                                 </div>
                                 <div className="contact-info">
                                   <span className="contact-name text-ellipsis">
-                                    Loren Gatlin
+                                    Kamla Singh
                                   </span>
                                   <span className="contact-date">
-                                    Android Developer
+                                    Product Manager
                                   </span>
                                 </div>
                                 <ul className="contact-action">
@@ -800,7 +800,7 @@ const Contacts = () => {
                   <input
                     className="form-control"
                     type="text"
-                    defaultValue="John Doe"
+                    defaultValue="Prateek Tiwari"
                   />
                 </div>
                 <div className="form-group">

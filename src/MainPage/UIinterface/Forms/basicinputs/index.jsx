@@ -169,7 +169,7 @@ const Basicinputs = () => {
                     <div className="col-md-10">
                       <div className="input-group">
                         <div className="input-group-prepend">
-                          <span className="input-group-text">$</span>
+                          <span className="input-group-text">₹</span>
                         </div>
                         <input className="form-control" type="text" />
                         <div className="input-group-append">

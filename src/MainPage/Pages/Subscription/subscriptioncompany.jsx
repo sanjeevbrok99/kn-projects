@@ -63,7 +63,7 @@ const SubscriptionCompany = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Free</h3>
-                          <span className="display-4">$0</span>
+                          <span className="display-4">₹0</span>
                         </div>
                         <ul>
                           <li>
@@ -90,7 +90,7 @@ const SubscriptionCompany = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Professional</h3>
-                          <span className="display-4">$21</span>
+                          <span className="display-4">₹21</span>
                           <span>/mo</span>
                         </div>
                         <ul>
@@ -124,7 +124,7 @@ const SubscriptionCompany = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Enterprise</h3>
-                          <span className="display-4">$38</span>
+                          <span className="display-4">₹38</span>
                           <span>/mo</span>
                         </div>
                         <ul>
@@ -168,7 +168,7 @@ const SubscriptionCompany = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Free</h3>
-                          <span className="display-4">$0</span>
+                          <span className="display-4">₹0</span>
                         </div>
                         <ul>
                           <li>
@@ -195,7 +195,7 @@ const SubscriptionCompany = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Professional</h3>
-                          <span className="display-4">$199</span>
+                          <span className="display-4">₹199</span>
                           <span>/mo</span>
                         </div>
                         <ul>
@@ -229,7 +229,7 @@ const SubscriptionCompany = () => {
                       <div className="card-body d-flex flex-column">
                         <div className="mb-4">
                           <h3>Enterprise</h3>
-                          <span className="display-4">$399</span>
+                          <span className="display-4">₹399</span>
                           <span>/mo</span>
                         </div>
                         <ul>
@@ -293,9 +293,9 @@ const SubscriptionCompany = () => {
                             <td>Free Trial</td>
                             <td>30 Users</td>
                             <td>1 Month</td>
-                            <td>9 Nov 2019</td>
-                            <td>8 Dec 2019</td>
-                            <td>$200.00</td>
+                            <td>9 Nov 2021</td>
+                            <td>8 Dec 2021</td>
+                            <td>₹200.00</td>
                             <td>
                               <a className="btn btn-primary btn-sm" href="">
                                 Change Plan

@@ -17,23 +17,23 @@ const ShortlistCandidate = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
-      jobtitle: 'Web Designer',
+      name: 'Prateek Tiwari',
+      role: 'CIO',
+      jobtitle: 'CIO',
     },
     {
       id: 2,
       image: Avatar_01,
-      name: 'Richard Miles',
-      role: 'Web Developer',
-      jobtitle: 'Web Developer',
+      name: 'Shital Agarwal',
+      role: 'Product Manager',
+      jobtitle: 'Product Manager',
     },
     {
       id: 3,
       image: Avatar_03,
-      name: 'John Smith',
-      role: 'Android Developer',
-      jobtitle: 'Android Developer',
+      name: 'Harvinder',
+      role: 'Product Manager',
+      jobtitle: 'Product Manager',
     },
   ]);
 

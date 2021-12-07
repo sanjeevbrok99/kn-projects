@@ -104,7 +104,7 @@ const MailView = () => {
                       </div>
                       <div className="receiver-details float-left">
                         <span className="sender-name">
-                          John Doe (johnjoe@example.com)
+                          Prateek Tiwari (johnjoe@example.com)
                         </span>
                         <span className="receiver-name">
                           to
@@ -113,7 +113,7 @@ const MailView = () => {
                         </span>
                       </div>
                       <div className="mail-sent-time">
-                        <span className="mail-time">18 Feb 2019 9:42 AM</span>
+                        <span className="mail-time">18 Feb 2021 9:42 AM</span>
                       </div>
                       <div className="clearfix" />
                     </div>
@@ -143,7 +143,7 @@ const MailView = () => {
                     <p>
                       Thanks,
                       <br />
-                      John Doe
+                      Prateek Tiwari
                     </p>
                   </div>
                 </div>

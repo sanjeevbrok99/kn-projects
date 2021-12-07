@@ -41,16 +41,16 @@ const Jobdetails = () => {
         <div className="row">
           <div className="col-md-8">
             <div className="job-info job-widget">
-              <h3 className="job-title">Android Developer</h3>
+              <h3 className="job-title">Product Manager</h3>
               <span className="job-dept">App Development</span>
               <ul className="job-post-det">
                 <li>
                   <i className="fa fa-calendar" /> Post Date:{' '}
-                  <span className="text-blue">Feb 18, 2019</span>
+                  <span className="text-blue">Feb 18, 2021</span>
                 </li>
                 <li>
                   <i className="fa fa-calendar" /> Last Date:{' '}
-                  <span className="text-blue">May 31, 2019</span>
+                  <span className="text-blue">May 31, 2021</span>
                 </li>
                 <li>
                   <i className="fa fa-user-o" /> Applications:{' '}
@@ -134,7 +134,7 @@ const Jobdetails = () => {
                   <i className="fa fa-money" />
                 </span>
                 <h5>Salary</h5>
-                <p>$32k - $38k</p>
+                <p>₹32k - $38k</p>
               </div>
               <div className="info-list">
                 <span>
@@ -157,7 +157,7 @@ const Jobdetails = () => {
                 <h5>Location</h5>
                 <p>
                   {' '}
-                  Dreamguy's Technologies
+                  Oboroi Real Estates
                   <br /> 3864 Quiet Valley Lane,
                   <br /> Sherman Oaks,
                   <br /> California, 91403
@@ -224,7 +224,7 @@ const Jobdetails = () => {
                       <input
                         className="form-control"
                         type="text"
-                        defaultValue="Web Developer"
+                        defaultValue="Product Manager"
                       />
                     </div>
                   </div>
@@ -341,7 +341,7 @@ const Jobdetails = () => {
                       <input
                         type="text"
                         className="form-control datetimepicker"
-                        defaultValue="3 Mar 2019"
+                        defaultValue="3 Mar 2021"
                       />
                     </div>
                   </div>
@@ -351,7 +351,7 @@ const Jobdetails = () => {
                       <input
                         type="text"
                         className="form-control datetimepicker"
-                        defaultValue="31 May 2019"
+                        defaultValue="31 May 2021"
                       />
                     </div>
                   </div>

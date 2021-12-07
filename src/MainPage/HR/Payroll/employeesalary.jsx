@@ -21,45 +21,45 @@ const EmployeeSalary = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
+      name: 'Prateek Tiwari',
+      role: 'CIO',
       employee_id: 'FT-0001',
       email: 'johndoe@example.com',
       salary: '73550',
-      joindate: '1 Jan 2013',
+      joindate: '1 Jan 2023',
       roles: 'Software Engineer',
     },
     {
       id: 2,
       image: Avatar_05,
-      name: 'Richard Miles',
-      role: 'Web Developer',
+      name: 'Shital Agarwal',
+      role: 'Product Manager',
       employee_id: 'FT-0002',
       email: 'richardmiles@example.com',
       salary: '59698',
-      joindate: '18 Mar 2014',
-      roles: 'Web Developer',
+      joindate: '18 Mar 2024',
+      roles: 'Product Manager',
     },
     {
       id: 3,
       image: Avatar_11,
-      name: 'John Smith',
-      role: 'Android Developer',
+      name: 'Harvinder',
+      role: 'Product Manager',
       employee_id: 'FT-0003',
       email: 'johnsmith@example.com	',
       salary: '73550',
-      joindate: '1 Apr 2014',
-      roles: 'Web Designer',
+      joindate: '1 Apr 2024',
+      roles: 'CIO',
     },
     {
       id: 4,
       image: Avatar_12,
-      name: 'Mike Litorus',
-      role: 'IOS Developer',
+      name: 'Shreya Singh',
+      role: 'Marketing Head',
       employee_id: 'FT-0004',
       email: 'mikelitorus@example.com',
       salary: '72000',
-      joindate: '1 Apr 2014',
+      joindate: '1 Apr 2024',
       roles: 'Team Leader',
     },
     {
@@ -70,29 +70,29 @@ const EmployeeSalary = () => {
       employee_id: 'FT-0005',
       email: 'wilmerdeluna@example.com',
       salary: '59698',
-      joindate: '22 May 2014',
-      roles: 'Android Developer',
+      joindate: '22 May 2024',
+      roles: 'Product Manager',
     },
     {
       id: 6,
       image: Avatar_10,
-      name: 'Jeffrey Warden',
-      role: 'Web Developer',
+      name: 'Yash Singh',
+      role: 'Product Manager',
       employee_id: 'FT-0006',
       email: 'jeffreywarden@example.com',
       salary: '38400',
-      joindate: '16 Jun 2013',
-      roles: 'IOS Developer',
+      joindate: '16 Jun 2023',
+      roles: 'Marketing Head',
     },
     {
       id: 7,
       image: Avatar_13,
-      name: 'Bernardo Galaviz',
-      role: 'Web Developer',
+      name: 'Marathi Manush',
+      role: 'Product Manager',
       employee_id: 'FT-0007',
       email: 'bernardogalaviz@example.com',
       salary: '55000',
-      joindate: '1 Jan 2013',
+      joindate: '1 Jan 2023',
       roles: 'Software Engineer',
     },
   ]);
@@ -171,7 +171,7 @@ const EmployeeSalary = () => {
     {
       title: 'Salary',
       dataIndex: 'salary',
-      render: (text, record) => <span>${text}</span>,
+      render: (text, record) => <span>₹{text}</span>,
       sorter: (a, b) => a.salary.length - b.salary.length,
     },
     {
@@ -359,8 +359,8 @@ const EmployeeSalary = () => {
                     <div className="form-group">
                       <label>Select Staff</label>
                       <select className="select">
-                        <option>John Doe</option>
-                        <option>Richard Miles</option>
+                        <option>Prateek Tiwari</option>
+                        <option>Shital Agarwal</option>
                       </select>
                     </div>
                   </div>
@@ -477,8 +477,8 @@ const EmployeeSalary = () => {
                     <div className="form-group">
                       <label>Select Staff</label>
                       <select className="select">
-                        <option>John Doe</option>
-                        <option>Richard Miles</option>
+                        <option>Prateek Tiwari</option>
+                        <option>Shital Agarwal</option>
                       </select>
                     </div>
                   </div>

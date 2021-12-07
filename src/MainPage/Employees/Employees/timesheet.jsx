@@ -13,9 +13,9 @@ const Timesheet = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
-      date: '1 Jan 2013',
+      name: 'Prateek Tiwari',
+      role: 'CIO',
+      date: '1 Jan 2023',
       projects: 'Video Calling App',
       assignedhours: '20',
       hours: '12',
@@ -25,9 +25,9 @@ const Timesheet = () => {
     {
       id: 2,
       image: Avatar_01,
-      name: 'Richard Miles',
-      role: 'Android Developer',
-      date: '1 Jan 2013',
+      name: 'Shital Agarwal',
+      role: 'Product Manager',
+      date: '1 Jan 2023',
       projects: 'Project Management',
       assignedhours: '10',
       hours: '12',
@@ -213,7 +213,7 @@ const Timesheet = () => {
                       <option>Office Management</option>
                       <option>Project Management</option>
                       <option>Video Calling App</option>
-                      <option>Hospital Administration</option>
+                      <option>Lovely Faculty</option>
                     </select>
                   </div>
                 </div>
@@ -226,7 +226,7 @@ const Timesheet = () => {
                       <input
                         className="form-control"
                         type="date"
-                        defaultValue="5 May 2019"
+                        defaultValue="5 May 2021"
                         readOnly
                       />
                     </div>
@@ -325,7 +325,7 @@ const Timesheet = () => {
                       <option>Office Management</option>
                       <option>Project Management</option>
                       <option>Video Calling App</option>
-                      <option>Hospital Administration</option>
+                      <option>Lovely Faculty</option>
                     </select>
                   </div>
                 </div>
@@ -338,7 +338,7 @@ const Timesheet = () => {
                       <input
                         className="form-control"
                         type="date"
-                        defaultValue="5 May 2019"
+                        defaultValue="5 May 2021"
                         readOnly
                       />
                     </div>
@@ -374,7 +374,7 @@ const Timesheet = () => {
                     <div>
                       <input
                         className="form-control datetimepicker"
-                        defaultValue="03/03/2019"
+                        defaultValue="03/03/2021"
                         type="date"
                       />
                     </div>

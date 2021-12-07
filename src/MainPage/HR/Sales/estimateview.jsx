@@ -44,7 +44,7 @@ const EstimatesView = () => {
                   <div className="col-sm-6 m-b-20">
                     <img src={Applogo} className="inv-logo" alt="" />
                     <ul className="list-unstyled">
-                      <li>Dreamguy's Technologies</li>
+                      <li>Oboroi Real Estates</li>
                       <li>3864 Quiet Valley Lane,</li>
                       <li>Sherman Oaks, CA, 91403</li>
                       <li>GST No:</li>
@@ -55,10 +55,10 @@ const EstimatesView = () => {
                       <h3 className="text-uppercase">Estimate #49029</h3>
                       <ul className="list-unstyled">
                         <li>
-                          Create Date: <span>March 12, 2019</span>
+                          Create Date: <span>March 12, 2021</span>
                         </li>
                         <li>
-                          Expiry date: <span>May 25, 2019</span>
+                          Expiry date: <span>May 25, 2021</span>
                         </li>
                       </ul>
                     </div>
@@ -73,7 +73,7 @@ const EstimatesView = () => {
                           <strong>Barry Cuda</strong>
                         </h5>
                       </li>
-                      <li>Global Technologies</li>
+                      <li>Sunteck Realty Ltd</li>
                       <li>5754 Airport Rd</li>
                       <li>Coosada, AL, 36020</li>
                       <li>United States</li>
@@ -102,19 +102,19 @@ const EstimatesView = () => {
                       <td className="d-none d-sm-table-cell">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit
                       </td>
-                      <td>$1000</td>
+                      <td>₹1000</td>
                       <td>2</td>
-                      <td className="text-right">$2000</td>
+                      <td className="text-right">₹2000</td>
                     </tr>
                     <tr>
                       <td>2</td>
-                      <td>Ios Application</td>
+                      <td>Marketing Application</td>
                       <td className="d-none d-sm-table-cell">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit
                       </td>
-                      <td>$1750</td>
+                      <td>₹1750</td>
                       <td>1</td>
-                      <td className="text-right">$1750</td>
+                      <td className="text-right">₹1750</td>
                     </tr>
                     <tr>
                       <td>3</td>
@@ -122,9 +122,9 @@ const EstimatesView = () => {
                       <td className="d-none d-sm-table-cell">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit
                       </td>
-                      <td>$90</td>
+                      <td>₹90</td>
                       <td>3</td>
-                      <td className="text-right">$270</td>
+                      <td className="text-right">₹270</td>
                     </tr>
                     <tr>
                       <td>4</td>
@@ -132,9 +132,9 @@ const EstimatesView = () => {
                       <td className="d-none d-sm-table-cell">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit
                       </td>
-                      <td>$1200</td>
+                      <td>₹1200</td>
                       <td>2</td>
-                      <td className="text-right">$2400</td>
+                      <td className="text-right">₹2400</td>
                     </tr>
                     <tr>
                       <td>5</td>
@@ -142,9 +142,9 @@ const EstimatesView = () => {
                       <td className="d-none d-sm-table-cell">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit
                       </td>
-                      <td>$200</td>
+                      <td>₹200</td>
                       <td>2</td>
-                      <td className="text-right">$400</td>
+                      <td className="text-right">₹400</td>
                     </tr>
                   </tbody>
                 </table>
@@ -158,19 +158,19 @@ const EstimatesView = () => {
                             <tbody>
                               <tr>
                                 <th>Subtotal:</th>
-                                <td className="text-right">$7,000</td>
+                                <td className="text-right">₹7,000</td>
                               </tr>
                               <tr>
                                 <th>
                                   Tax:{' '}
                                   <span className="text-regular">(25%)</span>
                                 </th>
-                                <td className="text-right">$1,750</td>
+                                <td className="text-right">₹1,750</td>
                               </tr>
                               <tr>
                                 <th>Total:</th>
                                 <td className="text-right text-primary">
-                                  <h5>$8,750</h5>
+                                  <h5>₹8,750</h5>
                                 </td>
                               </tr>
                             </tbody>

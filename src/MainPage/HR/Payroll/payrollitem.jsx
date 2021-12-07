@@ -104,7 +104,7 @@ const PayrollItems = () => {
                     <tr>
                       <th>Leave balance amount</th>
                       <td>Monthly remuneration</td>
-                      <td>$5</td>
+                      <td>₹5</td>
                       <td className="text-right">
                         <div className="dropdown dropdown-action">
                           <a
@@ -139,7 +139,7 @@ const PayrollItems = () => {
                     <tr>
                       <th>Arrears of salary</th>
                       <td>Additional remuneration</td>
-                      <td>$8</td>
+                      <td>₹8</td>
                       <td className="text-right">
                         <div className="dropdown dropdown-action">
                           <a
@@ -174,7 +174,7 @@ const PayrollItems = () => {
                     <tr>
                       <th>Gratuity</th>
                       <td>Monthly remuneration</td>
-                      <td>$20</td>
+                      <td>₹20</td>
                       <td className="text-right">
                         <div className="dropdown dropdown-action">
                           <a
@@ -376,7 +376,7 @@ const PayrollItems = () => {
                   <tbody>
                     <tr>
                       <th>Absent amount</th>
-                      <td>$12</td>
+                      <td>₹12</td>
                       <td className="text-right">
                         <div className="dropdown dropdown-action">
                           <a
@@ -410,7 +410,7 @@ const PayrollItems = () => {
                     </tr>
                     <tr>
                       <th>Advance</th>
-                      <td>$7</td>
+                      <td>₹7</td>
                       <td className="text-right">
                         <div className="dropdown dropdown-action">
                           <a
@@ -444,7 +444,7 @@ const PayrollItems = () => {
                     </tr>
                     <tr>
                       <th>Unpaid leave</th>
-                      <td>$3</td>
+                      <td>₹3</td>
                       <td className="text-right">
                         <div className="dropdown dropdown-action">
                           <a
@@ -537,7 +537,7 @@ const PayrollItems = () => {
                   <label>Unit Amount</label>
                   <div className="input-group">
                     <div className="input-group-prepend">
-                      <span className="input-group-text">$</span>
+                      <span className="input-group-text">₹</span>
                     </div>
                     <input type="text" className="form-control" />
                     <div className="input-group-append">
@@ -597,8 +597,8 @@ const PayrollItems = () => {
                     <select className="select">
                       <option>-</option>
                       <option>Select All</option>
-                      <option>John Doe</option>
-                      <option>Richard Miles</option>
+                      <option>Prateek Tiwari</option>
+                      <option>Shital Agarwal</option>
                     </select>
                   </div>
                 </div>
@@ -664,7 +664,7 @@ const PayrollItems = () => {
                   <label>Unit Amount</label>
                   <div className="input-group">
                     <div className="input-group-prepend">
-                      <span className="input-group-text">$</span>
+                      <span className="input-group-text">₹</span>
                     </div>
                     <input type="text" className="form-control" />
                     <div className="input-group-append">
@@ -724,8 +724,8 @@ const PayrollItems = () => {
                     <select className="select">
                       <option>-</option>
                       <option>Select All</option>
-                      <option>John Doe</option>
-                      <option>Richard Miles</option>
+                      <option>Prateek Tiwari</option>
+                      <option>Shital Agarwal</option>
                     </select>
                   </div>
                 </div>
@@ -949,7 +949,7 @@ const PayrollItems = () => {
                   <label>Unit Amount</label>
                   <div className="input-group">
                     <div className="input-group-prepend">
-                      <span className="input-group-text">$</span>
+                      <span className="input-group-text">₹</span>
                     </div>
                     <input type="text" className="form-control" />
                     <div className="input-group-append">
@@ -1009,8 +1009,8 @@ const PayrollItems = () => {
                     <select className="select">
                       <option>-</option>
                       <option>Select All</option>
-                      <option>John Doe</option>
-                      <option>Richard Miles</option>
+                      <option>Prateek Tiwari</option>
+                      <option>Shital Agarwal</option>
                     </select>
                   </div>
                 </div>
@@ -1070,7 +1070,7 @@ const PayrollItems = () => {
                   <label>Unit Amount</label>
                   <div className="input-group">
                     <div className="input-group-prepend">
-                      <span className="input-group-text">$</span>
+                      <span className="input-group-text">₹</span>
                     </div>
                     <input type="text" className="form-control" />
                     <div className="input-group-append">
@@ -1130,8 +1130,8 @@ const PayrollItems = () => {
                     <select className="select">
                       <option>-</option>
                       <option>Select All</option>
-                      <option>John Doe</option>
-                      <option>Richard Miles</option>
+                      <option>Prateek Tiwari</option>
+                      <option>Shital Agarwal</option>
                     </select>
                   </div>
                 </div>

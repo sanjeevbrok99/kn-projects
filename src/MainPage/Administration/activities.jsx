@@ -61,7 +61,7 @@ const Activities = () => {
                         >
                           Lesley Grauer
                         </Link>{' '}
-                        added new task <a href="#">Hospital Administration</a>
+                        added new task <a href="#">Lovely Faculty</a>
                         <span className="time">4 mins ago</span>
                       </div>
                     </div>
@@ -71,7 +71,7 @@ const Activities = () => {
                       <Link
                         to="/app/profile/employee-profile"
                         className="avatar"
-                        title="Jeffery Lalor"
+                        title="Sushmita Singh"
                         data-toggle="tooltip"
                       >
                         <img src={Avatar_16} alt="" />
@@ -83,14 +83,14 @@ const Activities = () => {
                           to="/app/profile/employee-profile"
                           className="name"
                         >
-                          Jeffery Lalor
+                          Sushmita Singh
                         </Link>{' '}
                         added{' '}
                         <Link
                           to="/app/profile/employee-profile"
                           className="name"
                         >
-                          Loren Gatlin
+                          Kamla Singh
                         </Link>{' '}
                         and{' '}
                         <Link
@@ -108,7 +108,7 @@ const Activities = () => {
                     <div className="activity-user">
                       <Link
                         to="/app/profile/employee-profile"
-                        title="Catherine Manseau"
+                        title="Chinki Singh"
                         data-toggle="tooltip"
                         className="avatar"
                       >
@@ -121,7 +121,7 @@ const Activities = () => {
                           to="/app/profile/employee-profile"
                           className="name"
                         >
-                          Catherine Manseau
+                          Chinki Singh
                         </Link>{' '}
                         completed task{' '}
                         <a href="#">Appointment booking with payment gateway</a>
@@ -133,7 +133,7 @@ const Activities = () => {
                     <div className="activity-user">
                       <a
                         href="#"
-                        title="Bernardo Galaviz"
+                        title="Marathi Manush"
                         data-toggle="tooltip"
                         className="avatar"
                       >
@@ -146,7 +146,7 @@ const Activities = () => {
                           to="/app/profile/employee-profile"
                           className="name"
                         >
-                          Bernardo Galaviz
+                          Marathi Manush
                         </Link>{' '}
                         changed the task name{' '}
                         <a href="#">Doctor available module</a>
@@ -158,7 +158,7 @@ const Activities = () => {
                     <div className="activity-user">
                       <Link
                         to="/app/profile/employee-profile"
-                        title="Mike Litorus"
+                        title="Shreya Singh"
                         data-toggle="tooltip"
                         className="avatar"
                       >
@@ -171,7 +171,7 @@ const Activities = () => {
                           to="/app/profile/employee-profile"
                           className="name"
                         >
-                          Mike Litorus
+                          Shreya Singh
                         </Link>{' '}
                         added new task{' '}
                         <a href="#">Patient and Doctor video conferencing</a>
@@ -183,7 +183,7 @@ const Activities = () => {
                     <div className="activity-user">
                       <Link
                         to="/app/profile/employee-profile"
-                        title="Jeffery Lalor"
+                        title="Sushmita Singh"
                         data-toggle="tooltip"
                         className="avatar"
                       >
@@ -196,21 +196,21 @@ const Activities = () => {
                           to="/app/profile/employee-profile"
                           className="name"
                         >
-                          Jeffery Lalor
+                          Sushmita Singh
                         </Link>{' '}
                         added{' '}
                         <Link
                           to="/app/profile/employee-profile"
                           className="name"
                         >
-                          Jeffrey Warden
+                          Yash Singh
                         </Link>{' '}
                         and{' '}
                         <Link
                           to="/app/profile/employee-profile"
                           className="name"
                         >
-                          Bernardo Galaviz
+                          Marathi Manush
                         </Link>{' '}
                         to the task of <a href="#">Private chat module</a>
                         <span className="time">7 days ago</span>

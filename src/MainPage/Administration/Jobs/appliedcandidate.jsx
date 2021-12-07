@@ -15,18 +15,18 @@ const AppliedCandidate = () => {
   const [data, setData] = useState([
     {
       id: 1,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       email: 'johndoe@example.com',
       mobile: '9876543210',
-      applydate: '1 Jan 2013',
+      applydate: '1 Jan 2023',
       status: 'New',
     },
     {
       id: 2,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       email: 'richardmiles@example.com',
       mobile: '9876543210',
-      applydate: '18 Mar 2014',
+      applydate: '18 Mar 2024',
       status: 'Hired',
     },
   ]);

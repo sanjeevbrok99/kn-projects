@@ -112,7 +112,7 @@ const EditEstimate = () => {
                       <input
                         className="form-control datetimepicker"
                         type="date"
-                        defaultValue="2019/05/20"
+                        defaultValue="2021/05/20"
                       />
                     </div>
                   </div>
@@ -126,7 +126,7 @@ const EditEstimate = () => {
                       <input
                         className="form-control datetimepicker"
                         type="date"
-                        defaultValue="2019/05/27"
+                        defaultValue="2021/05/27"
                       />
                     </div>
                   </div>

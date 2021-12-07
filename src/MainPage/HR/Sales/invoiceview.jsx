@@ -44,7 +44,7 @@ const Invoiceview = () => {
                   <div className="col-sm-6 m-b-20">
                     <img src={Applogo} className="inv-logo" alt="" />
                     <ul className="list-unstyled">
-                      <li>Dreamguy's Technologies</li>
+                      <li>Oboroi Real Estates</li>
                       <li>3864 Quiet Valley Lane,</li>
                       <li>Sherman Oaks, CA, 91403</li>
                       <li>GST No:</li>
@@ -55,10 +55,10 @@ const Invoiceview = () => {
                       <h3 className="text-uppercase">Invoice #INV-0001</h3>
                       <ul className="list-unstyled">
                         <li>
-                          Date: <span>March 12, 2019</span>
+                          Date: <span>March 12, 2021</span>
                         </li>
                         <li>
-                          Due date: <span>April 25, 2019</span>
+                          Due date: <span>April 25, 2021</span>
                         </li>
                       </ul>
                     </div>
@@ -74,7 +74,7 @@ const Invoiceview = () => {
                         </h5>
                       </li>
                       <li>
-                        <span>Global Technologies</span>
+                        <span>Sunteck Realty Ltd</span>
                       </li>
                       <li>5754 Airport Rd</li>
                       <li>Coosada, AL, 36020</li>
@@ -90,7 +90,7 @@ const Invoiceview = () => {
                     <ul className="list-unstyled invoice-payment-details">
                       <li>
                         <h5>
-                          Total Due: <span className="text-right">$8,750</span>
+                          Total Due: <span className="text-right">₹8,750</span>
                         </h5>
                       </li>
                       <li>
@@ -134,20 +134,20 @@ const Invoiceview = () => {
                           Lorem ipsum dolor sit amet, consectetur adipiscing
                           elit
                         </td>
-                        <td>$1000</td>
+                        <td>₹1000</td>
                         <td>2</td>
-                        <td className="text-right">$2000</td>
+                        <td className="text-right">₹2000</td>
                       </tr>
                       <tr>
                         <td>2</td>
-                        <td>Ios Application</td>
+                        <td>Marketing Application</td>
                         <td className="d-none d-sm-table-cell">
                           Lorem ipsum dolor sit amet, consectetur adipiscing
                           elit
                         </td>
-                        <td>$1750</td>
+                        <td>₹1750</td>
                         <td>1</td>
-                        <td className="text-right">$1750</td>
+                        <td className="text-right">₹1750</td>
                       </tr>
                       <tr>
                         <td>3</td>
@@ -156,9 +156,9 @@ const Invoiceview = () => {
                           Lorem ipsum dolor sit amet, consectetur adipiscing
                           elit
                         </td>
-                        <td>$90</td>
+                        <td>₹90</td>
                         <td>3</td>
-                        <td className="text-right">$270</td>
+                        <td className="text-right">₹270</td>
                       </tr>
                       <tr>
                         <td>4</td>
@@ -167,9 +167,9 @@ const Invoiceview = () => {
                           Lorem ipsum dolor sit amet, consectetur adipiscing
                           elit
                         </td>
-                        <td>$1200</td>
+                        <td>₹1200</td>
                         <td>2</td>
-                        <td className="text-right">$2400</td>
+                        <td className="text-right">₹2400</td>
                       </tr>
                       <tr>
                         <td>5</td>
@@ -178,9 +178,9 @@ const Invoiceview = () => {
                           Lorem ipsum dolor sit amet, consectetur adipiscing
                           elit
                         </td>
-                        <td>$200</td>
+                        <td>₹200</td>
                         <td>2</td>
-                        <td className="text-right">$400</td>
+                        <td className="text-right">₹400</td>
                       </tr>
                     </tbody>
                   </table>
@@ -195,19 +195,19 @@ const Invoiceview = () => {
                             <tbody>
                               <tr>
                                 <th>Subtotal:</th>
-                                <td className="text-right">$7,000</td>
+                                <td className="text-right">₹7,000</td>
                               </tr>
                               <tr>
                                 <th>
                                   Tax:{' '}
                                   <span className="text-regular">(25%)</span>
                                 </th>
-                                <td className="text-right">$1,750</td>
+                                <td className="text-right">₹1,750</td>
                               </tr>
                               <tr>
                                 <th>Total:</th>
                                 <td className="text-right text-primary">
-                                  <h5>$8,750</h5>
+                                  <h5>₹8,750</h5>
                                 </td>
                               </tr>
                             </tbody>

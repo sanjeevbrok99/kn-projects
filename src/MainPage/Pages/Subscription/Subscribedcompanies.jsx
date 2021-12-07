@@ -102,16 +102,16 @@ const SubscribedCompany = () => {
                           <img src={Avatar_19} alt="" />
                         </Link>
                         <Link to="/app/profile/client-profile">
-                          Global Technologies
+                          Sunteck Realty Ltd
                         </Link>
                       </h2>
                     </td>
                     <td>Free Trial</td>
                     <td>30</td>
                     <td>6 Months</td>
-                    <td>15 Feb 2019</td>
-                    <td>14 Jul 2019</td>
-                    <td>$200</td>
+                    <td>15 Feb 2021</td>
+                    <td>14 Jul 2021</td>
+                    <td>₹200</td>
                     <td>
                       <span className="badge bg-inverse-success">Active</span>
                     </td>
@@ -152,16 +152,16 @@ const SubscribedCompany = () => {
                           <img src={Avatar_29} alt="" />
                         </Link>
                         <Link to="/app/profile/client-profile">
-                          Delta Infotech
+                          Godrej Properties Ltd
                         </Link>
                       </h2>
                     </td>
                     <td>Premium</td>
                     <td>50</td>
                     <td>1 Year</td>
-                    <td>15 Feb 2019</td>
+                    <td>15 Feb 2021</td>
                     <td>14 Feb 2020</td>
-                    <td>$200</td>
+                    <td>₹200</td>
                     <td>
                       <span className="badge bg-inverse-danger">Expired</span>
                     </td>
@@ -202,13 +202,15 @@ const SubscribedCompany = () => {
                         >
                           <img alt="" src={Avatar_07} />
                         </Link>
-                        <Link to="/app/profile/client-profile">Cream Inc</Link>
+                        <Link to="/app/profile/client-profile">
+                          Oberoi Realty
+                        </Link>
                       </h2>
                     </td>
                     <td>Professional</td>
                     <td>10</td>
                     <td>1 Month</td>
-                    <td>15 Feb 2019</td>
+                    <td>15 Feb 2021</td>
                     <td>14 Feb 2020</td>
                     <td>Free</td>
                     <td>
@@ -259,7 +261,7 @@ const SubscribedCompany = () => {
                     <td>Enterprise</td>
                     <td>10</td>
                     <td>1 Month</td>
-                    <td>15 Feb 2019</td>
+                    <td>15 Feb 2021</td>
                     <td>14 Feb 2020</td>
                     <td>Free</td>
                     <td>
@@ -310,7 +312,7 @@ const SubscribedCompany = () => {
                     <td>Free Trial</td>
                     <td>10</td>
                     <td>1 Year</td>
-                    <td>15 Feb 2019</td>
+                    <td>15 Feb 2021</td>
                     <td>14 Feb 2020</td>
                     <td>Free</td>
                     <td>
@@ -361,7 +363,7 @@ const SubscribedCompany = () => {
                     <td>Enterprise</td>
                     <td>10</td>
                     <td>1 Month</td>
-                    <td>15 Feb 2019</td>
+                    <td>15 Feb 2021</td>
                     <td>14 Feb 2020</td>
                     <td>Free</td>
                     <td>
@@ -405,14 +407,14 @@ const SubscribedCompany = () => {
                           <img src={Avatar_28} alt="" />
                         </Link>
                         <Link to="/app/profile/client-profile">
-                          Mercury Software Inc
+                          Sherwani Legacy
                         </Link>
                       </h2>
                     </td>
                     <td>Professional</td>
                     <td>10</td>
                     <td>1 Year</td>
-                    <td>15 Feb 2019</td>
+                    <td>15 Feb 2021</td>
                     <td>14 Feb 2020</td>
                     <td>Free</td>
                     <td>

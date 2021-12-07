@@ -111,13 +111,13 @@ const JobsDashboard = () => {
                           </span>
                         </li>
                         <li className="list-group-item list-group-item-action">
-                          Android Developer{' '}
+                          Product Manager{' '}
                           <span className="float-right text-sm text-muted">
                             1 Days ago
                           </span>
                         </li>
                         <li className="list-group-item list-group-item-action">
-                          IOS Developer
+                          Marketing Head
                           <span className="float-right text-sm text-muted">
                             2 Days ago
                           </span>
@@ -176,18 +176,18 @@ const JobsDashboard = () => {
                                 <img src={Avatar_02} />
                               </Link>
                               <Link to="/app/profile/employee-profile/profile">
-                                John Doe <span>Web Designer</span>
+                                Prateek Tiwari <span>CIO</span>
                               </Link>
                             </h2>
                           </td>
                           <td>
                             <Link to="/app/administrator/job-details">
-                              Web Developer
+                              Product Manager
                             </Link>
                           </td>
                           <td>Development</td>
-                          <td>3 Mar 2019</td>
-                          <td>31 May 2019</td>
+                          <td>3 Mar 2021</td>
+                          <td>31 May 2021</td>
                           <td className="text-center">
                             <div className="dropdown action-label">
                               <a
@@ -297,18 +297,16 @@ const JobsDashboard = () => {
                                 <img src={Avatar_09} />
                               </Link>
                               <Link to="/app/profile/employee-profile/profile">
-                                Richard Miles <span>Web Developer</span>
+                                Shital Agarwal <span>Product Manager</span>
                               </Link>
                             </h2>
                           </td>
                           <td>
-                            <Link to="/app/administrator/job-details">
-                              Web Designer
-                            </Link>
+                            <Link to="/app/administrator/job-details">CIO</Link>
                           </td>
                           <td>Designing</td>
-                          <td>3 Mar 2019</td>
-                          <td>31 May 2019</td>
+                          <td>3 Mar 2021</td>
+                          <td>31 May 2021</td>
                           <td className="text-center">
                             <div className="dropdown action-label">
                               <a
@@ -418,18 +416,18 @@ const JobsDashboard = () => {
                                 <img src={Avatar_10} />
                               </Link>
                               <Link to="/app/profile/employee-profile/profile">
-                                John Smith <span>Android Developer</span>
+                                Harvinder <span>Product Manager</span>
                               </Link>
                             </h2>
                           </td>
                           <td>
                             <Link to="/app/administrator/job-details">
-                              Android Developer
+                              Product Manager
                             </Link>
                           </td>
                           <td>Android</td>
-                          <td>3 Mar 2019</td>
-                          <td>31 May 2019</td>
+                          <td>3 Mar 2021</td>
+                          <td>31 May 2021</td>
                           <td className="text-center">
                             <div className="dropdown action-label">
                               <a
@@ -565,14 +563,12 @@ const JobsDashboard = () => {
                                 <img src={Avatar_02} />
                               </Link>
                               <Link to="/app/profile/employee-profile/profile">
-                                John Doe <span>Web Designer</span>
+                                Prateek Tiwari <span>CIO</span>
                               </Link>
                             </h2>
                           </td>
                           <td>
-                            <Link to="/app/administrator/job-details">
-                              Web Designer
-                            </Link>
+                            <Link to="/app/administrator/job-details">CIO</Link>
                           </td>
                           <td>Department</td>
                           <td className="text-center">
@@ -598,13 +594,13 @@ const JobsDashboard = () => {
                                 <img src={Avatar_09} />
                               </Link>
                               <Link to="/app/profile/employee-profile/profile">
-                                Richard Miles <span>Web Developer</span>
+                                Shital Agarwal <span>Product Manager</span>
                               </Link>
                             </h2>
                           </td>
                           <td>
                             <Link to="/app/administrator/job-details">
-                              Web Developer
+                              Product Manager
                             </Link>
                           </td>
                           <td>Department</td>
@@ -631,13 +627,13 @@ const JobsDashboard = () => {
                                 <img src={Avatar_10} />
                               </Link>
                               <Link to="/app/profile/employee-profile/profile">
-                                John Smith <span>Android Developer</span>
+                                Harvinder <span>Product Manager</span>
                               </Link>
                             </h2>
                           </td>
                           <td>
                             <Link to="/app/administrator/job-details">
-                              Android Developer
+                              Product Manager
                             </Link>
                           </td>
                           <td>Department</td>
