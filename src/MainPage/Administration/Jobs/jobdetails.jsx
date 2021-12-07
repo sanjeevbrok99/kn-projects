@@ -233,7 +233,7 @@ const Jobdetails = () => {
                       <label>Department</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Web Development</option>
+                        <option>Marketing Head</option>
                         <option>Application Development</option>
                         <option>IT Management</option>
                         <option>Accounts Management</option>

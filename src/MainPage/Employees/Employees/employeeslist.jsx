@@ -380,7 +380,7 @@ const Employeeslist = () => {
                       </label>
                       <select className="select">
                         <option>Select Department</option>
-                        <option>Web Development</option>
+                        <option>Marketing Head</option>
                         <option>IT Management</option>
                         <option>Marketing</option>
                       </select>
@@ -734,7 +734,7 @@ const Employeeslist = () => {
                       </label>
                       <select className="select">
                         <option>Select Department</option>
-                        <option>Web Development</option>
+                        <option>Marketing Head</option>
                         <option>IT Management</option>
                         <option>Marketing</option>
                       </select>

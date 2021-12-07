@@ -193,7 +193,7 @@ const Policies = () => {
                   <label className="col-form-label">Department</label>
                   <select className="select">
                     <option>All Departments</option>
-                    <option>Web Development</option>
+                    <option>Marketing Head</option>
                     <option>Marketing</option>
                     <option>IT Management</option>
                   </select>
@@ -266,7 +266,7 @@ const Policies = () => {
                   <label className="col-form-label">Department</label>
                   <select className="select">
                     <option>All Departments</option>
-                    <option>Web Development</option>
+                    <option>Marketing Head</option>
                     <option>Marketing</option>
                     <option>IT Management</option>
                   </select>

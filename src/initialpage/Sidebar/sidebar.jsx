@@ -799,13 +799,6 @@ const Sidebar = (props) => {
               </li>
             )}
             {isAdmin && (
-              <li className={pathname.includes('leads') ? 'active' : ''}>
-                <Link to="/app/employees/leads">
-                  <i className="la la-user-secret" /> <span>Leads</span>
-                </Link>
-              </li>
-            )}
-            {isAdmin && (
               <>
                 <li
                   className={
@@ -819,6 +812,96 @@ const Sidebar = (props) => {
                 <li className={pathname.includes('activities') ? 'active' : ''}>
                   <Link to="/app/administrator/activities">
                     <i className="la la-bell" /> <span>Activities</span>
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {isAdmin && (
+              <li className="menu-title">
+                <span>Accounts</span>
+              </li>
+            )}
+
+            {isAdmin && (
+              <>
+                <li>
+                  <Link
+                    className={
+                      pathname.includes('categories') ||
+                      pathname.includes('sub-category')
+                        ? 'active'
+                        : ''
+                    }
+                    to="/app/accounts/categories"
+                  >
+                    <i class="la la-bars"></i>
+                    <span>Categories</span>
+                  </Link>
+                </li>
+                <li className="submenu">
+                  <a href="#">
+                    <i className="las la-money-bill-wave"></i>{' '}
+                    <span> Budgets </span> <span className="menu-arrow" />
+                  </a>
+                  <ul style={{ display: 'none' }}>
+                    <li>
+                      <Link
+                        className={pathname.includes('budgets') ? 'active' : ''}
+                        to="/app/accounts/budgets"
+                      >
+                        All
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('budget-expenses') ? 'active' : ''
+                        }
+                        to="/app/accounts/budget-expenses"
+                      >
+                        Expenses
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('budget-revenues') ? 'active' : ''
+                        }
+                        to="/app/accounts/budget-revenues"
+                      >
+                        Revenues
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <Link
+                    className={pathname.includes('expenses') ? 'active' : ''}
+                    to="/app/sales/expenses"
+                  >
+                    <i className="las la-file-invoice"></i>
+                    <span>Expenses</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={
+                      pathname.includes('provident-fund') ? 'active' : ''
+                    }
+                    to="/app/sales/provident-fund"
+                  >
+                    <i className="las la-wallet"></i>
+                    <span>Provident Fund</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={pathname.includes('taxes') ? 'active' : ''}
+                    to="/app/sales/taxes"
+                  >
+                    <i className="las la-file-invoice-dollar"></i>
+                    <span>Taxes</span>
                   </Link>
                 </li>
               </>
@@ -861,33 +944,14 @@ const Sidebar = (props) => {
                       Payments
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('expenses') ? 'active' : ''}
-                      to="/app/sales/expenses"
-                    >
-                      Expenses
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('provident-fund') ? 'active' : ''
-                      }
-                      to="/app/sales/provident-fund"
-                    >
-                      Provident Fund
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('taxes') ? 'active' : ''}
-                      to="/app/sales/taxes"
-                    >
-                      Taxes
-                    </Link>
-                  </li>
                 </ul>
+              </li>
+            )}
+            {isAdmin && (
+              <li className={pathname.includes('leads') ? 'active' : ''}>
+                <Link to="/app/employees/leads">
+                  <i className="la la-user-secret" /> <span>Leads</span>
+                </Link>
               </li>
             )}
             {isAdmin && (
@@ -898,7 +962,7 @@ const Sidebar = (props) => {
               </li>
             )}
 
-            {isAdmin && (
+            {/* {isAdmin && (
               <li className="submenu">
                 <a href="#">
                   <i className="la la-files-o" /> <span> Accounting </span>{' '}
@@ -948,7 +1012,7 @@ const Sidebar = (props) => {
                   </li>
                 </ul>
               </li>
-            )}
+            )} */}
 
             <li className="menu-title">
               <span>Support</span>

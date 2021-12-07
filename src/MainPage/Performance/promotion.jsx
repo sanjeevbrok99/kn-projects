@@ -18,7 +18,7 @@ const Promotion = () => {
       id: 1,
       image: Avatar_02,
       name: 'Prateek Tiwari',
-      department: 'Web Development',
+      department: 'Marketing Head',
       promotiondesignationfrom: 'Product Manager',
       promotiondesignationto: 'Sr Product Manager',
       promotiondate: '09 Jan 2021',

@@ -136,7 +136,7 @@ const Designations = () => {
                   <tr>
                     <td>1</td>
                     <td>CIO</td>
-                    <td>Web Development</td>
+                    <td>Marketing Head</td>
                     <td className="text-right">
                       <div className="dropdown dropdown-action">
                         <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
@@ -150,7 +150,7 @@ const Designations = () => {
                   <tr>
                     <td>2</td>
                     <td>Product Manager</td>
-                    <td>Web Development</td>
+                    <td>Marketing Head</td>
                     <td className="text-right">
                       <div className="dropdown dropdown-action">
                         <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
@@ -383,7 +383,7 @@ const Designations = () => {
                   </label>
                   <select className="select">
                     <option>Select Department</option>
-                    <option>Web Development</option>
+                    <option>Marketing Head</option>
                     <option>IT Management</option>
                     <option> Marketing</option>
                   </select>
@@ -434,7 +434,7 @@ const Designations = () => {
                   </label>
                   <select className="select">
                     <option>Select Department</option>
-                    <option>Web Development</option>
+                    <option>Marketing Head</option>
                     <option>IT Management</option>
                     <option>Marketing</option>
                   </select>
