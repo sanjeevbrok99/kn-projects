@@ -240,7 +240,7 @@ const Offerapproval = () => {
                         <label>Department</label>
                         <select className="select">
                           <option>-</option>
-                          <option selected>Web Development</option>
+                          <option selected>Marketing Head</option>
                           <option>Application Development</option>
                           <option>IT Management</option>
                           <option>Accounts Management</option>
