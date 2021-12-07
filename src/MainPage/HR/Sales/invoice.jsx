@@ -12,18 +12,18 @@ const Invoices = () => {
     {
       id: 1,
       invoicenumber: 'INV-0001',
-      client: '	Global Technologies',
-      createddate: '11 Mar 2019',
-      duedate: '11 Mar 2019',
+      client: '	Sunteck Realty Ltd',
+      createddate: '11 Mar 2021',
+      duedate: '11 Mar 2021',
       amount: '2099',
       status: 'Paid',
     },
     {
       id: 2,
       invoicenumber: 'INV-0002',
-      client: 'Delta Infotech',
-      createddate: '11 Mar 2019',
-      duedate: '11 Mar 2019',
+      client: 'Godrej Properties Ltd',
+      createddate: '11 Mar 2021',
+      duedate: '11 Mar 2021',
       amount: '2099',
       status: 'Sent',
     },
@@ -70,7 +70,7 @@ const Invoices = () => {
     {
       title: 'Amount',
       dataIndex: 'amount',
-      render: (text, record) => <span>$ {text}</span>,
+      render: (text, record) => <span>₹ {text}</span>,
       sorter: (a, b) => a.amount.length - b.amount.length,
     },
     {

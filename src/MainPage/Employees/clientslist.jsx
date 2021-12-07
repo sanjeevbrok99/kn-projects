@@ -13,7 +13,7 @@ const Clients = () => {
     {
       id: 1,
       image: Avatar_07,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       client_id: 'CLT-0001',
       contactperson: 'Barry Cuda',
       email: 'barrycuda@example.com',
@@ -197,8 +197,8 @@ const Clients = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Company</option>
-                <option>Global Technologies</option>
-                <option>Delta Infotech</option>
+                <option>Sunteck Realty Ltd</option>
+                <option>Godrej Properties Ltd</option>
               </select>
               <label className="focus-label">Company</label>
             </div>
@@ -587,7 +587,7 @@ const Clients = () => {
                       <input
                         className="form-control"
                         type="text"
-                        defaultValue="Global Technologies"
+                        defaultValue="Sunteck Realty Ltd"
                       />
                     </div>
                   </div>

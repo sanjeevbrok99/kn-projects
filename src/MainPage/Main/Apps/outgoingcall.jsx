@@ -20,7 +20,7 @@ const OutgoingCall = () => {
           <div className="call-inner">
             <div className="call-user">
               <img alt="" src={Avatar_02} className="call-avatar" />
-              <h4>John Doe</h4>
+              <h4>Prateek Tiwari</h4>
               <span>Connecting...</span>
             </div>
             <div className="call-items">

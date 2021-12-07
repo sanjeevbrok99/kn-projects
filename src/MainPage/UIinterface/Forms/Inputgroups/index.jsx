@@ -98,7 +98,7 @@ const Inputgrp = () => {
                     <div className="col-lg-10">
                       <div className="input-group">
                         <div className="input-group-prepend">
-                          <span className="input-group-text">$</span>
+                          <span className="input-group-text">₹</span>
                         </div>
                         <input type="text" className="form-control" />
                         <div className="input-group-append">
@@ -114,7 +114,7 @@ const Inputgrp = () => {
                     <div className="col-lg-10">
                       <div className="input-group">
                         <div className="input-group-prepend">
-                          <span className="input-group-text">$</span>
+                          <span className="input-group-text">₹</span>
                         </div>
                         <div className="input-group-prepend">
                           <span className="input-group-text">0.00</span>
@@ -248,7 +248,7 @@ const Inputgrp = () => {
                           </span>
                         </div>
                         <div className="input-group-prepend">
-                          <span className="input-group-text">$</span>
+                          <span className="input-group-text">₹</span>
                         </div>
                         <input type="text" className="form-control" />
                       </div>
@@ -261,7 +261,7 @@ const Inputgrp = () => {
                     <div className="col-lg-10">
                       <div className="input-group">
                         <div className="input-group-prepend">
-                          <span className="input-group-text">$</span>
+                          <span className="input-group-text">₹</span>
                         </div>
                         <div className="input-group-prepend">
                           <span className="input-group-text">0.00</span>

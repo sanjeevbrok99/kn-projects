@@ -20,8 +20,8 @@ const GoalTracking = () => {
       type: 'Event Goal',
       progress: 73,
       subject: 'Test Goal',
-      startdate: '7 May 2019',
-      enddate: '10 May 2019',
+      startdate: '7 May 2021',
+      enddate: '10 May 2021',
     },
     {
       id: 2,
@@ -30,8 +30,8 @@ const GoalTracking = () => {
       type: 'Invoice Goal',
       progress: 100,
       subject: 'Test Goal',
-      startdate: '7 May 2019',
-      enddate: '10 May 2019',
+      startdate: '7 May 2021',
+      enddate: '10 May 2021',
     },
     {
       id: 3,
@@ -40,8 +40,8 @@ const GoalTracking = () => {
       type: 'Project Goal',
       progress: 73,
       subject: 'Test Goal',
-      startdate: '7 May 2019',
-      enddate: '10 May 2019',
+      startdate: '7 May 2021',
+      enddate: '10 May 2021',
     },
     {
       id: 4,
@@ -50,8 +50,8 @@ const GoalTracking = () => {
       type: 'Employee Goal',
       progress: 73,
       subject: 'Test Goal',
-      startdate: '7 May 2019',
-      enddate: '10 May 2019',
+      startdate: '7 May 2021',
+      enddate: '10 May 2021',
     },
     {
       id: 5,
@@ -60,8 +60,8 @@ const GoalTracking = () => {
       type: 'Invoice  Goal',
       progress: 73,
       subject: 'Test Goal',
-      startdate: '7 May 2019',
-      enddate: '10 May 2019',
+      startdate: '7 May 2021',
+      enddate: '10 May 2021',
     },
   ]);
   useEffect(() => {
@@ -404,7 +404,7 @@ const GoalTracking = () => {
                       <div>
                         <input
                           className="form-control datetimepicker"
-                          defaultValue="01-01-2019"
+                          defaultValue="01-01-2021"
                           type="date"
                         />
                       </div>
@@ -418,7 +418,7 @@ const GoalTracking = () => {
                       <div>
                         <input
                           className="form-control datetimepicker"
-                          defaultValue="01-01-2019"
+                          defaultValue="01-01-2021"
                           type="date"
                         />
                       </div>

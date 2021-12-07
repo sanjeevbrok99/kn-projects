@@ -38,11 +38,11 @@ const AttendanceEmployee = () => {
             <div className="card punch-status">
               <div className="card-body">
                 <h5 className="card-title">
-                  Timesheet <small className="text-muted">11 Mar 2019</small>
+                  Timesheet <small className="text-muted">11 Mar 2021</small>
                 </h5>
                 <div className="punch-det">
                   <h6>Punch In at</h6>
-                  <p>Wed, 11th Mar 2019 10.00 AM</p>
+                  <p>Wed, 11th Mar 2021 10.00 AM</p>
                 </div>
                 <div className="punch-info">
                   <div className="punch-hours">
@@ -258,7 +258,7 @@ const AttendanceEmployee = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>-</option>
-                <option>2019</option>
+                <option>2021</option>
                 <option>2018</option>
                 <option>2017</option>
                 <option>2016</option>
@@ -293,7 +293,7 @@ const AttendanceEmployee = () => {
                 <tbody>
                   <tr>
                     <td>1</td>
-                    <td>19 Feb 2019</td>
+                    <td>19 Feb 2021</td>
                     <td>10 AM</td>
                     <td>7 PM</td>
                     <td>9 hrs</td>
@@ -302,7 +302,7 @@ const AttendanceEmployee = () => {
                   </tr>
                   <tr>
                     <td>2</td>
-                    <td>20 Feb 2019</td>
+                    <td>20 Feb 2021</td>
                     <td>10 AM</td>
                     <td>7 PM</td>
                     <td>9 hrs</td>

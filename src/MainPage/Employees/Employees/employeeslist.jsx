@@ -115,7 +115,7 @@ const Employeeslist = () => {
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            Web Developer{' '}
+            Product Manager{' '}
           </a>
           <div className="dropdown-menu">
             <a className="dropdown-item" href="#">
@@ -233,10 +233,10 @@ const Employeeslist = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Designation</option>
-                <option>Web Developer</option>
-                <option>Web Designer</option>
-                <option>Android Developer</option>
-                <option>Ios Developer</option>
+                <option>Product Manager</option>
+                <option>CIO</option>
+                <option>Product Manager</option>
+                <option>Marketing Head</option>
               </select>
               <label className="focus-label">Designation</label>
             </div>
@@ -368,8 +368,8 @@ const Employeeslist = () => {
                     <div className="form-group">
                       <label className="col-form-label">Company</label>
                       <select className="select">
-                        <option value>Global Technologies</option>
-                        <option value={1}>Delta Infotech</option>
+                        <option value>Sunteck Realty Ltd</option>
+                        <option value={1}>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>
@@ -393,9 +393,9 @@ const Employeeslist = () => {
                       </label>
                       <select className="select">
                         <option>Select Designation</option>
-                        <option>Web Designer</option>
-                        <option>Web Developer</option>
-                        <option>Android Developer</option>
+                        <option>CIO</option>
+                        <option>Product Manager</option>
+                        <option>Product Manager</option>
                       </select>
                     </div>
                   </div>
@@ -721,8 +721,8 @@ const Employeeslist = () => {
                     <div className="form-group">
                       <label className="col-form-label">Company</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                         <option>International Software Inc</option>
                       </select>
                     </div>
@@ -747,9 +747,9 @@ const Employeeslist = () => {
                       </label>
                       <select className="select">
                         <option>Select Designation</option>
-                        <option>Web Designer</option>
-                        <option>Web Developer</option>
-                        <option>Android Developer</option>
+                        <option>CIO</option>
+                        <option>Product Manager</option>
+                        <option>Product Manager</option>
                       </select>
                     </div>
                   </div>

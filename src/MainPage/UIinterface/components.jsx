@@ -46,7 +46,7 @@ const UIComponents = () => {
         {/* /Logo */}
         {/* Header Title */}
         <div className="page-title-box">
-          <h3>Dreamguy's Technologies</h3>
+          <h3>Oboroi Real Estates</h3>
         </div>
         {/* /Header Title */}
         <a id="mobile_btn" className="mobile_btn" href="#sidebar">
@@ -127,8 +127,8 @@ const UIComponents = () => {
                         </span>
                         <div className="media-body">
                           <p className="noti-details">
-                            <span className="noti-title">John Doe</span> added
-                            new task{' '}
+                            <span className="noti-title">Prateek Tiwari</span>{' '}
+                            added new task{' '}
                             <span className="noti-title">
                               Patient appointment booking
                             </span>
@@ -222,7 +222,7 @@ const UIComponents = () => {
                         </span>
                         <div className="media-body">
                           <p className="noti-details">
-                            <span className="noti-title">Bernardo Galaviz</span>{' '}
+                            <span className="noti-title">Marathi Manush</span>{' '}
                             added new task{' '}
                             <span className="noti-title">
                               Private chat module
@@ -279,7 +279,9 @@ const UIComponents = () => {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">Richard Miles </span>
+                          <span className="message-author">
+                            Shital Agarwal{' '}
+                          </span>
                           <span className="message-time">12:28 AM</span>
                           <div className="clearfix" />
                           <span className="message-content">
@@ -301,7 +303,7 @@ const UIComponents = () => {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">John Doe</span>
+                          <span className="message-author">Prateek Tiwari</span>
                           <span className="message-time">6 Mar</span>
                           <div className="clearfix" />
                           <span className="message-content">
@@ -348,7 +350,7 @@ const UIComponents = () => {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">Mike Litorus</span>
+                          <span className="message-author">Shreya Singh</span>
                           <span className="message-time">3 Mar</span>
                           <div className="clearfix" />
                           <span className="message-content">
@@ -370,10 +372,7 @@ const UIComponents = () => {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">
-                            {' '}
-                            Catherine Manseau{' '}
-                          </span>
+                          <span className="message-author"> Chinki Singh </span>
                           <span className="message-time">27 Feb</span>
                           <div className="clearfix" />
                           <span className="message-content">

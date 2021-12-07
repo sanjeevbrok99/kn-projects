@@ -29,56 +29,56 @@ const Users = () => {
   const [data, setData] = useState([
     {
       id: 1,
-      name: 'Bernardo Galaviz',
+      name: 'Marathi Manush',
       image: Avatar_01,
       email: 'bernardogalaviz@example.com',
-      company: 'Global Technologies',
-      created_date: '5 Jan 2019',
+      company: 'Sunteck Realty Ltd',
+      created_date: '5 Jan 2021',
       role: 'Client',
     },
     {
       id: 2,
-      name: 'Catherine Manseau',
+      name: 'Chinki Singh',
       image: Avatar_02,
       email: 'catherinemanseau@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '5 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '5 Jan 2021',
       role: 'Admin',
     },
     {
       id: 3,
-      name: 'Jeffery Lalor',
+      name: 'Sushmita Singh',
       image: Avatar_03,
       email: 'jefferrylalorr@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '5 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '5 Jan 2021',
       role: 'Employee',
     },
     {
       id: 4,
-      name: 'Jeffrey Warden',
+      name: 'Yash Singh',
       image: Avatar_04,
       email: 'jeffreywarden@example.com',
-      company: 'Global Technologies',
-      created_date: '5 Jan 2019',
+      company: 'Sunteck Realty Ltd',
+      created_date: '5 Jan 2021',
       role: 'Client',
     },
     {
       id: 5,
-      name: 'John Due',
+      name: 'Hritvik Singh',
       image: Avatar_05,
       email: 'johndue@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '14 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '14 Jan 2021',
       role: 'Employee',
     },
     {
       id: 6,
-      name: 'John Smith',
+      name: 'Harvinder',
       image: Avatar_06,
       email: 'johnsmith@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '14 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '14 Jan 2021',
       role: 'Employee',
     },
     {
@@ -86,35 +86,35 @@ const Users = () => {
       name: 'Lesley Grauer',
       image: Avatar_07,
       email: 'lesleygrauer@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '14 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '14 Jan 2021',
       role: 'Employee',
     },
     {
       id: 8,
-      name: 'Loren Gatlin',
+      name: 'Kamla Singh',
       image: Avatar_08,
       email: 'lorengatlin@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '14 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '14 Jan 2021',
       role: 'Employee',
     },
     {
       id: 9,
-      name: 'Mike Litorus',
+      name: 'Shreya Singh',
       image: Avatar_09,
       email: 'mikelitorus@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '14 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '14 Jan 2021',
       role: 'Employee',
     },
     {
       id: 10,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       image: Avatar_10,
       email: 'richardmiles@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '14 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '14 Jan 2021',
       role: 'Employee',
     },
     {
@@ -122,8 +122,8 @@ const Users = () => {
       name: 'Tarah Shropshire',
       image: Avatar_11,
       email: 'tarahshropshire@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '14 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '14 Jan 2021',
       role: 'Employee',
     },
     {
@@ -131,8 +131,8 @@ const Users = () => {
       name: 'Wilmer Deluna',
       image: Avatar_12,
       email: 'wilmerdeluna@example.com',
-      company: "Dreamguy's Technologies",
-      created_date: '14 Jan 2019',
+      company: 'Oboroi Real Estates',
+      created_date: '14 Jan 2021',
       role: 'Employee',
     },
   ]);
@@ -273,8 +273,8 @@ const Users = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Company</option>
-                <option>Global Technologies</option>
-                <option>Delta Infotech</option>
+                <option>Sunteck Realty Ltd</option>
+                <option>Godrej Properties Ltd</option>
               </select>
               <label className="focus-label">Company</label>
             </div>
@@ -283,10 +283,10 @@ const Users = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Roll</option>
-                <option>Web Developer</option>
-                <option>Web Designer</option>
-                <option>Android Developer</option>
-                <option>Ios Developer</option>
+                <option>Product Manager</option>
+                <option>CIO</option>
+                <option>Product Manager</option>
+                <option>Marketing Head</option>
               </select>
               <label className="focus-label">Role</label>
             </div>
@@ -407,8 +407,8 @@ const Users = () => {
                     <div className="form-group">
                       <label>Company</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>
@@ -634,8 +634,8 @@ const Users = () => {
                     <div className="form-group">
                       <label>Company</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>

@@ -28,9 +28,9 @@ const TrainingList = () => {
       id: 1,
       trainingtype: 'Node Training',
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       description: 'Lorem ipsum dollar',
-      timeduration: '7 May 2019 - 10 May 2019',
+      timeduration: '7 May 2021 - 10 May 2021',
       status: 'Active',
       cost: '400',
     },
@@ -38,9 +38,9 @@ const TrainingList = () => {
       id: 2,
       trainingtype: 'Git Training',
       image: Avatar_05,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       description: 'Lorem ipsum dollar',
-      timeduration: '7 May 2019 - 10 May 2019',
+      timeduration: '7 May 2021 - 10 May 2021',
       status: 'Active',
       cost: '400',
     },
@@ -48,9 +48,9 @@ const TrainingList = () => {
       id: 3,
       trainingtype: 'Swift Training',
       image: Avatar_11,
-      name: 'John Smith',
+      name: 'Harvinder',
       description: 'Lorem ipsum dollar',
-      timeduration: '7 May 2019 - 10 May 2019',
+      timeduration: '7 May 2021 - 10 May 2021',
       status: 'Active',
       cost: '400',
     },
@@ -58,9 +58,9 @@ const TrainingList = () => {
       id: 4,
       trainingtype: 'Html Training',
       image: Avatar_10,
-      name: 'Mike Litorus',
+      name: 'Shreya Singh',
       description: 'Lorem ipsum dollar',
-      timeduration: '7 May 2019 - 10 May 2019',
+      timeduration: '7 May 2021 - 10 May 2021',
       status: 'Inactive',
       cost: '400',
     },
@@ -70,7 +70,7 @@ const TrainingList = () => {
       image: Avatar_09,
       name: 'Wilmer Deluna',
       description: 'Lorem ipsum dollar',
-      timeduration: '7 May 2019 - 10 May 2019',
+      timeduration: '7 May 2021 - 10 May 2021',
       status: 'Inactive',
       cost: '800',
     },
@@ -116,12 +116,12 @@ const TrainingList = () => {
       render: (text, record) => (
         <ul className="team-members">
           <li>
-            <a href="#" title="Bernardo Galaviz" data-toggle="tooltip">
+            <a href="#" title="Marathi Manush" data-toggle="tooltip">
               <img alt="" src={Avatar_10} />
             </a>
           </li>
           <li>
-            <a href="#" title="Richard Miles" data-toggle="tooltip">
+            <a href="#" title="Shital Agarwal" data-toggle="tooltip">
               <img alt="" src={Avatar_09} />
             </a>
           </li>
@@ -209,7 +209,7 @@ const TrainingList = () => {
     {
       title: 'Cost',
       dataIndex: 'cost',
-      render: (text, record) => <span>$ {text}</span>,
+      render: (text, record) => <span>₹ {text}</span>,
       sorter: (a, b) => a.cost.length - b.cost.length,
     },
     {
@@ -367,8 +367,8 @@ const TrainingList = () => {
                     <div className="form-group">
                       <label className="col-form-label">Trainer</label>
                       <select className="select">
-                        <option>Mike Litorus </option>
-                        <option>John Doe</option>
+                        <option>Shreya Singh </option>
+                        <option>Prateek Tiwari</option>
                       </select>
                     </div>
                   </div>
@@ -376,8 +376,8 @@ const TrainingList = () => {
                     <div className="form-group">
                       <label className="col-form-label">Employees</label>
                       <select className="select">
-                        <option>Bernardo Galaviz</option>
-                        <option>Jeffrey Warden</option>
+                        <option>Marathi Manush</option>
+                        <option>Yash Singh</option>
                       </select>
                     </div>
                   </div>
@@ -478,8 +478,8 @@ const TrainingList = () => {
                     <div className="form-group">
                       <label className="col-form-label">Trainer</label>
                       <select className="select">
-                        <option>Mike Litorus </option>
-                        <option>John Doe</option>
+                        <option>Shreya Singh </option>
+                        <option>Prateek Tiwari</option>
                       </select>
                     </div>
                   </div>
@@ -487,8 +487,8 @@ const TrainingList = () => {
                     <div className="form-group">
                       <label className="col-form-label">Employees</label>
                       <select className="select">
-                        <option>Bernardo Galaviz</option>
-                        <option>Jeffrey Warden</option>
+                        <option>Marathi Manush</option>
+                        <option>Yash Singh</option>
                       </select>
                     </div>
                   </div>
@@ -512,7 +512,7 @@ const TrainingList = () => {
                       <div>
                         <input
                           className="form-control datetimepicker"
-                          defaultValue="07-08-2019"
+                          defaultValue="07-08-2021"
                           type="date"
                         />
                       </div>
@@ -526,7 +526,7 @@ const TrainingList = () => {
                       <div>
                         <input
                           className="form-control datetimepicker"
-                          defaultValue="10-08-2019"
+                          defaultValue="10-08-2021"
                           type="date"
                         />
                       </div>

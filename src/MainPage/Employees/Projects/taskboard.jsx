@@ -1052,8 +1052,8 @@ const TaskBoard = () => {
                           <img alt="" src={Avatar_09} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Richard Miles</div>
-                          <span className="designation">Web Developer</span>
+                          <div className="user-name">Shital Agarwal</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -1065,8 +1065,8 @@ const TaskBoard = () => {
                           <img alt="" src={Avatar_10} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">John Smith</div>
-                          <span className="designation">Android Developer</span>
+                          <div className="user-name">Harvinder</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -1078,7 +1078,7 @@ const TaskBoard = () => {
                           <img alt="" src={Avatar_16} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                       </div>
@@ -1129,8 +1129,8 @@ const TaskBoard = () => {
                           <img alt="" src={Avatar_09} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Richard Miles</div>
-                          <span className="designation">Web Developer</span>
+                          <div className="user-name">Shital Agarwal</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -1142,8 +1142,8 @@ const TaskBoard = () => {
                           <img alt="" src={Avatar_10} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">John Smith</div>
-                          <span className="designation">Android Developer</span>
+                          <div className="user-name">Harvinder</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -1155,7 +1155,7 @@ const TaskBoard = () => {
                           <img alt="" src={Avatar_16} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                       </div>
@@ -1217,41 +1217,41 @@ const TaskBoard = () => {
                     placeholder="Search to add"
                   />
                   <div className="task-follower-list">
-                    <span data-toggle="tooltip" title="John Doe">
+                    <span data-toggle="tooltip" title="Prateek Tiwari">
                       <img
                         src={Avatar_02}
                         className="avatar"
-                        alt="John Doe"
+                        alt="Prateek Tiwari"
                         width={20}
                         height={20}
                       />
                       <i className="fa fa-times" />
                     </span>
-                    <span data-toggle="tooltip" title="Richard Miles">
+                    <span data-toggle="tooltip" title="Shital Agarwal">
                       <img
                         src={Avatar_09}
                         className="avatar"
-                        alt="Richard Miles"
+                        alt="Shital Agarwal"
                         width={20}
                         height={20}
                       />
                       <i className="fa fa-times" />
                     </span>
-                    <span data-toggle="tooltip" title="John Smith">
+                    <span data-toggle="tooltip" title="Harvinder">
                       <img
                         src={Avatar_10}
                         className="avatar"
-                        alt="John Smith"
+                        alt="Harvinder"
                         width={20}
                         height={20}
                       />
                       <i className="fa fa-times" />
                     </span>
-                    <span data-toggle="tooltip" title="Mike Litorus">
+                    <span data-toggle="tooltip" title="Shreya Singh">
                       <img
                         src={Avatar_05}
                         className="avatar"
-                        alt="Mike Litorus"
+                        alt="Shreya Singh"
                         width={20}
                         height={20}
                       />
@@ -1307,7 +1307,7 @@ const TaskBoard = () => {
                     <input
                       className="form-control datetimepicker"
                       type="date"
-                      defaultValue="20/08/2019"
+                      defaultValue="20/08/2021"
                     />
                   </div>
                 </div>
@@ -1319,41 +1319,41 @@ const TaskBoard = () => {
                     placeholder="Search to add"
                   />
                   <div className="task-follower-list">
-                    <span data-toggle="tooltip" title="John Doe">
+                    <span data-toggle="tooltip" title="Prateek Tiwari">
                       <img
                         src={Avatar_02}
                         className="avatar"
-                        alt="John Doe"
+                        alt="Prateek Tiwari"
                         width={20}
                         height={20}
                       />
                       <i className="fa fa-times" />
                     </span>
-                    <span data-toggle="tooltip" title="Richard Miles">
+                    <span data-toggle="tooltip" title="Shital Agarwal">
                       <img
                         src={Avatar_09}
                         className="avatar"
-                        alt="Richard Miles"
+                        alt="Shital Agarwal"
                         width={20}
                         height={20}
                       />
                       <i className="fa fa-times" />
                     </span>
-                    <span data-toggle="tooltip" title="John Smith">
+                    <span data-toggle="tooltip" title="Harvinder">
                       <img
                         src={Avatar_10}
                         className="avatar"
-                        alt="John Smith"
+                        alt="Harvinder"
                         width={20}
                         height={20}
                       />
                       <i className="fa fa-times" />
                     </span>
-                    <span data-toggle="tooltip" title="Mike Litorus">
+                    <span data-toggle="tooltip" title="Shreya Singh">
                       <img
                         src={Avatar_05}
                         className="avatar"
-                        alt="Mike Litorus"
+                        alt="Shreya Singh"
                         width={20}
                         height={20}
                       />

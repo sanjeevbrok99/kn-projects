@@ -18,9 +18,9 @@ const Expenses = () => {
       id: 1,
       item: 'Dell Laptop',
       purchasefrom: 'Amazon',
-      purchasedate: '5 Jan 2019',
+      purchasedate: '5 Jan 2021',
       image: Avatar_04,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       amount: '1215',
       paidby: 'Cash',
       status: 'Active',
@@ -29,9 +29,9 @@ const Expenses = () => {
       id: 2,
       item: 'Mac System',
       purchasefrom: 'Amazon',
-      purchasedate: '5 Jan 2019',
+      purchasedate: '5 Jan 2021',
       image: Avatar_03,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       amount: '1215',
       paidby: 'Cheque',
       status: 'Inactive',
@@ -81,7 +81,7 @@ const Expenses = () => {
     {
       title: 'Amount',
       dataIndex: 'amount',
-      render: (text, record) => <span>$ {text}</span>,
+      render: (text, record) => <span>₹ {text}</span>,
       sorter: (a, b) => a.amount.length - b.amount.length,
     },
 
@@ -201,7 +201,7 @@ const Expenses = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option> -- Select -- </option>
-                <option>Loren Gatlin</option>
+                <option>Kamla Singh</option>
                 <option>Tarah Shropshire</option>
               </select>
               <label className="focus-label">Purchased By</label>

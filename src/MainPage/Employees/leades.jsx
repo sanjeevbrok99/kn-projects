@@ -22,10 +22,10 @@ const Leads = () => {
     {
       id: 1,
       image: Avatar_11,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       email: 'barrycuda@example.com',
       mobile: '9876543210',
-      project: 'Hospital Administration',
+      project: 'Lovely Faculty',
       status: 'Working',
       created: '10 hours ago',
     },
@@ -77,12 +77,12 @@ const Leads = () => {
       render: (text, record) => (
         <ul className="team-members">
           <li>
-            <a href="#" title="John Doe" data-toggle="tooltip">
+            <a href="#" title="Prateek Tiwari" data-toggle="tooltip">
               <img alt="" src={Avatar_02} />
             </a>
           </li>
           <li>
-            <a href="#" title="Richard Miles" data-toggle="tooltip">
+            <a href="#" title="Shital Agarwal" data-toggle="tooltip">
               <img alt="" src={Avatar_09} />
             </a>
           </li>

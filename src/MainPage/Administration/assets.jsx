@@ -11,67 +11,67 @@ const Assets = () => {
   const [data, setData] = useState([
     {
       id: 1,
-      assetuser: 'Bernardo Galaviz',
+      assetuser: 'Marathi Manush',
       assetname: 'Dell Laptop',
       assetid: 'AST-0001',
-      purchasedate: '5 Jan 2019',
+      purchasedate: '5 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '1215',
       status: 'Pending',
     },
     {
       id: 2,
-      assetuser: 'Catherine Manseau',
+      assetuser: 'Chinki Singh',
       assetname: 'Canon Portable Printer',
       assetid: 'AST-0002',
-      purchasedate: '5 Jan 2019',
+      purchasedate: '5 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '1215',
       status: 'Pending',
     },
     {
       id: 3,
-      assetuser: 'Jeffery Lalor',
+      assetuser: 'Sushmita Singh',
       assetname: 'Dell Laptop',
       assetid: 'AST-0003',
-      purchasedate: '5 Jan 2019',
+      purchasedate: '5 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '1215',
       status: 'Pending',
     },
     {
       id: 4,
-      assetuser: 'Jeffrey Warden',
+      assetuser: 'Yash Singh',
       assetname: 'Seagate Harddisk',
       assetid: 'AST-0004',
-      purchasedate: '5 Jan 2019',
+      purchasedate: '5 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '300',
       status: 'Pending',
     },
     {
       id: 5,
-      assetuser: 'John Due',
+      assetuser: 'Hritvik Singh',
       assetname: 'Canon Portable Printer',
       assetid: 'AST-0005',
-      purchasedate: '14 Jan 2019',
+      purchasedate: '14 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '300',
       status: 'Approved',
     },
     {
       id: 6,
-      assetuser: 'John Smith',
+      assetuser: 'Harvinder',
       assetname: 'Seagate Harddisk',
       assetid: 'AST-0006',
-      purchasedate: '14 Jan 2019',
+      purchasedate: '14 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '300',
       status: 'Approved',
     },
@@ -80,42 +80,42 @@ const Assets = () => {
       assetuser: 'Lesley Grauer',
       assetname: 'Dell Laptop',
       assetid: 'AST-0007',
-      purchasedate: '14 Jan 2019',
+      purchasedate: '14 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '300',
       status: 'Approved',
     },
     {
       id: 8,
-      assetuser: 'Loren Gatlin',
+      assetuser: 'Kamla Singh',
       assetname: 'Seagate Harddisk',
       assetid: 'AST-0008',
-      purchasedate: '14 Jan 2019',
+      purchasedate: '14 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '2500',
       status: 'Approved',
     },
     {
       id: 9,
-      assetuser: 'Mike Litorus',
+      assetuser: 'Shreya Singh',
       assetname: 'Canon Portable Printere',
       assetid: 'AST-0009',
-      purchasedate: '14 Jan 2019',
+      purchasedate: '14 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '2500',
       status: 'Returned',
     },
     {
       id: 10,
-      assetuser: 'Richard Miles',
+      assetuser: 'Shital Agarwal',
       assetname: 'Dell Laptop',
       assetid: 'AST-00010',
-      purchasedate: '14 Jan 2019',
+      purchasedate: '14 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '2500',
       status: 'Returned',
     },
@@ -124,9 +124,9 @@ const Assets = () => {
       assetuser: 'Tarah Shropshire',
       assetname: 'Seagate Harddisk',
       assetid: 'AST-00011',
-      purchasedate: '14 Jan 2019',
+      purchasedate: '14 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '2500',
       status: 'Returned',
     },
@@ -135,9 +135,9 @@ const Assets = () => {
       assetuser: 'Wilmer Deluna',
       assetname: 'Canon Portable Printer',
       assetid: 'AST-00012',
-      purchasedate: '14 Jan 2019',
+      purchasedate: '14 Jan 2021',
       warranty: '12 Months',
-      warrantyend: '1 Jan 2013',
+      warrantyend: '1 Jan 2023',
       amount: '2500',
       status: 'Returned',
     },
@@ -189,7 +189,7 @@ const Assets = () => {
     {
       title: 'Amount',
       dataIndex: 'amount',
-      render: (text, record) => <span>$ {text}</span>,
+      render: (text, record) => <span>₹ {text}</span>,
       sorter: (a, b) => a.amount.length - b.amount.length,
     },
     {
@@ -481,8 +481,8 @@ const Assets = () => {
                     <div className="form-group">
                       <label>Asset User</label>
                       <select className="select">
-                        <option>John Doe</option>
-                        <option>Richard Miles</option>
+                        <option>Prateek Tiwari</option>
+                        <option>Shital Agarwal</option>
                       </select>
                     </div>
                   </div>
@@ -629,8 +629,8 @@ const Assets = () => {
                     <div className="form-group">
                       <label>Asset User</label>
                       <select className="select">
-                        <option>John Doe</option>
-                        <option>Richard Miles</option>
+                        <option>Prateek Tiwari</option>
+                        <option>Shital Agarwal</option>
                       </select>
                     </div>
                   </div>

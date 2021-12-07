@@ -115,7 +115,7 @@ const ProjectReport = () => {
                             <img src={Avatar_19} />
                           </Link>
                           <Link to="/app/profile/client-profile">
-                            Global Technologies
+                            Sunteck Realty Ltd
                           </Link>
                         </h2>
                       </td>
@@ -138,7 +138,7 @@ const ProjectReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="John Doe"
+                              data-original-title="Prateek Tiwari"
                             >
                               <img src={Avatar_02} />
                             </a>
@@ -147,7 +147,7 @@ const ProjectReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="Richard Miles"
+                              data-original-title="Shital Agarwal"
                             >
                               <img src={Avatar_09} />
                             </a>
@@ -156,7 +156,7 @@ const ProjectReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="John Smith"
+                              data-original-title="Harvinder"
                             >
                               <img src={Avatar_10} />
                             </a>
@@ -165,7 +165,7 @@ const ProjectReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="Mike Litorus"
+                              data-original-title="Shreya Singh"
                             >
                               <img src={Avatar_05} />
                             </a>
@@ -194,7 +194,7 @@ const ProjectReport = () => {
                             <img src={Avatar_29} />
                           </Link>
                           <Link to="/app/profile/client-profile">
-                            Delta Infotech
+                            Godrej Properties Ltd
                           </Link>
                         </h2>
                       </td>
@@ -214,7 +214,7 @@ const ProjectReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="John Doe"
+                              data-original-title="Prateek Tiwari"
                             >
                               <img src={Avatar_02} />
                             </a>
@@ -223,7 +223,7 @@ const ProjectReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="Richard Miles"
+                              data-original-title="Shital Agarwal"
                             >
                               <img src={Avatar_09} />
                             </a>
@@ -232,7 +232,7 @@ const ProjectReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="John Smith"
+                              data-original-title="Harvinder"
                             >
                               <img src={Avatar_10} />
                             </a>
@@ -241,7 +241,7 @@ const ProjectReport = () => {
                             <a
                               href="#"
                               data-toggle="tooltip"
-                              data-original-title="Mike Litorus"
+                              data-original-title="Shreya Singh"
                             >
                               <img src={Avatar_05} />
                             </a>

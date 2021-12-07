@@ -20,11 +20,11 @@ const Tickets = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       ticketid: 'TKT-0001',
       ticketsubject: 'Internet Issue',
-      createddate: '5 Jan 2019 07:21 AM',
-      lastreply: '5 Jan 2019 11.12 AM	',
+      createddate: '5 Jan 2021 07:21 AM',
+      lastreply: '5 Jan 2021 11.12 AM	',
       priority: 'High',
       status: 'New',
     },
@@ -433,8 +433,8 @@ const Tickets = () => {
                       <label>Assign Staff</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Mike Litorus</option>
-                        <option>John Smith</option>
+                        <option>Shreya Singh</option>
+                        <option>Harvinder</option>
                       </select>
                     </div>
                   </div>
@@ -443,7 +443,7 @@ const Tickets = () => {
                       <label>Client</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Delta Infotech</option>
+                        <option>Godrej Properties Ltd</option>
                         <option>International Software Inc</option>
                       </select>
                     </div>
@@ -479,7 +479,7 @@ const Tickets = () => {
                       <label>Ticket Assignee</label>
                       <div className="project-members">
                         <a
-                          title="John Smith"
+                          title="Harvinder"
                           data-placement="top"
                           data-toggle="tooltip"
                           href="#"
@@ -503,7 +503,7 @@ const Tickets = () => {
                       <label>Ticket Followers</label>
                       <div className="project-members">
                         <a
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"
@@ -511,7 +511,7 @@ const Tickets = () => {
                           <img src={Avatar_09} alt="" />
                         </a>
                         <a
-                          title="John Smith"
+                          title="Harvinder"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"
@@ -519,7 +519,7 @@ const Tickets = () => {
                           <img src={Avatar_10} alt="" />
                         </a>
                         <a
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"
@@ -609,8 +609,8 @@ const Tickets = () => {
                       <label>Assign Staff</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Mike Litorus</option>
-                        <option>John Smith</option>
+                        <option>Shreya Singh</option>
+                        <option>Harvinder</option>
                       </select>
                     </div>
                   </div>
@@ -619,7 +619,7 @@ const Tickets = () => {
                       <label>Client</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Delta Infotech</option>
+                        <option>Godrej Properties Ltd</option>
                         <option>International Software Inc</option>
                       </select>
                     </div>
@@ -655,7 +655,7 @@ const Tickets = () => {
                       <label>Ticket Assignee</label>
                       <div className="project-members">
                         <a
-                          title="John Smith"
+                          title="Harvinder"
                           data-placement="top"
                           data-toggle="tooltip"
                           href="#"
@@ -679,7 +679,7 @@ const Tickets = () => {
                       <label>Ticket Followers</label>
                       <div className="project-members">
                         <a
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"
@@ -687,7 +687,7 @@ const Tickets = () => {
                           <img src={Avatar_09} alt="" />
                         </a>
                         <a
-                          title="John Smith"
+                          title="Harvinder"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"
@@ -695,7 +695,7 @@ const Tickets = () => {
                           <img src={Avatar_10} alt="" />
                         </a>
                         <a
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                           data-toggle="tooltip"
                           href="#"
                           className="avatar"

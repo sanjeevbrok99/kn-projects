@@ -13,17 +13,17 @@ const PayslipReport = () => {
     {
       id: 1,
       image: Avatar_03,
-      name: 'John Doe',
-      role: 'Web Developer',
+      name: 'Prateek Tiwari',
+      role: 'Product Manager',
       amount: '$200',
       paymentmonth: 'Apr',
-      paymentyear: '2019',
+      paymentyear: '2021',
     },
     {
       id: 2,
       image: Avatar_04,
-      name: 'Richard Miles',
-      role: 'Android Developer',
+      name: 'Shital Agarwal',
+      role: 'Product Manager',
       amount: '$300',
       paymentmonth: 'Dec',
       paymentyear: '2020',
@@ -130,7 +130,7 @@ const PayslipReport = () => {
                 <div className="cal-icon">
                   <select className="form-control floating select">
                     <option>2018</option>
-                    <option>2019</option>
+                    <option>2021</option>
                     <option>2020</option>
                   </select>
                 </div>

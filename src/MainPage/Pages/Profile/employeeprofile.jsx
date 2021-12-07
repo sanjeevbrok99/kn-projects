@@ -60,12 +60,14 @@ const EmployeeProfile = () => {
                     <div className="row">
                       <div className="col-md-5">
                         <div className="profile-info-left">
-                          <h3 className="user-name m-t-0 mb-0">John Doe</h3>
+                          <h3 className="user-name m-t-0 mb-0">
+                            Prateek Tiwari
+                          </h3>
                           <h6 className="text-muted">UI/UX Design Team</h6>
-                          <small className="text-muted">Web Designer</small>
+                          <small className="text-muted">CIO</small>
                           <div className="staff-id">Employee ID : FT-0001</div>
                           <div className="small doj text-muted">
-                            Date of Join : 1st Jan 2013
+                            Date of Join : 1st Jan 2023
                           </div>
                           <div className="staff-msg">
                             <Link
@@ -117,7 +119,7 @@ const EmployeeProfile = () => {
                                 </div>
                               </div>
                               <Link to="/app/profile/employee-profile">
-                                Jeffery Lalor
+                                Sushmita Singh
                               </Link>
                             </div>
                           </li>
@@ -254,7 +256,7 @@ const EmployeeProfile = () => {
                     <ul className="personal-info">
                       <li>
                         <div className="title">Name</div>
-                        <div className="text">John Doe</div>
+                        <div className="text">Prateek Tiwari</div>
                       </li>
                       <li>
                         <div className="title">Relationship</div>
@@ -340,7 +342,7 @@ const EmployeeProfile = () => {
                           <tr>
                             <td>Leo</td>
                             <td>Brother</td>
-                            <td>Feb 16th, 2019</td>
+                            <td>Feb 16th, 2021</td>
                             <td>9876543210</td>
                             <td className="text-right">
                               <div className="dropdown dropdown-action">
@@ -443,10 +445,10 @@ const EmployeeProfile = () => {
                           <div className="experience-content">
                             <div className="timeline-content">
                               <a href="/" className="name">
-                                Web Designer at Zen Corporation
+                                CIO at Zen Corporation
                               </a>
                               <span className="time">
-                                Jan 2013 - Present (5 years 2 months)
+                                Jan 2023 - Present (5 years 2 months)
                               </span>
                             </div>
                           </div>
@@ -458,10 +460,10 @@ const EmployeeProfile = () => {
                           <div className="experience-content">
                             <div className="timeline-content">
                               <a href="/" className="name">
-                                Web Designer at Ron-tech
+                                CIO at Ron-tech
                               </a>
                               <span className="time">
-                                Jan 2013 - Present (5 years 2 months)
+                                Jan 2023 - Present (5 years 2 months)
                               </span>
                             </div>
                           </div>
@@ -473,10 +475,10 @@ const EmployeeProfile = () => {
                           <div className="experience-content">
                             <div className="timeline-content">
                               <a href="/" className="name">
-                                Web Designer at Dalt Technology
+                                CIO at Dalt Technology
                               </a>
                               <span className="time">
-                                Jan 2013 - Present (5 years 2 months)
+                                Jan 2023 - Present (5 years 2 months)
                               </span>
                             </div>
                           </div>
@@ -541,7 +543,7 @@ const EmployeeProfile = () => {
                     </p>
                     <div className="pro-deadline m-b-15">
                       <div className="sub-title">Deadline:</div>
-                      <div className="text-muted">17 Apr 2019</div>
+                      <div className="text-muted">17 Apr 2021</div>
                     </div>
                     <div className="project-members m-b-15">
                       <div>Project Leader :</div>
@@ -550,7 +552,7 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -561,7 +563,11 @@ const EmployeeProfile = () => {
                       <div>Team :</div>
                       <ul className="team-members">
                         <li>
-                          <a href="#" data-toggle="tooltip" title="John Doe">
+                          <a
+                            href="#"
+                            data-toggle="tooltip"
+                            title="Prateek Tiwari"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
@@ -569,13 +575,13 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" data-toggle="tooltip" title="John Smith">
+                          <a href="#" data-toggle="tooltip" title="Harvinder">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
@@ -583,7 +589,7 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                           >
                             <img alt="" src={Avatar_05} />
                           </a>
@@ -660,7 +666,7 @@ const EmployeeProfile = () => {
                     </p>
                     <div className="pro-deadline m-b-15">
                       <div className="sub-title">Deadline:</div>
-                      <div className="text-muted">17 Apr 2019</div>
+                      <div className="text-muted">17 Apr 2021</div>
                     </div>
                     <div className="project-members m-b-15">
                       <div>Project Leader :</div>
@@ -669,7 +675,7 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -680,7 +686,11 @@ const EmployeeProfile = () => {
                       <div>Team :</div>
                       <ul className="team-members">
                         <li>
-                          <a href="#" data-toggle="tooltip" title="John Doe">
+                          <a
+                            href="#"
+                            data-toggle="tooltip"
+                            title="Prateek Tiwari"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
@@ -688,13 +698,13 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" data-toggle="tooltip" title="John Smith">
+                          <a href="#" data-toggle="tooltip" title="Harvinder">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
@@ -702,7 +712,7 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                           >
                             <img alt="" src={Avatar_05} />
                           </a>
@@ -779,7 +789,7 @@ const EmployeeProfile = () => {
                     </p>
                     <div className="pro-deadline m-b-15">
                       <div className="sub-title">Deadline:</div>
-                      <div className="text-muted">17 Apr 2019</div>
+                      <div className="text-muted">17 Apr 2021</div>
                     </div>
                     <div className="project-members m-b-15">
                       <div>Project Leader :</div>
@@ -788,7 +798,7 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -799,7 +809,11 @@ const EmployeeProfile = () => {
                       <div>Team :</div>
                       <ul className="team-members">
                         <li>
-                          <a href="#" data-toggle="tooltip" title="John Doe">
+                          <a
+                            href="#"
+                            data-toggle="tooltip"
+                            title="Prateek Tiwari"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
@@ -807,13 +821,13 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" data-toggle="tooltip" title="John Smith">
+                          <a href="#" data-toggle="tooltip" title="Harvinder">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
@@ -821,7 +835,7 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                           >
                             <img alt="" src={Avatar_05} />
                           </a>
@@ -882,7 +896,7 @@ const EmployeeProfile = () => {
                     </div>
                     <h4 className="project-title">
                       <Link to="/app/projects/projects-view">
-                        Hospital Administration
+                        Lovely Faculty
                       </Link>
                     </h4>
                     <small className="block text-ellipsis m-b-15">
@@ -898,7 +912,7 @@ const EmployeeProfile = () => {
                     </p>
                     <div className="pro-deadline m-b-15">
                       <div className="sub-title">Deadline:</div>
-                      <div className="text-muted">17 Apr 2019</div>
+                      <div className="text-muted">17 Apr 2021</div>
                     </div>
                     <div className="project-members m-b-15">
                       <div>Project Leader :</div>
@@ -907,7 +921,7 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Jeffery Lalor"
+                            title="Sushmita Singh"
                           >
                             <img alt="" src={Avatar_16} />
                           </a>
@@ -918,7 +932,11 @@ const EmployeeProfile = () => {
                       <div>Team :</div>
                       <ul className="team-members">
                         <li>
-                          <a href="#" data-toggle="tooltip" title="John Doe">
+                          <a
+                            href="#"
+                            data-toggle="tooltip"
+                            title="Prateek Tiwari"
+                          >
                             <img alt="" src={Avatar_02} />
                           </a>
                         </li>
@@ -926,13 +944,13 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Richard Miles"
+                            title="Shital Agarwal"
                           >
                             <img alt="" src={Avatar_09} />
                           </a>
                         </li>
                         <li>
-                          <a href="#" data-toggle="tooltip" title="John Smith">
+                          <a href="#" data-toggle="tooltip" title="Harvinder">
                             <img alt="" src={Avatar_10} />
                           </a>
                         </li>
@@ -940,7 +958,7 @@ const EmployeeProfile = () => {
                           <a
                             href="#"
                             data-toggle="tooltip"
-                            title="Mike Litorus"
+                            title="Shreya Singh"
                           >
                             <img alt="" src={Avatar_05} />
                           </a>
@@ -1000,7 +1018,7 @@ const EmployeeProfile = () => {
                         </label>
                         <div className="input-group">
                           <div className="input-group-prepend">
-                            <span className="input-group-text">$</span>
+                            <span className="input-group-text">₹</span>
                           </div>
                           <input
                             type="text"
@@ -1382,9 +1400,9 @@ const EmployeeProfile = () => {
                       </label>
                       <select className="select">
                         <option>Select Designation</option>
-                        <option>Web Designer</option>
-                        <option>Web Developer</option>
-                        <option>Android Developer</option>
+                        <option>CIO</option>
+                        <option>Product Manager</option>
+                        <option>Product Manager</option>
                       </select>
                     </div>
                   </div>
@@ -1397,7 +1415,7 @@ const EmployeeProfile = () => {
                         <option>-</option>
                         <option>Wilmer Deluna</option>
                         <option>Lesley Grauer</option>
-                        <option>Jeffery Lalor</option>
+                        <option>Sushmita Singh</option>
                       </select>
                     </div>
                   </div>
@@ -1999,7 +2017,7 @@ const EmployeeProfile = () => {
                             <input
                               type="text"
                               className="form-control floating"
-                              defaultValue="Web Developer"
+                              defaultValue="Product Manager"
                             />
                             <label className="focus-label">Job Position</label>
                           </div>
@@ -2065,7 +2083,7 @@ const EmployeeProfile = () => {
                             <input
                               type="text"
                               className="form-control floating"
-                              defaultValue="Web Developer"
+                              defaultValue="Product Manager"
                             />
                             <label className="focus-label">Job Position</label>
                           </div>

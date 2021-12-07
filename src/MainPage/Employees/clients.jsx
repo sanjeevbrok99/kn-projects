@@ -86,8 +86,8 @@ const Clients = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Company</option>
-                <option>Global Technologies</option>
-                <option>Delta Infotech</option>
+                <option>Sunteck Realty Ltd</option>
+                <option>Godrej Properties Ltd</option>
               </select>
               <label className="focus-label">Company</label>
             </div>
@@ -137,12 +137,10 @@ const Clients = () => {
                 </div>
               </div>
               <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                <Link to="/app/profile/client-profile">
-                  Mercury Software Inc
-                </Link>
+                <Link to="/app/profile/client-profile">Sherwani Legacy</Link>
               </h4>
               <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                <Link to="/app/profile/client-profile">Amanda Warren</Link>
+                <Link to="/app/profile/client-profile">Shreya Justin</Link>
               </h5>
               <div className="small text-muted">CEO</div>
               <Link
@@ -196,10 +194,10 @@ const Clients = () => {
                 </div>
               </div>
               <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                <Link to="/app/profile/client-profile">Carlson Tech</Link>
+                <Link to="/app/profile/client-profile">Verma's Housing</Link>
               </h4>
               <h5 className="user-name m-t-10 mb-0 text-ellipsis">
-                <Link to="/app/profile/client-profile">Betty Carlson</Link>
+                <Link to="/app/profile/client-profile">Vasudev Verma</Link>
               </h5>
               <div className="small text-muted">CEO</div>
               <Link
@@ -571,7 +569,7 @@ const Clients = () => {
                       <input
                         className="form-control"
                         type="text"
-                        defaultValue="Global Technologies"
+                        defaultValue="Sunteck Realty Ltd"
                       />
                     </div>
                   </div>

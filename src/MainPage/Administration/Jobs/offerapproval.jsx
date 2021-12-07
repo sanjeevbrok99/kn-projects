@@ -17,9 +17,9 @@ const Offerapproval = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
-      jobtitle: 'Web Designer',
+      name: 'Prateek Tiwari',
+      role: 'CIO',
+      jobtitle: 'CIO',
       jobtype: 'Temporary',
       pay: '$25000',
       annualip: '15%',
@@ -29,9 +29,9 @@ const Offerapproval = () => {
     {
       id: 2,
       image: Avatar_01,
-      name: 'Richard Miles',
-      role: 'Web Developer',
-      jobtitle: 'Web Developer',
+      name: 'Shital Agarwal',
+      role: 'Product Manager',
+      jobtitle: 'Product Manager',
       jobtype: 'Contract',
       pay: '$25000',
       annualip: '15%',
@@ -41,9 +41,9 @@ const Offerapproval = () => {
     {
       id: 3,
       image: Avatar_03,
-      name: 'John Smith',
-      role: 'Android Developer',
-      jobtitle: 'Android Developer',
+      name: 'Harvinder',
+      role: 'Product Manager',
+      jobtitle: 'Product Manager',
       jobtype: 'Salary',
       pay: '$25000',
       annualip: '15%',
@@ -231,7 +231,7 @@ const Offerapproval = () => {
                         <input
                           className="form-control"
                           type="text"
-                          defaultValue="Web Developer"
+                          defaultValue="Product Manager"
                         />
                       </div>
                     </div>
@@ -348,7 +348,7 @@ const Offerapproval = () => {
                         <input
                           type="text"
                           className="form-control datetimepicker"
-                          defaultValue="3 Mar 2019"
+                          defaultValue="3 Mar 2021"
                         />
                       </div>
                     </div>
@@ -358,7 +358,7 @@ const Offerapproval = () => {
                         <input
                           type="text"
                           className="form-control datetimepicker"
-                          defaultValue="31 May 2019"
+                          defaultValue="31 May 2021"
                         />
                       </div>
                     </div>

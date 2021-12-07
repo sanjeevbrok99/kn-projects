@@ -207,7 +207,7 @@ const LeaveSettings = () => {
                             <a href="#" className="avatar">
                               <img alt="" src={Avatar_02} />
                             </a>
-                            <a href="#">John Doe</a>
+                            <a href="#">Prateek Tiwari</a>
                           </td>
                           <td className="text-right">
                             <div className="dropdown dropdown-action">
@@ -364,7 +364,7 @@ const LeaveSettings = () => {
                             <a href="#" className="avatar">
                               <img alt="" src={Avatar_02} />
                             </a>
-                            <a href="#">John Doe</a>
+                            <a href="#">Prateek Tiwari</a>
                           </td>
                           <td className="text-right">
                             <div className="dropdown dropdown-action">
@@ -668,7 +668,7 @@ const LeaveSettings = () => {
                             <a href="#" className="avatar">
                               <img alt="" src={Avatar_02} />
                             </a>
-                            <a href="#">John Doe</a>
+                            <a href="#">Prateek Tiwari</a>
                           </td>
                           <td className="text-right">
                             <div className="dropdown dropdown-action">
@@ -760,11 +760,11 @@ const LeaveSettings = () => {
                         size={5}
                         multiple="multiple"
                       >
-                        <option value={1}>Bernardo Galaviz </option>
-                        <option value={2}>Jeffrey Warden</option>
-                        <option value={2}>John Doe</option>
-                        <option value={2}>John Smith</option>
-                        <option value={3}>Mike Litorus</option>
+                        <option value={1}>Nitish Kumar</option>
+                        <option value={2}>Yash Singh</option>
+                        <option value={2}>Prateek Tiwari</option>
+                        <option value={2}>Harvinder</option>
+                        <option value={3}>Shreya Singh</option>
                       </select>
                     </div>
                     <div className="multiselect-controls col-lg-2 col-sm-2">
@@ -872,11 +872,11 @@ const LeaveSettings = () => {
                         size={5}
                         multiple="multiple"
                       >
-                        <option value={1}>Bernardo Galaviz </option>
-                        <option value={2}>Jeffrey Warden</option>
-                        <option value={2}>John Doe</option>
-                        <option value={2}>John Smith</option>
-                        <option value={3}>Mike Litorus</option>
+                        <option value={1}>Nitish Kumar</option>
+                        <option value={2}>Yash Singh</option>
+                        <option value={2}>Prateek Tiwari</option>
+                        <option value={2}>Harvinder</option>
+                        <option value={3}>Shreya Singh</option>
                       </select>
                     </div>
                     <div className="multiselect-controls col-lg-2 col-sm-2">

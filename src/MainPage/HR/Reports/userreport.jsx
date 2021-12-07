@@ -87,11 +87,11 @@ const UserReport = () => {
                             <img src={Avatar_19} />
                           </Link>
                           <Link to="/app/profile/employee-profile">
-                            Barry Cuda <span>Global Technologies</span>
+                            Barry Cuda <span>Sunteck Realty Ltd</span>
                           </Link>
                         </h2>
                       </td>
-                      <td>Global Technologies</td>
+                      <td>Sunteck Realty Ltd</td>
                       <td>barrycuda@example.com</td>
                       <td>
                         <span className="badge bg-inverse-info">Client</span>

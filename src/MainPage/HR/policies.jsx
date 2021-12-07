@@ -11,18 +11,18 @@ const Policies = () => {
   const [data, setData] = useState([
     {
       id: 1,
-      policyname: 'John Doe',
+      policyname: 'Prateek Tiwari',
       description: 'Lorem ipsum dollar',
-      department: 'IOS',
-      creatat: '1 Jan 2013',
+      department: 'Project Manager',
+      creatat: '1 Jan 2023',
       status: 'Active',
     },
     {
       id: 2,
-      policyname: 'Richard Miles',
+      policyname: 'Shital Agarwal',
       description: 'Lorem ipsum dollar',
-      department: 'Design',
-      creatat: '18 Mar 2014',
+      department: 'Project Manager',
+      creatat: '18 Mar 2024',
       status: 'Active',
     },
   ]);

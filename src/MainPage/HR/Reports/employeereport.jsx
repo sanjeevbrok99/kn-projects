@@ -13,7 +13,7 @@ const EmployeeReport = () => {
     {
       id: 1,
       image: Avatar_03,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       number: '#0001',
       employeetype: 'Employee',
       email: 'johndoe@example.com',
@@ -35,11 +35,11 @@ const EmployeeReport = () => {
     {
       id: 2,
       image: Avatar_04,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       number: '#0002',
       employeetype: 'Employee',
       email: 'richardmiles@example.com',
-      department: 'Android Developer',
+      department: 'Product Manager',
       designation: 'IT Support',
       joiningdate: '01 Jul 2020',
       dob: '05 Dec 1979',

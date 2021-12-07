@@ -67,7 +67,7 @@ const ProjectView = () => {
             <div className="card">
               <div className="card-body">
                 <div className="project-title">
-                  <h5 className="card-title">Hospital Administration</h5>
+                  <h5 className="card-title">Lovely Faculty</h5>
                   <small className="block text-ellipsis m-b-15">
                     <span className="text-xs">2</span>{' '}
                     <span className="text-muted">open tasks, </span>
@@ -168,7 +168,7 @@ const ProjectView = () => {
                           </a>
                         </span>
                         <span className="file-author">
-                          <a href="#">John Doe</a>
+                          <a href="#">Prateek Tiwari</a>
                         </span>{' '}
                         <span className="file-date">May 31st at 6:53 PM</span>
                         <div className="file-size">Size: 14.8Mb</div>
@@ -217,7 +217,7 @@ const ProjectView = () => {
                           </a>
                         </span>
                         <span className="file-author">
-                          <a href="#">Richard Miles</a>
+                          <a href="#">Shital Agarwal</a>
                         </span>{' '}
                         <span className="file-date">May 31st at 6:53 PM</span>
                         <div className="file-size">Size: 14.8Mb</div>
@@ -524,7 +524,7 @@ const ProjectView = () => {
                   <tbody>
                     <tr>
                       <td>Cost:</td>
-                      <td className="text-right">$1200</td>
+                      <td className="text-right">₹1200</td>
                     </tr>
                     <tr>
                       <td>Total Hours:</td>
@@ -532,11 +532,11 @@ const ProjectView = () => {
                     </tr>
                     <tr>
                       <td>Created:</td>
-                      <td className="text-right">25 Feb, 2019</td>
+                      <td className="text-right">25 Feb, 2021</td>
                     </tr>
                     <tr>
                       <td>Deadline:</td>
-                      <td className="text-right">12 Jun, 2019</td>
+                      <td className="text-right">12 Jun, 2021</td>
                     </tr>
                     <tr>
                       <td>Priority:</td>
@@ -670,9 +670,9 @@ const ProjectView = () => {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">John Doe</span>
+                          <span className="message-author">Prateek Tiwari</span>
                           <div className="clearfix" />
-                          <span className="message-content">Web Designer</span>
+                          <span className="message-content">CIO</span>
                         </div>
                       </div>
                     </Link>
@@ -686,9 +686,11 @@ const ProjectView = () => {
                           </span>
                         </div>
                         <div className="list-body">
-                          <span className="message-author">Richard Miles</span>
+                          <span className="message-author">Shital Agarwal</span>
                           <div className="clearfix" />
-                          <span className="message-content">Web Developer</span>
+                          <span className="message-content">
+                            Product Manager
+                          </span>
                         </div>
                       </div>
                     </Link>
@@ -735,8 +737,8 @@ const ProjectView = () => {
                           <img alt="" src={Avatar_09} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Richard Miles</div>
-                          <span className="designation">Web Developer</span>
+                          <div className="user-name">Shital Agarwal</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -748,8 +750,8 @@ const ProjectView = () => {
                           <img alt="" src={Avatar_10} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">John Smith</div>
-                          <span className="designation">Android Developer</span>
+                          <div className="user-name">Harvinder</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -761,7 +763,7 @@ const ProjectView = () => {
                           <img alt="" src={Avatar_16} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                       </div>
@@ -812,8 +814,8 @@ const ProjectView = () => {
                           <img alt="" src={Avatar_09} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Richard Miles</div>
-                          <span className="designation">Web Developer</span>
+                          <div className="user-name">Shital Agarwal</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -825,8 +827,8 @@ const ProjectView = () => {
                           <img alt="" src={Avatar_10} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">John Smith</div>
-                          <span className="designation">Android Developer</span>
+                          <div className="user-name">Harvinder</div>
+                          <span className="designation">Product Manager</span>
                         </div>
                       </div>
                     </a>
@@ -838,7 +840,7 @@ const ProjectView = () => {
                           <img alt="" src={Avatar_16} />
                         </span>
                         <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Jeffery Lalor</div>
+                          <div className="user-name">Sushmita Singh</div>
                           <span className="designation">Team Leader</span>
                         </div>
                       </div>
@@ -889,8 +891,8 @@ const ProjectView = () => {
                     <div className="form-group">
                       <label>Client</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>
@@ -966,7 +968,7 @@ const ProjectView = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="Jeffery Lalor"
+                          title="Sushmita Singh"
                         >
                           <img alt="" src={Avatar_16} />
                         </a>
@@ -989,7 +991,7 @@ const ProjectView = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="John Doe"
+                          title="Prateek Tiwari"
                         >
                           <img alt="" src={Avatar_02} />
                         </a>
@@ -997,7 +999,7 @@ const ProjectView = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                         >
                           <img alt="" src={Avatar_09} />
                         </a>
@@ -1005,7 +1007,7 @@ const ProjectView = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="John Smith"
+                          title="Harvinder"
                         >
                           <img alt="" src={Avatar_10} />
                         </a>
@@ -1013,7 +1015,7 @@ const ProjectView = () => {
                           className="avatar"
                           href="#"
                           data-toggle="tooltip"
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                         >
                           <img alt="" src={Avatar_05} />
                         </a>

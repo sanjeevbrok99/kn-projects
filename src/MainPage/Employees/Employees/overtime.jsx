@@ -13,14 +13,14 @@ const Overtime = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
+      name: 'Prateek Tiwari',
+      role: 'CIO',
       description: 'Lorem ipsum dollar',
       ottype: 'Normal day OT 1.5x',
       othours: '2',
-      otdate: '1 Jan 2013',
+      otdate: '1 Jan 2023',
       apimage: Avatar_09,
-      approvedby: 'Richard Miles',
+      approvedby: 'Shital Agarwal',
     },
   ]);
   useEffect(() => {
@@ -247,9 +247,9 @@ const Overtime = () => {
                   </label>
                   <select className="select">
                     <option>-</option>
-                    <option>John Doe</option>
-                    <option>Richard Miles</option>
-                    <option>John Smith</option>
+                    <option>Prateek Tiwari</option>
+                    <option>Shital Agarwal</option>
+                    <option>Harvinder</option>
                   </select>
                 </div>
                 <div className="form-group">
@@ -311,9 +311,9 @@ const Overtime = () => {
                   </label>
                   <select className="select">
                     <option>-</option>
-                    <option>John Doe</option>
-                    <option>Richard Miles</option>
-                    <option>John Smith</option>
+                    <option>Prateek Tiwari</option>
+                    <option>Shital Agarwal</option>
+                    <option>Harvinder</option>
                   </select>
                 </div>
                 <div className="form-group">

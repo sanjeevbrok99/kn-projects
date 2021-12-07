@@ -13,7 +13,7 @@ const DailyReport = () => {
     {
       id: 1,
       image: Avatar_03,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       number: '#0001',
       date: '20 Dec 2020',
       department: 'Design',
@@ -22,10 +22,10 @@ const DailyReport = () => {
     {
       id: 2,
       image: Avatar_04,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       number: '#0002',
       date: '20 Dec 2020',
-      department: 'Android Developer',
+      department: 'Product Manager',
       status: 'Absent',
     },
   ]);

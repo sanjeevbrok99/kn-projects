@@ -22,7 +22,7 @@ const OTPscreen = () => {
           {/* Account Logo */}
           <div className="account-logo">
             <Link to="/app/main/dashboard">
-              <img src={Applogo} alt="Dreamguy's Technologies" />
+              <img src={Applogo} alt="Oboroi Real Estates" />
             </Link>
           </div>
           {/* /Account Logo */}

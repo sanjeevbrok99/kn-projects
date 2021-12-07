@@ -145,7 +145,7 @@ const ShiftScheduling = () => {
                             <img src={Avatar_05} />
                           </Link>
                           <Link to="/app/profile/employee-profile">
-                            Mike Litorus <span>IOS Developer</span>
+                            Shreya Singh <span>Marketing Head</span>
                           </Link>
                         </h2>
                       </td>
@@ -201,7 +201,7 @@ const ShiftScheduling = () => {
                                 6:30 am - 9:30 pm ( 14 hrs 15 mins)
                               </span>
                               <span className="userrole-info">
-                                Web Designer - SMARTHR
+                                CIO - SMARTHR
                               </span>
                             </a>
                           </h2>
@@ -272,7 +272,7 @@ const ShiftScheduling = () => {
                                 6:30 am - 9:30 pm ( 14 hrs 15 mins)
                               </span>
                               <span className="userrole-info">
-                                Web Designer - SMARTHR
+                                CIO - SMARTHR
                               </span>
                             </a>
                           </h2>
@@ -289,7 +289,7 @@ const ShiftScheduling = () => {
                             <img src={Avatar_11} />
                           </Link>
                           <Link to="/app/profile/employee-profile">
-                            Wilmer Deluna <span>Team Leader</span>
+                            Bhadu Vabu<span>Team Leader</span>
                           </Link>
                         </h2>
                       </td>
@@ -319,7 +319,7 @@ const ShiftScheduling = () => {
                                 6:30 am - 9:30 pm ( 14 hrs 15 mins)
                               </span>
                               <span className="userrole-info">
-                                Web Designer - SMARTHR
+                                CIO - SMARTHR
                               </span>
                             </a>
                           </h2>
@@ -390,7 +390,7 @@ const ShiftScheduling = () => {
                                 6:30 am - 9:30 pm ( 14 hrs 15 mins)
                               </span>
                               <span className="userrole-info">
-                                Web Designer - SMARTHR
+                                CIO - SMARTHR
                               </span>
                             </a>
                           </h2>
@@ -433,7 +433,7 @@ const ShiftScheduling = () => {
                             <img src={Avatar_09} />
                           </Link>
                           <Link to="/app/profile/employee-profile">
-                            Richard Miles <span>Web Developer</span>
+                            Shital Agarwal <span>Product Manager</span>
                           </Link>
                         </h2>
                       </td>
@@ -463,7 +463,7 @@ const ShiftScheduling = () => {
                                 6:30 am - 9:30 pm ( 14 hrs 15 mins)
                               </span>
                               <span className="userrole-info">
-                                Web Designer - SMARTHR
+                                CIO - SMARTHR
                               </span>
                             </a>
                           </h2>
@@ -547,7 +547,7 @@ const ShiftScheduling = () => {
                                 6:30 am - 9:30 pm ( 14 hrs 15 mins)
                               </span>
                               <span className="userrole-info">
-                                Web Designer - SMARTHR
+                                CIO - SMARTHR
                               </span>
                             </a>
                           </h2>
@@ -567,7 +567,6 @@ const ShiftScheduling = () => {
                         </div>
                       </td>
                     </tr>
-
                   </tbody>
                 </table>
               </div>
@@ -621,9 +620,9 @@ const ShiftScheduling = () => {
                       </label>
                       <select className="select">
                         <option value>Select </option>
-                        <option value={1}>Richard Miles </option>
-                        <option value={2}>John Smith</option>
-                        <option value={3}>Mike Litorus </option>
+                        <option value={1}>Shital Agarwal </option>
+                        <option value={2}>Harvinder</option>
+                        <option value={3}>Shreya Singh </option>
                         <option value={4}>Wilmer Deluna</option>
                       </select>
                     </div>
@@ -840,9 +839,9 @@ const ShiftScheduling = () => {
                       </label>
                       <select className="select">
                         <option value>Select </option>
-                        <option value={1}>Richard Miles </option>
-                        <option value={2}>John Smith</option>
-                        <option value={3}>Mike Litorus </option>
+                        <option value={1}>Shital Agarwal </option>
+                        <option value={2}>Harvinder</option>
+                        <option value={3}>Shreya Singh </option>
                         <option value={4}>Wilmer Deluna</option>
                       </select>
                     </div>

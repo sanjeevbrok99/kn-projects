@@ -811,9 +811,9 @@ const ShiftList = () => {
                       </label>
                       <select className="select">
                         <option value>Select </option>
-                        <option value={1}>Richard Miles </option>
-                        <option value={2}>John Smith</option>
-                        <option value={3}>Mike Litorus </option>
+                        <option value={1}>Shital Agarwal </option>
+                        <option value={2}>Harvinder</option>
+                        <option value={3}>Shreya Singh </option>
                         <option value={4}>Wilmer Deluna</option>
                       </select>
                     </div>

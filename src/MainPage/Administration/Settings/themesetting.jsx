@@ -33,7 +33,7 @@ const ThemeSettings = () => {
                   <input
                     name="website_name"
                     className="form-control"
-                    defaultValue="Dreamguy's Technologies"
+                    defaultValue="Oboroi Real Estates"
                     type="text"
                   />
                 </div>

@@ -63,7 +63,7 @@ const AttendanceReport = () => {
                 <div className="cal-icon">
                   <select className="form-control floating select">
                     <option>2020</option>
-                    <option>2019</option>
+                    <option>2021</option>
                     <option>2018</option>
                   </select>
                 </div>

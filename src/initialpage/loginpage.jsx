@@ -25,7 +25,7 @@ const Loginpage = () => {
           {/* Account Logo */}
           <div className="account-logo">
             <Link to="/app/main/dashboard">
-              <img src={headerlogo} alt="Dreamguy's Technologies" />
+              <img src={headerlogo} alt="Oboroi Real Estates" />
             </Link>
           </div>
           {/* /Account Logo */}

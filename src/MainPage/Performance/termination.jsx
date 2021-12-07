@@ -17,12 +17,12 @@ const Termination = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       department: 'Web Development',
       reason: 'Lorem ipsum dollar',
-      noticedate: '09 Jan 2019',
+      noticedate: '09 Jan 2021',
       terminationtype: 'Misconduct',
-      terminationdate: '09 Jan 2019',
+      terminationdate: '09 Jan 2021',
     },
   ]);
   useEffect(() => {
@@ -284,7 +284,7 @@ const Termination = () => {
                   <input
                     className="form-control"
                     type="text"
-                    defaultValue="John Doe"
+                    defaultValue="Prateek Tiwari"
                   />
                 </div>
                 <div className="form-group">
@@ -309,7 +309,7 @@ const Termination = () => {
                     <input
                       type="date"
                       className="form-control datetimepicker"
-                      defaultValue="28/02/2019"
+                      defaultValue="28/02/2021"
                     />
                   </div>
                 </div>
@@ -331,7 +331,7 @@ const Termination = () => {
                     <input
                       type="date"
                       className="form-control datetimepicker"
-                      defaultValue="28/02/2019"
+                      defaultValue="28/02/2021"
                     />
                   </div>
                 </div>

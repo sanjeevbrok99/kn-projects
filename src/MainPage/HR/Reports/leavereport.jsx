@@ -13,7 +13,7 @@ const LeaveReport = () => {
     {
       id: 1,
       image: Avatar_03,
-      name: 'John Doe',
+      name: 'Prateek Tiwari',
       number: '#0001',
       date: '20 Dec 2020',
       department: 'Design',
@@ -27,10 +27,10 @@ const LeaveReport = () => {
     {
       id: 2,
       image: Avatar_04,
-      name: 'Richard Miles',
+      name: 'Shital Agarwal',
       number: '#0001',
       date: '20 Dec 2020',
-      department: 'Android Developer',
+      department: 'Product Manager',
       leavetype: 'Emergency Leave',
       noofdays: '01',
       remainingleave: '09',

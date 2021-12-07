@@ -99,10 +99,10 @@ const Projects = () => {
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Roll</option>
-                <option>Web Developer</option>
-                <option>Web Designer</option>
-                <option>Android Developer</option>
-                <option>Ios Developer</option>
+                <option>Product Manager</option>
+                <option>CIO</option>
+                <option>Product Manager</option>
+                <option>Marketing Head</option>
               </select>
               <label className="focus-label">Designation</label>
             </div>
@@ -165,13 +165,13 @@ const Projects = () => {
                 </p>
                 <div className="pro-deadline m-b-15">
                   <div className="sub-title">Deadline:</div>
-                  <div className="text-muted">17 Apr 2019</div>
+                  <div className="text-muted">17 Apr 2021</div>
                 </div>
                 <div className="project-members m-b-15">
                   <div>Project Leader :</div>
                   <ul className="team-members">
                     <li>
-                      <a href="#" data-toggle="tooltip" title="Jeffery Lalor">
+                      <a href="#" data-toggle="tooltip" title="Sushmita Singh">
                         <img alt="" src={Avatar_16} />
                       </a>
                     </li>
@@ -181,22 +181,22 @@ const Projects = () => {
                   <div>Team :</div>
                   <ul className="team-members">
                     <li>
-                      <a href="#" data-toggle="tooltip" title="John Doe">
+                      <a href="#" data-toggle="tooltip" title="Prateek Tiwari">
                         <img alt="" src={Avatar_02} />
                       </a>
                     </li>
                     <li>
-                      <a href="#" data-toggle="tooltip" title="Richard Miles">
+                      <a href="#" data-toggle="tooltip" title="Shital Agarwal">
                         <img alt="" src={Avatar_09} />
                       </a>
                     </li>
                     <li>
-                      <a href="#" data-toggle="tooltip" title="John Smith">
+                      <a href="#" data-toggle="tooltip" title="Harvinder">
                         <img alt="" src={Avatar_10} />
                       </a>
                     </li>
                     <li>
-                      <a href="#" data-toggle="tooltip" title="Mike Litorus">
+                      <a href="#" data-toggle="tooltip" title="Shreya Singh">
                         <img alt="" src={Avatar_05} />
                       </a>
                     </li>
@@ -330,8 +330,8 @@ const Projects = () => {
                     <div className="form-group">
                       <label>Client</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>
@@ -405,7 +405,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Jeffery Lalor"
+                          title="Sushmita Singh"
                           className="avatar"
                         >
                           <img src={Avatar_16} alt="" />
@@ -428,7 +428,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="John Doe"
+                          title="Prateek Tiwari"
                           className="avatar"
                         >
                           <img src={Avatar_16} alt="" />
@@ -436,7 +436,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                           className="avatar"
                         >
                           <img src={Avatar_09} alt="" />
@@ -444,7 +444,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="John Smith"
+                          title="Harvinder"
                           className="avatar"
                         >
                           <img src={Avatar_10} alt="" />
@@ -452,7 +452,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                           className="avatar"
                         >
                           <img src={Avatar_05} alt="" />
@@ -533,8 +533,8 @@ const Projects = () => {
                     <div className="form-group">
                       <label>Client</label>
                       <select className="select">
-                        <option>Global Technologies</option>
-                        <option>Delta Infotech</option>
+                        <option>Sunteck Realty Ltd</option>
+                        <option>Godrej Properties Ltd</option>
                       </select>
                     </div>
                   </div>
@@ -609,7 +609,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Jeffery Lalor"
+                          title="Sushmita Singh"
                           className="avatar"
                         >
                           <img src={Avatar_16} alt="" />
@@ -632,7 +632,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="John Doe"
+                          title="Prateek Tiwari"
                           className="avatar"
                         >
                           <img src={Avatar_16} alt="" />
@@ -640,7 +640,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Richard Miles"
+                          title="Shital Agarwal"
                           className="avatar"
                         >
                           <img src={Avatar_09} alt="" />
@@ -648,7 +648,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="John Smith"
+                          title="Harvinder"
                           className="avatar"
                         >
                           <img src={Avatar_10} alt="" />
@@ -656,7 +656,7 @@ const Projects = () => {
                         <a
                           href="#"
                           data-toggle="tooltip"
-                          title="Mike Litorus"
+                          title="Shreya Singh"
                           className="avatar"
                         >
                           <img src={Avatar_05} alt="" />

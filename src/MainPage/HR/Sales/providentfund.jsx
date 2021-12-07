@@ -13,8 +13,8 @@ const ProvidentFund = () => {
     {
       id: 1,
       image: Avatar_02,
-      name: 'John Doe',
-      role: 'Web Designer',
+      name: 'Prateek Tiwari',
+      role: 'CIO',
       fundtype: 'Percentage of Basic Salary',
       employeeshare: '2%',
       organizationshare: '2%',
@@ -209,8 +209,8 @@ const ProvidentFund = () => {
                     <div className="form-group">
                       <label>Employee Name</label>
                       <select className="form-control select">
-                        <option value={3}>John Doe (FT-0001)</option>
-                        <option value={23}>Richard Miles (FT-0002)</option>
+                        <option value={3}>Prateek Tiwari (FT-0001)</option>
+                        <option value={23}>Shital Agarwal (FT-0002)</option>
                       </select>
                     </div>
                   </div>
@@ -306,8 +306,8 @@ const ProvidentFund = () => {
                     <div className="form-group">
                       <label>Employee Name</label>
                       <select className="form-control select">
-                        <option value={3}>John Doe (FT-0001)</option>
-                        <option value={23}>Richard Miles (FT-0002)</option>
+                        <option value={3}>Prateek Tiwari (FT-0001)</option>
+                        <option value={23}>Shital Agarwal (FT-0002)</option>
                       </select>
                     </div>
                   </div>

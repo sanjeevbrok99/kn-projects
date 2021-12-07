@@ -15,28 +15,28 @@ const Visitedjobs = () => {
   const [data, setData] = useState([
     {
       id: 1,
-      jobtitle: 'Web Developer',
+      jobtitle: 'Product Manager',
       department: 'Development',
-      startdate: '1 Jan 2013',
-      expirydate: '31 May 2019',
+      startdate: '1 Jan 2023',
+      expirydate: '31 May 2021',
       jobtype: 'Full Time',
       status: 'Open',
     },
     {
       id: 2,
-      jobtitle: 'Web Designer',
+      jobtitle: 'CIO',
       department: 'Designing',
-      startdate: '18 Mar 2014',
-      expirydate: '31 May 2019',
+      startdate: '18 Mar 2024',
+      expirydate: '31 May 2021',
       jobtype: 'Part Time',
       status: 'Closed',
     },
     {
       id: 3,
-      jobtitle: 'Android Developer',
+      jobtitle: 'Product Manager',
       department: 'Android',
-      startdate: '1 Apr 2014',
-      expirydate: '31 May 2019',
+      startdate: '1 Apr 2024',
+      expirydate: '31 May 2021',
       jobtype: 'Internship',
       status: 'Cancelled',
     },
@@ -194,10 +194,10 @@ const Visitedjobs = () => {
               <div className="form-group form-focus select-focus">
                 <select className="select floating">
                   <option>Select Designation</option>
-                  <option>Web Developer</option>
-                  <option>Web Designer</option>
-                  <option>Android Developer</option>
-                  <option>Ios Developer</option>
+                  <option>Product Manager</option>
+                  <option>CIO</option>
+                  <option>Product Manager</option>
+                  <option>Marketing Head</option>
                 </select>
                 <label className="focus-label">Designation</label>
               </div>
