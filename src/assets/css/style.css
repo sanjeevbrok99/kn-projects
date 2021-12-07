@@ -554,6 +554,7 @@ table.dataTable thead > tr > td.sorting {
   border: 1px solid #482fe9;
 }
 .btn-primary {
+  border-color: transparent;
   background: #cb2d3e; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
