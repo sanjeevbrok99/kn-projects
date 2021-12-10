@@ -60,6 +60,9 @@ export default class App extends Component {
     ) {
       $('body').addClass('error-page');
     }
+    import('../lib/app').then((app) => {
+      app.default();
+    });
   }
   render() {
     const { location, match, user } = this.props;

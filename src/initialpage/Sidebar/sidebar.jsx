@@ -7,13 +7,41 @@ import { Link } from 'react-router-dom';
 // import app from '../../assets/js/app'
 
 const Sidebar = (props) => {
-  useEffect(() => {
-    import('../../lib/app').then((app) => {
-      app.default();
-    });
-  }, []);
   const isAdmin = sessionStorage.getItem('authType');
   let pathname = props.location.pathname;
+
+  useEffect(() => {
+    var Sidemenu = function () {
+      this.$menuItem = $('#sidebar-menu a');
+    };
+
+    function init() {
+      var $this = Sidemenu;
+      $('#sidebar-menu a').on('click', function (e) {
+        if ($(this).parent().hasClass('submenu')) {
+          e.preventDefault();
+        }
+        if (!$(this).hasClass('subdrop')) {
+          $('ul', $(this).parents('ul:first')).slideUp(350);
+          $('a', $(this).parents('ul:first')).removeClass('subdrop');
+          $(this).next('ul').slideDown(350);
+          $(this).addClass('subdrop');
+        } else if ($(this).hasClass('subdrop')) {
+          $(this).removeClass('subdrop');
+          $(this).next('ul').slideUp(350);
+        }
+      });
+      $('#sidebar-menu ul li.submenu a.active')
+        .parents('li:last')
+        .children('a:first')
+        .addClass('active')
+        .trigger('click');
+    }
+
+    // Sidebar Initiate
+    init();
+  });
+
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner">
