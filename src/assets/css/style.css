@@ -2391,10 +2391,9 @@ table.dataTable thead > tr > td.sorting {
   padding-right: 8px;
 }
 .continue-btn {
-  background-color: #fff;
   border: 1px solid #f43b48;
   border-radius: 50px;
-  color: #f43b48;
+  color: #fff;
   display: block;
   font-size: 18px;
   font-weight: 600;
@@ -2409,10 +2408,9 @@ table.dataTable thead > tr > td.sorting {
   color: #fff;
 }
 .cancel-btn {
-  background-color: #fff;
   border: 1px solid #f43b48;
   border-radius: 50px;
-  color: #f43b48;
+  color: #fff;
   display: block;
   font-size: 18px;
   font-weight: 600;
