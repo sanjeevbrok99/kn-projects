@@ -40,7 +40,7 @@ const Sidebar = (props) => {
 
     // Sidebar Initiate
     init();
-  });
+  }, []);
 
   return (
     <div className="sidebar" id="sidebar">

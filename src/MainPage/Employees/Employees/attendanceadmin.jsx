@@ -1,17 +1,7 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import {
-  Avatar_01,
-  Avatar_04,
-  Avatar_05,
-  Avatar_09,
-  Avatar_10,
-  Avatar_11,
-  Avatar_12,
-  Avatar_13,
-  Avatar_16,
-} from '../../../Entryfile/imagepath';
+import { Avatar_04, Avatar_09, Avatar_10 } from '../../../Entryfile/imagepath';
 
 const AttendanceAdmin = () => {
   useEffect(() => {

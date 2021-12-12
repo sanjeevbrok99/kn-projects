@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
@@ -17,6 +17,10 @@ const AllEmployees = () => {
   const fetched = useSelector((state) => state.employee.fetched);
   const employeesFromStore = useSelector((state) => state.employee.value);
   const dispatch = useDispatch();
+  const [employeeToModify, setEmployeeToModify] = useState(null);
+  const [employeeIdToSearch, setEmployeeIdToSearch] = useState('');
+  const [employeeNameToSearch, setEmployeeNameToSearch] = useState('');
+  const [_employees, set_employees] = useState([]);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -27,17 +31,60 @@ const AllEmployees = () => {
     }
     (async () => {
       if (!fetched) {
-        const response = await httpService.get('/user');
+        const response = await httpService.get('/private/user');
         setIsLoading(false);
         setEmployees(response.data);
         dispatch(setFetched(true));
+        set_employees(response.data);
         dispatch(setEmployeeStore(response.data));
       } else {
         setIsLoading(false);
         setEmployees(employeesFromStore);
+        set_employees(employeesFromStore);
       }
     })();
   }, []);
+
+  const handleSearch = () => {
+    const filteredEmployees = _employees.filter((employee) => {
+      if (employeeIdToSearch === '') {
+        return (
+          employee.firstName
+            .toLowerCase()
+            .includes(employeeNameToSearch.toLowerCase()) ||
+          employee.lastName
+            .toLowerCase()
+            .includes(employeeNameToSearch.toLowerCase()) ||
+          employee.userId.toString() === employeeIdToSearch
+        );
+      } else {
+        return employee.userId.toString() === employeeIdToSearch;
+      }
+    });
+    setEmployees(filteredEmployees);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await httpService.put(
+      `/private/user/${employeeToModify.userId}`,
+      employeeToModify
+    );
+    if (response.status === 200) {
+      const newEmployee = response.data;
+      setEmployees(
+        employees.map((employee) => {
+          if (employee.userId === newEmployee.userId) {
+            return newEmployee;
+          }
+          return employee;
+        })
+      );
+      // setEmployeeToModify(null);
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+      // console.log(myModal);
+    }
+  };
 
   return (
     <div className="page-wrapper">
@@ -90,13 +137,23 @@ const AllEmployees = () => {
         <div className="row filter-row">
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
+              <input
+                type="text"
+                className="form-control floating"
+                value={employeeIdToSearch}
+                onChange={(e) => setEmployeeIdToSearch(e.target.value)}
+              />
               <label className="focus-label">Employee ID</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
+              <input
+                type="text"
+                className="form-control floating"
+                value={employeeNameToSearch}
+                onChange={(e) => setEmployeeNameToSearch(e.target.value)}
+              />
               <label className="focus-label">Employee Name</label>
             </div>
           </div>
@@ -112,11 +169,8 @@ const AllEmployees = () => {
               <label className="focus-label">Designation</label>
             </div>
           </div>
-          <div className="col-sm-6 col-md-3">
-            <a href="#" className="btn btn-success btn-block">
-              {' '}
-              Search{' '}
-            </a>
+          <div className="col-sm-6 col-md-3" onClick={handleSearch}>
+            <a className="btn btn-success btn-block"> Search </a>
           </div>
         </div>
         {/* Search Filter */}
@@ -157,7 +211,7 @@ const AllEmployees = () => {
                         data-toggle="modal"
                         data-target="#delete_employee"
                       >
-                        <i className="fa fa-trash-o m-r-5" /> Delete
+                        <i className="fa fa-trash-o m-r-5" />
                       </a>
                     </div>
                   </div>
@@ -198,6 +252,10 @@ const AllEmployees = () => {
                       href="#"
                       data-toggle="modal"
                       data-target="#edit_employee"
+                      onClick={() => {
+                        setEmployeeToModify(employee);
+                        console.log(employee);
+                      }}
                     >
                       <i className="fa fa-pencil m-r-5" /> Edit
                     </a>
@@ -206,6 +264,7 @@ const AllEmployees = () => {
                       href="#"
                       data-toggle="modal"
                       data-target="#delete_employee"
+                      onClick={() => {}}
                     >
                       <i className="fa fa-trash-o m-r-5" /> Delete
                     </a>
@@ -217,7 +276,7 @@ const AllEmployees = () => {
                   </Link>
                 </h4>
                 <div className="small text-muted">
-                  {employee.position.designation}
+                  {employee.designation || 'Marketing Lead'}
                 </div>
               </div>
             </div>
@@ -561,7 +620,7 @@ const AllEmployees = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
@@ -570,8 +629,16 @@ const AllEmployees = () => {
                       </label>
                       <input
                         className="form-control"
-                        defaultValue="John"
                         type="text"
+                        name="firstName"
+                        disabled
+                        defaultValue={employeeToModify?.firstName || ''}
+                        onChange={(e) => {
+                          setEmployeeToModify({
+                            ...employeeToModify,
+                            firstName: e.target.value,
+                          });
+                        }}
                       />
                     </div>
                   </div>
@@ -580,7 +647,14 @@ const AllEmployees = () => {
                       <label className="col-form-label">Last Name</label>
                       <input
                         className="form-control"
-                        defaultValue="Doe"
+                        defaultValue={employeeToModify?.lastName || ''}
+                        disabled
+                        onChange={(e) => {
+                          setEmployeeToModify({
+                            ...employeeToModify,
+                            lastName: e.target.value,
+                          });
+                        }}
                         type="text"
                       />
                     </div>
@@ -592,7 +666,8 @@ const AllEmployees = () => {
                       </label>
                       <input
                         className="form-control"
-                        defaultValue="johndoe"
+                        disabled
+                        defaultValue={employeeToModify?.username || ''}
                         type="text"
                       />
                     </div>
@@ -604,7 +679,8 @@ const AllEmployees = () => {
                       </label>
                       <input
                         className="form-control"
-                        // defaultValue="johndoe@example.com"
+                        defaultValue={employeeToModify?.email || ''}
+                        disabled
                         type="email"
                       />
                     </div>
@@ -636,7 +712,7 @@ const AllEmployees = () => {
                       </label>
                       <input
                         type="text"
-                        defaultValue="FT-0001"
+                        defaultValue={employeeToModify?.userId || ''}
                         readOnly
                         className="form-control floating"
                       />
@@ -650,7 +726,8 @@ const AllEmployees = () => {
                       <div>
                         <input
                           className="form-control datetimepicker"
-                          type="date"
+                          readOnly
+                          defaultValue={employeeToModify?.joinDate || ''}
                         />
                       </div>
                     </div>
@@ -660,7 +737,13 @@ const AllEmployees = () => {
                       <label className="col-form-label">Phone </label>
                       <input
                         className="form-control"
-                        defaultValue={9876543210}
+                        defaultValue={employeeToModify?.mobileNo || ''}
+                        onChange={(e) => {
+                          setEmployeeToModify({
+                            ...employeeToModify,
+                            mobileNo: e.target.value,
+                          });
+                        }}
                         type="text"
                       />
                     </div>
@@ -668,10 +751,8 @@ const AllEmployees = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Company</label>
-                      <select className="select">
-                        <option>Sunteck Realty Ltd</option>
-                        <option>Godrej Properties Ltd</option>
-                        <option>International Software Inc</option>
+                      <select className="select" disabled>
+                        <option>KN Multiprojects</option>
                       </select>
                     </div>
                   </div>
@@ -800,7 +881,7 @@ const AllEmployees = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td>Tasks</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -883,12 +964,16 @@ const AllEmployees = () => {
                         <td className="text-center">
                           <input type="checkbox" />
                         </td>
-                      </tr>
+                      </tr> */}
                     </tbody>
                   </table>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <input
+                    type={'submit'}
+                    className="btn btn-primary submit-btn"
+                    value={'Save Changes'}
+                  />
                 </div>
               </form>
             </div>
