@@ -10,6 +10,7 @@ import httpService from '../../lib/httpService';
 
 import Header from './header.jsx';
 import SidebarContent from './sidebar';
+import Dashboard from '../../MainPage/Main/Dashboard';
 
 const DefaultLayout = (props) => {
   const { match } = props;
@@ -28,16 +29,18 @@ const DefaultLayout = (props) => {
     <>
       <Header />
       <div>
+        <Route path={`/app/dashboard`} component={Dashboard} />
         {routerService &&
-          routerService.map((route, key) => (
-            {
-			userAuthorities && userAuthorities.includes(route.authority) && (
-			<Route
-              key={key}
-              path={`${match.url}/${route.path}/`}
-              component={route.component}
-            />)}
-          ))}
+          routerService.map(
+            (route, key) =>
+              userAuthorities?.includes(route.authority) && (
+                <Route
+                  key={key}
+                  path={`${match.url}/${route.path}/`}
+                  component={route.component}
+                />
+              )
+          )}
       </div>
       <SidebarContent />
     </>
