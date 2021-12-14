@@ -1,8 +1,78 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import {
+  appendHolidayStore,
+  setFetched,
+  setHolidayStore,
+} from '../../../features/holiday/holidaySlice';
+import httpService from '../../../lib/httpService';
 
 const Holidays = () => {
+  const [data, setData] = React.useState([]);
+  const fetched = useSelector((state) => state.holiday.fetched);
+  const holidaysFromStore = useSelector((state) => state.holiday.value);
+  const [leaveToAdd, setLeaveToAdd] = React.useState('');
+  const [leaveDateToAdd, setLeaveDateToAdd] = React.useState('');
+  const [holidayToModify, setHolidayToModify] = React.useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (fetched) {
+        setData(
+          holidaysFromStore.map((holiday, i) => ({ ...holiday, id: i + 1 }))
+        );
+      } else {
+        const res = await httpService.get('/private/holiday');
+        setData(res.data.map((holiday, i) => ({ ...holiday, id: i + 1 })));
+        setHolidayStore(res.data);
+        setFetched(true);
+      }
+    })();
+  }, []);
+
+  const handleAdd = async () => {
+    if (leaveToAdd && leaveDateToAdd) {
+      console.log(leaveToAdd, leaveDateToAdd);
+      const res = await httpService.post('/private/holiday', {
+        title: leaveToAdd,
+        date: leaveDateToAdd,
+      });
+      setData([...data, { ...res.data, id: data.length + 1 }]);
+      appendHolidayStore(res.data);
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+    }
+  };
+
+  const handleDelete = async () => {
+    const res = await httpService.delete(
+      `/private/holiday/${holidayToModify.hoildayId}`
+    );
+    setData([
+      ...data.slice(0, holidayToModify.id - 1),
+      ...data.slice(holidayToModify.id).map((e) => ({ ...e, id: e.id - 1 })),
+    ]);
+    document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+  };
+
+  const handleEdit = async () => {
+    const res = await httpService.put(
+      `/private/holiday/${holidayToModify.hoildayId}`,
+      {
+        holidayId: holidayToModify.hoildayId,
+        title: holidayToModify.title,
+        date: holidayToModify.date,
+      }
+    );
+    setData([
+      ...data.slice(0, holidayToModify.id - 1),
+      { ...res.data, id: holidayToModify.id },
+      ...data.slice(holidayToModify.id),
+    ]);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -15,7 +85,7 @@ const Holidays = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Holidays 2021</h3>
+              <h3 className="page-title">Holidays</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
@@ -50,49 +120,54 @@ const Holidays = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="holiday-completed">
-                    <td>1</td>
-                    <td>Past Holiday</td>
-                    <td>25 March 2021</td>
-                    <td>Sunday</td>
-                    <td />
-                  </tr>
-                  <tr className="holiday-upcoming">
-                    <td>6</td>
-                    <td>Uocpming Holiday Name</td>
-                    <td>25 Dec 2021</td>
-                    <td>Saturday</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
+                  {data?.map((holiday, i) => (
+                    <tr key={i}>
+                      <td>{holiday.id}</td>
+                      <td>{holiday.title}</td>
+                      <td>{holiday.date}</td>
+                      <td>
+                        {new Date(holiday.date).toLocaleString('en-us', {
+                          weekday: 'long',
+                        })}
+                      </td>
+                      <td className="text-right">
+                        <div className="dropdown dropdown-action">
                           <a
-                            className="dropdown-item"
                             href="#"
-                            data-toggle="modal"
-                            data-target="#edit_holiday"
+                            className="action-icon dropdown-toggle"
+                            data-toggle="dropdown"
+                            aria-expanded="false"
                           >
-                            <i className="fa fa-pencil m-r-5" /> Edit
+                            <i className="material-icons">more_vert</i>
                           </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_holiday"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
+                          <div className="dropdown-menu dropdown-menu-right">
+                            <a
+                              className="dropdown-item"
+                              href="#"
+                              data-toggle="modal"
+                              data-target="#edit_holiday"
+                              onClick={() => {
+                                setHolidayToModify(holiday);
+                              }}
+                            >
+                              <i className="fa fa-pencil m-r-5" /> Edit
+                            </a>
+                            <a
+                              className="dropdown-item"
+                              href="#"
+                              data-toggle="modal"
+                              data-target="#delete_holiday"
+                              onClick={() => {
+                                setHolidayToModify(holiday);
+                              }}
+                            >
+                              <i className="fa fa-trash-o m-r-5" /> Delete
+                            </a>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -116,12 +191,21 @@ const Holidays = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAdd();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Holiday Name <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input
+                    onChange={(e) => setLeaveToAdd(e.target.value)}
+                    className="form-control"
+                    type="text"
+                  />
                 </div>
                 <div className="form-group">
                   <label>
@@ -129,8 +213,9 @@ const Holidays = () => {
                   </label>
                   <div>
                     <input
-                      className="form-control datetimepicker"
-                      type="date"
+                      className="form-control"
+                      type={'date'}
+                      onChange={(e) => setLeaveDateToAdd(e.target.value)}
                     />
                   </div>
                 </div>
@@ -159,14 +244,25 @@ const Holidays = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEdit();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Holiday Name <span className="text-danger">*</span>
                   </label>
                   <input
                     className="form-control"
-                    defaultValue="New Year"
+                    defaultValue={holidayToModify?.title || ''}
+                    onChange={(e) =>
+                      setHolidayToModify({
+                        ...holidayToModify,
+                        title: e.target.value,
+                      })
+                    }
                     type="text"
                   />
                 </div>
@@ -177,7 +273,13 @@ const Holidays = () => {
                   <div>
                     <input
                       className="form-control datetimepicker"
-                      defaultValue="01-01-2021"
+                      defaultValue={holidayToModify?.date || ''}
+                      onChange={(e) =>
+                        setHolidayToModify({
+                          ...holidayToModify,
+                          date: e.target.value,
+                        })
+                      }
                       type="date"
                     />
                   </div>
@@ -207,7 +309,13 @@ const Holidays = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDelete();
+                      }}
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>

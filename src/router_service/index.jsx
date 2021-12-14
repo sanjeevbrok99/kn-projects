@@ -25,94 +25,87 @@ import Employee from '../MainPage/Employees/Employees';
 
 export default [
   {
-    path: 'main',
+    path: 'dashboard',
     component: Dashboard,
   },
   {
     path: 'apps',
     component: Apps,
-    subRoutes: [
-      {
-        name: 'Chat',
-        path: '/conversation/chat',
-      },
-      {
-        name: 'Calls',
-        subRoutes: [
-          { name: 'Incoming Call', path: '/conversation/incoming-call' },
-          { name: 'Outgoing Call', path: '/conversation/outgoing-call' },
-          { name: 'Voice Call', path: '/conversation/voice-call' },
-          { name: 'Video Call', path: '/conversation/video-call' },
-        ],
-      },
-      {
-        name: 'Calendar',
-        path: '/apps/calendar',
-      },
-    ],
+    authority: 'READ_APPS',
   },
   {
     path: 'employee',
     component: Employee,
+    authority: 'USER_GET',
   },
   {
     path: 'employees',
     component: Employees,
+    authority: 'USER_GET',
   },
   {
     path: 'projects',
     component: Projects,
+    authority: 'USER_GET',
   },
   {
     path: 'profile',
     component: ProfilePage,
+    authority: 'USER_GET',
   },
   {
     path: 'subscription',
     component: Subscription,
+    authority: 'USER_GET',
   },
   {
     path: 'pages',
     component: Pages,
+    authority: 'USER_GET',
   },
   {
     path: 'administrator',
     component: Administrator,
+    authority: 'USER_GET',
   },
   {
     path: 'performance',
     component: Performance,
+    authority: 'USER_GET',
   },
   {
     path: 'goals',
     component: Goals,
+    authority: 'USER_GET',
   },
   {
     path: 'performances',
     component: Performances,
+    authority: 'USER_GET',
   },
   {
     path: 'training',
     component: Training,
-  },
-  {
-    path: 'hr',
-    component: HR,
+    authority: 'USER_GET',
   },
   {
     path: 'reports',
     component: Reports,
+    authority: 'USER_GET',
   },
   {
     path: 'sales',
     component: Sales,
+    authority: 'USER_GET',
   },
   {
     path: 'accounts',
     component: Accounts,
+    authority: 'USER_GET',
   },
   {
     path: 'payroll',
     component: Payroll,
+    authority: 'USER_GET',
   },
 ];

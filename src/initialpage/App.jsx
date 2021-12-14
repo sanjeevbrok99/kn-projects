@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 // We will create these two pages in a moment
 //Authendication
 import LoginPage from './loginpage';
@@ -44,7 +44,7 @@ import $ from 'jquery';
 //             />}
 //    />;
 
-export default class App extends Component {
+class App extends Component {
   componentDidMount() {
     if (
       location.pathname.includes('login') ||
@@ -64,6 +64,7 @@ export default class App extends Component {
       app.default();
     });
   }
+
   render() {
     const { location, match, user } = this.props;
 
@@ -105,3 +106,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default withRouter(App);

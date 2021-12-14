@@ -2,13 +2,17 @@
  * App Header
  */
 import React, { useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useHistory, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 // import app from '../../assets/js/app'
 
 const Sidebar = (props) => {
-  const isAdmin = sessionStorage.getItem('authType');
+  const authentication = useSelector((state) => state.authentication.value);
   let pathname = props.location.pathname;
+  const isAdmin = authentication.user?.userAuthorites.some(
+    (authority) => authority === 'ADMIN_DASHBOARD'
+  );
 
   useEffect(() => {
     var Sidemenu = function () {
@@ -51,7 +55,7 @@ const Sidebar = (props) => {
               <span>Main</span>
             </li>
             <li className={pathname.includes('dashboard') ? 'active' : ''}>
-              <Link to="/app/main/dashboard">
+              <Link to="/app/dashboard">
                 <i className="la la-users" /> <span>Dashboard</span>
               </Link>
             </li>
@@ -191,15 +195,29 @@ const Sidebar = (props) => {
                 </li>
                 {/* <span className="badge badge-pill bg-primary float-right">1</span> */}
                 {isAdmin && (
-                  <li>
-                    <Link
-                      className={pathname.includes('es-admin') ? 'active' : ''}
-                      to="/app/employee/leaves-admin"
-                    >
-                      {/* admin */}
-                      Leaves
-                    </Link>
-                  </li>
+                  <>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('es-admin') ? 'active' : ''
+                        }
+                        to="/app/employee/leaves-admin"
+                      >
+                        {/* admin */}
+                        Leaves
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('ve-types') ? 'active' : ''
+                        }
+                        to="/app/employee/leave-types"
+                      >
+                        Leaves Types
+                      </Link>
+                    </li>
+                  </>
                 )}
                 {!isAdmin && (
                   <li>
@@ -214,7 +232,7 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                 )}
-                {isAdmin && (
+                {/* {isAdmin && (
                   <li>
                     <Link
                       className={
@@ -225,7 +243,7 @@ const Sidebar = (props) => {
                       Leave Settings
                     </Link>
                   </li>
-                )}
+                )} */}
                 {isAdmin && (
                   <li>
                     <Link
@@ -640,7 +658,9 @@ const Sidebar = (props) => {
                   </li>
                   <li>
                     <Link
-                      className={pathname.includes('leave-') ? 'active' : ''}
+                      className={
+                        pathname.includes('leave-reports') ? 'active' : ''
+                      }
                       to="/app/reports/leave-reports"
                     >
                       {' '}
@@ -695,7 +715,7 @@ const Sidebar = (props) => {
                     className={pathname.includes('project-') ? 'active' : ''}
                     to="/app/reports/project-reports"
                   >
-                    <i class="las la-id-badge"></i>
+                    <i className="las la-id-badge"></i>
                     <span>Project Report</span>
                   </Link>
                 </li>
@@ -813,15 +833,22 @@ const Sidebar = (props) => {
               </li>
             )}
             {isAdmin && (
+              <li className={pathname.includes('locations') ? 'active' : ''}>
+                <Link to="/app/administrator/locations">
+                  <i className="la la-search-location" /> <span>Locations</span>
+                </Link>
+              </li>
+            )}
+            {isAdmin && (
               <li className={pathname.includes('assets') ? 'active' : ''}>
-                <Link to="/app/administrator/assets">
+                <Link to="/app/administrator/locations">
                   <i className="la la-object-ungroup" /> <span>Assets</span>
                 </Link>
               </li>
             )}
             {isAdmin && (
               <li className={pathname.includes('policies') ? 'active' : ''}>
-                <Link to="/app/hr/policies">
+                <Link to="/app/administrator/policies">
                   <i className="la la-file-pdf-o" /> <span>Policies</span>
                 </Link>
               </li>
@@ -863,7 +890,7 @@ const Sidebar = (props) => {
                     }
                     to="/app/accounts/categories"
                   >
-                    <i class="la la-bars"></i>
+                    <i className="la la-bars"></i>
                     <span>Categories</span>
                   </Link>
                 </li>

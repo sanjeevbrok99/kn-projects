@@ -1,23 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import {
-  Avatar_09,
-  Avatar_02,
-  Avatar_03,
-  Avatar_05,
-  Avatar_08,
-  Avatar_10,
-  Avatar_15,
-  Avatar_20,
-  Avatar_24,
-  Avatar_25,
-} from '../../../Entryfile/imagepath';
+import { Avatar_02, Avatar_10, Avatar_20 } from '../../../Entryfile/imagepath';
 
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import httpService from '../../../lib/httpService';
 
 const LeaveAdmin = () => {
   const [data, setData] = useState([
@@ -59,6 +49,10 @@ const LeaveAdmin = () => {
       status: 'New',
     },
   ]);
+
+  useEffect(() => {
+    const res = httpService.get('/private/approval?approvalType=LEAVE');
+  }, []);
 
   useEffect(() => {
     if ($('.select').length > 0) {

@@ -50,13 +50,20 @@ const Department = () => {
   };
 
   const handleEditDepartment = async () => {
+    if (departmentToModify.departmentName <= 0) return;
     const res = await httpService.put(
       '/private/department/' + departmentToModify.departmentId,
       {
         ...departmentToModify,
       }
     );
-    console.log(res.data);
+    setData((d) =>
+      d.map((item) =>
+        item.departmentId === res.data.departmentId
+          ? { ...res.data, id: item.id }
+          : item
+      )
+    );
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
@@ -82,7 +89,7 @@ const Department = () => {
     },
     {
       title: 'Department',
-      dataIndex: 'department',
+      dataIndex: 'departmentName',
       sorter: (a, b) => a.department.length - b.department.length,
     },
     {
@@ -262,6 +269,12 @@ const Department = () => {
                   <input
                     className="form-control"
                     defaultValue={departmentToModify?.department || ''}
+                    onChange={(e) => {
+                      setDepartmentToModify((v) => ({
+                        ...v,
+                        departmentName: e.target.value,
+                      }));
+                    }}
                     type="text"
                   />
                 </div>
