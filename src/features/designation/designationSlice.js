@@ -1,21 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const departmentSlice = createSlice({
-  name: 'dartment',
+export const designationSlice = createSlice({
+  name: 'designation',
   initialState: {
     value: [],
     fetched: false,
   },
   reducers: {
-    appendDepartmentStore: (state, action) => {
+    appendDesignationStore: (state, action) => {
       state.value.push(action.payload);
     },
-    setDepartmentStore: (state, action) => {
+    setDesignationStore: (state, action) => {
       state.value = action.payload;
     },
-    removeDepartment(state, action) {
+    removeDesignation(state, action) {
       state.value = state.value.filter(
-        (v) => v.departmentId !== action.payload.departmentId
+        (v) => v.designationId !== action.payload.designationId
       );
     },
     setFetched: (state, action) => {
@@ -25,7 +25,7 @@ export const departmentSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { appendDepartmentStore, setDepartmentStore, setFetched } =
-  departmentSlice.actions;
+export const { appendDesignationStore, setDesignationStore, setFetched } =
+  designationSlice.actions;
 
-export default departmentSlice.reducer;
+export default designationSlice.reducer;

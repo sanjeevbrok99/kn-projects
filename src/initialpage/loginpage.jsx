@@ -4,13 +4,47 @@
 
 import React, { Component, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { headerlogo } from '../Entryfile/imagepath.jsx';
+import httpService from '../lib/httpService.js';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { setAuthticationStore } from '../features/authentication/authenticationSlice.js';
 
 const Loginpage = () => {
-  useEffect(() => {
-    sessionStorage.clear();
-  }, []);
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(username, password);
+    const fetchUser = new Promise((resolve, reject) => {
+      httpService
+        .post('/public/login', {
+          userName: username,
+          password,
+        })
+        .then((res) => {
+          dispatch(setAuthticationStore(res.data));
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+    toast
+      .promise(fetchUser, {
+        pending: 'Logging In',
+        success: 'Success',
+        error: 'Bad Credentials',
+      })
+      .then(() => {
+        history.push('/app/dashboard');
+      });
+  };
+
   return (
     <>
       <Helmet>
@@ -36,8 +70,13 @@ const Loginpage = () => {
               {/* Account Form */}
               <div>
                 <div className="form-group">
-                  <label>Email Address</label>
-                  <input className="form-control" type="text" />
+                  <label>Username</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
                 </div>
                 <div className="form-group">
                   <div className="row">
@@ -50,37 +89,20 @@ const Loginpage = () => {
                       </Link>
                     </div>
                   </div>
-                  <input className="form-control" type="password" />
-                </div>
-                <div className="custom-control custom-switch form-group">
                   <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    id="userTypeSwitch"
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        sessionStorage.setItem('authType', 'admin');
-                        // console.log(sessionStorage.getItem('userType'));
-                      } else {
-                        sessionStorage.clear();
-                      }
-                    }}
+                    className="form-control"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="userTypeSwitch"
-                  >
-                    Login as admin
-                  </label>
                 </div>
                 <div className="form-group text-center">
-                  <Link
-                    onClick={() => localStorage.setItem('firstload', 'true')}
+                  <button
                     className="btn btn-primary account-btn"
-                    to="/app/main/dashboard"
+                    onClick={handleSubmit}
                   >
                     Login
-                  </Link>
+                  </button>
                 </div>
                 <div className="account-footer">
                   <p>

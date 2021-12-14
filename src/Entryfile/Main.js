@@ -30,11 +30,15 @@ import '../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css';
 import '../assets/css/bootstrap-datetimepicker.min.css';
 import '../assets/css/style.css';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const MainApp = () => (
   <Router>
     <Switch basename={`${config.publicPath}`}>
       <Route path="/" component={App} />
     </Switch>
+    <ToastContainer hideProgressBar={true} />
   </Router>
 );
 

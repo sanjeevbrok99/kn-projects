@@ -2,21 +2,24 @@
  * Crm Routes
  */
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Admindashboard from './admindashboard';
 import Employeedashboard from './employeedashboard';
 
 const DashboardRoute = ({ match }) => {
-  const isAdmin = sessionStorage.getItem('authType');
+  const authentication = useSelector((state) => state.authentication.value);
+  const isAdmin = authentication.user?.userAuthorites.some(
+    (authority) => authority === 'ADMIN_DASHBOARD'
+  );
+
   return (
     <Switch>
       <Route
-        path={`${match.url}/dashboard`}
+        path={`/app/dashboard`}
         component={isAdmin ? Admindashboard : Employeedashboard}
       />
-      {/* <Route path={`${match.url}/employee-dashboard`} component={Employeedashboard} /> */}
-      {/* <Redirect exact from={`${match.url}/`} to={`${match.url}/dashboard`} /> */}
     </Switch>
   );
 };

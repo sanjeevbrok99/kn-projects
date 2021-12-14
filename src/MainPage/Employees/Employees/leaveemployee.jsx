@@ -208,7 +208,7 @@ const LeaveEmployee = () => {
       title: 'Status',
       dataIndex: 'status',
       render: (text, record) => (
-        <div className="action-label text-center">
+        <div className="action-label">
           <a className="btn btn-white btn-sm btn-rounded" href="">
             <i
               className={
@@ -227,7 +227,7 @@ const LeaveEmployee = () => {
       ),
     },
     {
-      title: 'Approved By',
+      title: 'Examined By',
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
