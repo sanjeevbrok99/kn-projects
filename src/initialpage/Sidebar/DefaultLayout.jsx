@@ -31,16 +31,13 @@ const DefaultLayout = (props) => {
       <div>
         <Route path={`/app/dashboard`} component={Dashboard} />
         {routerService &&
-          routerService.map(
-            (route, key) =>
-              userAuthorities?.includes(route.authority) && (
-                <Route
-                  key={key}
-                  path={`${match.url}/${route.path}/`}
-                  component={route.component}
-                />
-              )
-          )}
+          routerService.map((route, key) => (
+            <Route
+              key={key}
+              path={`${match.url}/${route.path}/`}
+              component={route.component}
+            />
+          ))}
       </div>
       <SidebarContent />
     </>

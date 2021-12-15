@@ -8,6 +8,7 @@ import {
   setHolidayStore,
 } from '../../../features/holiday/holidaySlice';
 import httpService from '../../../lib/httpService';
+import { useAuthority } from '../../../hooks';
 
 const Holidays = () => {
   const [data, setData] = React.useState([]);
@@ -16,8 +17,10 @@ const Holidays = () => {
   const [leaveToAdd, setLeaveToAdd] = React.useState('');
   const [leaveDateToAdd, setLeaveDateToAdd] = React.useState('');
   const [holidayToModify, setHolidayToModify] = React.useState(null);
+  const holidayWriteAuthority = useAuthority('HOLIDAY_CREATE');
 
   useEffect(() => {
+    console.log(holidayWriteAuthority);
     (async () => {
       if (fetched) {
         setData(
@@ -93,16 +96,18 @@ const Holidays = () => {
                 <li className="breadcrumb-item active">Holidays</li>
               </ul>
             </div>
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_holiday"
-              >
-                <i className="fa fa-plus" /> Add Holiday
-              </a>
-            </div>
+            {holidayWriteAuthority && (
+              <div className="col-auto float-right ml-auto">
+                <a
+                  href="#"
+                  className="btn add-btn"
+                  data-toggle="modal"
+                  data-target="#add_holiday"
+                >
+                  <i className="fa fa-plus" /> Add Holiday
+                </a>
+              </div>
+            )}
           </div>
         </div>
         {/* /Page Header */}
