@@ -1,171 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import {
-  Avatar_02,
-  Avatar_05,
-  Avatar_09,
-  Avatar_10,
-  Avatar_03,
-  Avatar_08,
-  Avatar_15,
-  Avatar_20,
-  Avatar_25,
-  Avatar_24,
-} from '../../../Entryfile/imagepath';
+import { Avatar_02 } from '../../../Entryfile/imagepath';
 
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import httpService from '../../../lib/httpService';
+import { useSelector } from 'react-redux';
 
 const LeaveEmployee = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      image: Avatar_02,
-      name: 'Meher Superneeth',
-      role: 'CIO',
-      leavetype: 'Medical Leave',
-      from: '27 Feb 2021',
-      to: '27 Feb 2021',
-      noofdays: '1 day',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 2,
-      image: Avatar_09,
-      name: 'Buster Wigton',
-      role: 'Product Manager',
-      leavetype: 'Hospitalisation',
-      from: '15 Jan 2021',
-      to: '25 Jan 2021',
-      noofdays: '10 days',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 3,
-      image: Avatar_03,
-      name: 'Chinki Singh',
-      role: 'Product Manager',
-      leavetype: 'Maternity Leave',
-      from: '5 Jan 2021',
-      to: '15 Jan 2021',
-      noofdays: '10 days',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 4,
-      image: Avatar_05,
-      name: 'Aditi Singh',
-      role: 'Product Manager',
-      leavetype: 'Casual Leave',
-      from: '10 Jan 2021',
-      to: '11 Jan 2021',
-      noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 5,
-      image: Avatar_02,
-      name: 'Meher Superneeth',
-      role: 'CIO',
-      leavetype: 'Casual Leave',
-      from: '9 Jan 2021',
-      to: '10 Jan 2021',
-      noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'Approved',
-    },
-    {
-      id: 6,
-      image: Avatar_08,
-      name: 'Aishwarya Kumari',
-      role: 'Product Manager',
-      leavetype: 'LOP',
-      from: '24 Feb 2021',
-      to: '25 Feb 2021',
-      noofdays: '2 days',
-      reason: 'Personnal',
-      status: 'Approved',
-    },
-    {
-      id: 7,
-      image: Avatar_10,
-      name: 'Ashika bhatia',
-      role: 'Product Manager',
-      leavetype: 'Casual Leave',
-      from: '13 Jan 2021',
-      to: '14 Jan 2021',
-      noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'Declined',
-    },
-    {
-      id: 8,
-      image: Avatar_15,
-      name: 'Shreya Singh',
-      role: 'Marketing Head',
-      leavetype: 'Paternity Leave',
-      from: '13 Feb 2021',
-      to: '17 Feb 2021',
-      noofdays: '5 days',
-      reason: 'Going to Hospital',
-      status: 'Declined',
-    },
-    {
-      id: 9,
-      image: Avatar_20,
-      name: 'Shital Agarwal',
-      role: 'CIO',
-      leavetype: 'Casual Leave',
-      from: '8 Mar 2021',
-      to: '9 Mar 2021',
-      noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'New',
-    },
-    {
-      id: 10,
-      image: Avatar_25,
-      name: 'Jeetanshi Khatri',
-      role: 'Product Manager',
-      leavetype: 'Casual Leave',
-      from: '30 Jan 2021',
-      to: '31 Jan 2021',
-      noofdays: '2 days',
-      reason: 'Personnal',
-      status: 'New',
-    },
-    {
-      id: 11,
-      image: Avatar_10,
-      name: 'Rolland Webber',
-      role: 'Product Manager',
-      leavetype: 'Casual Leave',
-      from: '7 Jan 2021',
-      to: '8 Jan 2021',
-      noofdays: '2 days',
-      reason: 'Going to Hospital',
-      status: 'Declined',
-    },
-    {
-      id: 12,
-      image: Avatar_24,
-      name: 'Tarah Shropshire',
-      role: 'Product Manager',
-      leavetype: 'Paternity Leave',
-      from: '10 Jan 2021',
-      to: '10 Jan 2021',
-      noofdays: '1 day',
-      reason: 'Going to Hospital',
-      status: 'New',
-    },
-  ]);
+  const user = useSelector((state) => state.authentication.value.user);
+  const leaveTypes = useSelector(
+    (state) => state.authentication.value.leaveTypes
+  );
+  const [leaveToEdit, setLeaveToEdit] = useState(null);
+  const [leaveToCreate, setLeaveToCreate] = useState({
+    leaveTypeId: leaveTypes[0].leaveTypeId,
+  });
+  const [data, setData] = useState([]);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -173,7 +27,102 @@ const LeaveEmployee = () => {
         width: '100%',
       });
     }
-  });
+    async function fetchData() {
+      const res = await httpService.get(
+        `/private/leaveapplication?userId=${user.userId}`
+      );
+      setData(
+        res.data.map((item, i) => ({
+          ...item,
+          id: i + 1,
+          image: Avatar_02,
+          name: user.firstName + ' ' + user.lastName,
+          role: user.designation,
+          leavetype:
+            leaveTypes.find((item) => item.leaveTypeId === item.leaveTypeId)
+              .leaveTypeName || '',
+          from: new Date(item.startingDate).toDateString(),
+          to: new Date(item.endingDate).toDateString(),
+          noofdays: item.days,
+          reason: item.leavePurpose,
+          status: item.status,
+        }))
+      );
+    }
+    fetchData();
+  }, []);
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    const res = await httpService.put(
+      `/private/leaveapplication/${leaveToEdit.applicationId}`,
+      leaveToEdit
+    );
+    setData((leaves) => {
+      const index = leaves.findIndex(
+        (item) => item.applicationId === leaveToEdit.applicationId
+      );
+      const newData = [...leaves];
+      newData[index] = {
+        ...res.data,
+        id: index + 1,
+        image: Avatar_02,
+        name: user.firstName + ' ' + user.lastName,
+        role: user.designation,
+        leavetype:
+          leaveTypes.find((item) => item.leaveTypeId === item.leaveTypeId)
+            .leaveTypeName || '',
+        from: new Date(res.data.startingDate).toDateString(),
+        to: new Date(res.data.endingDate).toDateString(),
+        noofdays: res.data.days,
+        reason: res.data.leavePurpose,
+        status: res.data.status,
+      };
+      return newData;
+    });
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    const res = await httpService.post('/private/leaveapplication', {
+      ...leaveToCreate,
+      userId: user.userId,
+      days:
+        new Date(leaveToCreate.endingDate).getDate() -
+        new Date(leaveToCreate.startingDate).getDate(),
+    });
+    setData((leaves) => [
+      ...leaves,
+      {
+        ...res.data,
+        id: leaves.length + 1,
+        image: Avatar_02,
+        name: user.firstName + ' ' + user.lastName,
+        role: user.designation,
+        leavetype:
+          leaveTypes.find((item) => item.leaveTypeId === item.leaveTypeId)
+            .leaveTypeName || '',
+        from: new Date(res.data.startingDate).toDateString(),
+        to: new Date(res.data.endingDate).toDateString(),
+        noofdays: res.data.days,
+        reason: res.data.leavePurpose,
+        status: res.data.status,
+      },
+    ]);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    await httpService.delete(
+      `/private/leaveapplication/${leaveToEdit.applicationId}`
+    );
+    setData((leaves) =>
+      leaves.filter((item) => item.applicationId !== leaveToEdit.applicationId)
+    );
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
 
   const columns = [
     {
@@ -209,7 +158,11 @@ const LeaveEmployee = () => {
       dataIndex: 'status',
       render: (text, record) => (
         <div className="action-label">
-          <a className="btn btn-white btn-sm btn-rounded" href="">
+          <a
+            onClick={(e) => e.preventDefault()}
+            className="btn btn-white btn-sm btn-rounded"
+            href=""
+          >
             <i
               className={
                 text === 'New'
@@ -227,19 +180,6 @@ const LeaveEmployee = () => {
       ),
     },
     {
-      title: 'Examined By',
-      dataIndex: 'name',
-      render: (text, record) => (
-        <h2 className="table-avatar">
-          <Link to="/app/profile/employee-profile" className="avatar">
-            <img alt="" src={record.image} />
-          </Link>
-          <Link to="/app/profile/employee-profile">{text} </Link>
-        </h2>
-      ),
-      sorter: (a, b) => a.name.length - b.name.length,
-    },
-    {
       title: 'Action',
       render: (text, record) => (
         <div className="dropdown dropdown-action text-right">
@@ -254,7 +194,11 @@ const LeaveEmployee = () => {
           <div className="dropdown-menu dropdown-menu-right">
             <a
               className="dropdown-item"
-              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log(record);
+                setLeaveToEdit(record);
+              }}
               data-toggle="modal"
               data-target="#edit_leave"
             >
@@ -262,7 +206,10 @@ const LeaveEmployee = () => {
             </a>
             <a
               className="dropdown-item"
-              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setLeaveToEdit(record);
+              }}
               data-toggle="modal"
               data-target="#delete_approve"
             >
@@ -375,16 +322,32 @@ const LeaveEmployee = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={handleCreate}>
                 <div className="form-group">
                   <label>
                     Leave Type <span className="text-danger">*</span>
                   </label>
-                  <select className="select">
-                    <option>Select Leave Type</option>
-                    <option>Casual Leave 12 Days</option>
-                    <option>Medical Leave</option>
-                    <option>Loss of Pay</option>
+                  <select
+                    style={{
+                      display: 'block',
+                      border: '1px solid #e3e3e3',
+                      borderRadius: '0.25rem',
+                      height: '44px',
+                      width: '100%',
+                      background: '#fff',
+                    }}
+                    onChange={(e) =>
+                      setLeaveToCreate((leave) => ({
+                        ...leave,
+                        leaveTypeId: e.target.value,
+                      }))
+                    }
+                  >
+                    {leaveTypes?.map((type, i) => (
+                      <option key={i} value={type.leaveTypeId}>
+                        {type.leaveTypeName}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">
@@ -393,7 +356,13 @@ const LeaveEmployee = () => {
                   </label>
                   <div>
                     <input
-                      className="form-control datetimepicker"
+                      className="form-control"
+                      onChange={(e) => {
+                        setLeaveToCreate((leave) => ({
+                          ...leave,
+                          startingDate: new Date(e.target.value).toISOString(),
+                        }));
+                      }}
                       type="date"
                     />
                   </div>
@@ -404,16 +373,16 @@ const LeaveEmployee = () => {
                   </label>
                   <div>
                     <input
-                      className="form-control datetimepicker"
+                      className="form-control"
                       type="date"
+                      onChange={(e) => {
+                        setLeaveToCreate((leave) => ({
+                          ...leave,
+                          endingDate: new Date(e.target.value).toISOString(),
+                        }));
+                      }}
                     />
                   </div>
-                </div>
-                <div className="form-group">
-                  <label>
-                    Number of days <span className="text-danger">*</span>
-                  </label>
-                  <input className="form-control" readOnly type="text" />
                 </div>
                 <div className="form-group">
                   <label>
@@ -434,6 +403,12 @@ const LeaveEmployee = () => {
                     rows={4}
                     className="form-control"
                     defaultValue={''}
+                    onChange={(e) => {
+                      setLeaveToCreate((leave) => ({
+                        ...leave,
+                        leavePurpose: e.target.value,
+                      }));
+                    }}
                   />
                 </div>
                 <div className="submit-section">
@@ -461,14 +436,21 @@ const LeaveEmployee = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={handleEdit}>
                 <div className="form-group">
                   <label>
                     Leave Type <span className="text-danger">*</span>
                   </label>
-                  <select className="select">
-                    <option>Select Leave Type</option>
-                    <option>Casual Leave 12 Days</option>
+                  <select
+                    defaultValue={leaveToEdit?.leaveTypeId}
+                    className="select"
+                    disabled
+                  >
+                    {leaveTypes?.map((type) => (
+                      <option key={type.leaveTypeId} value={type.leaveTypeId}>
+                        {type.leaveTypeName}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">
@@ -477,8 +459,20 @@ const LeaveEmployee = () => {
                   </label>
                   <div>
                     <input
-                      className="form-control datetimepicker"
-                      defaultValue="01-01-2021"
+                      className="form-control"
+                      defaultValue={
+                        leaveToEdit
+                          ? new Date(leaveToEdit?.startingDate)
+                              .toISOString()
+                              .substring(0, 10)
+                          : new Date().toISOString().substring(0, 10)
+                      }
+                      onChange={(e) => {
+                        setLeaveToEdit({
+                          ...leaveToEdit,
+                          startingDate: new Date(e.target.value).toISOString(),
+                        });
+                      }}
                       type="date"
                     />
                   </div>
@@ -489,22 +483,23 @@ const LeaveEmployee = () => {
                   </label>
                   <div>
                     <input
-                      className="form-control datetimepicker"
-                      defaultValue="01-01-2021"
+                      className="form-control"
+                      defaultValue={
+                        leaveToEdit
+                          ? new Date(leaveToEdit?.endingDate)
+                              .toISOString()
+                              .substring(0, 10)
+                          : new Date().toISOString().substring(0, 10)
+                      }
+                      onChange={(e) => {
+                        setLeaveToEdit({
+                          ...leaveToEdit,
+                          endingDate: new Date(e.target.value).toISOString(),
+                        });
+                      }}
                       type="date"
                     />
                   </div>
-                </div>
-                <div className="form-group">
-                  <label>
-                    Number of days <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    className="form-control"
-                    readOnly
-                    type="text"
-                    defaultValue={2}
-                  />
                 </div>
                 <div className="form-group">
                   <label>
@@ -524,7 +519,7 @@ const LeaveEmployee = () => {
                   <textarea
                     rows={4}
                     className="form-control"
-                    defaultValue={'Going to hospital'}
+                    defaultValue={leaveToEdit?.leavePurpose}
                   />
                 </div>
                 <div className="submit-section">
@@ -552,7 +547,10 @@ const LeaveEmployee = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      onClick={handleDelete}
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>

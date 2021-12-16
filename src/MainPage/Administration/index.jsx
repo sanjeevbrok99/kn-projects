@@ -1,6 +1,3 @@
-/**
- * Tables Routes
- */
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -32,6 +29,7 @@ import Archivedjobs from './Jobs/archived_jobs';
 import Jobapptitude from './Jobs/job_aptitude';
 import Questions from './Jobs/questions';
 import Policies from '../HR/policies';
+import Locations from './locations';
 
 const Uiinterfaceroute = ({ match }) => (
   <Switch>
@@ -39,6 +37,7 @@ const Uiinterfaceroute = ({ match }) => (
     <Route path={`${match.url}/users`} component={Users} />
     <Route path={`${match.url}/activities`} component={Activities} />
     <Route path={`${match.url}/assets`} component={Assets} />
+    <Route path={`${match.url}/locations`} component={Locations} />
     <Route path={`${match.url}/knowledgebase`} component={knowledgebase} />
     <Route
       path={`${match.url}/knowledgebase-view`}

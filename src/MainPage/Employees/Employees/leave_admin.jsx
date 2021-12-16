@@ -51,7 +51,11 @@ const LeaveAdmin = () => {
   ]);
 
   useEffect(() => {
-    const res = httpService.get('/private/approval?approvalType=LEAVE');
+    const fetchData = async () => {
+      const res = httpService.get('/private/approval?approvalType=LEAVE');
+      console.log(res.data);
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
