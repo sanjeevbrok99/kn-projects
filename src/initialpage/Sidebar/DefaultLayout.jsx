@@ -29,7 +29,6 @@ const DefaultLayout = (props) => {
     <>
       <Header />
       <div>
-        <Route path={`/app/dashboard`} component={Dashboard} />
         {routerService &&
           routerService.map((route, key) => (
             <Route

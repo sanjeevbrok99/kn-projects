@@ -14,7 +14,7 @@ const Sidebar = (props) => {
             <li>
               <Link
                 onClick={() => localStorage.setItem('firstload', 'true')}
-                to="/app/main/dashboard"
+                to="/app/dashboard"
               >
                 <i className="la la-home" /> <span>Back to Home</span>
               </Link>

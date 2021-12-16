@@ -434,7 +434,7 @@ class Header extends Component {
               >
                 My Profile
               </Link>
-              <Link className="dropdown-item" to="/settings/companysetting">
+              <Link className="dropdown-item" to="/settings/">
                 Settings
               </Link>
               <Link className="dropdown-item" to="/login">
