@@ -200,6 +200,18 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                 )}
+                {!isAdmin && (
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('shift-list') ? 'active' : ''
+                      }
+                      to="/app/employee/shift-list"
+                    >
+                      Shifts
+                    </Link>
+                  </li>
+                )}
                 {isAdmin && (
                   <>
                     <li>
@@ -212,7 +224,7 @@ const Sidebar = (props) => {
                         }
                         to="/app/employee/shift-scheduling"
                       >
-                        Shift &amp; Schedule
+                        Schedule Shifts
                       </Link>
                     </li>
                     <li>
@@ -330,14 +342,18 @@ const Sidebar = (props) => {
                   </Link>
                 </li>
 
-                <li className={pathname.includes('clients') ? 'active' : ''}>
+                <li
+                  className={pathname.includes('credit-notes') ? 'active' : ''}
+                >
                   <Link to="/app/employees/clients">
                     <i className="la la-clipboard" /> <span>Credit Notes</span>
                   </Link>
                 </li>
 
-                <li className={pathname.includes('clients') ? 'active' : ''}>
-                  <Link to="/app/employees/clients">
+                <li
+                  className={pathname.includes('investments') ? 'active' : ''}
+                >
+                  <Link to="/app/performance/investments">
                     <i className="la la-coins" /> <span>Investments</span>
                   </Link>
                 </li>
