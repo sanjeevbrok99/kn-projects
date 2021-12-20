@@ -8,6 +8,7 @@ import Promotion from './promotion';
 import Resignation from './resignation';
 import StatisticalAnalysis from './StatisticalAnalysis';
 import Termination from './termination';
+import Investments from '../Sales/Invetments';
 
 const Performanceroute = ({ match }) => (
   <Switch>
@@ -16,6 +17,7 @@ const Performanceroute = ({ match }) => (
     <Route path={`${match.url}/resignation`} component={Resignation} />
     <Route path={`${match.url}/termination`} component={Termination} />
     <Route path={`${match.url}/analysis`} component={StatisticalAnalysis} />
+    <Route path={`${match.url}/investments`} component={Investments} />
   </Switch>
 );
 
