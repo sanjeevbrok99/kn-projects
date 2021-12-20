@@ -253,7 +253,7 @@ const Designations = () => {
                     type="text"
                   />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label>
                     Department <span className="text-danger">*</span>
                   </label>
@@ -263,7 +263,7 @@ const Designations = () => {
                     <option>IT Management</option>
                     <option> Marketing</option>
                   </select>
-                </div>
+                </div> */}
                 <div className="table-responsive m-t-15">
                   <table className="table table-striped custom-table">
                     <thead>
@@ -353,7 +353,7 @@ const Designations = () => {
                     type="text"
                   />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label>
                     Department <span className="text-danger">*</span>
                   </label>
@@ -363,7 +363,7 @@ const Designations = () => {
                     <option>IT Management</option>
                     <option>Marketing</option>
                   </select>
-                </div>
+                </div> */}
                 <div className="table-responsive m-t-15">
                   <table className="table table-striped custom-table">
                     <thead>
