@@ -107,14 +107,14 @@ const AllEmployees = () => {
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
-              {/* <a
+              <a
                 href="#"
                 className="btn add-btn"
                 data-toggle="modal"
                 data-target="#add_employee"
               >
                 <i className="fa fa-plus" /> Add Employee
-              </a> */}
+              </a>
               <div className="view-icons">
                 <Link
                   to="/app/employee/allemployees"
@@ -347,14 +347,6 @@ const AllEmployees = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        Employee ID <span className="text-danger">*</span>
-                      </label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
                         Joining Date <span className="text-danger">*</span>
                       </label>
                       <div>
@@ -369,15 +361,6 @@ const AllEmployees = () => {
                     <div className="form-group">
                       <label className="col-form-label">Phone </label>
                       <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Company</label>
-                      <select className="select">
-                        <option value>Sunteck Realty Ltd</option>
-                        <option value={1}>Godrej Properties Ltd</option>
-                      </select>
                     </div>
                   </div>
                   <div className="col-md-6">

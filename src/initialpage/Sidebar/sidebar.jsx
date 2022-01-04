@@ -252,7 +252,7 @@ const Sidebar = (props) => {
                     className={pathname.includes('leads') ? 'active' : ''}
                     to="/app/employees/leads"
                   >
-                    Leads
+                    Leaders
                   </Link>
                 </li>
                 <li>
@@ -403,7 +403,7 @@ const Sidebar = (props) => {
                         }
                         to="/app/accounts/budget-expenses"
                       >
-                        Loan
+                        Expenses
                       </Link>
                     </li>
                     <li>

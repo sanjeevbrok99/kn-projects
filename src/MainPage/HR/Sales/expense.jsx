@@ -177,7 +177,7 @@ const Expenses = () => {
                 data-toggle="modal"
                 data-target="#add_expense"
               >
-                <i className="fa fa-plus" /> Add Expense
+                <i className="fa fa-plus" /> Add Loan
               </a>
             </div>
           </div>
