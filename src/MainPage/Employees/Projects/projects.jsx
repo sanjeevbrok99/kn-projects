@@ -18,7 +18,40 @@ import {
   Avatar_01,
 } from '../../../Entryfile/imagepath';
 
+const projects = [
+  {
+    name: 'TariniVihar-II',
+    completed: 40,
+  },
+  {
+    name: 'Mahaveer Nagar',
+    completed: 40,
+  },
+  {
+    name: 'Basudev Nagar',
+    completed: 40,
+  },
+  {
+    name: 'Ananta-Villa-PH-II',
+    completed: 40,
+  },
+  {
+    name: 'Biju nagar',
+    completed: 100,
+  },
+  {
+    name: 'Shree Villa',
+    completed: 100,
+  },
+  {
+    name: 'TariniVihar',
+    completed: 0,
+  },
+];
+
 const Projects = () => {
+  const [project, setProject] = React.useState(projects);
+  const [nameToSearch, setNameToSearch] = React.useState('');
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -85,30 +118,45 @@ const Projects = () => {
         <div className="row filter-row">
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
+              <input
+                type="text"
+                placeholder="Name"
+                value={nameToSearch}
+                onChange={(e) => {
+                  setNameToSearch(e.target.value);
+                }}
+                className="form-control floating"
+              />
               <label className="focus-label">Project Name</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
-              <label className="focus-label">Employee Name</label>
+              <label className="focus-label">Priority</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Roll</option>
-                <option>Product Manager</option>
-                <option>CIO</option>
-                <option>Product Manager</option>
-                <option>Marketing Head</option>
               </select>
-              <label className="focus-label">Designation</label>
+              <label className="focus-label">Client</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
-            <a href="#" className="btn btn-success btn-block">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                setProject(
+                  projects.filter((item) => {
+                    return item.name.includes(nameToSearch);
+                  })
+                );
+              }}
+              href="#"
+              className="btn btn-success btn-block"
+            >
               {' '}
               Search{' '}
             </a>
@@ -116,182 +164,197 @@ const Projects = () => {
         </div>
         {/* Search Filter */}
         <div className="row">
-          <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-            <div className="card">
-              <div className="card-body">
-                <div className="dropdown dropdown-action profile-action">
-                  <a
-                    href="#"
-                    className="action-icon dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i className="material-icons">more_vert</i>
-                  </a>
-                  <div className="dropdown-menu dropdown-menu-right">
+          {project.map((item, index) => (
+            <div key={index} className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
+              <div className="card">
+                <div className="card-body">
+                  <div className="dropdown dropdown-action profile-action">
                     <a
-                      className="dropdown-item"
                       href="#"
-                      data-toggle="modal"
-                      data-target="#edit_project"
+                      className="action-icon dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
                     >
-                      <i className="fa fa-pencil m-r-5" /> Edit
+                      <i className="material-icons">more_vert</i>
                     </a>
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      data-toggle="modal"
-                      data-target="#delete_project"
-                    >
-                      <i className="fa fa-trash-o m-r-5" /> Delete
-                    </a>
-                  </div>
-                </div>
-                <h4 className="project-title">
-                  <Link to="/app/projects/projects-view">
-                    HR Management System
-                  </Link>
-                </h4>
-                <small className="block text-ellipsis m-b-15">
-                  <span className="text-xs">1</span>{' '}
-                  <span className="text-muted">open tasks, </span>
-                  <span className="text-xs">9</span>{' '}
-                  <span className="text-muted">tasks completed</span>
-                </small>
-                <p className="text-muted">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. When an unknown printer took a galley of
-                  type and scrambled it...
-                </p>
-                <div className="pro-deadline m-b-15">
-                  <div className="sub-title">Deadline:</div>
-                  <div className="text-muted">17 Apr 2021</div>
-                </div>
-                <div className="project-members m-b-15">
-                  <div>Project Leader :</div>
-                  <ul className="team-members">
-                    <li>
-                      <a href="#" data-toggle="tooltip" title="Sushmita Singh">
-                        <img alt="" src={Avatar_16} />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="project-members m-b-15">
-                  <div>Team :</div>
-                  <ul className="team-members">
-                    <li>
-                      <a href="#" data-toggle="tooltip" title="Prateek Tiwari">
-                        <img alt="" src={Avatar_02} />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" data-toggle="tooltip" title="Shital Agarwal">
-                        <img alt="" src={Avatar_09} />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" data-toggle="tooltip" title="Harvinder">
-                        <img alt="" src={Avatar_10} />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" data-toggle="tooltip" title="Shreya Singh">
-                        <img alt="" src={Avatar_05} />
-                      </a>
-                    </li>
-                    <li className="dropdown avatar-dropdown">
+                    <div className="dropdown-menu dropdown-menu-right">
                       <a
+                        className="dropdown-item"
                         href="#"
-                        className="all-users dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-expanded="false"
+                        data-toggle="modal"
+                        data-target="#edit_project"
                       >
-                        +15
+                        <i className="fa fa-pencil m-r-5" /> Edit
                       </a>
-                      <div className="dropdown-menu dropdown-menu-right">
-                        <div className="avatar-group">
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_02} />
-                          </a>
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_09} />
-                          </a>
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_10} />
-                          </a>
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_05} />
-                          </a>
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_11} />
-                          </a>
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_12} />
-                          </a>
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_13} />
-                          </a>
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_01} />
-                          </a>
-                          <a className="avatar avatar-xs" href="#">
-                            <img alt="" src={Avatar_16} />
-                          </a>
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        data-toggle="modal"
+                        data-target="#delete_project"
+                      >
+                        <i className="fa fa-trash-o m-r-5" /> Delete
+                      </a>
+                    </div>
+                  </div>
+                  <h4 className="project-title">
+                    <Link to="/app/projects/projects-view">{item.name}</Link>
+                  </h4>
+                  <small className="block text-ellipsis m-b-15">
+                    <span className="text-xs">1</span>{' '}
+                    <span className="text-muted">open tasks, </span>
+                    <span className="text-xs">9</span>{' '}
+                    <span className="text-muted">tasks completed</span>
+                  </small>
+                  <p className="text-muted">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. When an unknown printer took a galley
+                    of type and scrambled it...
+                  </p>
+                  <div className="pro-deadline m-b-15">
+                    <div className="sub-title">Deadline:</div>
+                    <div className="text-muted">17 Apr 2021</div>
+                  </div>
+                  <div className="project-members m-b-15">
+                    <div>Project Leader :</div>
+                    <ul className="team-members">
+                      <li>
+                        <a
+                          href="#"
+                          data-toggle="tooltip"
+                          title="Sushmita Singh"
+                        >
+                          <img alt="" src={Avatar_16} />
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="project-members m-b-15">
+                    <div>Team :</div>
+                    <ul className="team-members">
+                      <li>
+                        <a
+                          href="#"
+                          data-toggle="tooltip"
+                          title="Prateek Tiwari"
+                        >
+                          <img alt="" src={Avatar_02} />
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          data-toggle="tooltip"
+                          title="Shital Agarwal"
+                        >
+                          <img alt="" src={Avatar_09} />
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" data-toggle="tooltip" title="Harvinder">
+                          <img alt="" src={Avatar_10} />
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" data-toggle="tooltip" title="Shreya Singh">
+                          <img alt="" src={Avatar_05} />
+                        </a>
+                      </li>
+                      <li className="dropdown avatar-dropdown">
+                        <a
+                          href="#"
+                          className="all-users dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          +15
+                        </a>
+                        <div className="dropdown-menu dropdown-menu-right">
+                          <div className="avatar-group">
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_02} />
+                            </a>
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_09} />
+                            </a>
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_10} />
+                            </a>
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_05} />
+                            </a>
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_11} />
+                            </a>
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_12} />
+                            </a>
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_13} />
+                            </a>
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_01} />
+                            </a>
+                            <a className="avatar avatar-xs" href="#">
+                              <img alt="" src={Avatar_16} />
+                            </a>
+                          </div>
+                          <div className="avatar-pagination">
+                            <ul className="pagination">
+                              <li className="page-item">
+                                <a
+                                  className="page-link"
+                                  href="#"
+                                  aria-label="Previous"
+                                >
+                                  <span aria-hidden="true">«</span>
+                                  <span className="sr-only">Previous</span>
+                                </a>
+                              </li>
+                              <li className="page-item">
+                                <a className="page-link" href="#">
+                                  1
+                                </a>
+                              </li>
+                              <li className="page-item">
+                                <a className="page-link" href="#">
+                                  2
+                                </a>
+                              </li>
+                              <li className="page-item">
+                                <a
+                                  className="page-link"
+                                  href="#"
+                                  aria-label="Next"
+                                >
+                                  <span aria-hidden="true">»</span>
+                                  <span className="sr-only">Next</span>
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                        <div className="avatar-pagination">
-                          <ul className="pagination">
-                            <li className="page-item">
-                              <a
-                                className="page-link"
-                                href="#"
-                                aria-label="Previous"
-                              >
-                                <span aria-hidden="true">«</span>
-                                <span className="sr-only">Previous</span>
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              <a className="page-link" href="#">
-                                1
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              <a className="page-link" href="#">
-                                2
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              <a
-                                className="page-link"
-                                href="#"
-                                aria-label="Next"
-                              >
-                                <span aria-hidden="true">»</span>
-                                <span className="sr-only">Next</span>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <p className="m-b-5">
-                  Progress <span className="text-success float-right">40%</span>
-                </p>
-                <div className="progress progress-xs mb-0">
-                  <div
-                    className="progress-bar bg-success"
-                    role="progressbar"
-                    data-toggle="tooltip"
-                    title="40%"
-                    style={{ width: '40%' }}
-                  />
+                      </li>
+                    </ul>
+                  </div>
+                  <p className="m-b-5">
+                    Progress{' '}
+                    <span className="text-success float-right">
+                      {item.completed}%
+                    </span>
+                  </p>
+                  <div className="progress progress-xs mb-0">
+                    <div
+                      className="progress-bar bg-success"
+                      role="progressbar"
+                      data-toggle="tooltip"
+                      title={item.completed + '%'}
+                      style={{ width: item.completed + '%' }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
       {/* /Page Content */}
@@ -361,23 +424,14 @@ const Projects = () => {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-sm-3">
+                  <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Rate</label>
+                      <label>Type</label>
                       <input
-                        placeholder="$50"
+                        placeholder="Type of Project "
                         className="form-control"
                         type="text"
                       />
-                    </div>
-                  </div>
-                  <div className="col-sm-3">
-                    <div className="form-group">
-                      <label>&nbsp;</label>
-                      <select className="select">
-                        <option>Hourly</option>
-                        <option>Fixed</option>
-                      </select>
                     </div>
                   </div>
                   <div className="col-sm-6">

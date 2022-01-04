@@ -61,7 +61,7 @@ const Activities = () => {
                         >
                           Lesley Grauer
                         </Link>{' '}
-                        added new task <a href="#">Lovely Faculty</a>
+                        added new task <a href="#">TariniVihar-II</a>
                         <span className="time">4 mins ago</span>
                       </div>
                     </div>
