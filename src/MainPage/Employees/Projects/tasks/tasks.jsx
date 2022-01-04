@@ -228,7 +228,7 @@ const Tasks = () => {
                   <div className="chat-wrap-inner">
                     <div className="chat-box">
                       <div className="chats">
-                        <h4>Lovely Faculty Phase 1</h4>
+                        <h4>TariniVihar-II Phase 1</h4>
                         <div className="task-header">
                           <div className="assignee-info">
                             <a
@@ -304,7 +304,7 @@ const Tasks = () => {
                               Lesley Grauer
                             </a>{' '}
                             <span className="task-info-subject">
-                              added to Lovely Faculty
+                              added to TariniVihar-II
                             </span>
                           </span>
                           <div className="task-time">Jan 20, 2021</div>

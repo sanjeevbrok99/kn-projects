@@ -25,7 +25,7 @@ const Leads = () => {
       name: 'Prateek Tiwari',
       email: 'barrycuda@example.com',
       mobile: '9876543210',
-      project: 'Lovely Faculty',
+      project: 'TariniVihar-II',
       status: 'Working',
       created: '10 hours ago',
     },

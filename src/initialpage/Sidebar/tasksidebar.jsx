@@ -26,7 +26,10 @@ const Sidebar = (props) => {
               </a>
             </li>
             <li>
-              <Link to="/tasks/tasks">Project Management</Link>
+              <Link to="/tasks/tasks">Basudev Nagar</Link>
+            </li>
+            <li>
+              <Link to="/tasks/tasks">TariniVihar-II</Link>
             </li>
           </ul>
         </div>

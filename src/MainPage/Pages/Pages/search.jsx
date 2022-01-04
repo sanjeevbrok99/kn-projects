@@ -740,7 +740,7 @@ const Search = () => {
                           </div>
                           <h4 className="project-title">
                             <Link to="/app/projects/projects-view">
-                              Lovely Faculty
+                              TariniVihar-II
                             </Link>
                           </h4>
                           <small className="block text-ellipsis m-b-15">

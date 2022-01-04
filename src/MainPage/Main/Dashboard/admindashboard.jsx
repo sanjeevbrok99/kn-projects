@@ -1145,7 +1145,7 @@ const AdminDashboard = () => {
                         <td>
                           <h2>
                             <Link to="/app/projects/projects-view">
-                              Lovely Faculty
+                              TariniVihar-II
                             </Link>
                           </h2>
                           <small className="block text-ellipsis">
