@@ -34,6 +34,7 @@ const AllEmployees = () => {
         const response = await httpService.get('/private/user');
         setIsLoading(false);
         setEmployees(response.data);
+        console.log(response.data);
         dispatch(setFetched(true));
         set_employees(response.data);
         dispatch(setEmployeeStore(response.data));
