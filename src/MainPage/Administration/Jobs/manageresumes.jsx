@@ -322,7 +322,7 @@ const ManagedResumes = () => {
                         <label>Department</label>
                         <select className="select" defaultValue="Web">
                           <option>-</option>
-                          <option value="Web">Web Development</option>
+                          <option value="Web">Marketing Head</option>
                           <option>Application Development</option>
                           <option>IT Management</option>
                           <option>Accounts Management</option>

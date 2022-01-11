@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
@@ -6,11 +6,80 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import httpService from '../../../lib/httpService';
+import {
+  setDepartmentStore,
+  setFetched,
+} from '../../../features/department/departmentSlice';
 
 const Department = () => {
-  const [data, setData] = useState([
-    { id: 1, department: 'Sales Management' },
-  ]);
+  const [data, setData] = useState([]);
+  const [departmentToModify, setDepartmentToModify] = useState(null);
+  const [departmentNameToAdd, setDepartmentNameToAdd] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await httpService.get('/private/department');
+      setFetched(true);
+      setDepartmentStore(res.data);
+      setData(
+        res.data.map((item, i) => ({
+          ...item,
+          id: i + 1,
+          department: item.departmentName,
+        }))
+      );
+    }
+    fetchData();
+  }, []);
+
+  const handleAddDepartment = async () => {
+    const res = await httpService.post('/private/department', {
+      departmentName: departmentNameToAdd,
+    });
+    // console.log(res.data);
+    setData((d) => [
+      ...d,
+      {
+        ...res.data,
+        id: d.length + 1,
+        department: res.data.departmentName,
+      },
+    ]);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleEditDepartment = async () => {
+    if (departmentToModify.departmentName <= 0) return;
+    const res = await httpService.put(
+      '/private/department/' + departmentToModify.departmentId,
+      {
+        ...departmentToModify,
+      }
+    );
+    setData((d) =>
+      d.map((item) =>
+        item.departmentId === res.data.departmentId
+          ? { ...res.data, id: item.id }
+          : item
+      )
+    );
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleDeleteDepartment = async () => {
+    const res = await httpService.delete(
+      '/private/department/' + departmentToModify.departmentId
+    );
+    const itemIndex = departmentToModify.id - 1;
+    setData((d) => [
+      ...d.slice(0, itemIndex),
+      ...d
+        .slice(itemIndex + 1)
+        .map((i) => ({ ...i, id: i.id - 1, department: i.departmentName })),
+    ]);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
 
   const columns = [
     {
@@ -20,7 +89,7 @@ const Department = () => {
     },
     {
       title: 'Department',
-      dataIndex: 'department',
+      dataIndex: 'departmentName',
       sorter: (a, b) => a.department.length - b.department.length,
     },
     {
@@ -41,6 +110,9 @@ const Department = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_department"
+              onClick={() => {
+                setDepartmentToModify(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -49,6 +121,9 @@ const Department = () => {
               href="#"
               data-toggle="modal"
               data-target="#delete_department"
+              onClick={() => {
+                setDepartmentToModify(record);
+              }}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -135,12 +210,22 @@ const Department = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAddDepartment();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Department Name <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={departmentNameToAdd || ''}
+                    onChange={(e) => setDepartmentNameToAdd(e.target.value)}
+                  />
                 </div>
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Submit</button>
@@ -171,14 +256,25 @@ const Department = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEditDepartment();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Department Name <span className="text-danger">*</span>
                   </label>
                   <input
                     className="form-control"
-                    defaultValue="IT Management"
+                    defaultValue={departmentToModify?.department || ''}
+                    onChange={(e) => {
+                      setDepartmentToModify((v) => ({
+                        ...v,
+                        departmentName: e.target.value,
+                      }));
+                    }}
                     type="text"
                   />
                 </div>
@@ -207,7 +303,14 @@ const Department = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDeleteDepartment();
+                      }}
+                      data-dismiss="modal"
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>

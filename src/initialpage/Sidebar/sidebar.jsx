@@ -2,18 +2,50 @@
  * App Header
  */
 import React, { useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useHistory, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 // import app from '../../assets/js/app'
 
 const Sidebar = (props) => {
-  useEffect(() => {
-    import('../../lib/app').then((app) => {
-      app.default();
-    });
-  }, []);
-  const isAdmin = sessionStorage.getItem('authType');
+  const authentication = useSelector((state) => state.authentication.value);
   let pathname = props.location.pathname;
+  const isAdmin = authentication.user?.userAuthorites.some(
+    (authority) => authority === 'ADMIN_DASHBOARD'
+  );
+
+  useEffect(() => {
+    var Sidemenu = function () {
+      this.$menuItem = $('#sidebar-menu a');
+    };
+
+    function init() {
+      var $this = Sidemenu;
+      $('#sidebar-menu a').on('click', function (e) {
+        if ($(this).parent().hasClass('submenu')) {
+          e.preventDefault();
+        }
+        if (!$(this).hasClass('subdrop')) {
+          $('ul', $(this).parents('ul:first')).slideUp(350);
+          $('a', $(this).parents('ul:first')).removeClass('subdrop');
+          $(this).next('ul').slideDown(350);
+          $(this).addClass('subdrop');
+        } else if ($(this).hasClass('subdrop')) {
+          $(this).removeClass('subdrop');
+          $(this).next('ul').slideUp(350);
+        }
+      });
+      $('#sidebar-menu ul li.submenu a.active')
+        .parents('li:last')
+        .children('a:first')
+        .addClass('active')
+        .trigger('click');
+    }
+
+    // Sidebar Initiate
+    init();
+  }, []);
+
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner">
@@ -23,79 +55,16 @@ const Sidebar = (props) => {
               <span>Main</span>
             </li>
             <li className={pathname.includes('dashboard') ? 'active' : ''}>
-              <Link to="/app/main/dashboard">
+              <Link to="/app/dashboard">
                 <i className="la la-users" /> <span>Dashboard</span>
               </Link>
             </li>
-            {/* <li className="submenu">
-                <a href="#"><i className="la la-dashboard" /> <span> Dashboard</span> <span className="menu-arrow" /></a>
-                <ul style={{display: 'none'}}>
-                  <li><Link className={pathname.includes('main/dashboard') ?"active" :""} to="/app/main/dashboard">Admin Dashboard</Link></li>
-                  <li><Link className={pathname.includes('main/employee-') ?"active" :""} 
-                        to="/app/main/employee-dashboard">Employee Dashboard</Link></li>
-                </ul>
-              </li> */}
             <li className="submenu">
               <a href="#">
                 <i className="la la-cube" /> <span> Apps</span>{' '}
                 <span className="menu-arrow" />
               </a>
               <ul style={{ display: 'none' }}>
-                <li>
-                  <Link
-                    onClick={() => localStorage.setItem('minheight', 'true')}
-                    to="/conversation/chat"
-                  >
-                    Chat
-                  </Link>
-                </li>
-                {/* <li className="submenu">
-                  <a href="#">
-                    <span> Calls</span> <span className="menu-arrow" />
-                  </a>
-                  <ul style={{ display: 'none' }}>
-                    <li>
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem('minheight', 'true')
-                        }
-                        to="/conversation/voice-call"
-                      >
-                        Voice Call
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem('minheight', 'true')
-                        }
-                        to="/conversation/video-call"
-                      >
-                        Video Call
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem('minheight', 'true')
-                        }
-                        to="/conversation/outgoing-call"
-                      >
-                        Outgoing Call
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem('minheight', 'true')
-                        }
-                        to="/conversation/incoming-call"
-                      >
-                        Incoming Call
-                      </Link>
-                    </li>
-                  </ul>
-                </li> */}
                 <li>
                   <Link
                     className={
@@ -106,15 +75,6 @@ const Sidebar = (props) => {
                     Calendar
                   </Link>
                 </li>
-                {/* <li>
-                  <Link
-                    onClick={() => localStorage.setItem('minheight', 'true')}
-                    className={pathname.includes('contacts') ? 'active' : ''}
-                    to="/app/apps/contacts"
-                  >
-                    Contacts
-                  </Link>
-                </li> */}
                 <li>
                   <Link
                     className={
@@ -127,13 +87,10 @@ const Sidebar = (props) => {
                 </li>
               </ul>
             </li>
-            <li className="menu-title">
-              <span>Employees</span>
-            </li>
             <li className="submenu">
               {/* className="noti-dot" */}
               <a href="#">
-                <i className="la la-user" /> <span> Employees</span>{' '}
+                <i className="la la-user" /> <span>Employee</span>{' '}
                 <span className="menu-arrow" />
               </a>
               <ul style={{ display: 'none' }}>
@@ -165,11 +122,10 @@ const Sidebar = (props) => {
                 {isAdmin && (
                   <li>
                     <Link
-                      className={pathname.includes('es-admin') ? 'active' : ''}
-                      to="/app/employee/leaves-admin"
+                      className={pathname.includes('ve-types') ? 'active' : ''}
+                      to="/app/employee/leave-types"
                     >
-                      {/* admin */}
-                      Leaves
+                      Leaves Types
                     </Link>
                   </li>
                 )}
@@ -183,18 +139,6 @@ const Sidebar = (props) => {
                     >
                       {/* employee */}
                       Leaves
-                    </Link>
-                  </li>
-                )}
-                {isAdmin && (
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('e-settings') ? 'active' : ''
-                      }
-                      to="/app/employee/leave-settings"
-                    >
-                      Leave Settings
                     </Link>
                   </li>
                 )}
@@ -246,18 +190,30 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                 )}
+                {!isAdmin && (
+                  <li>
+                    <Link
+                      className={pathname.includes('timesheet') ? 'active' : ''}
+                      to="/app/employee/timesheet"
+                    >
+                      Timesheet
+                    </Link>
+                  </li>
+                )}
+                {!isAdmin && (
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('shift-list') ? 'active' : ''
+                      }
+                      to="/app/employee/shift-list"
+                    >
+                      Shifts
+                    </Link>
+                  </li>
+                )}
                 {isAdmin && (
                   <>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes('timesheet') ? 'active' : ''
-                        }
-                        to="/app/employee/timesheet"
-                      >
-                        Timesheet
-                      </Link>
-                    </li>
                     <li>
                       <Link
                         className={
@@ -268,7 +224,7 @@ const Sidebar = (props) => {
                         }
                         to="/app/employee/shift-scheduling"
                       >
-                        Shift &amp; Schedule
+                        Schedule Shifts
                       </Link>
                     </li>
                     <li>
@@ -291,24 +247,30 @@ const Sidebar = (props) => {
                 <span className="menu-arrow" />
               </a>
               <ul style={{ display: 'none' }}>
-                {isAdmin && (
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('t_dashboard')
-                          ? 'active'
-                          : pathname.includes('projects-list')
-                          ? 'active'
-                          : pathname.includes('cts-view')
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/projects/project_dashboard"
-                    >
-                      Projects
-                    </Link>
-                  </li>
-                )}
+                <li>
+                  <Link
+                    className={pathname.includes('leads') ? 'active' : ''}
+                    to="/app/employees/leads"
+                  >
+                    Leaders
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={
+                      pathname.includes('t_dashboard')
+                        ? 'active'
+                        : pathname.includes('projects-list')
+                        ? 'active'
+                        : pathname.includes('cts-view')
+                        ? 'active'
+                        : ''
+                    }
+                    to="/app/projects/project_dashboard"
+                  >
+                    Projects
+                  </Link>
+                </li>
 
                 <li>
                   <Link
@@ -319,357 +281,160 @@ const Sidebar = (props) => {
                   </Link>
                 </li>
 
-                {isAdmin && (
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('task-board') ? 'active' : ''
-                      }
-                      to="/app/projects/task-board"
-                    >
-                      Task Board
-                    </Link>
-                  </li>
-                )}
+                <li>
+                  <Link
+                    className={pathname.includes('task-board') ? 'active' : ''}
+                    to="/app/projects/task-board"
+                  >
+                    Task Board
+                  </Link>
+                </li>
               </ul>
             </li>
-            <li className="menu-title">
-              <span>HR</span>
-            </li>
-            {isAdmin && (
-              <li className="submenu">
-                <a href="#">
-                  <i className="la la-briefcase" /> <span> Jobs </span>{' '}
-                  <span className="menu-arrow" />
-                </a>
-                <ul style={{ display: 'none' }}>
-                  {/* <li>
-                    <Link
-                      className={
-                        pathname.includes('user-dashboard') ||
-                        pathname.includes('user-all-jobs') ||
-                        pathname.includes('saved-jobs') ||
-                        pathname.includes('applied-jobs') ||
-                        pathname.includes('interviewing') ||
-                        pathname.includes('offered-jobs') ||
-                        pathname.includes('visited-jobs') ||
-                        pathname.includes('archived-jobs') ||
-                        pathname.includes('job-aptitude') ||
-                        pathname.includes('questions')
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/administrator/user-dashboard"
-                    >
-                      {' '}
-                      User Dasboard{' '}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('jobs-dashboard') ? 'active' : ''
-                      }
-                      to="/app/administrator/jobs-dashboard"
-                    >
-                      {' '}
-                      Jobs Dasboard{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname === '/app/administrator/jobs' ? 'active' : ''
-                      }
-                      to="/app/administrator/jobs"
-                    >
-                      {' '}
-                      Manage Jobs{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('manage-resumes') ? 'active' : ''
-                      }
-                      to="/app/administrator/manage-resumes"
-                    >
-                      {' '}
-                      Manage Resumes{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('shortlist-candidates')
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/administrator/shortlist-candidates"
-                    >
-                      {' '}
-                      Shortlist Candidates{' '}
-                    </Link>
-                  </li>
-                  {/* <li>
-                    <Link
-                      className={
-                        pathname === '/app/administrator/interview-questions'
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/administrator/interview-questions"
-                    >
-                      {' '}
-                      Interview Questions{' '}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('offer_approvals') ? 'active' : ''
-                      }
-                      to="/app/administrator/offer_approvals"
-                    >
-                      {' '}
-                      Offer Approvals{' '}
-                    </Link>
-                  </li>
-                  {/* <li>
-                    <Link
-                      className={
-                        pathname.includes('experiance-level') ? 'active' : ''
-                      }
-                      to="/app/administrator/experiance-level"
-                    >
-                      {' '}
-                      Experience Level{' '}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={
-                        pathname === '/app/administrator/candidates'
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/administrator/candidates"
-                    >
-                      {' '}
-                      Candidates List{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('schedule-timing') ? 'active' : ''
-                      }
-                      to="/app/administrator/schedule-timing"
-                    >
-                      {' '}
-                      Schedule timing{' '}
-                    </Link>
-                  </li>
-                  {/* <li>
-                    <Link
-                      className={
-                        pathname.includes('apptitude-result') ? 'active' : ''
-                      }
-                      to="/app/administrator/apptitude-result"
-                    >
-                      {' '}
-                      Aptitude Results{' '}
-                    </Link>
-                  </li> */}
-                </ul>
-              </li>
-            )}
-            <li className="submenu">
-              <a href="#">
-                <i className="la la-money" /> <span> Payroll </span>{' '}
-                <span className="menu-arrow" />
-              </a>
-              <ul style={{ display: 'none' }}>
-                {isAdmin && (
-                  <li>
-                    <Link
-                      className={pathname.includes('_salary') ? 'active' : ''}
-                      to="/app/payroll/_salary"
-                    >
-                      {' '}
-                      Employee Salary{' '}
-                    </Link>
-                  </li>
-                )}
-                {!isAdmin && (
-                  <li>
-                    <Link
-                      className={pathname.includes('y-view') ? 'active' : ''}
-                      to="/app/payroll/salary-view"
-                    >
-                      {' '}
-                      Payslip{' '}
-                    </Link>
-                  </li>
-                )}
-                {isAdmin && (
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('payroll-items') ? 'active' : ''
-                      }
-                      to="/app/payroll/payroll-items"
-                    >
-                      {' '}
-                      Payroll Items{' '}
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </li>
-
-            {isAdmin && (
-              <li className="submenu">
-                <a href="#">
-                  <i className="la la-pie-chart" /> <span> Reports </span>{' '}
-                  <span className="menu-arrow" />
-                </a>
-                <ul style={{ display: 'none' }}>
-                  {/* <li>
-                    <Link
-                      className={pathname.includes('expense-') ? 'active' : ''}
-                      to="/app/reports/expense-reports"
-                    >
-                      {' '}
-                      Expense Report{' '}
-                    </Link>
-                  </li> */}
-                  {/* <li>
-                    <Link
-                      className={pathname.includes('invoice-') ? 'active' : ''}
-                      to="/app/reports/invoice-reports"
-                    >
-                      {' '}
-                      Invoice Report{' '}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={pathname.includes('payments-') ? 'active' : ''}
-                      to="/app/reports/payments-reports"
-                    >
-                      {' '}
-                      Payments Report{' '}
-                    </Link>
-                  </li>
-
-                  {/* <li>
-                    <Link
-                      className={pathname.includes('task-') ? 'active' : ''}
-                      to="/app/reports/task-reports"
-                    >
-                      {' '}
-                      Task Report{' '}
-                    </Link>
-                  </li> */}
-                  {/* <li>
-                    <Link
-                      className={pathname.includes('user-') ? 'active' : ''}
-                      to="/app/reports/user-reports"
-                    >
-                      {' '}
-                      User Report{' '}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={pathname.includes('employee-') ? 'active' : ''}
-                      to="/app/reports/employee-reports"
-                    >
-                      {' '}
-                      Employee Report{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('payslip-') ? 'active' : ''}
-                      to="/app/reports/payslip-reports"
-                    >
-                      {' '}
-                      Payslip Report{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('attendance-') ? 'active' : ''
-                      }
-                      to="/app/reports/attendance-reports"
-                    >
-                      {' '}
-                      Attendance Report{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('leave-') ? 'active' : ''}
-                      to="/app/reports/leave-reports"
-                    >
-                      {' '}
-                      Leave Report{' '}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('daily-') ? 'active' : ''}
-                      to="/app/reports/daily-reports"
-                    >
-                      {' '}
-                      Daily Report{' '}
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            )}
             {isAdmin && (
               <>
-                <li className={pathname.includes('promotion') ? 'active' : ''}>
-                  <Link to="/app/performance/promotion">
-                    <i className="la la-bullhorn" /> <span>Promotion</span>
-                  </Link>
+                <li className="submenu">
+                  <a href="#">
+                    <i className="la la-files-o" /> <span> Sales </span>{' '}
+                    <span className="menu-arrow" />
+                  </a>
+                  <ul style={{ display: 'none' }}>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('estimates') ? 'active' : ''
+                        }
+                        to="/app/sales/estimates"
+                      >
+                        Estimates
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('invoices') ? 'active' : ''
+                        }
+                        to="/app/sales/invoices"
+                      >
+                        Invoices
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('payments') ? 'active' : ''
+                        }
+                        to="/app/sales/payments"
+                      >
+                        Payments
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li
-                  className={pathname.includes('resignation') ? 'active' : ''}
-                >
-                  <Link to="/app/performance/resignation">
-                    <i className="la la-external-link-square" />{' '}
-                    <span>Resignation</span>
-                  </Link>
-                </li>
-                <li
-                  className={pathname.includes('termination') ? 'active' : ''}
-                >
-                  <Link to="/app/performance/termination">
-                    <i className="la la-times-circle" />{' '}
-                    <span>Termination</span>
+
+                <li className={pathname.includes('clients') ? 'active' : ''}>
+                  <Link to="/app/employees/clients">
+                    <i className="la la-users" /> <span>Clients</span>
                   </Link>
                 </li>
               </>
             )}
+
+            {isAdmin && (
+              <li className="menu-title">
+                <span>Accounts</span>
+              </li>
+            )}
+
+            {isAdmin && (
+              <>
+                <li>
+                  <Link
+                    className={
+                      pathname.includes('categories') ||
+                      pathname.includes('sub-category')
+                        ? 'active'
+                        : ''
+                    }
+                    to="/app/accounts/categories"
+                  >
+                    <i className="la la-bars"></i>
+                    <span>Categories</span>
+                  </Link>
+                </li>
+                <li
+                  className={pathname.includes('investments') ? 'active' : ''}
+                >
+                  <Link to="/app/performance/investments">
+                    <i className="la la-coins" /> <span>Investments</span>
+                  </Link>
+                </li>
+                <li className="submenu">
+                  <a href="#">
+                    <i className="las la-money-bill-wave"></i>{' '}
+                    <span> Budgets </span> <span className="menu-arrow" />
+                  </a>
+                  <ul style={{ display: 'none' }}>
+                    <li>
+                      <Link
+                        className={pathname.includes('budgets') ? 'active' : ''}
+                        to="/app/accounts/budgets"
+                      >
+                        All
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('budget-expenses') ? 'active' : ''
+                        }
+                        to="/app/accounts/budget-expenses"
+                      >
+                        Expenses
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className={
+                          pathname.includes('budget-revenues') ? 'active' : ''
+                        }
+                        to="/app/accounts/budget-revenues"
+                      >
+                        Revenues
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li className={pathname.includes('expenses') ? 'active' : ''}>
+                  <Link to="/app/sales/expenses">
+                    <i className="las la-file-invoice"></i>
+                    <span>Loans</span>
+                  </Link>
+                </li>
+                <li
+                  className={
+                    pathname.includes('provident-fund') ? 'active' : ''
+                  }
+                >
+                  <Link to="/app/sales/provident-fund">
+                    <i className="las la-wallet"></i>
+                    <span>Provident Fund</span>
+                  </Link>
+                </li>
+                <li className={pathname.includes('taxes') ? 'active' : ''}>
+                  <Link to="/app/sales/taxes">
+                    <i className="las la-file-invoice-dollar"></i>
+                    <span>Taxes</span>
+                  </Link>
+                </li>
+              </>
+            )}
+
             {isAdmin && (
               <>
                 {' '}
                 <li className="menu-title">
-                  <span>Performance</span>
-                </li>
-                <li>
-                  <Link
-                    className={pathname.includes('project-') ? 'active' : ''}
-                    to="/app/reports/project-reports"
-                  >
-                    <i class="las la-id-badge"></i>
-                    <span>Project Report</span>
-                  </Link>
+                  <span>Performance & Reports</span>
                 </li>
                 <li className="submenu">
                   <a href="#">
@@ -738,50 +503,318 @@ const Sidebar = (props) => {
                     </li>
                   </ul>
                 </li>
-                {/* <li className="submenu">
+                <li>
+                  <Link
+                    className={pathname.includes('project-') ? 'active' : ''}
+                    to="/app/reports/project-reports"
+                  >
+                    <i className="las la-id-badge"></i>
+                    <span>Project Report</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={pathname.includes('project-') ? 'active' : ''}
+                    to="/app/reports/project-reports"
+                  >
+                    <i className="las la-exclamation-circle"></i>
+                    <span>Issue Tracking</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={pathname.includes('analysis') ? 'active' : ''}
+                    to="/app/performance/analysis"
+                  >
+                    <i className="las la-chart-bar"></i>
+                    <span>Statistical Analysis</span>
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {isAdmin && (
+              <li className="menu-title">
+                <span>Human Resource</span>
+              </li>
+            )}
+            {isAdmin && (
+              <li className="submenu">
+                <a href="#">
+                  <i className="la la-briefcase" /> <span> Jobs </span>{' '}
+                  <span className="menu-arrow" />
+                </a>
+                <ul style={{ display: 'none' }}>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('jobs-dashboard') ? 'active' : ''
+                      }
+                      to="/app/administrator/jobs-dashboard"
+                    >
+                      {' '}
+                      Jobs Dasboard{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname === '/app/administrator/jobs' ? 'active' : ''
+                      }
+                      to="/app/administrator/jobs"
+                    >
+                      {' '}
+                      Manage Jobs{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('manage-resumes') ? 'active' : ''
+                      }
+                      to="/app/administrator/manage-resumes"
+                    >
+                      {' '}
+                      Manage Resumes{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('shortlist-candidates')
+                          ? 'active'
+                          : ''
+                      }
+                      to="/app/administrator/shortlist-candidates"
+                    >
+                      {' '}
+                      Shortlist Candidates{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('offer_approvals') ? 'active' : ''
+                      }
+                      to="/app/administrator/offer_approvals"
+                    >
+                      {' '}
+                      Offer Approvals{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname === '/app/administrator/candidates'
+                          ? 'active'
+                          : ''
+                      }
+                      to="/app/administrator/candidates"
+                    >
+                      {' '}
+                      Candidates List{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('schedule-timing') ? 'active' : ''
+                      }
+                      to="/app/administrator/schedule-timing"
+                    >
+                      {' '}
+                      Schedule timing{' '}
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            )}
+            <li className="submenu">
+              <a href="#">
+                <i className="la la-money" /> <span> Payroll </span>{' '}
+                <span className="menu-arrow" />
+              </a>
+              <ul style={{ display: 'none' }}>
+                {isAdmin && (
+                  <li>
+                    <Link
+                      className={pathname.includes('_salary') ? 'active' : ''}
+                      to="/app/payroll/_salary"
+                    >
+                      {' '}
+                      Employee Salary{' '}
+                    </Link>
+                  </li>
+                )}
+                {!isAdmin && (
+                  <li>
+                    <Link
+                      className={pathname.includes('y-view') ? 'active' : ''}
+                      to="/app/payroll/salary-view"
+                    >
+                      {' '}
+                      Payslip{' '}
+                    </Link>
+                  </li>
+                )}
+                {isAdmin && (
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('payroll-items') ? 'active' : ''
+                      }
+                      to="/app/payroll/payroll-items"
+                    >
+                      {' '}
+                      Payroll Items{' '}
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </li>
+
+            {isAdmin && (
+              <li className="submenu">
+                <a href="#">
+                  <i className="la la-pie-chart" /> <span> Reports </span>{' '}
+                  <span className="menu-arrow" />
+                </a>
+                <ul style={{ display: 'none' }}>
+                  <li>
+                    <Link
+                      className={pathname.includes('payments-') ? 'active' : ''}
+                      to="/app/reports/payments-reports"
+                    >
+                      {' '}
+                      Payments Report{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={pathname.includes('employee-') ? 'active' : ''}
+                      to="/app/reports/employee-reports"
+                    >
+                      {' '}
+                      Employee Report{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={pathname.includes('payslip-') ? 'active' : ''}
+                      to="/app/reports/payslip-reports"
+                    >
+                      {' '}
+                      Payslip Report{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('attendance-') ? 'active' : ''
+                      }
+                      to="/app/reports/attendance-reports"
+                    >
+                      {' '}
+                      Attendance Report{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes('leave-reports') ? 'active' : ''
+                      }
+                      to="/app/reports/leave-reports"
+                    >
+                      {' '}
+                      Leave Report{' '}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={pathname.includes('daily-') ? 'active' : ''}
+                      to="/app/reports/daily-reports"
+                    >
+                      {' '}
+                      Daily Report{' '}
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            )}
+            {isAdmin && (
+              <>
+                {' '}
+                <li className="submenu">
+                  {/* className="noti-dot" */}
                   <a href="#">
-                    <i className="la la-edit" /> <span> Training </span>{' '}
+                    <i className="la la-user" /> <span>Approvals</span>{' '}
                     <span className="menu-arrow" />
                   </a>
                   <ul style={{ display: 'none' }}>
+                    <>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes('es-admin') ? 'active' : ''
+                          }
+                          to="/app/employee/leaves-admin"
+                        >
+                          {/* admin */}
+                          Leaves
+                        </Link>
+                      </li>
+                    </>
+
                     <li>
                       <Link
                         className={
-                          pathname.includes('training-list') ? 'active' : ''
+                          pathname.includes('timesheet') ? 'active' : ''
                         }
-                        to="/app/training/training-list"
+                        to="/app/employee/timesheet"
                       >
-                        {' '}
-                        Training List{' '}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={pathname.includes('trainer') ? 'active' : ''}
-                        to="/app/training/trainer"
-                      >
-                        {' '}
-                        Trainers
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes('training-type') ? 'active' : ''
-                        }
-                        to="/app/training/training-type"
-                      >
-                        {' '}
-                        Training Type{' '}
+                        Timesheet
                       </Link>
                     </li>
                   </ul>
-                </li> */}
+                </li>
+              </>
+            )}
+
+            {isAdmin && (
+              <li className={pathname.includes('resignation') ? 'active' : ''}>
+                <Link to="/app/performance/resignation">
+                  <i className="la la-external-link-square" />{' '}
+                  <span>Resignation</span>
+                </Link>
+              </li>
+            )}
+            {isAdmin && (
+              <>
+                <li className={pathname.includes('promotion') ? 'active' : ''}>
+                  <Link to="/app/performance/promotion">
+                    <i className="la la-bullhorn" /> <span>Promotion</span>
+                  </Link>
+                </li>
+                <li
+                  className={pathname.includes('termination') ? 'active' : ''}
+                >
+                  <Link to="/app/performance/termination">
+                    <i className="la la-times-circle" />{' '}
+                    <span>Termination</span>
+                  </Link>
+                </li>
               </>
             )}
             {isAdmin && (
               <li className="menu-title">
                 <span>Administration</span>
+              </li>
+            )}
+            {isAdmin && (
+              <li className={pathname.includes('locations') ? 'active' : ''}>
+                <Link to="/app/administrator/locations">
+                  <i className="la la-search-location" /> <span>Locations</span>
+                </Link>
               </li>
             )}
             {isAdmin && (
@@ -793,15 +826,8 @@ const Sidebar = (props) => {
             )}
             {isAdmin && (
               <li className={pathname.includes('policies') ? 'active' : ''}>
-                <Link to="/app/hr/policies">
+                <Link to="/app/administrator/policies">
                   <i className="la la-file-pdf-o" /> <span>Policies</span>
-                </Link>
-              </li>
-            )}
-            {isAdmin && (
-              <li className={pathname.includes('leads') ? 'active' : ''}>
-                <Link to="/app/employees/leads">
-                  <i className="la la-user-secret" /> <span>Leads</span>
                 </Link>
               </li>
             )}
@@ -822,132 +848,6 @@ const Sidebar = (props) => {
                   </Link>
                 </li>
               </>
-            )}
-
-            {isAdmin && (
-              <li className="menu-title">
-                <span>Sales</span>
-              </li>
-            )}
-
-            {isAdmin && (
-              <li className="submenu">
-                <a href="#">
-                  <i className="la la-files-o" /> <span> Sales </span>{' '}
-                  <span className="menu-arrow" />
-                </a>
-                <ul style={{ display: 'none' }}>
-                  <li>
-                    <Link
-                      className={pathname.includes('estimates') ? 'active' : ''}
-                      to="/app/sales/estimates"
-                    >
-                      Estimates
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('invoices') ? 'active' : ''}
-                      to="/app/sales/invoices"
-                    >
-                      Invoices
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('payments') ? 'active' : ''}
-                      to="/app/sales/payments"
-                    >
-                      Payments
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('expenses') ? 'active' : ''}
-                      to="/app/sales/expenses"
-                    >
-                      Expenses
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('provident-fund') ? 'active' : ''
-                      }
-                      to="/app/sales/provident-fund"
-                    >
-                      Provident Fund
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('taxes') ? 'active' : ''}
-                      to="/app/sales/taxes"
-                    >
-                      Taxes
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            )}
-            {isAdmin && (
-              <li className={pathname.includes('clients') ? 'active' : ''}>
-                <Link to="/app/employees/clients">
-                  <i className="la la-users" /> <span>Clients</span>
-                </Link>
-              </li>
-            )}
-
-            {isAdmin && (
-              <li className="submenu">
-                <a href="#">
-                  <i className="la la-files-o" /> <span> Accounting </span>{' '}
-                  <span className="menu-arrow" />
-                </a>
-                <ul style={{ display: 'none' }}>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('categories') ||
-                        pathname.includes('sub-category')
-                          ? 'active'
-                          : ''
-                      }
-                      to="/app/accounts/categories"
-                    >
-                      Categories
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={pathname.includes('budgets') ? 'active' : ''}
-                      to="/app/accounts/budgets"
-                    >
-                      Budgets
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('budget-expenses') ? 'active' : ''
-                      }
-                      to="/app/accounts/budget-expenses"
-                    >
-                      Budget Expenses
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes('budget-revenues') ? 'active' : ''
-                      }
-                      to="/app/accounts/budget-revenues"
-                    >
-                      Budget Revenues
-                    </Link>
-                  </li>
-                </ul>
-              </li>
             )}
 
             <li className="menu-title">
@@ -977,235 +877,6 @@ const Sidebar = (props) => {
                 <span>Email</span>
               </Link>
             </li>
-            {/* <li>
-              <Link to="/settings/companysetting">
-                <i className="la la-cog" /> <span>Settings</span>
-              </Link>
-            </li> */}
-            {/* <li className="menu-title">
-              <span>Pages</span>
-            </li> */}
-            {/* <li className="submenu">
-              <a href="#">
-                <i className="la la-user" /> <span> Profile </span>{' '}
-                <span className="menu-arrow" />
-              </a> */}
-            {/* <ul style={{ display: 'none' }}>
-                <li>
-                  <Link
-                    className={
-                      pathname.includes('profile/employee-') ? 'active' : ''
-                    }
-                    to="/app/profile/employee-profile"
-                  >
-                    {' '}
-                    Employee Profile{' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className={pathname.includes('client-') ? 'active' : ''}
-                    to="/app/profile/client-profile"
-                  >
-                    {' '}
-                    Client Profile{' '}
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="submenu">
-              <a href="#">
-                <i className="la la-key" /> <span> Authentication </span>{' '}
-                <span className="menu-arrow" />
-              </a>
-              <ul style={{ display: 'none' }}>
-                <li>
-                  <Link to="/login"> Login </Link>
-                </li>
-                <li>
-                  <Link to="/register"> Register </Link>
-                </li>
-                <li>
-                  <Link to="/forgotpassword"> Forgot Password </Link>
-                </li>
-                <li>
-                  <Link to="/otp"> OTP </Link>
-                </li>
-                <li>
-                  <Link to="/lockscreen"> Lock Screen </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="submenu">
-              <a href="#">
-                <i className="la la-exclamation-triangle" />{' '}
-                <span> Error Pages </span> <span className="menu-arrow" />
-              </a>
-              <ul style={{ display: 'none' }}>
-                <li>
-                  <Link to="/error-404">404 Error </Link>
-                </li>
-                <li>
-                  <Link to="/error-500">500 Error </Link>
-                </li>
-              </ul>
-            </li> */}
-            {/* <li className="submenu">
-              <a href="#">
-                <i className="la la-hand-o-up" /> <span> Subscriptions </span>{' '}
-                <span className="menu-arrow" />
-              </a>
-              <ul style={{ display: 'none' }}>
-                <li>
-                  <Link
-                    className={
-                      pathname.includes('subscriptionadmin') ? 'active' : ''
-                    }
-                    to="/app/subscription/subscriptionadmin"
-                  >
-                    Subscriptions (Admin){' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className={
-                      pathname.includes('subscriptioncompany') ? 'active' : ''
-                    }
-                    to="/app/subscription/subscriptioncompany"
-                  >
-                    Subscriptions (Company){' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className={
-                      pathname.includes('subscribedcompanies') ? 'active' : ''
-                    }
-                    to="/app/subscription/subscribedcompanies"
-                  >
-                    Subscribed Companies
-                  </Link>
-                </li>
-              </ul>
-            </li> */}
-            {/* <li className="submenu">
-              <a href="#">
-                <i className="la la-columns" /> <span> Pages </span>{' '}
-                <span className="menu-arrow" />
-              </a>
-              <ul style={{ display: 'none' }}>
-                <li>
-                  <Link
-                    className={
-                      pathname.includes('pages/search') ? 'active' : ''
-                    }
-                    to="/app/pages/search"
-                  >
-                    {' '}
-                    Search{' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className={pathname.includes('pages/faq') ? 'active' : ''}
-                    to="/app/pages/faq"
-                  >
-                    {' '}
-                    FAQ{' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className={pathname.includes('pages/terms') ? 'active' : ''}
-                    to="/app/pages/terms"
-                  >
-                    {' '}
-                    Terms{' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className={
-                      pathname.includes('privacypolicy') ? 'active' : ''
-                    }
-                    to="/app/pages/privacypolicy"
-                  >
-                    {' '}
-                    Privacy Policy{' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className={pathname.includes('pages/blank') ? 'active' : ''}
-                    to="/app/pages/blank"
-                  >
-                    {' '}
-                    Blank Page{' '}
-                  </Link>
-                </li>
-              </ul>
-            </li> */}
-            {/* <li className="menu-title"> 
-                <span>UI Interface</span>
-              </li> */}
-            {/* <li> 
-                <Link to = "/ui-components"><i className="la la-puzzle-piece" /> <span>Components</span></Link>
-              </li> */}
-            {/* <li className="submenu">
-                <a href="#"><i className="la la-object-group" /> <span> Forms </span> <span className="menu-arrow" /></a>
-                <ul style={{display: 'none'}}>
-                  <li><Link className={pathname.includes('basicinputs') ?"active" :""}
-                      to="/app/ui-interface/forms/basicinputs">Basic Inputs </Link></li>
-                  <li><Link className={pathname.includes('inputgroups') ?"active" :""} 
-                      to="/app/ui-interface/forms/inputgroups">Input Groups </Link></li>
-                  <li><Link className={pathname.includes('horizontalform') ?"active" :""}
-                     to="/app/ui-interface/forms/horizontalform">Horizontal Form </Link></li>
-                  <li><Link className={pathname.includes('verticalform') ?"active" :""} 
-                    to="/app/ui-interface/forms/verticalform"> Vertical Form </Link></li>
-                  <li><Link className={pathname.includes('formmask') ?"active" :""}
-                      to="/app/ui-interface/forms/formmask"> Form Mask </Link></li>
-                  <li><Link className={pathname.includes('formvalidation') ?"active" :""}
-                      to="/app/ui-interface/forms/formvalidation"> Form Validation </Link></li>
-                </ul>
-              </li> */}
-            {/* <li className="submenu">
-                <Link to = "/app/ui-interface/tables/basic"><i className="la la-table" /> <span> Tables </span> <span className="menu-arrow" /></Link>
-                <ul style={{display: 'none'}}>
-                  <li><Link className={pathname.includes('tables/basic') ?"active" :""} to="/app/ui-interface/tables/basic">Basic Tables </Link></li>
-                  <li><Link className={pathname.includes('tables/data-table') ?"active" :""} to="/app/ui-interface/tables/data-table">Data Table </Link></li>
-                </ul>
-              </li> */}
-            {/* <li className="menu-title"> 
-                <span>Extras</span>
-              </li>
-              <li> 
-                <a href="#"><i className="la la-file-text" /> <span>Documentation</span></a>
-              </li> */}
-            {/* <li> 
-                <a href=""><i className="la la-info" /> <span>Change Log</span> <span className="badge badge-primary ml-auto">v3.4</span></a>
-              </li> */}
-            {/* <li className="submenu">
-                <a href=""><i className="la la-share-alt" /> <span>Multi Level</span> <span className="menu-arrow" /></a>
-                <ul style={{display: 'none'}}>
-                  <li className="submenu">
-                    <a href=""> <span>Level 1</span> <span className="menu-arrow" /></a>
-                    <ul style={{display: 'none'}}>
-                      <li><a href=""><span>Level 2</span></a></li>
-                      <li className="submenu">
-                        <a href=""> <span> Level 2</span> <span className="menu-arrow" /></a>
-                        <ul style={{display: 'none'}}>
-                          <li><a href="">Level 3</a></li>
-                          <li><a href="">Level 3</a></li>
-                        </ul>
-                      </li>
-                      <li><a href=""> <span>Level 2</span></a></li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href=""> <span>Level 1</span></a>
-                  </li>
-                </ul>
-              </li> */}
           </ul>
         </div>
       </div>

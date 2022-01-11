@@ -67,7 +67,7 @@ const ProjectView = () => {
             <div className="card">
               <div className="card-body">
                 <div className="project-title">
-                  <h5 className="card-title">Lovely Faculty</h5>
+                  <h5 className="card-title">TariniVihar-II</h5>
                   <small className="block text-ellipsis m-b-15">
                     <span className="text-xs">2</span>{' '}
                     <span className="text-muted">open tasks, </span>

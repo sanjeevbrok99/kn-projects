@@ -14,7 +14,7 @@ const Sidebar = (props) => {
             <li>
               <Link
                 onClick={() => localStorage.setItem('firstload', 'true')}
-                to="/app/main/dashboard"
+                to="/app/dashboard"
               >
                 <i className="la la-home" /> <span>Back to Home</span>
               </Link>
@@ -26,7 +26,10 @@ const Sidebar = (props) => {
               </a>
             </li>
             <li>
-              <Link to="/tasks/tasks">Project Management</Link>
+              <Link to="/tasks/tasks">Basudev Nagar</Link>
+            </li>
+            <li>
+              <Link to="/tasks/tasks">TariniVihar-II</Link>
             </li>
           </ul>
         </div>

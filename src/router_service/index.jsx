@@ -25,31 +25,13 @@ import Employee from '../MainPage/Employees/Employees';
 
 export default [
   {
-    path: 'main',
+    path: 'dashboard',
     component: Dashboard,
   },
   {
     path: 'apps',
     component: Apps,
-    subRoutes: [
-      {
-        name: 'Chat',
-        path: '/conversation/chat',
-      },
-      {
-        name: 'Calls',
-        subRoutes: [
-          { name: 'Incoming Call', path: '/conversation/incoming-call' },
-          { name: 'Outgoing Call', path: '/conversation/outgoing-call' },
-          { name: 'Voice Call', path: '/conversation/voice-call' },
-          { name: 'Video Call', path: '/conversation/video-call' },
-        ],
-      },
-      {
-        name: 'Calendar',
-        path: '/apps/calendar',
-      },
-    ],
+    authority: 'READ_APPS',
   },
   {
     path: 'employee',
@@ -94,10 +76,6 @@ export default [
   {
     path: 'training',
     component: Training,
-  },
-  {
-    path: 'hr',
-    component: HR,
   },
   {
     path: 'reports',

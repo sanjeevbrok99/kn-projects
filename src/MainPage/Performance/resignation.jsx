@@ -2,23 +2,30 @@
  * Signin Firebase
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { Avatar_02 } from '../../Entryfile/imagepath';
-
+import httpService from '../../lib/httpService';
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
 
 const Resignation = () => {
+  useEffect(() => {
+    async function fetchData() {
+      const res = await httpService.get('/private/resignation');
+      console.log(res.data);
+    }
+    fetchData();
+  }, []);
   const [data, setData] = useState([
     {
       id: 1,
       image: Avatar_02,
       name: 'Prateek Tiwari',
-      department: 'Web Development',
+      department: 'Marketing Head',
       reason: 'Lorem ipsum dollar',
       noticedate: '09 Jan 2021',
       resignationdate: '09 Jan 2021',

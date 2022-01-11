@@ -17,8 +17,8 @@ const Expenses = () => {
     {
       id: 1,
       item: 'Dell Laptop',
-      purchasefrom: 'Amazon',
-      purchasedate: '5 Jan 2021',
+      Loanfrom: 'Car',
+      Loandate: '5 Jan 2021',
       image: Avatar_04,
       name: 'Prateek Tiwari',
       amount: '1215',
@@ -28,8 +28,8 @@ const Expenses = () => {
     {
       id: 2,
       item: 'Mac System',
-      purchasefrom: 'Amazon',
-      purchasedate: '5 Jan 2021',
+      Loanfrom: 'Car',
+      Loandate: '5 Jan 2021',
       image: Avatar_03,
       name: 'Shital Agarwal',
       amount: '1215',
@@ -48,23 +48,17 @@ const Expenses = () => {
 
   const columns = [
     {
-      title: 'Item',
-      dataIndex: 'item',
-      render: (text, record) => <strong>{text}</strong>,
-      sorter: (a, b) => a.item.length - b.item.length,
+      title: 'Loan For',
+      dataIndex: 'Loanfrom',
+      sorter: (a, b) => a.Loanfrom.length - b.Loanfrom.length,
     },
     {
-      title: 'Purchase From',
-      dataIndex: 'purchasefrom',
-      sorter: (a, b) => a.purchasefrom.length - b.purchasefrom.length,
+      title: 'Loan Date',
+      dataIndex: 'Loandate',
+      sorter: (a, b) => a.Loandate.length - b.Loandate.length,
     },
     {
-      title: 'Purchase Date',
-      dataIndex: 'purchasedate',
-      sorter: (a, b) => a.purchasedate.length - b.purchasedate.length,
-    },
-    {
-      title: 'Purchased By',
+      title: 'Loand By',
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
@@ -168,12 +162,12 @@ const Expenses = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Expenses</h3>
+              <h3 className="page-title">Loans</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item active">Expenses</li>
+                <li className="breadcrumb-item active">Loans</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
@@ -183,7 +177,7 @@ const Expenses = () => {
                 data-toggle="modal"
                 data-target="#add_expense"
               >
-                <i className="fa fa-plus" /> Add Expense
+                <i className="fa fa-plus" /> Add Loan
               </a>
             </div>
           </div>
@@ -204,7 +198,7 @@ const Expenses = () => {
                 <option>Kamla Singh</option>
                 <option>Tarah Shropshire</option>
               </select>
-              <label className="focus-label">Purchased By</label>
+              <label className="focus-label">Loand To</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
@@ -301,7 +295,7 @@ const Expenses = () => {
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Purchase From</label>
+                      <label>Loan For</label>
                       <input className="form-control" type="text" />
                     </div>
                   </div>
@@ -309,7 +303,7 @@ const Expenses = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Purchase Date</label>
+                      <label>Loan Date</label>
                       <div>
                         <input
                           className="form-control datetimepicker"
@@ -320,7 +314,7 @@ const Expenses = () => {
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Purchased By </label>
+                      <label>Loand By </label>
                       <select className="select">
                         <option>Daniel Porter</option>
                         <option>Roger Dixon</option>
@@ -420,7 +414,7 @@ const Expenses = () => {
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Purchase From</label>
+                      <label>Loan For</label>
                       <input
                         className="form-control"
                         defaultValue="Amazon"
@@ -432,7 +426,7 @@ const Expenses = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Purchase Date</label>
+                      <label>Loan Date</label>
                       <div>
                         <input
                           className="form-control datetimepicker"
@@ -443,7 +437,7 @@ const Expenses = () => {
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Purchased By </label>
+                      <label>Loand By </label>
                       <select className="select">
                         <option>Daniel Porter</option>
                         <option>Roger Dixon</option>

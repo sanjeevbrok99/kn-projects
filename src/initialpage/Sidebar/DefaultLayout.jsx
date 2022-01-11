@@ -1,128 +1,45 @@
 /**
  * App Routes
  */
-import React, { Component } from 'react';
-import { Link, Route, withRouter } from 'react-router-dom';
+import React, { Component, useEffect } from 'react';
+import { Route, withRouter, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-// router service
-import routerService from "../../router_service";
+import routerService from '../../router_service';
+import httpService from '../../lib/httpService';
 
 import Header from './header.jsx';
 import SidebarContent from './sidebar';
+import Dashboard from '../../MainPage/Main/Dashboard';
 
 const DefaultLayout = (props) => {
-		const { match } = props;
-		return (
-			<>
-			{/* <div className="main-wrapper"> */}
-				<Header/>
-				<div>
-					{routerService && routerService.map((route,key)=>
-						<Route key={key} path={`${match.url}/${route.path}`} component={route.component} />
-					)}
-				</div>				
-				<SidebarContent/>
-			{/* </div> */}
-			{/* Delete Employee Modal */}
-				<div className="modal custom-modal fade" id="delete_employee" role="dialog">
-				<div className="modal-dialog modal-dialog-centered">
-					<div className="modal-content">
-					<div className="modal-body">
-						<div className="form-header">
-						<h3>Delete</h3>
-						<p>Are you sure want to delete?</p>
-						</div>
-						<div className="modal-btn delete-action">
-						<div className="row">
-							<div className="col-6">
-							<a className="btn btn-primary continue-btn">Delete</a>
-							</div>
-							<div className="col-6">
-							<a data-dismiss="modal" className="btn btn-primary cancel-btn">Cancel</a>
-							</div>
-						</div>
-						</div>
-					</div>
-					</div>
-				</div>
-				</div>
-				{/* /Delete Employee Modal */}
-				{/* Delete Employee Modal */}
-				<div className="modal custom-modal fade" id="delete_employee" role="dialog">
-					<div className="modal-dialog modal-dialog-centered">
-						<div className="modal-content">
-							<div className="modal-body">
-								<div className="form-header">
-									<h3>Delete</h3>
-									<p>Are you sure want to delete?</p>
-								</div>
-								<div className="modal-btn delete-action">
-									<div className="row">
-										<div className="col-6">
-										<a className="btn btn-primary continue-btn">Delete</a>
-										</div>
-										<div className="col-6">
-										<a data-dismiss="modal" className="btn btn-primary cancel-btn">Cancel</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				{/* /Delete Employee Modal */}
-				{/* Delete Employee Modal */}
-				<div className="modal custom-modal fade" id="delete_employee" role="dialog">
-				<div className="modal-dialog modal-dialog-centered">
-					<div className="modal-content">
-					<div className="modal-body">
-						<div className="form-header">
-						<h3>Delete</h3>
-						<p>Are you sure want to delete?</p>
-						</div>
-						<div className="modal-btn delete-action">
-						<div className="row">
-							<div className="col-6">
-							<a className="btn btn-primary continue-btn">Delete</a>
-							</div>
-							<div className="col-6">
-							<a data-dismiss="modal" className="btn btn-primary cancel-btn">Cancel</a>
-							</div>
-						</div>
-						</div>
-					</div>
-					</div>
-				</div>
-				</div>
-				{/* /Delete Employee Modal */}
-				<div className="modal question-modal" id="free_question_modal" tabIndex={-1} role="dialog">
-					<div className="modal-dialog modal-dialog-centered	" role="document">
-						<div className="modal-content">
-						<div className="modal-header">
-							<h3 className="mb-0">Result for Your Questions</h3>
-							<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-						</div>
-						<div className="modal-body">
-							<div className="form-horzontal">
-							<div className="col-md-12">
-								<div className="text-left mb-3">
-								<h3 className="mb-0">Correct Answers : <span className="text-success"><b>5</b></span></h3>
-								</div>
-								<div className="text-left">
-								<h3 className="mb-0">Wrong Answer : <span className="text-danger"><b>1</b></span></h3>
-								</div>
-							</div>
-							</div>
-							<div className="mt-3">
-							<p>Please click Next to move main menu.</p>
-							<Link to="/app/administrator/job-aptitude" className="btn btn-primary btn-lg submit-btn d-block">Next</Link>
-							</div>
-						</div>
-						</div>
-					</div>
-				</div>
-			</>
-		);
-	
-}
+  const { match } = props;
+  const authentication = useSelector((state) => state.authentication.value);
+  const userAuthorities = authentication.user?.userAuthorites;
+  const history = useHistory();
+  useEffect(() => {
+    const token = authentication?.token;
+    if (!token) {
+      history.push('/');
+      return;
+    }
+    httpService.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }, []);
+  return (
+    <>
+      <Header />
+      <div>
+        {routerService &&
+          routerService.map((route, key) => (
+            <Route
+              key={key}
+              path={`${match.url}/${route.path}/`}
+              component={route.component}
+            />
+          ))}
+      </div>
+      <SidebarContent />
+    </>
+  );
+};
 export default withRouter(DefaultLayout);

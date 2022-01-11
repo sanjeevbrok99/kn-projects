@@ -18,7 +18,7 @@ const Termination = () => {
       id: 1,
       image: Avatar_02,
       name: 'Prateek Tiwari',
-      department: 'Web Development',
+      department: 'Marketing Head',
       reason: 'Lorem ipsum dollar',
       noticedate: '09 Jan 2021',
       terminationtype: 'Misconduct',

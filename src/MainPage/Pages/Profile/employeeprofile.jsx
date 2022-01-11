@@ -3,6 +3,7 @@
  */
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   Avatar_02,
@@ -11,9 +12,17 @@ import {
   Avatar_10,
   Avatar_16,
 } from '../../../Entryfile/imagepath';
+import httpService from '../../../lib/httpService';
+import { toast } from 'react-toastify';
 
 const EmployeeProfile = () => {
+  const [designationReason, setDesignationReason] = React.useState('');
+  const userId = useSelector(
+    (state) => state.authentication.value?.user?.userId
+  );
+
   useEffect(() => {
+    console.log('userId', userId);
     if ($('.select').length > 0) {
       $('.select').select2({
         minimumResultsForSearch: -1,
@@ -21,6 +30,34 @@ const EmployeeProfile = () => {
       });
     }
   });
+
+  const handleResign = async () => {
+    if (!designationReason) {
+      return;
+    }
+    toast
+      .promise(
+        httpService.post('/private/resignation', {
+          userId,
+          reason: designationReason,
+          noticeDate: new Date().toISOString().substring(0, 10),
+          resignationDate: new Date(
+            new Date().setDate(new Date().getDate() + 30)
+          )
+            .toISOString()
+            .substring(0, 10),
+        }),
+        {
+          pending: 'Submitting',
+          success: 'Success',
+          error: 'Failed',
+        }
+      )
+      .finally(() =>
+        document.querySelectorAll('.cancel-btn').forEach((el) => el.click())
+      );
+  };
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -36,7 +73,7 @@ const EmployeeProfile = () => {
               <h3 className="page-title">Profile</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Dashboard</Link>
+                  <Link to="/app/main/dashboard">Settings</Link>
                 </li>
                 <li className="breadcrumb-item active">Profile</li>
               </ul>
@@ -70,15 +107,13 @@ const EmployeeProfile = () => {
                             Date of Join : 1st Jan 2023
                           </div>
                           <div className="staff-msg">
-                            <Link
-                              onClick={() =>
-                                localStorage.setItem('minheight', 'true')
-                              }
-                              className="btn btn-custom"
-                              to="/conversation/chat"
+                            <div
+                              data-toggle="modal"
+                              data-target="#fill_resignation"
+                              className="btn btn-primary"
                             >
-                              Send Message
-                            </Link>
+                              Resign
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -896,7 +931,7 @@ const EmployeeProfile = () => {
                     </div>
                     <h4 className="project-title">
                       <Link to="/app/projects/projects-view">
-                        Lovely Faculty
+                        TariniVihar-II
                       </Link>
                     </h4>
                     <small className="block text-ellipsis m-b-15">
@@ -1387,7 +1422,7 @@ const EmployeeProfile = () => {
                       </label>
                       <select className="select">
                         <option>Select Department</option>
-                        <option>Web Development</option>
+                        <option>Marketing Head</option>
                         <option>IT Management</option>
                         <option>Marketing</option>
                       </select>
@@ -2130,6 +2165,55 @@ const EmployeeProfile = () => {
         </div>
       </div>
       {/* /Experience Modal */}
+      <div
+        className="modal custom-modal fade"
+        id="fill_resignation"
+        role="dialog"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-body">
+              <div className="form-header">
+                <h3>Apply Resignation</h3>
+                <p>Apply for a Resignation? This is an irreversible action.</p>
+              </div>
+              <div className="form-group">
+                <label className="col-form-label">Reason</label>
+                <textarea
+                  className="form-control"
+                  onChange={(e) => {
+                    setDesignationReason(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="modal-btn delete-action">
+                <div className="row">
+                  <div className="col-6">
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleResign();
+                      }}
+                      className="btn btn-primary continue-btn"
+                    >
+                      Confirm
+                    </a>
+                  </div>
+                  <div className="col-6">
+                    <a
+                      href=""
+                      data-dismiss="modal"
+                      className="btn btn-primary cancel-btn"
+                    >
+                      Cancel
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -49,7 +49,7 @@ const FileManager = () => {
                         <a href="#">Video Calling App</a>
                       </li>
                       <li>
-                        <a href="#">Lovely Faculty</a>
+                        <a href="#">TariniVihar-II</a>
                       </li>
                       <li>
                         <a href="#">Virtual Host</a>

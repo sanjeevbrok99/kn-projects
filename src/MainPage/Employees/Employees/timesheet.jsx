@@ -213,7 +213,7 @@ const Timesheet = () => {
                       <option>Office Management</option>
                       <option>Project Management</option>
                       <option>Video Calling App</option>
-                      <option>Lovely Faculty</option>
+                      <option>TariniVihar-II</option>
                     </select>
                   </div>
                 </div>
@@ -325,7 +325,7 @@ const Timesheet = () => {
                       <option>Office Management</option>
                       <option>Project Management</option>
                       <option>Video Calling App</option>
-                      <option>Lovely Faculty</option>
+                      <option>TariniVihar-II</option>
                     </select>
                   </div>
                 </div>

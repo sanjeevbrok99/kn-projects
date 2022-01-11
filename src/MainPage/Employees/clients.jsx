@@ -295,12 +295,6 @@ const Clients = () => {
                       <input className="form-control" type="text" />
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Company Name</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
                 </div>
                 <div className="table-responsive m-t-15">
                   <table className="table table-striped custom-table">

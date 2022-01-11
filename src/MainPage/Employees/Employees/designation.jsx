@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import httpService from '../../../lib/httpService';
+import {
+  setDesignationStore,
+  setFetched,
+} from '../../../features/designation/designationSlice';
+import { AUTHORITIES } from '../../../model/shared/authorities';
 
 const Designations = () => {
-  const [data, setData] = useState([
-    { id: 1, department: 'Sales Management', designation: 'Sales Manager' },
-  ]);
+  const [data, setData] = useState([]);
+  const [designationToModify, setDesignationToModify] = useState('');
+  const [designationToAdd, setDesignationToAdd] = useState('');
+  const [authoritiesToAdd, setAuthoritiesToAdd] = useState([]);
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -18,7 +25,77 @@ const Designations = () => {
         width: '100%',
       });
     }
-  });
+    async function fetchData() {
+      const res = await httpService.get('/private/designation');
+      console.log(res.data);
+      setFetched(true);
+      setDesignationStore(res.data);
+      setData(
+        res.data.map((item, i) => ({
+          ...item,
+          id: i + 1,
+          department: 'Sales Management',
+          designation: item.designationName || 'Placeholder',
+        }))
+      );
+    }
+    fetchData();
+  }, []);
+
+  const handleDelete = async () => {
+    await httpService.delete(
+      `/private/designation/${designationToModify.designationId}`
+    );
+    const itemIndex = designationToModify.id - 1;
+    setData((d) => [
+      ...d.slice(0, itemIndex),
+      ...d.slice(itemIndex + 1).map((i) => ({
+        ...i,
+        id: i.id - 1,
+        department: 'Sales Management',
+        designation: i.designationName || 'Placeholder',
+      })),
+    ]);
+    document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+  };
+
+  const handleEdit = async () => {
+    await httpService.put(
+      `/private/designation/${designationToModify.designationId}`,
+      designationToModify
+    );
+    const itemIndex = designationToModify.id - 1;
+    setData((d) => [
+      ...d.slice(0, itemIndex),
+      {
+        ...d[itemIndex],
+        department: 'Sales Management',
+        designation: data.designationName,
+      },
+      ...d.slice(itemIndex + 1),
+    ]);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleAdd = async () => {
+    if (designationToAdd.length <= 0) return;
+    const res = await httpService.post('/private/designation', {
+      designationName: designationToAdd,
+      authorities: authoritiesToAdd,
+    });
+    setData((d) => [
+      ...d,
+      {
+        id: d.length + 1,
+        department: 'Sales Management',
+        designation: res.data.designationName,
+      },
+    ]);
+    setAuthoritiesToAdd([]);
+    setDesignationToAdd('');
+    document.querySelectorAll('form').forEach((form) => form.reset());
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
 
   const columns = [
     {
@@ -33,7 +110,7 @@ const Designations = () => {
     },
     {
       title: 'Designation',
-      dataIndex: 'designation',
+      dataIndex: 'designationName',
       sorter: (a, b) => a.designation.length - b.designation.length,
     },
     {
@@ -54,6 +131,9 @@ const Designations = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_designation"
+              onClick={() => {
+                setDesignationToModify(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -62,6 +142,9 @@ const Designations = () => {
               href="#"
               data-toggle="modal"
               data-target="#delete_designation"
+              onClick={() => {
+                setDesignationToModify(record);
+              }}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -123,228 +206,6 @@ const Designations = () => {
                 rowKey={(record) => record.id}
                 onChange={console.log('change')}
               />
-              {/* <table className="table table-striped custom-table mb-0 datatable">
-                <thead>
-                  <tr>
-                    <th style={{width: '30px'}}>#</th>
-                    <th>Designation </th>
-                    <th>Department </th>
-                    <th className="text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>CIO</td>
-                    <td>Web Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Product Manager</td>
-                    <td>Web Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Product Manager</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Marketing Head</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>UI Designer</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>UX Designer</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>IT Technician</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>Product Manager</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>9</td>
-                    <td>SEO Analyst</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>10</td>
-                    <td>Front End Designer</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>11</td>
-                    <td>Front End Developer</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>12</td>
-                    <td>Systems Engineer</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>13</td>
-                    <td>Systems Administrator</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>14</td>
-                    <td>Technical Lead</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>15</td>
-                    <td>Quality Assurance</td>
-                    <td>Application Development</td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="material-icons">more_vert</i></a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#edit_designation"><i className="fa fa-pencil m-r-5" /> Edit</a>
-                          <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_designation"><i className="fa fa-trash-o m-r-5" /> Delete</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table> */}
             </div>
           </div>
         </div>
@@ -356,7 +217,10 @@ const Designations = () => {
         className="modal custom-modal fade"
         role="dialog"
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
+        <div
+          className="modal-dialog modal-dialog-centered modal-lg"
+          role="document"
+        >
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Add Designation</h5>
@@ -370,23 +234,76 @@ const Designations = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAdd();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Designation Name <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input
+                    className="form-control"
+                    value={designationToAdd}
+                    onChange={(e) => {
+                      setDesignationToAdd(e.target.value);
+                    }}
+                    type="text"
+                  />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label>
                     Department <span className="text-danger">*</span>
                   </label>
                   <select className="select">
                     <option>Select Department</option>
-                    <option>Web Development</option>
+                    <option>Marketing Head</option>
                     <option>IT Management</option>
                     <option> Marketing</option>
                   </select>
+                </div> */}
+                <div className="table-responsive m-t-15">
+                  <table className="table table-striped custom-table">
+                    <thead>
+                      <tr>
+                        <th>Module Permission</th>
+                        <th className="text-center">Read</th>
+                        <th className="text-center">Create</th>
+                        <th className="text-center">Write</th>
+                        <th className="text-center">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.keys(AUTHORITIES).map((key) => (
+                        <tr key={key}>
+                          <td>{key}</td>
+                          {AUTHORITIES[key].map((authority) => (
+                            <td className="text-center">
+                              <input
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setAuthoritiesToAdd((a) => [
+                                      key + '_' + authority,
+                                      ...a,
+                                    ]);
+                                  } else {
+                                    setAuthoritiesToAdd((a) =>
+                                      a.filter(
+                                        (a) => a !== key + '_' + authority
+                                      )
+                                    );
+                                  }
+                                }}
+                                type="checkbox"
+                              />
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Submit</button>
@@ -403,7 +320,10 @@ const Designations = () => {
         className="modal custom-modal fade"
         role="dialog"
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
+        <div
+          className="modal-dialog modal-dialog-centered modal-lg"
+          role="document"
+        >
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Edit Designation</h5>
@@ -417,27 +337,75 @@ const Designations = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEdit();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Designation Name <span className="text-danger">*</span>
                   </label>
                   <input
                     className="form-control"
-                    defaultValue="Product Manager"
+                    defaultValue={designationToModify?.designationName || ''}
                     type="text"
                   />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label>
                     Department <span className="text-danger">*</span>
                   </label>
                   <select className="select">
                     <option>Select Department</option>
-                    <option>Web Development</option>
+                    <option>Marketing Head</option>
                     <option>IT Management</option>
                     <option>Marketing</option>
                   </select>
+                </div> */}
+                <div className="table-responsive m-t-15">
+                  <table className="table table-striped custom-table">
+                    <thead>
+                      <tr>
+                        <th>Module Permission</th>
+                        <th className="text-center">Read</th>
+                        <th className="text-center">Create</th>
+                        <th className="text-center">Update</th>
+                        <th className="text-center">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.keys(AUTHORITIES).map((key) => (
+                        <tr key={key}>
+                          <td>{key}</td>
+                          {AUTHORITIES[key].map((authority, i) => (
+                            <td key={i} className="text-center">
+                              <input
+                                defaultChecked={designationToModify.authorities?.includes(
+                                  key + '_' + authority
+                                )}
+                                onClick={(e) => {
+                                  if (e.target.checked) {
+                                    designationToModify.authorities?.push(
+                                      key + '_' + authority
+                                    );
+                                  } else {
+                                    console.log('here');
+                                    designationToModify.authorities =
+                                      designationToModify.authorities?.filter(
+                                        (a) => a !== key + '_' + authority
+                                      );
+                                  }
+                                }}
+                                type="checkbox"
+                              />
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Save</button>
@@ -464,7 +432,10 @@ const Designations = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      onClick={handleDelete}
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>

@@ -18,10 +18,14 @@ import httpService from '../../../lib/httpService';
 
 const Employeeslist = () => {
   const [data, setData] = useState([]);
+  const [_data, set_data] = useState([]);
   const [employees, setEmployees] = useState([]);
   const fetched = useSelector((state) => state.employee.fetched);
   const employeesFromStore = useSelector((state) => state.employee.value);
   const dispatch = useDispatch();
+  const [employeeToModify, setEmployeeToModify] = useState(null);
+  const [employeeIdToSearch, setEmployeeIdToSearch] = useState('');
+  const [employeeNameToSearch, setEmployeeNameToSearch] = useState('');
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -32,39 +36,74 @@ const Employeeslist = () => {
     }
     (async () => {
       if (!fetched) {
-        const response = await httpService.get('/user');
+        const response = await httpService.get('/private/user');
         setEmployees(response.data);
         dispatch(setFetched(true));
         dispatch(setEmployeeStore(response.data));
-        setData(
-          response.data.map((item, i) => ({
-            id: i,
-            name: item.firstName + ' ' + item.lastName,
-            email: item.email,
-            mobile: item.mobileNo,
-            employee_id: item.userId,
-            role: item.position.designation,
-            image: Avatar_02,
-            joindate: item.joinDate,
-          }))
-        );
+        let data = response.data.map((item, i) => ({
+          id: i,
+          name: item.firstName + ' ' + item.lastName,
+          email: item.email,
+          mobile: item.mobileNo,
+          employee_id: item.userId,
+          role: item.designation,
+          image: Avatar_02,
+          joindate: item.joinDate,
+        }));
+        setData(data);
+        set_data(data);
       } else {
         setEmployees(employeesFromStore);
-        setData(
-          employeesFromStore.map((item, i) => ({
-            id: i,
-            name: item.firstName + ' ' + item.lastName,
-            email: item.email,
-            mobile: item.mobileNo,
-            employee_id: item.userId,
-            role: item.position.designation,
-            image: Avatar_02,
-            joindate: item.joinDate,
-          }))
-        );
+        let data = employeesFromStore.map((item, i) => ({
+          id: i,
+          name: item.firstName + ' ' + item.lastName,
+          email: item.email,
+          mobile: item.mobileNo,
+          employee_id: item.userId,
+          role: item.designation || 'Product Manager',
+          image: Avatar_02,
+          joindate: item.joinDate,
+        }));
+        setData(data);
+        set_data(data);
       }
     })();
   }, []);
+
+  const handleSearch = () => {
+    const filteredEmployees = _data.filter((data) => {
+      if (employeeIdToSearch === '') {
+        return data.name
+          .toLowerCase()
+          .includes(employeeNameToSearch.toLowerCase());
+      } else {
+        return data.userId.toString() === employeeIdToSearch;
+      }
+    });
+    setData(filteredEmployees);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await httpService.put(
+      `/private/user/${employeeToModify.userId}`,
+      employeeToModify
+    );
+    if (response.status === 200) {
+      const newEmployee = response.data;
+      setEmployees(
+        employees.map((employee) => {
+          if (employee.userId === newEmployee.userId) {
+            return newEmployee;
+          }
+          return employee;
+        })
+      );
+      // setEmployeeToModify(null);
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+      // console.log(myModal);
+    }
+  };
 
   const columns = [
     {
@@ -107,32 +146,7 @@ const Employeeslist = () => {
     },
     {
       title: 'Role',
-      render: (text, record) => (
-        <div className="dropdown">
-          <a
-            href=""
-            className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Product Manager{' '}
-          </a>
-          <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">
-              Software Engineer
-            </a>
-            <a className="dropdown-item" href="#">
-              Software Tester
-            </a>
-            <a className="dropdown-item" href="#">
-              Frontend Developer
-            </a>
-            <a className="dropdown-item" href="#">
-              UI/UX Developer
-            </a>
-          </div>
-        </div>
-      ),
+      dataIndex: 'role',
     },
     {
       title: 'Action',
@@ -152,6 +166,11 @@ const Employeeslist = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_employee"
+              onClick={() => {
+                setEmployeeToModify(
+                  employees.find((item) => item.userId === record.employee_id)
+                );
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -219,13 +238,23 @@ const Employeeslist = () => {
         <div className="row filter-row">
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
+              <input
+                type="text"
+                className="form-control floating"
+                value={employeeIdToSearch}
+                onChange={(e) => setEmployeeIdToSearch(e.target.value)}
+              />
               <label className="focus-label">Employee ID</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
+              <input
+                type="text"
+                className="form-control floating"
+                value={employeeNameToSearch}
+                onChange={(e) => setEmployeeNameToSearch(e.target.value)}
+              />
               <label className="focus-label">Employee Name</label>
             </div>
           </div>
@@ -241,11 +270,8 @@ const Employeeslist = () => {
               <label className="focus-label">Designation</label>
             </div>
           </div>
-          <div className="col-sm-6 col-md-3">
-            <a href="#" className="btn btn-success btn-block">
-              {' '}
-              Search{' '}
-            </a>
+          <div className="col-sm-6 col-md-3" onClick={handleSearch}>
+            <a className="btn btn-success btn-block"> Search </a>
           </div>
         </div>
         {/* /Search Filter */}
@@ -380,7 +406,7 @@ const Employeeslist = () => {
                       </label>
                       <select className="select">
                         <option>Select Department</option>
-                        <option>Web Development</option>
+                        <option>Marketing Head</option>
                         <option>IT Management</option>
                         <option>Marketing</option>
                       </select>
@@ -613,7 +639,7 @@ const Employeeslist = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
@@ -622,8 +648,16 @@ const Employeeslist = () => {
                       </label>
                       <input
                         className="form-control"
-                        defaultValue="John"
                         type="text"
+                        name="firstName"
+                        disabled
+                        defaultValue={employeeToModify?.firstName || ''}
+                        onChange={(e) => {
+                          setEmployeeToModify({
+                            ...employeeToModify,
+                            firstName: e.target.value,
+                          });
+                        }}
                       />
                     </div>
                   </div>
@@ -632,7 +666,14 @@ const Employeeslist = () => {
                       <label className="col-form-label">Last Name</label>
                       <input
                         className="form-control"
-                        defaultValue="Doe"
+                        defaultValue={employeeToModify?.lastName || ''}
+                        disabled
+                        onChange={(e) => {
+                          setEmployeeToModify({
+                            ...employeeToModify,
+                            lastName: e.target.value,
+                          });
+                        }}
                         type="text"
                       />
                     </div>
@@ -644,7 +685,8 @@ const Employeeslist = () => {
                       </label>
                       <input
                         className="form-control"
-                        defaultValue="johndoe"
+                        disabled
+                        defaultValue={employeeToModify?.username || ''}
                         type="text"
                       />
                     </div>
@@ -656,7 +698,8 @@ const Employeeslist = () => {
                       </label>
                       <input
                         className="form-control"
-                        defaultValue="johndoe@example.com"
+                        defaultValue={employeeToModify?.email || ''}
+                        disabled
                         type="email"
                       />
                     </div>
@@ -688,7 +731,7 @@ const Employeeslist = () => {
                       </label>
                       <input
                         type="text"
-                        defaultValue="FT-0001"
+                        defaultValue={employeeToModify?.userId || ''}
                         readOnly
                         className="form-control floating"
                       />
@@ -702,7 +745,8 @@ const Employeeslist = () => {
                       <div>
                         <input
                           className="form-control datetimepicker"
-                          type="date"
+                          readOnly
+                          defaultValue={employeeToModify?.joinDate || ''}
                         />
                       </div>
                     </div>
@@ -712,7 +756,13 @@ const Employeeslist = () => {
                       <label className="col-form-label">Phone </label>
                       <input
                         className="form-control"
-                        defaultValue={9876543210}
+                        defaultValue={employeeToModify?.mobileNo || ''}
+                        onChange={(e) => {
+                          setEmployeeToModify({
+                            ...employeeToModify,
+                            mobileNo: e.target.value,
+                          });
+                        }}
                         type="text"
                       />
                     </div>
@@ -720,10 +770,8 @@ const Employeeslist = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Company</label>
-                      <select className="select">
-                        <option>Sunteck Realty Ltd</option>
-                        <option>Godrej Properties Ltd</option>
-                        <option>International Software Inc</option>
+                      <select className="select" disabled>
+                        <option>KN Multiprojects</option>
                       </select>
                     </div>
                   </div>
@@ -734,7 +782,7 @@ const Employeeslist = () => {
                       </label>
                       <select className="select">
                         <option>Select Department</option>
-                        <option>Web Development</option>
+                        <option>Marketing Head</option>
                         <option>IT Management</option>
                         <option>Marketing</option>
                       </select>
@@ -768,7 +816,7 @@ const Employeeslist = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr key={1}>
+                      <tr>
                         <td>Holidays</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -789,7 +837,7 @@ const Employeeslist = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      <tr key={2}>
+                      <tr>
                         <td>Leaves</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -810,7 +858,7 @@ const Employeeslist = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      <tr key={3}>
+                      <tr>
                         <td>Clients</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -831,7 +879,7 @@ const Employeeslist = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      <tr key={4}>
+                      <tr>
                         <td>Projects</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -852,7 +900,7 @@ const Employeeslist = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      <tr key={5}>
+                      {/* <tr>
                         <td>Tasks</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -873,7 +921,7 @@ const Employeeslist = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      <tr key={6}>
+                      <tr>
                         <td>Chats</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -894,7 +942,7 @@ const Employeeslist = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      <tr key={7}>
+                      <tr>
                         <td>Assets</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -915,7 +963,7 @@ const Employeeslist = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      <tr key={8}>
+                      <tr>
                         <td>Timing Sheets</td>
                         <td className="text-center">
                           <input defaultChecked type="checkbox" />
@@ -935,12 +983,16 @@ const Employeeslist = () => {
                         <td className="text-center">
                           <input type="checkbox" />
                         </td>
-                      </tr>
+                      </tr> */}
                     </tbody>
                   </table>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <input
+                    type={'submit'}
+                    className="btn btn-primary submit-btn"
+                    value={'Save Changes'}
+                  />
                 </div>
               </form>
             </div>
