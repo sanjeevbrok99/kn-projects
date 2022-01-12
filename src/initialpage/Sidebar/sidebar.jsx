@@ -10,9 +10,7 @@ import { Link } from 'react-router-dom';
 const Sidebar = (props) => {
   const authentication = useSelector((state) => state.authentication.value);
   let pathname = props.location.pathname;
-  const isAdmin = authentication.user?.userAuthorites.some(
-    (authority) => authority === 'ADMIN_DASHBOARD'
-  );
+  const isAdmin = true;
 
   useEffect(() => {
     var Sidemenu = function () {

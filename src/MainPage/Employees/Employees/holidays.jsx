@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import {
   appendHolidayStore,
   setFetched,
@@ -9,43 +10,38 @@ import {
 } from '../../../features/holiday/holidaySlice';
 import httpService from '../../../lib/httpService';
 import { useAuthority } from '../../../hooks';
+import { fetchholiday } from '../../../lib/api';
+import { addholiday } from '../../../lib/api';
 
 const Holidays = () => {
   const [data, setData] = React.useState([]);
-  const fetched = useSelector((state) => state.holiday.fetched);
-  const holidaysFromStore = useSelector((state) => state.holiday.value);
+  const [date, setDate] = useState('');
+  const [holidayName, setHolidayName] = useState('');
+
   const [leaveToAdd, setLeaveToAdd] = React.useState('');
   const [leaveDateToAdd, setLeaveDateToAdd] = React.useState('');
+  const [holiday, setHoliday] = useState([]);
   const [holidayToModify, setHolidayToModify] = React.useState(null);
-  const holidayWriteAuthority = useAuthority('HOLIDAY_CREATE');
+  // const holidayWriteAuthority = useAuthority('HOLIDAY_CREATE');
 
   useEffect(() => {
-    console.log(holidayWriteAuthority);
     (async () => {
-      if (fetched) {
-        setData(
-          holidaysFromStore.map((holiday, i) => ({ ...holiday, id: i + 1 }))
-        );
-      } else {
-        const res = await httpService.get('/private/holiday');
-        setData(res.data.map((holiday, i) => ({ ...holiday, id: i + 1 })));
-        setHolidayStore(res.data);
-        setFetched(true);
-      }
+      const res = await fetchholiday();
+      setHoliday(res);
     })();
   }, []);
 
-  const handleAdd = async () => {
-    if (leaveToAdd && leaveDateToAdd) {
-      console.log(leaveToAdd, leaveDateToAdd);
-      const res = await httpService.post('/private/holiday', {
-        title: leaveToAdd,
-        date: leaveDateToAdd,
-      });
-      setData([...data, { ...res.data, id: data.length + 1 }]);
-      appendHolidayStore(res.data);
-      document.querySelectorAll('.close')?.forEach((e) => e.click());
-    }
+  const handleHoliday = async () => {
+    console.log(date);
+    console.log(holidayName);
+    const data = {
+      title: holidayName,
+      date: date,
+    };
+    const res = await addholiday(data);
+    setHoliday((p) => [...p, res]);
+    console.log(res);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
   const handleDelete = async () => {
@@ -60,14 +56,10 @@ const Holidays = () => {
   };
 
   const handleEdit = async () => {
-    const res = await httpService.put(
-      `/private/holiday/${holidayToModify.hoildayId}`,
-      {
-        holidayId: holidayToModify.hoildayId,
-        title: holidayToModify.title,
-        date: holidayToModify.date,
-      }
-    );
+    const res = await httpService.put(`/holiday/${holidayToModify.id}`, {
+      title: holidayToModify.title,
+      date: holidayToModify.date,
+    });
     setData([
       ...data.slice(0, holidayToModify.id - 1),
       { ...res.data, id: holidayToModify.id },
@@ -96,18 +88,17 @@ const Holidays = () => {
                 <li className="breadcrumb-item active">Holidays</li>
               </ul>
             </div>
-            {holidayWriteAuthority && (
-              <div className="col-auto float-right ml-auto">
-                <a
-                  href="#"
-                  className="btn add-btn"
-                  data-toggle="modal"
-                  data-target="#add_holiday"
-                >
-                  <i className="fa fa-plus" /> Add Holiday
-                </a>
-              </div>
-            )}
+
+            <div className="col-auto float-right ml-auto">
+              <a
+                href="#"
+                className="btn add-btn"
+                data-toggle="modal"
+                data-target="#add_holiday"
+              >
+                <i className="fa fa-plus" /> Add Holiday
+              </a>
+            </div>
           </div>
         </div>
         {/* /Page Header */}
@@ -125,13 +116,13 @@ const Holidays = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((holiday, i) => (
+                  {holiday?.map((holidays, i) => (
                     <tr key={i}>
-                      <td>{holiday.id}</td>
-                      <td>{holiday.title}</td>
-                      <td>{holiday.date}</td>
+                      <td>{i + 1}</td>
+                      <td>{holidays.title}</td>
+                      <td>{holidays.date}</td>
                       <td>
-                        {new Date(holiday.date).toLocaleString('en-us', {
+                        {new Date(holidays.date).toLocaleString('en-us', {
                           weekday: 'long',
                         })}
                       </td>
@@ -151,8 +142,9 @@ const Holidays = () => {
                               href="#"
                               data-toggle="modal"
                               data-target="#edit_holiday"
-                              onClick={() => {
-                                setHolidayToModify(holiday);
+                              onClick={(e) => {
+                                console.log('here ');
+                                setHolidayToModify(holidays);
                               }}
                             >
                               <i className="fa fa-pencil m-r-5" /> Edit
@@ -163,7 +155,7 @@ const Holidays = () => {
                               data-toggle="modal"
                               data-target="#delete_holiday"
                               onClick={() => {
-                                setHolidayToModify(holiday);
+                                setHolidayToModify(holidays);
                               }}
                             >
                               <i className="fa fa-trash-o m-r-5" /> Delete
@@ -199,7 +191,7 @@ const Holidays = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleAdd();
+                  handleHoliday();
                 }}
               >
                 <div className="form-group">
@@ -207,7 +199,7 @@ const Holidays = () => {
                     Holiday Name <span className="text-danger">*</span>
                   </label>
                   <input
-                    onChange={(e) => setLeaveToAdd(e.target.value)}
+                    onChange={(e) => setHolidayName(e.target.value)}
                     className="form-control"
                     type="text"
                   />
@@ -220,7 +212,7 @@ const Holidays = () => {
                     <input
                       className="form-control"
                       type={'date'}
-                      onChange={(e) => setLeaveDateToAdd(e.target.value)}
+                      onChange={(e) => setDate(e.target.value)}
                     />
                   </div>
                 </div>

@@ -10,41 +10,58 @@ import {
   setEmployeeStore,
   setFetched,
 } from '../../../features/employee/employeeSlice';
+import { allemployee } from '../../../lib/api';
+import { addemployee } from '../../../lib/api';
 
 const AllEmployees = () => {
-  const [employees, setEmployees] = React.useState([]);
+  // const [employees, setEmployees] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const fetched = useSelector((state) => state.employee.fetched);
-  const employeesFromStore = useSelector((state) => state.employee.value);
   const dispatch = useDispatch();
   const [employeeToModify, setEmployeeToModify] = useState(null);
   const [employeeIdToSearch, setEmployeeIdToSearch] = useState('');
   const [employeeNameToSearch, setEmployeeNameToSearch] = useState('');
   const [_employees, set_employees] = useState([]);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [joiningDate, setJoiningDate] = useState('');
+  const [designation, setDesignation] = useState('');
 
   useEffect(() => {
-    if ($('.select').length > 0) {
-      $('.select').select2({
-        minimumResultsForSearch: -1,
-        width: '100%',
-      });
-    }
     (async () => {
-      if (!fetched) {
-        const response = await httpService.get('/private/user');
-        setIsLoading(false);
-        setEmployees(response.data);
-        console.log(response.data);
-        dispatch(setFetched(true));
-        set_employees(response.data);
-        dispatch(setEmployeeStore(response.data));
-      } else {
-        setIsLoading(false);
-        setEmployees(employeesFromStore);
-        set_employees(employeesFromStore);
-      }
+      const res = await allemployee();
+      console.log(res);
+      set_employees(res);
+      setIsLoading(false);
+      console.log(res);
     })();
   }, []);
+
+  const addOfEmployee = () => {
+    console.log(firstName);
+    console.log(lastName);
+    console.log(phone);
+    console.log(username);
+    console.log(email);
+    console.log(password);
+    console.log(joiningDate);
+    console.log(resetPasswordResponse);
+    console.log(designation);
+    const data = {
+      firstName: firstName,
+      lastName: lastName,
+      mobileNo: phone,
+      joinDate: joiningDate,
+      userName: username,
+      password: password,
+
+      userAuthorities: [],
+    };
+    const resetPasswordResponse = addemployee(data);
+  };
 
   const handleSearch = () => {
     const filteredEmployees = _employees.filter((employee) => {
@@ -74,8 +91,8 @@ const AllEmployees = () => {
     if (response.status === 200) {
       const newEmployee = response.data;
       setEmployees(
-        employees.map((employee) => {
-          if (employee.userId === newEmployee.userId) {
+        _employees.map((employee) => {
+          if (employee.id === newEmployee.id) {
             return newEmployee;
           }
           return employee;
@@ -227,9 +244,9 @@ const AllEmployees = () => {
                 </div>
               </div>
             ))}
-          {employees.map((employee) => (
+          {_employees.map((employee) => (
             <div
-              key={employee.userId}
+              key={employee.id}
               className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
             >
               <div className="profile-widget">
@@ -277,7 +294,7 @@ const AllEmployees = () => {
                   </Link>
                 </h4>
                 <div className="small text-muted">
-                  {employee.designation || 'Marketing Lead'}
+                  {employee.jobRole.name || 'Marketing Lead'}
                 </div>
               </div>
             </div>
@@ -308,13 +325,21 @@ const AllEmployees = () => {
                       <label className="col-form-label">
                         First Name <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setFirstName(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Last Name</label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setLastName(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -322,7 +347,11 @@ const AllEmployees = () => {
                       <label className="col-form-label">
                         Username <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setUserName(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -330,19 +359,33 @@ const AllEmployees = () => {
                       <label className="col-form-label">
                         Email <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="email" />
+                      <input
+                        className="form-control"
+                        type="email"
+                        onChange={(event) => setEmail(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Password</label>
-                      <input className="form-control" type="password" />
+                      <input
+                        className="form-control"
+                        type="password"
+                        onChange={(event) => setPassword(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Confirm Password</label>
-                      <input className="form-control" type="password" />
+                      <input
+                        className="form-control"
+                        type="password"
+                        onChange={(event) =>
+                          setConfirmPassword(event.target.value)
+                        }
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -354,6 +397,9 @@ const AllEmployees = () => {
                         <input
                           className="form-control datetimepicker"
                           type="date"
+                          onChange={(event) =>
+                            setJoiningDate(event.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -361,7 +407,11 @@ const AllEmployees = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Phone </label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setPhone(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -369,7 +419,10 @@ const AllEmployees = () => {
                       <label>
                         Department <span className="text-danger">*</span>
                       </label>
-                      <select className="select">
+                      <select
+                        className="select"
+                        onChange={(event) => setDepartment(event.target.value)}
+                      >
                         <option>Select Department</option>
                         <option>Marketing Head</option>
                         <option>IT Management</option>
@@ -382,7 +435,10 @@ const AllEmployees = () => {
                       <label>
                         Designation <span className="text-danger">*</span>
                       </label>
-                      <select className="select">
+                      <select
+                        className="select"
+                        onChange={(event) => setDesignation(event.target.value)}
+                      >
                         <option>Select Designation</option>
                         <option>CIO</option>
                         <option>Product Manager</option>
@@ -577,7 +633,9 @@ const AllEmployees = () => {
                   </table>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -604,7 +662,13 @@ const AllEmployees = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form onSubmit={handleSubmit}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log('clicked on employee add button');
+                  addOfEmployee();
+                }}
+              >
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
