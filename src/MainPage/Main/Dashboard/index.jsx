@@ -9,12 +9,8 @@ import Employeedashboard from './employeedashboard';
 
 const DashboardRoute = () => {
   const authentication = useSelector((state) => state.authentication.value);
-  const isAdmin = authentication.user?.userAuthorites.some(
-    (authority) => authority === 'ADMIN_DASHBOARD'
-  );
-  useEffect(() => {
-    console.log(isAdmin);
-  }, []);
+  const isAdmin =
+    !authentication?.user?.jobRole?.authorities.includes('EMPLOYEE');
 
   return (
     <>

@@ -11,11 +11,11 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
-
+import { fetchLoan } from '../../../lib/api';
 const Expenses = () => {
   const [data, setData] = useState([
     {
-      id: 1,
+      id: data._id,
       item: 'Dell Laptop',
       Loanfrom: 'Car',
       Loandate: '5 Jan 2021',
@@ -37,6 +37,19 @@ const Expenses = () => {
       status: 'Inactive',
     },
   ]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchLoan();
+
+      console.log('loan');
+
+      setData(res.map((v, i) => ({ ...v, id: i + 1 })));
+
+      console.log(res);
+    })();
+  }, []);
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({

@@ -1,7 +1,3 @@
-/**
- * Signin Firebase
- */
-
 import React, { Component, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useHistory } from 'react-router-dom';
@@ -10,6 +6,7 @@ import httpService from '../lib/httpService.js';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { setAuthticationStore } from '../features/authentication/authenticationSlice.js';
+import { Login } from '../lib/api/index.js';
 
 const Loginpage = () => {
   const [username, setUsername] = React.useState('');
@@ -17,34 +14,16 @@ const Loginpage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(username, password);
-    const fetchUser = new Promise((resolve, reject) => {
-      httpService
-        .post('/public/login', {
-          userName: username,
-          password,
-        })
-        .then((res) => {
-          dispatch(setAuthticationStore(res.data));
-          resolve();
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-    toast
-      .promise(fetchUser, {
-        pending: 'Logging In',
-        success: 'Success',
-        error: 'Bad Credentials',
-      })
-      .then(() => {
-        history.push('/app/dashboard');
-      });
+  const handleLoginWithEmailAndPassword = async () => {
+    const res = await Login(username, password);
+    console.log(res);
+    if (res.error) {
+      toast.error(res.message);
+    } else {
+      dispatch(setAuthticationStore(res));
+      history.push('/app/dashboard');
+    }
   };
-
   return (
     <>
       <Helmet>
@@ -99,16 +78,10 @@ const Loginpage = () => {
                 <div className="form-group text-center">
                   <button
                     className="btn btn-primary account-btn"
-                    onClick={handleSubmit}
+                    onClick={handleLoginWithEmailAndPassword}
                   >
                     Login
                   </button>
-                </div>
-                <div className="account-footer">
-                  <p>
-                    Don't have an account yet?{' '}
-                    <Link to="/register">Register</Link>
-                  </p>
                 </div>
               </div>
               {/* /Account Form */}

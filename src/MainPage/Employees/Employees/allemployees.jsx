@@ -5,84 +5,121 @@ import Skeleton from 'react-loading-skeleton';
 import { useSelector, useDispatch } from 'react-redux';
 import { Avatar_02 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
-import {
-  appendEmployee,
-  setEmployeeStore,
-  setFetched,
-} from '../../../features/employee/employeeSlice';
+import { allemployee } from '../../../lib/api';
+import { addemployee } from '../../../lib/api';
 
 const AllEmployees = () => {
   const [employees, setEmployees] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const fetched = useSelector((state) => state.employee.fetched);
-  const employeesFromStore = useSelector((state) => state.employee.value);
   const dispatch = useDispatch();
   const [employeeToModify, setEmployeeToModify] = useState(null);
   const [employeeIdToSearch, setEmployeeIdToSearch] = useState('');
   const [employeeNameToSearch, setEmployeeNameToSearch] = useState('');
+  const [departments, setDepartments] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [_employees, set_employees] = useState([]);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [joiningDate, setJoiningDate] = useState('');
+  const [designation, setDesignation] = useState('');
+  const [designationToFilter, setDesignationToFilter] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [rolesForDepartment, setRolesForDepartment] = useState([]);
+  const [selectedRole, setSelectedRole] = useState('');
 
   useEffect(() => {
-    if ($('.select').length > 0) {
-      $('.select').select2({
-        minimumResultsForSearch: -1,
-        width: '100%',
-      });
-    }
-    (async () => {
-      if (!fetched) {
-        const response = await httpService.get('/private/user');
-        setIsLoading(false);
-        setEmployees(response.data);
-        dispatch(setFetched(true));
-        set_employees(response.data);
-        dispatch(setEmployeeStore(response.data));
-      } else {
-        setIsLoading(false);
-        setEmployees(employeesFromStore);
-        set_employees(employeesFromStore);
-      }
-    })();
+    fetchEmployees();
   }, []);
 
+  const fetchEmployees = async () => {
+    const res = await allemployee();
+    const roles = await httpService.get('/role');
+    const departments = await httpService.get('/department');
+    setRoles(roles.data);
+    setDepartments(departments.data);
+    setEmployees(res);
+    set_employees(res);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const filteredRoles = roles.filter(
+      (role) => role.department._id === selectedDepartment
+    );
+    console.log(filteredRoles, roles, selectedDepartment);
+    setRolesForDepartment(filteredRoles);
+  }, [selectedDepartment]);
+
+  const handleAddEmployee = async () => {
+    const data = {
+      firstName: firstName,
+      lastName: lastName,
+      mobileNo: phone,
+      joinDate: new Date(joiningDate).toISOString(),
+      userName: username,
+      password: password,
+      jobRole: selectedRole,
+      userAuthorites: [],
+      workLocation: '61ded9d3bc62af7e13239163',
+      dob: new Date(joiningDate).toISOString(),
+      salary: 60000,
+      email,
+    };
+    const user = await httpService.post('/employee', data);
+    fetchEmployees();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
   const handleSearch = () => {
+    if (
+      designationToFilter === '' &&
+      employeeIdToSearch === '' &&
+      employeeNameToSearch === ''
+    )
+      return setEmployees(_employees);
     const filteredEmployees = _employees.filter((employee) => {
-      if (employeeIdToSearch === '') {
-        return (
+      if (
+        (employeeNameToSearch &&
           employee.firstName
             .toLowerCase()
-            .includes(employeeNameToSearch.toLowerCase()) ||
+            .includes(employeeNameToSearch.toLowerCase())) ||
+        (employeeNameToSearch &&
           employee.lastName
             .toLowerCase()
-            .includes(employeeNameToSearch.toLowerCase()) ||
-          employee.userId.toString() === employeeIdToSearch
-        );
-      } else {
-        return employee.userId.toString() === employeeIdToSearch;
+            .includes(employeeNameToSearch.toLowerCase())) ||
+        (employeeIdToSearch &&
+          employee._id.toString().includes(employeeIdToSearch.toLowerCase())) ||
+        (designationToFilter &&
+          employee.jobRole._id
+            .toLowerCase()
+            .includes(designationToFilter.toLowerCase()))
+      ) {
+        return employee;
       }
     });
     setEmployees(filteredEmployees);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     const response = await httpService.put(
-      `/private/user/${employeeToModify.userId}`,
+      `/employee/${employeeToModify._id}`,
       employeeToModify
     );
     if (response.status === 200) {
       const newEmployee = response.data;
       setEmployees(
-        employees.map((employee) => {
-          if (employee.userId === newEmployee.userId) {
-            return newEmployee;
+        _employees.map((employee) => {
+          if (employee._id === employeeToModify._id) {
+            return employeeToModify;
           }
           return employee;
         })
       );
-      // setEmployeeToModify(null);
       document.querySelectorAll('.close')?.forEach((e) => e.click());
-      // console.log(myModal);
     }
   };
 
@@ -159,12 +196,16 @@ const AllEmployees = () => {
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option>Select Designation</option>
-                <option>Product Manager</option>
-                <option>CIO</option>
-                <option>Product Manager</option>
-                <option>Marketing Head</option>
+              <select
+                onChange={(e) => setDesignationToFilter(e.target.value)}
+                className="select form-control floating"
+              >
+                <option value={''}>Select Designation</option>
+                {roles.map((role) => (
+                  <option key={role._id} value={role._id}>
+                    {role.name}
+                  </option>
+                ))}
               </select>
               <label className="focus-label">Designation</label>
             </div>
@@ -228,7 +269,7 @@ const AllEmployees = () => {
             ))}
           {employees.map((employee) => (
             <div
-              key={employee.userId}
+              key={employee._id}
               className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
             >
               <div className="profile-widget">
@@ -276,7 +317,7 @@ const AllEmployees = () => {
                   </Link>
                 </h4>
                 <div className="small text-muted">
-                  {employee.designation || 'Marketing Lead'}
+                  {employee.jobRole?.name || 'Marketing Lead'}
                 </div>
               </div>
             </div>
@@ -300,20 +341,33 @@ const AllEmployees = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAddEmployee();
+                }}
+              >
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">
                         First Name <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setFirstName(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Last Name</label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setLastName(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -321,7 +375,11 @@ const AllEmployees = () => {
                       <label className="col-form-label">
                         Username <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setUserName(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -329,13 +387,21 @@ const AllEmployees = () => {
                       <label className="col-form-label">
                         Email <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="email" />
+                      <input
+                        className="form-control"
+                        type="email"
+                        onChange={(event) => setEmail(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Password</label>
-                      <input className="form-control" type="password" />
+                      <input
+                        className="form-control"
+                        type="password"
+                        onChange={(event) => setPassword(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -351,8 +417,11 @@ const AllEmployees = () => {
                       </label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          className="form-control"
                           type="date"
+                          onChange={(event) =>
+                            setJoiningDate(event.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -360,32 +429,50 @@ const AllEmployees = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Phone </label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setPhone(event.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>
+                      <label className="col-form-label">
                         Department <span className="text-danger">*</span>
                       </label>
-                      <select className="select">
-                        <option>Select Department</option>
-                        <option>Marketing Head</option>
-                        <option>IT Management</option>
-                        <option>Marketing</option>
+                      <select
+                        className="form-control select"
+                        onChange={(event) =>
+                          setSelectedDepartment(event.target.value)
+                        }
+                      >
+                        <option value={''}>Select Department</option>
+                        {departments.map((department) => (
+                          <option key={department._id} value={department._id}>
+                            {department.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>
+                      <label className="col-form-label">
                         Designation <span className="text-danger">*</span>
                       </label>
-                      <select className="select">
-                        <option>Select Designation</option>
-                        <option>CIO</option>
-                        <option>Product Manager</option>
-                        <option>Product Manager</option>
+                      <select
+                        className="form-control select"
+                        onChange={(event) =>
+                          setSelectedRole(event.target.value)
+                        }
+                      >
+                        <option value={''}>Select Designation</option>
+                        {rolesForDepartment.map((role) => (
+                          <option key={role._id} value={role._id}>
+                            {role.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -576,7 +663,9 @@ const AllEmployees = () => {
                   </table>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -603,7 +692,12 @@ const AllEmployees = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form onSubmit={handleSubmit}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}
+              >
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
@@ -614,7 +708,6 @@ const AllEmployees = () => {
                         className="form-control"
                         type="text"
                         name="firstName"
-                        disabled
                         defaultValue={employeeToModify?.firstName || ''}
                         onChange={(e) => {
                           setEmployeeToModify({
@@ -631,7 +724,6 @@ const AllEmployees = () => {
                       <input
                         className="form-control"
                         defaultValue={employeeToModify?.lastName || ''}
-                        disabled
                         onChange={(e) => {
                           setEmployeeToModify({
                             ...employeeToModify,
@@ -650,7 +742,7 @@ const AllEmployees = () => {
                       <input
                         className="form-control"
                         disabled
-                        defaultValue={employeeToModify?.username || ''}
+                        defaultValue={employeeToModify?.userName || ''}
                         type="text"
                       />
                     </div>
@@ -670,32 +762,12 @@ const AllEmployees = () => {
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label className="col-form-label">Password</label>
-                      <input
-                        className="form-control"
-                        defaultValue="johndoe"
-                        type="password"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Confirm Password</label>
-                      <input
-                        className="form-control"
-                        defaultValue="johndoe"
-                        type="password"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
                       <label className="col-form-label">
                         Employee ID <span className="text-danger">*</span>
                       </label>
                       <input
                         type="text"
-                        defaultValue={employeeToModify?.userId || ''}
+                        defaultValue={employeeToModify?._id || ''}
                         readOnly
                         className="form-control floating"
                       />
@@ -710,7 +782,13 @@ const AllEmployees = () => {
                         <input
                           className="form-control datetimepicker"
                           readOnly
-                          defaultValue={employeeToModify?.joinDate || ''}
+                          defaultValue={
+                            employeeToModify
+                              ? new Date(employeeToModify?.joinDate)
+                                  .toISOString()
+                                  .substring(0, 10)
+                              : ''
+                          }
                         />
                       </div>
                     </div>
@@ -734,7 +812,7 @@ const AllEmployees = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Company</label>
-                      <select className="select" disabled>
+                      <select className="select form-control" disabled>
                         <option>KN Multiprojects</option>
                       </select>
                     </div>
@@ -744,11 +822,16 @@ const AllEmployees = () => {
                       <label>
                         Department <span className="text-danger">*</span>
                       </label>
-                      <select className="select">
-                        <option>Select Department</option>
-                        <option>Marketing Head</option>
-                        <option>IT Management</option>
-                        <option>Marketing</option>
+                      <select
+                        value={employeeToModify?.jobRole?.department}
+                        className="select form-control"
+                      >
+                        <option value={''}>Select Department</option>
+                        {departments.map((department) => (
+                          <option value={department._id}>
+                            {department.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -757,11 +840,22 @@ const AllEmployees = () => {
                       <label>
                         Designation <span className="text-danger">*</span>
                       </label>
-                      <select className="select">
-                        <option>Select Designation</option>
-                        <option>CIO</option>
-                        <option>Product Manager</option>
-                        <option>Product Manager</option>
+                      <select
+                        value={employeeToModify?.jobRole?._id}
+                        className="select form-control"
+                        onChange={(e) => {
+                          setEmployeeToModify({
+                            ...employeeToModify,
+                            jobRole: {
+                              _id: e.target.value,
+                            },
+                          });
+                        }}
+                      >
+                        <option value={''}>Select Designation</option>
+                        {roles.map((role) => (
+                          <option value={role._id}>{role.name}</option>
+                        ))}
                       </select>
                     </div>
                   </div>

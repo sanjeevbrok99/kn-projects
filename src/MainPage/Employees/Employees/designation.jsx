@@ -26,7 +26,7 @@ const Designations = () => {
       });
     }
     async function fetchData() {
-      const res = await httpService.get('/private/designation');
+      const res = await httpService.get('/role');
       console.log(res.data);
       setFetched(true);
       setDesignationStore(res.data);
@@ -34,8 +34,8 @@ const Designations = () => {
         res.data.map((item, i) => ({
           ...item,
           id: i + 1,
-          department: 'Sales Management',
-          designation: item.designationName || 'Placeholder',
+          department: item.department.name,
+          designation: item.name || 'Placeholder',
         }))
       );
     }
@@ -110,7 +110,7 @@ const Designations = () => {
     },
     {
       title: 'Designation',
-      dataIndex: 'designationName',
+      dataIndex: 'designation',
       sorter: (a, b) => a.designation.length - b.designation.length,
     },
     {

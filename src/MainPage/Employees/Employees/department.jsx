@@ -11,31 +11,29 @@ import {
   setDepartmentStore,
   setFetched,
 } from '../../../features/department/departmentSlice';
+import { fetchdepartment } from '../../../lib/api';
 
 const Department = () => {
   const [data, setData] = useState([]);
+  const [department, setDepartment] = useState([]);
   const [departmentToModify, setDepartmentToModify] = useState(null);
   const [departmentNameToAdd, setDepartmentNameToAdd] = useState(null);
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await httpService.get('/private/department');
-      setFetched(true);
-      setDepartmentStore(res.data);
-      setData(
-        res.data.map((item, i) => ({
-          ...item,
-          id: i + 1,
-          department: item.departmentName,
-        }))
-      );
-    }
-    fetchData();
+    (async () => {
+      const res = await fetchdepartment();
+      console.log(res);
+      console.log('departments');
+      setData(res.map((v, i) => ({ ...v, id: i + 1 })));
+
+      console.log(res);
+    })();
   }, []);
 
   const handleAddDepartment = async () => {
-    const res = await httpService.post('/private/department', {
-      departmentName: departmentNameToAdd,
+    const res = await httpService.post('/department', {
+      name: departmentNameToAdd,
+      active: true,
     });
     // console.log(res.data);
     setData((d) => [
@@ -50,13 +48,10 @@ const Department = () => {
   };
 
   const handleEditDepartment = async () => {
-    if (departmentToModify.departmentName <= 0) return;
-    const res = await httpService.put(
-      '/private/department/' + departmentToModify.departmentId,
-      {
-        ...departmentToModify,
-      }
-    );
+    if (departmentToModify.name <= 0) return;
+    const res = await httpService.put('/department/' + departmentToModify.id, {
+      ...departmentToModify,
+    });
     setData((d) =>
       d.map((item) =>
         item.departmentId === res.data.departmentId
@@ -89,7 +84,7 @@ const Department = () => {
     },
     {
       title: 'Department',
-      dataIndex: 'departmentName',
+      dataIndex: 'name',
       sorter: (a, b) => a.department.length - b.department.length,
     },
     {
