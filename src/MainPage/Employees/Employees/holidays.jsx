@@ -17,12 +17,8 @@ const Holidays = () => {
   const [data, setData] = React.useState([]);
   const [date, setDate] = useState('');
   const [holidayName, setHolidayName] = useState('');
-
-  const [leaveToAdd, setLeaveToAdd] = React.useState('');
-  const [leaveDateToAdd, setLeaveDateToAdd] = React.useState('');
   const [holiday, setHoliday] = useState([]);
   const [holidayToModify, setHolidayToModify] = React.useState(null);
-  // const holidayWriteAuthority = useAuthority('HOLIDAY_CREATE');
 
   useEffect(() => {
     (async () => {
@@ -31,7 +27,7 @@ const Holidays = () => {
     })();
   }, []);
 
-  const handleHoliday = async () => {
+  const handleAddHoliday = async () => {
     console.log(date);
     console.log(holidayName);
     const data = {
@@ -45,26 +41,20 @@ const Holidays = () => {
   };
 
   const handleDelete = async () => {
-    const res = await httpService.delete(
-      `/private/holiday/${holidayToModify.hoildayId}`
-    );
-    setData([
-      ...data.slice(0, holidayToModify.id - 1),
-      ...data.slice(holidayToModify.id).map((e) => ({ ...e, id: e.id - 1 })),
-    ]);
+    const res = await httpService.delete(`/holiday/${holidayToModify._id}`);
+    const i = holiday.findIndex((e) => e._id === holidayToModify._id);
+    setHoliday((p) => [...p.slice(0, i), ...p.slice(i + 1)]);
     document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
   };
 
   const handleEdit = async () => {
-    const res = await httpService.put(`/holiday/${holidayToModify.id}`, {
+    console.log(holidayToModify);
+    const res = await httpService.put(`/holiday/${holidayToModify._id}`, {
       title: holidayToModify.title,
       date: holidayToModify.date,
     });
-    setData([
-      ...data.slice(0, holidayToModify.id - 1),
-      { ...res.data, id: holidayToModify.id },
-      ...data.slice(holidayToModify.id),
-    ]);
+    const i = holiday.findIndex((e) => e._id === holidayToModify._id);
+    setHoliday((p) => [...p.slice(0, i), holidayToModify, ...p.slice(i + 1)]);
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
@@ -120,7 +110,7 @@ const Holidays = () => {
                     <tr key={i}>
                       <td>{i + 1}</td>
                       <td>{holidays.title}</td>
-                      <td>{holidays.date}</td>
+                      <td>{new Date(holidays.date).toLocaleDateString()}</td>
                       <td>
                         {new Date(holidays.date).toLocaleString('en-us', {
                           weekday: 'long',
@@ -191,7 +181,7 @@ const Holidays = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleHoliday();
+                  handleAddHoliday();
                 }}
               >
                 <div className="form-group">
@@ -269,8 +259,14 @@ const Holidays = () => {
                   </label>
                   <div>
                     <input
-                      className="form-control datetimepicker"
-                      defaultValue={holidayToModify?.date || ''}
+                      className="form-control"
+                      value={
+                        holidayToModify
+                          ? new Date(holidayToModify?.date)
+                              .toISOString()
+                              .substring(0, 10)
+                          : ''
+                      }
                       onChange={(e) =>
                         setHolidayToModify({
                           ...holidayToModify,

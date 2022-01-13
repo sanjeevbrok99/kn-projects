@@ -5,21 +5,18 @@ import Skeleton from 'react-loading-skeleton';
 import { useSelector, useDispatch } from 'react-redux';
 import { Avatar_02 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
-import {
-  appendEmployee,
-  setEmployeeStore,
-  setFetched,
-} from '../../../features/employee/employeeSlice';
 import { allemployee } from '../../../lib/api';
 import { addemployee } from '../../../lib/api';
 
 const AllEmployees = () => {
-  // const [employees, setEmployees] = React.useState([]);
+  const [employees, setEmployees] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const dispatch = useDispatch();
   const [employeeToModify, setEmployeeToModify] = useState(null);
   const [employeeIdToSearch, setEmployeeIdToSearch] = useState('');
   const [employeeNameToSearch, setEmployeeNameToSearch] = useState('');
+  const [departments, setDepartments] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [_employees, set_employees] = useState([]);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -29,27 +26,22 @@ const AllEmployees = () => {
   const [phone, setPhone] = useState('');
   const [joiningDate, setJoiningDate] = useState('');
   const [designation, setDesignation] = useState('');
+  const [designationToFilter, setDesignationToFilter] = useState('');
 
   useEffect(() => {
     (async () => {
       const res = await allemployee();
-      console.log(res);
+      const roles = await httpService.get('/role');
+      const departments = await httpService.get('/department');
+      setRoles(roles.data);
+      setDepartments(departments.data);
+      setEmployees(res);
       set_employees(res);
       setIsLoading(false);
-      console.log(res);
     })();
   }, []);
 
-  const addOfEmployee = () => {
-    console.log(firstName);
-    console.log(lastName);
-    console.log(phone);
-    console.log(username);
-    console.log(email);
-    console.log(password);
-    console.log(joiningDate);
-    console.log(resetPasswordResponse);
-    console.log(designation);
+  const handleAddEmployee = () => {
     const data = {
       firstName: firstName,
       lastName: lastName,
@@ -57,50 +49,57 @@ const AllEmployees = () => {
       joinDate: joiningDate,
       userName: username,
       password: password,
-
       userAuthorities: [],
     };
-    const resetPasswordResponse = addemployee(data);
+    console.log(data);
   };
 
   const handleSearch = () => {
+    if (
+      designationToFilter === '' &&
+      employeeIdToSearch === '' &&
+      employeeNameToSearch === ''
+    )
+      return setEmployees(_employees);
     const filteredEmployees = _employees.filter((employee) => {
-      if (employeeIdToSearch === '') {
-        return (
+      if (
+        (employeeNameToSearch &&
           employee.firstName
             .toLowerCase()
-            .includes(employeeNameToSearch.toLowerCase()) ||
+            .includes(employeeNameToSearch.toLowerCase())) ||
+        (employeeNameToSearch &&
           employee.lastName
             .toLowerCase()
-            .includes(employeeNameToSearch.toLowerCase()) ||
-          employee.userId.toString() === employeeIdToSearch
-        );
-      } else {
-        return employee.userId.toString() === employeeIdToSearch;
+            .includes(employeeNameToSearch.toLowerCase())) ||
+        (employeeIdToSearch &&
+          employee._id.toString().includes(employeeIdToSearch.toLowerCase())) ||
+        (designationToFilter &&
+          employee.jobRole._id
+            .toLowerCase()
+            .includes(designationToFilter.toLowerCase()))
+      ) {
+        return employee;
       }
     });
     setEmployees(filteredEmployees);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     const response = await httpService.put(
-      `/private/user/${employeeToModify.userId}`,
+      `/employee/${employeeToModify._id}`,
       employeeToModify
     );
     if (response.status === 200) {
       const newEmployee = response.data;
       setEmployees(
         _employees.map((employee) => {
-          if (employee.id === newEmployee.id) {
-            return newEmployee;
+          if (employee._id === employeeToModify._id) {
+            return employeeToModify;
           }
           return employee;
         })
       );
-      // setEmployeeToModify(null);
       document.querySelectorAll('.close')?.forEach((e) => e.click());
-      // console.log(myModal);
     }
   };
 
@@ -177,12 +176,16 @@ const AllEmployees = () => {
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option>Select Designation</option>
-                <option>Product Manager</option>
-                <option>CIO</option>
-                <option>Product Manager</option>
-                <option>Marketing Head</option>
+              <select
+                onChange={(e) => setDesignationToFilter(e.target.value)}
+                className="select form-control floating"
+              >
+                <option value={''}>Select Designation</option>
+                {roles.map((role) => (
+                  <option key={role._id} value={role._id}>
+                    {role.name}
+                  </option>
+                ))}
               </select>
               <label className="focus-label">Designation</label>
             </div>
@@ -244,9 +247,9 @@ const AllEmployees = () => {
                 </div>
               </div>
             ))}
-          {_employees.map((employee) => (
+          {employees.map((employee) => (
             <div
-              key={employee.id}
+              key={employee._id}
               className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
             >
               <div className="profile-widget">
@@ -416,11 +419,11 @@ const AllEmployees = () => {
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>
+                      <label className="col-form-label">
                         Department <span className="text-danger">*</span>
                       </label>
                       <select
-                        className="select"
+                        className="form-control select"
                         onChange={(event) => setDepartment(event.target.value)}
                       >
                         <option>Select Department</option>
@@ -432,11 +435,11 @@ const AllEmployees = () => {
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>
+                      <label className="col-form-label">
                         Designation <span className="text-danger">*</span>
                       </label>
                       <select
-                        className="select"
+                        className="form-control select"
                         onChange={(event) => setDesignation(event.target.value)}
                       >
                         <option>Select Designation</option>
@@ -665,8 +668,7 @@ const AllEmployees = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  console.log('clicked on employee add button');
-                  addOfEmployee();
+                  handleSubmit();
                 }}
               >
                 <div className="row">
@@ -679,7 +681,6 @@ const AllEmployees = () => {
                         className="form-control"
                         type="text"
                         name="firstName"
-                        disabled
                         defaultValue={employeeToModify?.firstName || ''}
                         onChange={(e) => {
                           setEmployeeToModify({
@@ -696,7 +697,6 @@ const AllEmployees = () => {
                       <input
                         className="form-control"
                         defaultValue={employeeToModify?.lastName || ''}
-                        disabled
                         onChange={(e) => {
                           setEmployeeToModify({
                             ...employeeToModify,
@@ -715,7 +715,7 @@ const AllEmployees = () => {
                       <input
                         className="form-control"
                         disabled
-                        defaultValue={employeeToModify?.username || ''}
+                        defaultValue={employeeToModify?.userName || ''}
                         type="text"
                       />
                     </div>
@@ -735,32 +735,12 @@ const AllEmployees = () => {
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label className="col-form-label">Password</label>
-                      <input
-                        className="form-control"
-                        defaultValue="johndoe"
-                        type="password"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Confirm Password</label>
-                      <input
-                        className="form-control"
-                        defaultValue="johndoe"
-                        type="password"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
                       <label className="col-form-label">
                         Employee ID <span className="text-danger">*</span>
                       </label>
                       <input
                         type="text"
-                        defaultValue={employeeToModify?.userId || ''}
+                        defaultValue={employeeToModify?._id || ''}
                         readOnly
                         className="form-control floating"
                       />
@@ -775,7 +755,13 @@ const AllEmployees = () => {
                         <input
                           className="form-control datetimepicker"
                           readOnly
-                          defaultValue={employeeToModify?.joinDate || ''}
+                          defaultValue={
+                            employeeToModify
+                              ? new Date(employeeToModify?.joinDate)
+                                  .toISOString()
+                                  .substring(0, 10)
+                              : ''
+                          }
                         />
                       </div>
                     </div>
@@ -799,7 +785,7 @@ const AllEmployees = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Company</label>
-                      <select className="select" disabled>
+                      <select className="select form-control" disabled>
                         <option>KN Multiprojects</option>
                       </select>
                     </div>
@@ -809,11 +795,16 @@ const AllEmployees = () => {
                       <label>
                         Department <span className="text-danger">*</span>
                       </label>
-                      <select className="select">
-                        <option>Select Department</option>
-                        <option>Marketing Head</option>
-                        <option>IT Management</option>
-                        <option>Marketing</option>
+                      <select
+                        value={employeeToModify?.jobRole?.department}
+                        className="select form-control"
+                      >
+                        <option value={''}>Select Department</option>
+                        {departments.map((department) => (
+                          <option value={department._id}>
+                            {department.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -822,11 +813,22 @@ const AllEmployees = () => {
                       <label>
                         Designation <span className="text-danger">*</span>
                       </label>
-                      <select className="select">
-                        <option>Select Designation</option>
-                        <option>CIO</option>
-                        <option>Product Manager</option>
-                        <option>Product Manager</option>
+                      <select
+                        value={employeeToModify?.jobRole?._id}
+                        className="select form-control"
+                        onChange={(e) => {
+                          setEmployeeToModify({
+                            ...employeeToModify,
+                            jobRole: {
+                              _id: e.target.value,
+                            },
+                          });
+                        }}
+                      >
+                        <option value={''}>Select Designation</option>
+                        {roles.map((role) => (
+                          <option value={role._id}>{role.name}</option>
+                        ))}
                       </select>
                     </div>
                   </div>

@@ -40,7 +40,6 @@ const Sidebar = (props) => {
         .trigger('click');
     }
 
-    // Sidebar Initiate
     init();
   }, []);
 
@@ -212,19 +211,6 @@ const Sidebar = (props) => {
                 )}
                 {isAdmin && (
                   <>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes('shift-scheduling') ||
-                          pathname.includes('shift-list')
-                            ? 'active'
-                            : ''
-                        }
-                        to="/app/employee/shift-scheduling"
-                      >
-                        Schedule Shifts
-                      </Link>
-                    </li>
                     <li>
                       <Link
                         className={
