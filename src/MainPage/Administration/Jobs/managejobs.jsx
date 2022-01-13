@@ -10,40 +10,21 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import { fetchJobs } from '../../../lib/api';
 
 const Managedjobs = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      jobtitle: 'CIO',
-      department: 'Development',
-      startdate: '1 Jan 2023',
-      expirydate: '31 May 2021',
-      jobtype: 'Full Time',
-      status: 'Open',
-      applicants: '3 Candidates',
-    },
-    {
-      id: 2,
-      jobtitle: 'Product Manager',
-      department: 'Designing',
-      startdate: '18 Mar 2024',
-      expirydate: '31 May 2021',
-      jobtype: 'Part Time',
-      status: 'Closed',
-      applicants: '2 Candidates',
-    },
-    {
-      id: 3,
-      jobtitle: 'Product Manager',
-      department: 'Android',
-      startdate: '1 Apr 2024',
-      expirydate: '31 May 2021',
-      jobtype: 'Internship',
-      status: 'Cancelled',
-      applicants: '1 Candidates',
-    },
-  ]);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const res = await fetchJobs();
+
+      console.log('jobs');
+      setData(res.map((v, i) => ({ ...v, id: i + 1 })));
+
+      console.log(res);
+    })();
+  }, []);
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -409,7 +390,9 @@ const Managedjobs = () => {
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>

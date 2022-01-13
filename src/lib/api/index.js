@@ -124,3 +124,38 @@ export async function fetchOvertime() {
   });
   return overtimeResponse;
 }
+
+export async function fetchJobs() {
+  const fetchJobsResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/job')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchJobsResponse;
+}
+export async function fetchLoan() {
+  const fetchLoanResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/loan')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchLoanResponse;
+}

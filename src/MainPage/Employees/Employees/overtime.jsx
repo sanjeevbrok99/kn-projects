@@ -32,6 +32,8 @@ const Overtime = () => {
   }, []);
 
   const handleOvertime = async () => {
+    console.log('emnployee', currentEmployee);
+    return;
     const data = {
       employee: currentEmployee,
       date: date,
@@ -287,9 +289,12 @@ const Overtime = () => {
                   </label>
                   <select
                     className="select"
-                    onChange={(event) => setCurrentEmployee(event.target.value)}
+                    onChange={(event) => {
+                      console.log(event.target.value);
+                      setCurrentEmployee(event.target.value);
+                    }}
                   >
-                    <option>-</option>
+                    <option value={''}>Select Employee</option>
                     {employee.map((e) => {
                       return (
                         <option value={e._id}>
