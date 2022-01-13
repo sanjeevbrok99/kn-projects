@@ -19,7 +19,14 @@ const Managedjobs = () => {
       const res = await fetchJobs();
 
       console.log('jobs');
-      setData(res.map((v, i) => ({ ...v, id: i + 1 })));
+      setData(
+        res.map((v, i) => ({
+          ...v,
+          id: i + 1,
+          startdate: v.startDate.split('T')[0],
+          expirydate: v.endDate.split('T')[0],
+        }))
+      );
 
       console.log(res);
     })();
@@ -42,7 +49,7 @@ const Managedjobs = () => {
     },
     {
       title: 'Job Title',
-      dataIndex: 'jobtitle',
+      dataIndex: 'title',
       render: (text, record) => (
         <Link to="/app/administrator/job-details">{text}</Link>
       ),
@@ -86,8 +93,8 @@ const Managedjobs = () => {
                   ? 'fa fa-dot-circle-o text-danger'
                   : 'fa fa-dot-circle-o text-danger'
               }
-            />{' '}
-            {text}
+            />
+            Full Time
           </a>
           <div className="dropdown-menu dropdown-menu-right">
             <a className="dropdown-item" href="#">
@@ -130,7 +137,7 @@ const Managedjobs = () => {
                   : 'fa fa-dot-circle-o text-danger'
               }
             />{' '}
-            {text}
+            Open
           </a>
           <div className="dropdown-menu dropdown-menu-right">
             <a className="dropdown-item" href="#">
@@ -155,7 +162,7 @@ const Managedjobs = () => {
           to="/app/administrator/job-applicants"
           className="btn btn-sm btn-primary"
         >
-          {text}
+          0 Applicants
         </Link>
       ),
       sorter: (a, b) => a.applicants.length - b.applicants.length,

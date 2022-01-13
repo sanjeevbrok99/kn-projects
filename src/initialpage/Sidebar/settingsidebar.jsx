@@ -8,8 +8,8 @@ import EmployeeSettingSidebar from './EmployeeSettingSidebar';
 
 const SettingsSidebar = (props) => {
   const authentication = useSelector((state) => state.authentication.value);
-  const isAdmin = authentication.user?.userAuthorites.some(
-    (authority) => authority === 'ADMIN_DASHBOARD'
+  const isAdmin = authentication.user?.jobRole.authorities.some(
+    (authority) => authority === 'ADMIN'
   );
   return <>{isAdmin ? <AdminSettingSidebar /> : <EmployeeSettingSidebar />}</>;
 };

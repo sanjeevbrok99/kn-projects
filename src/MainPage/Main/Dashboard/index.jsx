@@ -9,7 +9,8 @@ import Employeedashboard from './employeedashboard';
 
 const DashboardRoute = () => {
   const authentication = useSelector((state) => state.authentication.value);
-  const isAdmin = true;
+  const isAdmin =
+    !authentication?.user?.jobRole?.authorities.includes('EMPLOYEE');
 
   return (
     <>

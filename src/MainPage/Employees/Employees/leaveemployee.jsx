@@ -16,9 +16,7 @@ const LeaveEmployee = () => {
     (state) => state.authentication.value.leaveTypes
   );
   const [leaveToEdit, setLeaveToEdit] = useState(null);
-  const [leaveToCreate, setLeaveToCreate] = useState({
-    leaveTypeId: leaveTypes[0].leaveTypeId,
-  });
+  const [leaveToCreate, setLeaveToCreate] = useState();
   const [data, setData] = useState([]);
   useEffect(() => {
     if ($('.select').length > 0) {
