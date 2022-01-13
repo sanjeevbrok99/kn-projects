@@ -11,7 +11,7 @@ export async function Login(userName, password) {
       .catch((err) => {
         return resolve({
           error: true,
-          message: err.response.message || 'Internal Server Error',
+          message: err.response.message || 'Internal Server Error ',
         });
       });
   });
@@ -87,4 +87,40 @@ export async function addholiday(data) {
       });
   });
   return addHolidayResponse;
+}
+
+export async function fetchdepartment() {
+  const departmentResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/department')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return departmentResponse;
+}
+
+export async function fetchOvertime() {
+  const overtimeResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/overtime')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return overtimeResponse;
 }
