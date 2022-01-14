@@ -460,18 +460,6 @@ const Sidebar = (props) => {
                 </li>
                 <li>
                   <Link
-<<<<<<< HEAD
-                    className={pathname.includes('project-') ? 'active' : ''}
-                    to="/app/reports/issue-tracking"
-                  >
-                    <i className="las la-exclamation-circle"></i>
-                    <span>Issue Tracking</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-=======
->>>>>>> fe34a76ad4c13d821eca4973e548515694760d3b
                     className={pathname.includes('analysis') ? 'active' : ''}
                     to="/app/performance/analysis"
                   >

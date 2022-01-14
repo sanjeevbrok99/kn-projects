@@ -15,11 +15,14 @@ import {
   setFetched,
 } from '../../../features/employee/employeeSlice';
 import httpService from '../../../lib/httpService';
+import { allemployee } from '../../../lib/api';
 
 const Employeeslist = () => {
   const [data, setData] = useState([]);
   const [_data, set_data] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [_employees, set_employees] = useState([]);
+  const [isLoading, setisLoading] = useState(true);
   const fetched = useSelector((state) => state.employee.fetched);
   const employeesFromStore = useSelector((state) => state.employee.value);
   const dispatch = useDispatch();
@@ -34,41 +37,22 @@ const Employeeslist = () => {
         width: '100%',
       });
     }
-    (async () => {
-      if (!fetched) {
-        const response = await httpService.get('/private/user');
-        setEmployees(response.data);
-        dispatch(setFetched(true));
-        dispatch(setEmployeeStore(response.data));
-        let data = response.data.map((item, i) => ({
-          id: i,
-          name: item.firstName + ' ' + item.lastName,
-          email: item.email,
-          mobile: item.mobileNo,
-          employee_id: item.userId,
-          role: item.designation,
-          image: Avatar_02,
-          joindate: item.joinDate,
-        }));
-        setData(data);
-        set_data(data);
-      } else {
-        setEmployees(employeesFromStore);
-        let data = employeesFromStore.map((item, i) => ({
-          id: i,
-          name: item.firstName + ' ' + item.lastName,
-          email: item.email,
-          mobile: item.mobileNo,
-          employee_id: item.userId,
-          role: item.designation || 'Product Manager',
-          image: Avatar_02,
-          joindate: item.joinDate,
-        }));
-        setData(data);
-        set_data(data);
-      }
-    })();
+    fetchemployeeslist();
   }, []);
+
+  const fetchemployeeslist = async () => {
+    const res = await allemployee();
+    setEmployees(
+      res.map((data) => ({
+        ...data,
+        name: data.firstName + ' ' + data.lastName,
+        joindate: data.joinDate.split('T')[0],
+        role: data.jobRole.name,
+      }))
+    );
+    set_employees(res);
+    setisLoading(false);
+  };
 
   const handleSearch = () => {
     const filteredEmployees = _data.filter((data) => {
@@ -123,7 +107,7 @@ const Employeeslist = () => {
     },
     {
       title: 'Employee ID',
-      dataIndex: 'employee_id',
+      dataIndex: '_id',
       sorter: (a, b) => a.employee_id.length - b.employee_id.length,
     },
 
@@ -135,7 +119,7 @@ const Employeeslist = () => {
 
     {
       title: 'Mobile',
-      dataIndex: 'mobile',
+      dataIndex: 'mobileNo',
       sorter: (a, b) => a.mobile.length - b.mobile.length,
     },
 
@@ -291,7 +275,7 @@ const Employeeslist = () => {
                 style={{ overflowX: 'auto' }}
                 columns={columns}
                 // bordered
-                dataSource={data}
+                dataSource={employees}
                 rowKey={(record) => record.id}
                 onChange={console.log('change')}
               />

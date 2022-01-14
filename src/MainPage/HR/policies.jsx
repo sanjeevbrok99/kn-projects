@@ -6,26 +6,12 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
+import httpService from '../../lib/httpService';
 
 const Policies = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      policyname: 'Prateek Tiwari',
-      description: 'Lorem ipsum dollar',
-      department: 'Project Manager',
-      creatat: '1 Jan 2023',
-      status: 'Active',
-    },
-    {
-      id: 2,
-      policyname: 'Shital Agarwal',
-      description: 'Lorem ipsum dollar',
-      department: 'Project Manager',
-      creatat: '18 Mar 2024',
-      status: 'Active',
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [_data, set_data] = useState([]);
+  const [departments, setDepartments] = useState([]);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -33,7 +19,22 @@ const Policies = () => {
         width: '100%',
       });
     }
+    fetchPolicies();
   });
+
+  const fetchPolicies = async () => {
+    const res = await httpService.get('/policy');
+    const departments = await httpService.get('/department');
+    setDepartments(departments.data);
+    setData(
+      res.data.map((data) => ({
+        ...data,
+        name: data.name,
+        department: data.department,
+      }))
+    );
+    console.log(res.data);
+  };
 
   const columns = [
     {
@@ -43,7 +44,7 @@ const Policies = () => {
     },
     {
       title: 'Policy Name',
-      dataIndex: 'policyname',
+      dataIndex: 'name',
       sorter: (a, b) => a.policyname.length - b.policyname.length,
     },
     {
