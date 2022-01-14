@@ -26,7 +26,7 @@ const LeaveTypes = () => {
       });
     }
     async function fetchData() {
-      const res = await httpService.get('private/leavetype');
+      const res = await httpService.get('/leave-type');
       console.log(res.data);
       setFetched(true);
       setDesignationStore(res.data);
@@ -42,8 +42,8 @@ const LeaveTypes = () => {
   }, []);
 
   const handleDelete = async () => {
-    await httpService.delete(`/private/leaveType/${leaveToModify.leaveTypeId}`);
-    const itemIndex = designationToModify.id - 1;
+    await httpService.delete(`/leave-type/${leaveToModify._id}`);
+    const itemIndex = data.findIndex((e) => e._id === leaveToModify._id);
     setData((d) => [
       ...d.slice(0, itemIndex),
       ...d.slice(itemIndex + 1).map((i) => ({
@@ -52,13 +52,14 @@ const LeaveTypes = () => {
         name: item.leaveTypeName,
       })),
     ]);
+    document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
   };
 
   const handleAdd = async () => {
     if (leaveToAdd.length <= 0) return;
     if (numberOfLeavesToAdd <= 0) return;
     if (descriptionOfLeaesToAdd.length <= 0) return;
-    const res = await httpService.post('/private/leavetype', {
+    const res = await httpService.post('/leave-type', {
       leaveTypeName: leaveToAdd,
       noOfLeaves: numberOfLeavesToAdd,
       leaveTypeDescription: descriptionOfLeaesToAdd,
@@ -78,25 +79,17 @@ const LeaveTypes = () => {
   };
 
   const handleModify = async () => {
-    if (leaveToModify.length <= 0) return;
     if (leaveToModify.noOfLeaves <= 0) return;
     if (leaveToModify.leaveTypeDescription.length <= 0) return;
-    const res = await httpService.put(
-      `/private/leavetype/${leaveToModify.leaveTypeId}`,
-      {
-        leaveTypeName: leaveToModify.leaveTypeName,
-        noOfLeaves: leaveToModify.noOfLeaves,
-        leaveTypeDescription: leaveToModify.leaveTypeDescription,
-      }
-    );
-    const itemIndex = leaveToModify.id - 1;
+    const res = await httpService.put(`/leave-type/${leaveToModify._id}`, {
+      leaveTypeName: leaveToModify.leaveTypeName,
+      noOfLeaves: leaveToModify.noOfLeaves,
+      leaveTypeDescription: leaveToModify.leaveTypeDescription,
+    });
+    const itemIndex = data.findIndex((e) => e._id === leaveToModify._id);
     setData((d) => [
       ...d.slice(0, itemIndex),
-      {
-        ...res.data,
-        id: d.length + 1,
-        name: res.data.leaveTypeName,
-      },
+      leaveToModify,
       ...d.slice(itemIndex + 1),
     ]);
     setLeaveToModify('');

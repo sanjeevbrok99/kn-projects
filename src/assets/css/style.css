@@ -954,7 +954,7 @@ table.dataTable thead > tr > td.sorting {
 	5. Animation
 -----------------------*/
 
-@-moz-keyframes pulse {
+@keyframes pulse {
   0% {
     -moz-transform: scale(0);
     opacity: 0;
@@ -1065,7 +1065,7 @@ table.dataTable thead > tr > td.sorting {
   margin-left: auto;
   position: relative;
   width: 73px;
-  -webkit-user-select: none;
+  user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
 }
@@ -2069,7 +2069,7 @@ table.dataTable thead > tr > td.sorting {
   border-radius: 100%;
   color: #f43b48;
   display: inline-block;
-  float: left;
+  /* float: left; */
   font-size: 30px;
   height: 60px;
   line-height: 60px;
@@ -2501,7 +2501,7 @@ table.dataTable thead > tr > td.sorting {
 
 .chat-avatar-sm {
   display: inline-block;
-  float: left;
+  /* float: left; */
   margin-left: 0 !important;
   margin-right: 10px;
   position: relative;

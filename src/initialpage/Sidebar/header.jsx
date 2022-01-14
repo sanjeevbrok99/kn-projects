@@ -6,10 +6,6 @@ import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import {
   headerlogo,
-  lnEnglish,
-  lnFrench,
-  lnSpanish,
-  lnGerman,
   Avatar_02,
   Avatar_03,
   Avatar_05,
@@ -62,46 +58,6 @@ class Header extends Component {
         {/* Header Menu */}
         <ul className="nav user-menu">
           {/* Search */}
-          {/* <li className="nav-item">
-            <div className="top-nav-search">
-              <a href="" className="responsive-search">
-                <i className="fa fa-search" />
-              </a>
-              <form>
-                <input
-                  className="form-control"
-                  type="text"
-                  placeholder="Search here"
-                />
-                <button className="btn" type="submit">
-                  <i className="fa fa-search" />
-                </button>
-              </form>
-            </div>
-          </li> */}
-          {/* /Search */}
-          {/* Flag */}
-          {/* <li className="nav-item dropdown has-arrow flag-nav">
-            <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-              <img src={lnEnglish} alt="" height={20} /> <span>English</span>
-            </a>
-            <div className="dropdown-menu dropdown-menu-right">
-            <a href="" className="dropdown-item">
-                    <img src={lnEnglish} alt="" height={16} /> English
-                  </a>
-                  <a href="" className="dropdown-item">
-                    <img src={lnFrench} alt="" height={16} /> French
-                  </a>
-                  <a href="" className="dropdown-item">
-                    <img src={lnSpanish} alt="" height={16} /> Spanish
-                  </a>
-                  <a href="" className="dropdown-item">
-                    <img src={lnGerman} alt="" height={16} /> German
-                  </a>
-            </div>
-          </li> */}
-          {/* /Flag */}
-          {/* Notifications */}
           <li className="nav-item dropdown">
             <a
               href="#"
@@ -268,7 +224,7 @@ class Header extends Component {
           </li>
           {/* /Notifications */}
           {/* Message Notifications */}
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <a
               href="#"
               className="dropdown-toggle nav-link"
@@ -413,7 +369,7 @@ class Header extends Component {
                 </Link>
               </div>
             </div>
-          </li>
+          </li> */}
           {/* /Message Notifications */}
           <li className="nav-item dropdown has-arrow main-drop">
             <a

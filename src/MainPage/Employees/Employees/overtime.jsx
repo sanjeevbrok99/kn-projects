@@ -7,8 +7,44 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import { fetchOvertime } from '../../../lib/api';
+import { allemployee } from '../../../lib/api';
+import httpService from '../../../lib/httpService';
 
 const Overtime = () => {
+  const [employee, setEmployee] = useState([]);
+  const [date, setDate] = useState('');
+  const [userId, setUserId] = useState('');
+  const [description, setDescription] = useState('');
+  const [hours, setHours] = useState('');
+  const [currentEmployee, setCurrentEmployee] = useState('');
+  useEffect(() => {
+    (async () => {
+      const res = await fetchOvertime();
+      console.log(res);
+      console.log('overtime');
+      const employeeResponse = await allemployee();
+      setEmployee(employeeResponse);
+      console.log(employeeResponse);
+
+      // setData(res.map((v, i) => ({ ...v, id: i + 1 })));
+    })();
+  }, []);
+
+  const handleOvertime = async () => {
+    console.log('emnployee', currentEmployee);
+    return;
+    const data = {
+      employee: currentEmployee,
+      date: date,
+      description: description,
+      hours: hours,
+    };
+    const res = await httpService.post('/overtime', data);
+    console.log(res);
+
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
   const [data, setData] = useState([
     {
       id: 1,
@@ -240,16 +276,32 @@ const Overtime = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log('clicked on to add the overtime');
+                  handleOvertime();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Select Employee <span className="text-danger">*</span>
                   </label>
-                  <select className="select">
-                    <option>-</option>
-                    <option>Prateek Tiwari</option>
-                    <option>Shital Agarwal</option>
-                    <option>Harvinder</option>
+                  <select
+                    className="select"
+                    onChange={(event) => {
+                      console.log(event.target.value);
+                      setCurrentEmployee(event.target.value);
+                    }}
+                  >
+                    <option value={''}>Select Employee</option>
+                    {employee.map((e) => {
+                      return (
+                        <option value={e._id}>
+                          {e.firstName + e.lastName}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div className="form-group">
@@ -260,6 +312,7 @@ const Overtime = () => {
                     <input
                       className="form-control datetimepicker"
                       type="date"
+                      onChange={(event) => setDate(event.target.value)}
                     />
                   </div>
                 </div>
@@ -267,7 +320,11 @@ const Overtime = () => {
                   <label>
                     Overtime Hours <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input
+                    className="form-control"
+                    type="text"
+                    onChange={(event) => setHours(event.target.value)}
+                  />
                 </div>
                 <div className="form-group">
                   <label>
@@ -277,10 +334,13 @@ const Overtime = () => {
                     rows={4}
                     className="form-control"
                     defaultValue={''}
+                    onChange={(event) => setDescription(event.target.value)}
                   />
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>

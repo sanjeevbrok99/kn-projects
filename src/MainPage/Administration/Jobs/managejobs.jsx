@@ -1,7 +1,3 @@
-/**
- * Signin Firebase
- */
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -10,40 +6,27 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import { fetchJobs } from '../../../lib/api';
 
 const Managedjobs = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      jobtitle: 'CIO',
-      department: 'Development',
-      startdate: '1 Jan 2023',
-      expirydate: '31 May 2021',
-      jobtype: 'Full Time',
-      status: 'Open',
-      applicants: '3 Candidates',
-    },
-    {
-      id: 2,
-      jobtitle: 'Product Manager',
-      department: 'Designing',
-      startdate: '18 Mar 2024',
-      expirydate: '31 May 2021',
-      jobtype: 'Part Time',
-      status: 'Closed',
-      applicants: '2 Candidates',
-    },
-    {
-      id: 3,
-      jobtitle: 'Product Manager',
-      department: 'Android',
-      startdate: '1 Apr 2024',
-      expirydate: '31 May 2021',
-      jobtype: 'Internship',
-      status: 'Cancelled',
-      applicants: '1 Candidates',
-    },
-  ]);
+  useEffect(() => {
+    (async () => {
+      const res = await fetchJobs();
+
+      console.log('jobs');
+      setData(
+        res.map((v, i) => ({
+          ...v,
+          id: i + 1,
+          startdate: v.startDate.split('T')[0],
+          expirydate: v.endDate.split('T')[0],
+        }))
+      );
+
+      console.log(res);
+    })();
+  }, []);
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -61,7 +44,7 @@ const Managedjobs = () => {
     },
     {
       title: 'Job Title',
-      dataIndex: 'jobtitle',
+      dataIndex: 'title',
       render: (text, record) => (
         <Link to="/app/administrator/job-details">{text}</Link>
       ),
@@ -105,8 +88,8 @@ const Managedjobs = () => {
                   ? 'fa fa-dot-circle-o text-danger'
                   : 'fa fa-dot-circle-o text-danger'
               }
-            />{' '}
-            {text}
+            />
+            Full Time
           </a>
           <div className="dropdown-menu dropdown-menu-right">
             <a className="dropdown-item" href="#">
@@ -149,7 +132,7 @@ const Managedjobs = () => {
                   : 'fa fa-dot-circle-o text-danger'
               }
             />{' '}
-            {text}
+            Open
           </a>
           <div className="dropdown-menu dropdown-menu-right">
             <a className="dropdown-item" href="#">
@@ -174,7 +157,7 @@ const Managedjobs = () => {
           to="/app/administrator/job-applicants"
           className="btn btn-sm btn-primary"
         >
-          {text}
+          0 Applicants
         </Link>
       ),
       sorter: (a, b) => a.applicants.length - b.applicants.length,
@@ -409,7 +392,9 @@ const Managedjobs = () => {
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>

@@ -16,7 +16,9 @@ const Designations = () => {
   const [data, setData] = useState([]);
   const [designationToModify, setDesignationToModify] = useState('');
   const [designationToAdd, setDesignationToAdd] = useState('');
+  const [departmentToAdd, setDepartmentToAdd] = useState('');
   const [authoritiesToAdd, setAuthoritiesToAdd] = useState([]);
+  const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -26,16 +28,17 @@ const Designations = () => {
       });
     }
     async function fetchData() {
-      const res = await httpService.get('/private/designation');
-      console.log(res.data);
+      const res = await httpService.get('/role');
+      const departments = await httpService.get('/department');
+      setDepartments(departments.data);
       setFetched(true);
       setDesignationStore(res.data);
       setData(
         res.data.map((item, i) => ({
           ...item,
           id: i + 1,
-          department: 'Sales Management',
-          designation: item.designationName || 'Placeholder',
+          department: item.department.name,
+          designation: item.name || 'Placeholder',
         }))
       );
     }
@@ -43,19 +46,9 @@ const Designations = () => {
   }, []);
 
   const handleDelete = async () => {
-    await httpService.delete(
-      `/private/designation/${designationToModify.designationId}`
-    );
-    const itemIndex = designationToModify.id - 1;
-    setData((d) => [
-      ...d.slice(0, itemIndex),
-      ...d.slice(itemIndex + 1).map((i) => ({
-        ...i,
-        id: i.id - 1,
-        department: 'Sales Management',
-        designation: i.designationName || 'Placeholder',
-      })),
-    ]);
+    await httpService.delete(`/role/${designationToModify._id}`);
+    const itemIndex = data.findIndex((d) => d._id === designationToModify._id);
+    setData((d) => [...d.slice(0, itemIndex), ...d.slice(itemIndex + 1)]);
     document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
   };
 
@@ -79,16 +72,18 @@ const Designations = () => {
 
   const handleAdd = async () => {
     if (designationToAdd.length <= 0) return;
-    const res = await httpService.post('/private/designation', {
-      designationName: designationToAdd,
-      authorities: authoritiesToAdd,
+    const res = await httpService.post('/role', {
+      name: designationToAdd,
+      department: departmentToAdd,
+      authorities: ['LEAVETYPE_GET'],
+      description: 'description',
     });
     setData((d) => [
       ...d,
       {
         id: d.length + 1,
-        department: 'Sales Management',
-        designation: res.data.designationName,
+        department: departments.find((d) => d._id === departmentToAdd).name,
+        designation: res.data.name,
       },
     ]);
     setAuthoritiesToAdd([]);
@@ -110,7 +105,7 @@ const Designations = () => {
     },
     {
       title: 'Designation',
-      dataIndex: 'designationName',
+      dataIndex: 'designation',
       sorter: (a, b) => a.designation.length - b.designation.length,
     },
     {
@@ -204,7 +199,7 @@ const Designations = () => {
                 // bordered
                 dataSource={data}
                 rowKey={(record) => record.id}
-                onChange={console.log('change')}
+                onChange={console.log}
               />
             </div>
           </div>
@@ -253,17 +248,26 @@ const Designations = () => {
                     type="text"
                   />
                 </div>
-                {/* <div className="form-group">
+                <div className="form-group">
                   <label>
                     Department <span className="text-danger">*</span>
                   </label>
-                  <select className="select">
-                    <option>Select Department</option>
-                    <option>Marketing Head</option>
-                    <option>IT Management</option>
-                    <option> Marketing</option>
+                  <select
+                    onChange={(e) => setDepartmentToAdd(e.target.value)}
+                    style={{
+                      width: '100%',
+                      borderColor: '#e3e3e3',
+                      boxShadow: 'none',
+                      fontSize: '15px',
+                      height: '44px',
+                    }}
+                  >
+                    <option value={''}>Select Department</option>
+                    {departments.map((department) => (
+                      <option value={department._id}>{department.name}</option>
+                    ))}
                   </select>
-                </div> */}
+                </div>
                 <div className="table-responsive m-t-15">
                   <table className="table table-striped custom-table">
                     <thead>
