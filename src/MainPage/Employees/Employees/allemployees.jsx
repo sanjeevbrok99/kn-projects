@@ -27,31 +27,51 @@ const AllEmployees = () => {
   const [joiningDate, setJoiningDate] = useState('');
   const [designation, setDesignation] = useState('');
   const [designationToFilter, setDesignationToFilter] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [rolesForDepartment, setRolesForDepartment] = useState([]);
+  const [selectedRole, setSelectedRole] = useState('');
 
   useEffect(() => {
-    (async () => {
-      const res = await allemployee();
-      const roles = await httpService.get('/role');
-      const departments = await httpService.get('/department');
-      setRoles(roles.data);
-      setDepartments(departments.data);
-      setEmployees(res);
-      set_employees(res);
-      setIsLoading(false);
-    })();
+    fetchEmployees();
   }, []);
 
-  const handleAddEmployee = () => {
+  const fetchEmployees = async () => {
+    const res = await allemployee();
+    const roles = await httpService.get('/role');
+    const departments = await httpService.get('/department');
+    setRoles(roles.data);
+    setDepartments(departments.data);
+    setEmployees(res);
+    set_employees(res);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const filteredRoles = roles.filter(
+      (role) => role.department._id === selectedDepartment
+    );
+    console.log(filteredRoles, roles, selectedDepartment);
+    setRolesForDepartment(filteredRoles);
+  }, [selectedDepartment]);
+
+  const handleAddEmployee = async () => {
     const data = {
       firstName: firstName,
       lastName: lastName,
       mobileNo: phone,
-      joinDate: joiningDate,
+      joinDate: new Date(joiningDate).toISOString(),
       userName: username,
       password: password,
-      userAuthorities: [],
+      jobRole: selectedRole,
+      userAuthorites: [],
+      workLocation: '61ded9d3bc62af7e13239163',
+      dob: new Date(joiningDate).toISOString(),
+      salary: 60000,
+      email,
     };
-    console.log(data);
+    const user = await httpService.post('/employee', data);
+    fetchEmployees();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
   const handleSearch = () => {
@@ -297,7 +317,7 @@ const AllEmployees = () => {
                   </Link>
                 </h4>
                 <div className="small text-muted">
-                  {employee.jobRole.name || 'Marketing Lead'}
+                  {employee.jobRole?.name || 'Marketing Lead'}
                 </div>
               </div>
             </div>
@@ -321,7 +341,12 @@ const AllEmployees = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAddEmployee();
+                }}
+              >
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
@@ -382,13 +407,7 @@ const AllEmployees = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Confirm Password</label>
-                      <input
-                        className="form-control"
-                        type="password"
-                        onChange={(event) =>
-                          setConfirmPassword(event.target.value)
-                        }
-                      />
+                      <input className="form-control" type="password" />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -398,7 +417,7 @@ const AllEmployees = () => {
                       </label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          className="form-control"
                           type="date"
                           onChange={(event) =>
                             setJoiningDate(event.target.value)
@@ -424,12 +443,16 @@ const AllEmployees = () => {
                       </label>
                       <select
                         className="form-control select"
-                        onChange={(event) => setDepartment(event.target.value)}
+                        onChange={(event) =>
+                          setSelectedDepartment(event.target.value)
+                        }
                       >
-                        <option>Select Department</option>
-                        <option>Marketing Head</option>
-                        <option>IT Management</option>
-                        <option>Marketing</option>
+                        <option value={''}>Select Department</option>
+                        {departments.map((department) => (
+                          <option key={department._id} value={department._id}>
+                            {department.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -440,12 +463,16 @@ const AllEmployees = () => {
                       </label>
                       <select
                         className="form-control select"
-                        onChange={(event) => setDesignation(event.target.value)}
+                        onChange={(event) =>
+                          setSelectedRole(event.target.value)
+                        }
                       >
-                        <option>Select Designation</option>
-                        <option>CIO</option>
-                        <option>Product Manager</option>
-                        <option>Product Manager</option>
+                        <option value={''}>Select Designation</option>
+                        {rolesForDepartment.map((role) => (
+                          <option key={role._id} value={role._id}>
+                            {role.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
