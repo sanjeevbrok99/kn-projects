@@ -367,22 +367,6 @@ const Sidebar = (props) => {
                     </li>
                   </ul>
                 </li>
-                <li className={pathname.includes('expenses') ? 'active' : ''}>
-                  <Link to="/app/sales/expenses">
-                    <i className="las la-file-invoice"></i>
-                    <span>Loans</span>
-                  </Link>
-                </li>
-                <li
-                  className={
-                    pathname.includes('provident-fund') ? 'active' : ''
-                  }
-                >
-                  <Link to="/app/sales/provident-fund">
-                    <i className="las la-wallet"></i>
-                    <span>Provident Fund</span>
-                  </Link>
-                </li>
                 <li className={pathname.includes('taxes') ? 'active' : ''}>
                   <Link to="/app/sales/taxes">
                     <i className="las la-file-invoice-dollar"></i>
@@ -476,15 +460,6 @@ const Sidebar = (props) => {
                 </li>
                 <li>
                   <Link
-                    className={pathname.includes('project-') ? 'active' : ''}
-                    to="/app/reports/project-reports"
-                  >
-                    <i className="las la-exclamation-circle"></i>
-                    <span>Issue Tracking</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     className={pathname.includes('analysis') ? 'active' : ''}
                     to="/app/performance/analysis"
                   >
@@ -531,41 +506,6 @@ const Sidebar = (props) => {
                     <li>
                       <Link
                         className={
-                          pathname.includes('manage-resumes') ? 'active' : ''
-                        }
-                        to="/app/administrator/manage-resumes"
-                      >
-                        {' '}
-                        Manage Resumes{' '}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes('shortlist-candidates')
-                            ? 'active'
-                            : ''
-                        }
-                        to="/app/administrator/shortlist-candidates"
-                      >
-                        {' '}
-                        Shortlist Candidates{' '}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes('offer_approvals') ? 'active' : ''
-                        }
-                        to="/app/administrator/offer_approvals"
-                      >
-                        {' '}
-                        Offer Approvals{' '}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
                           pathname === '/app/administrator/candidates'
                             ? 'active'
                             : ''
@@ -576,17 +516,6 @@ const Sidebar = (props) => {
                         Candidates List{' '}
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes('schedule-timing') ? 'active' : ''
-                        }
-                        to="/app/administrator/schedule-timing"
-                      >
-                        {' '}
-                        Schedule timing{' '}
-                      </Link>
-                    </li>
                   </ul>
                 </li>
                 <li className="submenu">
@@ -595,28 +524,6 @@ const Sidebar = (props) => {
                     <span className="menu-arrow" />
                   </a>
                   <ul style={{ display: 'none' }}>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes('payments-') ? 'active' : ''
-                        }
-                        to="/app/reports/payments-reports"
-                      >
-                        {' '}
-                        Payments Report{' '}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className={
-                          pathname.includes('employee-') ? 'active' : ''
-                        }
-                        to="/app/reports/employee-reports"
-                      >
-                        {' '}
-                        Employee Report{' '}
-                      </Link>
-                    </li>
                     <li>
                       <Link
                         className={
@@ -778,13 +685,6 @@ const Sidebar = (props) => {
               <li className={pathname.includes('locations') ? 'active' : ''}>
                 <Link to="/app/administrator/locations">
                   <i className="la la-search-location" /> <span>Locations</span>
-                </Link>
-              </li>
-            )}
-            {isAdmin && (
-              <li className={pathname.includes('assets') ? 'active' : ''}>
-                <Link to="/app/administrator/assets">
-                  <i className="la la-object-ungroup" /> <span>Assets</span>
                 </Link>
               </li>
             )}
