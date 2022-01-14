@@ -142,10 +142,11 @@ export async function fetchJobs() {
   });
   return fetchJobsResponse;
 }
-export async function fetchLoan() {
-  const fetchLoanResponse = new Promise(async (resolve) => {
+
+export async function addJob(data) {
+  const addJobResponse = new Promise(async (resolve) => {
     httpService
-      .get('/loan')
+      .post('/job', data)
       .then((response) => {
         console.log(response);
         return resolve(response.data);
@@ -157,5 +158,5 @@ export async function fetchLoan() {
         });
       });
   });
-  return fetchLoanResponse;
+  return addJobResponse;
 }
