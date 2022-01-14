@@ -160,3 +160,39 @@ export async function addJob(data) {
   });
   return addJobResponse;
 }
+
+export async function fetchInvestment() {
+  const fetchInvestmentResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/investment')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchInvestmentResponse;
+}
+
+export async function fetchTax() {
+  const fetchTaxResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/tax')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchTaxResponse;
+}
