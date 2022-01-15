@@ -8,6 +8,14 @@ import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
 
 const Estimates = () => {
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchPayment();
+    
+      setData(res);
+    })();
+  }, []);
   const [data, setData] = useState([
     {
       id: 1,

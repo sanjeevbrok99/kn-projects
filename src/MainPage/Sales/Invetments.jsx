@@ -117,6 +117,8 @@ const Investments = () => {
                 console.log('editing');
                 console.log(record);
               }}
+
+              
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
