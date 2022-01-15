@@ -7,32 +7,13 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import '../antdstyle.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
+import httpService from '../../lib/httpService';
 
 const Investments = () => {
-  const [data] = useState([
-    {
-      id: 1,
-      item: 'Dell Laptop',
-      Investmentfrom: 'Car',
-      Investmentdate: '5 Jan 2021',
-      image: Avatar_04,
-      name: 'Company 1',
-      amount: '1215',
-      paidby: 'Cash',
-      status: 'Active',
-    },
-    {
-      id: 2,
-      item: 'Mac System',
-      Investmentfrom: 'Car',
-      Investmentdate: '5 Jan 2021',
-      image: Avatar_03,
-      name: 'Company 2',
-      amount: '1215',
-      paidby: 'Cheque',
-      status: 'Inactive',
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [investmentToEdit, setInvestmentToEdit] = useState({});
+  const [investmentToAdd, setInvestmentToAdd] = useState({});
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -40,13 +21,56 @@ const Investments = () => {
         width: '100%',
       });
     }
-  });
+    fetchInvestments();
+  }, []);
+
+  const fetchInvestments = async () => {
+    const investments = await httpService.get('/investment');
+    setData(
+      investments.data.map((d) => ({
+        ...d,
+        Investmentdate: d.date.split('T')[0],
+      }))
+    );
+  };
+
+  const handleAdd = async () => {
+    const response = await httpService.post('/investment', investmentToAdd);
+    if (response.status < 400) {
+      fetchInvestments();
+      setInvestmentToAdd({});
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+    }
+  };
+
+  const handleEdit = async () => {
+    const response = await httpService.put(
+      `/investment/${investmentToEdit._id}`,
+      investmentToEdit
+    );
+    if (response.status < 400) {
+      fetchInvestments();
+      setInvestmentToEdit({});
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+    }
+  };
+
+  const handleDelete = async () => {
+    const response = await httpService.delete(
+      `/investment/${investmentToEdit._id}`
+    );
+    if (response.status < 400) {
+      fetchInvestments();
+      setInvestmentToEdit({});
+      document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+    }
+  };
 
   const columns = [
     {
-      title: 'Investment For',
-      dataIndex: 'Investmentfrom',
-      sorter: (a, b) => a.Investmentfrom.length - b.Investmentfrom.length,
+      title: 'Name',
+      dataIndex: 'name',
+      sorter: (a, b) => a.name.length - b.name.length,
     },
     {
       title: 'Investment Date',
@@ -55,17 +79,8 @@ const Investments = () => {
     },
     {
       title: 'Commodity',
-      dataIndex: 'name',
-      render: (text, record) => (
-        <h2 className="table-avatar">
-          <Link to="/app/profile/employee-profile" className="avatar">
-            <img alt="" src={record.image} />
-          </Link>
-          <Link to="/app/profile/employee-profile">
-            {text} <span>{record.role}</span>
-          </Link>
-        </h2>
-      ),
+      dataIndex: 'for',
+      render: (text, record) => <h2 className="table-avatar">{text}</h2>,
       sorter: (a, b) => a.name.length - b.name.length,
     },
     {
@@ -77,40 +92,8 @@ const Investments = () => {
 
     {
       title: 'Paid By',
-      dataIndex: 'paidby',
+      dataIndex: 'paidBy',
       sorter: (a, b) => a.paidby.length - b.paidby.length,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      render: (text, record) => (
-        <div className="dropdown action-label">
-          <a
-            className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-            href="#"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i
-              className={
-                text === 'Pending'
-                  ? 'fa fa-dot-circle-o text-danger'
-                  : 'fa fa-dot-circle-o text-success'
-              }
-            />{' '}
-            {text}
-          </a>
-          <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-success" /> Approved
-            </a>
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-danger" /> Pending
-            </a>
-          </div>
-        </div>
-      ),
-      sorter: (a, b) => a.status.length - b.status.length,
     },
     {
       title: 'Action',
@@ -130,6 +113,7 @@ const Investments = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_expense"
+              onClick={() => setInvestmentToEdit(record)}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -138,6 +122,7 @@ const Investments = () => {
               href="#"
               data-toggle="modal"
               data-target="#delete_expense"
+              onClick={() => setInvestmentToEdit(record)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -252,10 +237,8 @@ const Investments = () => {
                 }}
                 style={{ overflowX: 'auto' }}
                 columns={columns}
-                // bordered
                 dataSource={data}
                 rowKey={(record) => record.id}
-                // onChange={this.handleTableChange}
               />
             </div>
           </div>
@@ -281,49 +264,23 @@ const Investments = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAdd();
+                }}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Item Name</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Investment For</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Investment Date</label>
-                      <div>
-                        <input
-                          className="form-control datetimepicker"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Commodity</label>
-                      <select className="select">
-                        <option>Daniel Porter</option>
-                        <option>Roger Dixon</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Amount</label>
+                      <label>Name</label>
                       <input
-                        placeholder="$50"
+                        onChange={(e) => {
+                          setInvestmentToAdd((d) => ({
+                            ...d,
+                            name: e.target.value,
+                          }));
+                        }}
                         className="form-control"
                         type="text"
                       />
@@ -332,7 +289,16 @@ const Investments = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Paid By</label>
-                      <select className="select">
+                      <select
+                        onChange={(e) => {
+                          setInvestmentToAdd((d) => ({
+                            ...d,
+                            paidBy: e.target.value,
+                          }));
+                        }}
+                        className="custom-select"
+                      >
+                        <option value={''}>Select method</option>
                         <option>Cash</option>
                         <option>Cheque</option>
                       </select>
@@ -342,31 +308,56 @@ const Investments = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Status</label>
-                      <select className="select">
-                        <option>Pending</option>
-                        <option>Approved</option>
-                      </select>
+                      <label>Investment Date</label>
+                      <div>
+                        <input
+                          onChange={(e) => {
+                            setInvestmentToAdd((d) => ({
+                              ...d,
+                              date: e.target.value,
+                            }));
+                          }}
+                          className="form-control"
+                          type="date"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Attachments</label>
-                      <input className="form-control" type="file" />
+                      <label>Commodity</label>
+                      <input
+                        placeholder="Commodity"
+                        className="form-control"
+                        type="text"
+                        onChange={(e) => {
+                          setInvestmentToAdd((d) => ({
+                            ...d,
+                            for: e.target.value,
+                          }));
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
-                <div className="attach-files">
-                  <ul>
-                    <li>
-                      <img src={PlaceHolder} alt="" />
-                      <a href="#" className="fa fa-close file-remove" />
-                    </li>
-                    <li>
-                      <img src={PlaceHolder} alt="" />
-                      <a href="#" className="fa fa-close file-remove" />
-                    </li>
-                  </ul>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Amount</label>
+                      <input
+                        placeholder="₹
+                        50"
+                        className="form-control"
+                        type="text"
+                        onChange={(e) => {
+                          setInvestmentToAdd((d) => ({
+                            ...d,
+                            amount: e.target.value,
+                          }));
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Submit</button>
@@ -396,59 +387,25 @@ const Investments = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEdit();
+                }}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Item Name</label>
+                      <label>Name</label>
                       <input
+                        defaultValue={investmentToEdit.name}
+                        onChange={(e) => {
+                          setInvestmentToEdit((d) => ({
+                            ...d,
+                            name: e.target.value,
+                          }));
+                        }}
                         className="form-control"
-                        defaultValue="Dell Laptop"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Investment For</label>
-                      <input
-                        className="form-control"
-                        defaultValue="Amazon"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Investment Date</label>
-                      <div>
-                        <input
-                          className="form-control datetimepicker"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Commodity </label>
-                      <select className="select">
-                        <option>Daniel Porter</option>
-                        <option>Roger Dixon</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Amount</label>
-                      <input
-                        placeholder="$50"
-                        className="form-control"
-                        defaultValue="$10000"
                         type="text"
                       />
                     </div>
@@ -456,7 +413,16 @@ const Investments = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Paid By</label>
-                      <select className="select">
+                      <select
+                        defaultValue={investmentToEdit.paidBy}
+                        onChange={(e) => {
+                          setInvestmentToEdit((d) => ({
+                            ...d,
+                            paidBy: e.target.value,
+                          }));
+                        }}
+                        className="custom-select"
+                      >
                         <option>Cash</option>
                         <option>Cheque</option>
                       </select>
@@ -466,34 +432,67 @@ const Investments = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Status</label>
-                      <select className="select">
-                        <option>Pending</option>
-                        <option>Approved</option>
-                      </select>
+                      <label>Investment Date</label>
+                      <div>
+                        <input
+                          defaultValue={
+                            investmentToEdit?.date
+                              ? new Date(investmentToEdit.date)
+                                  .toISOString()
+                                  .substring(0, 10)
+                              : ''
+                          }
+                          onChange={(e) => {
+                            setInvestmentToEdit((d) => ({
+                              ...d,
+                              date: e.target.value,
+                            }));
+                          }}
+                          className="form-control"
+                          type="date"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Attachments</label>
-                      <input className="form-control" type="file" />
+                      <label>Commodity</label>
+                      <input
+                        placeholder="Commodity"
+                        className="form-control"
+                        type="text"
+                        defaultValue={investmentToEdit.for}
+                        onChange={(e) => {
+                          setInvestmentToEdit((d) => ({
+                            ...d,
+                            for: e.target.value,
+                          }));
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
-                <div className="attach-files">
-                  <ul>
-                    <li>
-                      <img src={PlaceHolder} alt="" />
-                      <a href="#" className="fa fa-close file-remove" />
-                    </li>
-                    <li>
-                      <img src={PlaceHolder} alt="" />
-                      <a href="#" className="fa fa-close file-remove" />
-                    </li>
-                  </ul>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Amount</label>
+                      <input
+                        placeholder="₹50"
+                        className="form-control"
+                        type="text"
+                        defaultValue={investmentToEdit.amount}
+                        onChange={(e) => {
+                          setInvestmentToEdit((d) => ({
+                            ...d,
+                            amount: e.target.value,
+                          }));
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn">Submit</button>
                 </div>
               </form>
             </div>
@@ -517,7 +516,14 @@ const Investments = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDelete();
+                      }}
+                      href=""
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>

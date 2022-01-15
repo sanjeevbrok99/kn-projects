@@ -31,13 +31,11 @@ const Designations = () => {
       const res = await httpService.get('/role');
       const departments = await httpService.get('/department');
       setDepartments(departments.data);
-      setFetched(true);
-      setDesignationStore(res.data);
       setData(
         res.data.map((item, i) => ({
           ...item,
           id: i + 1,
-          department: item.department.name,
+          departmentName: item.department.name,
           designation: item.name || 'Placeholder',
         }))
       );
@@ -48,23 +46,23 @@ const Designations = () => {
   const handleDelete = async () => {
     await httpService.delete(`/role/${designationToModify._id}`);
     const itemIndex = data.findIndex((d) => d._id === designationToModify._id);
-    setData((d) => [...d.slice(0, itemIndex), ...d.slice(itemIndex + 1)]);
+    setData((d) =>
+      d
+        .filter((item, i) => i !== itemIndex)
+        .map((item, i) => ({ ...item, id: i + 1 }))
+    );
     document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
   };
 
   const handleEdit = async () => {
     await httpService.put(
-      `/private/designation/${designationToModify.designationId}`,
+      `/role/${designationToModify._id}`,
       designationToModify
     );
-    const itemIndex = designationToModify.id - 1;
+    const itemIndex = data.findIndex((d) => d._id === designationToModify._id);
     setData((d) => [
       ...d.slice(0, itemIndex),
-      {
-        ...d[itemIndex],
-        department: 'Sales Management',
-        designation: data.designationName,
-      },
+      { ...designationToModify, designation: designationToModify.name },
       ...d.slice(itemIndex + 1),
     ]);
     document.querySelectorAll('.close')?.forEach((e) => e.click());
@@ -75,14 +73,14 @@ const Designations = () => {
     const res = await httpService.post('/role', {
       name: designationToAdd,
       department: departmentToAdd,
-      authorities: ['LEAVETYPE_GET'],
+      authorities: authoritiesToAdd,
       description: 'description',
     });
     setData((d) => [
       ...d,
       {
         id: d.length + 1,
-        department: departments.find((d) => d._id === departmentToAdd).name,
+        departmentName: departments.find((d) => d._id === departmentToAdd).name,
         designation: res.data.name,
       },
     ]);
@@ -100,7 +98,7 @@ const Designations = () => {
     },
     {
       title: 'Department',
-      dataIndex: 'department',
+      dataIndex: 'departmentName',
       sorter: (a, b) => a.department.length - b.department.length,
     },
     {
@@ -353,21 +351,16 @@ const Designations = () => {
                   </label>
                   <input
                     className="form-control"
-                    defaultValue={designationToModify?.designationName || ''}
+                    defaultValue={designationToModify?.name || ''}
                     type="text"
+                    onChange={(e) => {
+                      setDesignationToModify({
+                        ...designationToModify,
+                        name: e.target.value,
+                      });
+                    }}
                   />
                 </div>
-                {/* <div className="form-group">
-                  <label>
-                    Department <span className="text-danger">*</span>
-                  </label>
-                  <select className="select">
-                    <option>Select Department</option>
-                    <option>Marketing Head</option>
-                    <option>IT Management</option>
-                    <option>Marketing</option>
-                  </select>
-                </div> */}
                 <div className="table-responsive m-t-15">
                   <table className="table table-striped custom-table">
                     <thead>

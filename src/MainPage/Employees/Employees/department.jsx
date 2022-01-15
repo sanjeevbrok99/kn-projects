@@ -48,23 +48,21 @@ const Department = () => {
   };
 
   const handleEditDepartment = async () => {
-    if (departmentToModify.name <= 0) return;
-    const res = await httpService.put('/department/' + departmentToModify.id, {
+    if (departmentToModify.name.length <= 0) return;
+    const res = await httpService.put('/department/' + departmentToModify._id, {
       ...departmentToModify,
     });
-    setData((d) =>
-      d.map((item) =>
-        item.departmentId === res.data.departmentId
-          ? { ...res.data, id: item.id }
-          : item
-      )
-    );
-    document.querySelectorAll('.close')?.forEach((e) => e.click());
+    if (res) {
+      setData((d) =>
+        d.map((item) => (item._id === res.data._id ? departmentToModify : item))
+      );
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+    }
   };
 
   const handleDeleteDepartment = async () => {
     const res = await httpService.delete(
-      '/private/department/' + departmentToModify.departmentId
+      '/department/' + departmentToModify._id
     );
     const itemIndex = departmentToModify.id - 1;
     setData((d) => [
@@ -263,11 +261,11 @@ const Department = () => {
                   </label>
                   <input
                     className="form-control"
-                    defaultValue={departmentToModify?.department || ''}
+                    defaultValue={departmentToModify?.name || ''}
                     onChange={(e) => {
                       setDepartmentToModify((v) => ({
                         ...v,
-                        departmentName: e.target.value,
+                        name: e.target.value,
                       }));
                     }}
                     type="text"

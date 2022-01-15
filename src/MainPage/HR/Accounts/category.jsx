@@ -1,18 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import httpService from '../../../lib/httpService';
 
 const Category = () => {
-  const [data, setData] = useState([
-    { id: 1, category: 'Hardware', subcategory: 'Hardware Expenses' },
-    { id: 2, category: 'Material', subcategory: 'Material Expenses' },
-    { id: 3, category: 'Vehicle', subcategory: 'Company Vehicle Information' },
-  ]);
+  const [data, setData] = useState([]);
+  const [categoryToAdd, setCategoryToAdd] = useState({});
+  const [categoryToModify, setCategoryToModify] = useState({});
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    const categories = await httpService.get('/category');
+    setData(categories.data.map((category, i) => ({ ...category, id: i + 1 })));
+  };
+
+  const handleAdd = async () => {
+    await httpService.post('/category', categoryToAdd);
+    fetchCategories();
+  };
+
+  const handleModify = async () => {
+    if (!categoryToModify.name.length || !categoryToModify.description.length)
+      return;
+    await httpService.put(`/category/${categoryToModify.id}`, categoryToModify);
+    fetchCategories();
+  };
+
+  const handleDelete = async () => {
+    await httpService.delete(`/category/${categoryToModify._id}`);
+    fetchCategories();
+  };
 
   const columns = [
     {
@@ -22,12 +46,12 @@ const Category = () => {
     },
     {
       title: 'Category Name',
-      dataIndex: 'category',
+      dataIndex: 'name',
       sorter: (a, b) => a.category.length - b.category.length,
     },
     {
-      title: 'Sub-Category Name',
-      dataIndex: 'subcategory',
+      title: 'Description',
+      dataIndex: 'description',
       sorter: (a, b) => a.subcategory.length - b.subcategory.length,
     },
     {
@@ -48,6 +72,9 @@ const Category = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_categories"
+              onClick={() => {
+                setCategoryToModify(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -139,12 +166,42 @@ const Category = () => {
                 </button>
               </div>
               <div className="modal-body">
-                <form>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleAdd();
+                  }}
+                >
                   <div className="form-group">
                     <label>
                       Categories Name <span className="text-danger">*</span>
                     </label>
-                    <input className="form-control" type="text" />
+                    <input
+                      className="form-control"
+                      type="text"
+                      onChange={(e) =>
+                        setCategoryToAdd((s) => ({
+                          ...s,
+                          name: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>
+                      Description <span className="text-danger">*</span>
+                    </label>
+                    <textarea
+                      rows={4}
+                      className="form-control"
+                      defaultValue={''}
+                      onChange={(e) => {
+                        setCategoryToAdd((s) => ({
+                          ...s,
+                          description: e.target.value,
+                        }));
+                      }}
+                    />
                   </div>
                   <div className="submit-section">
                     <button className="btn btn-primary submit-btn">
@@ -177,7 +234,12 @@ const Category = () => {
                 </button>
               </div>
               <div className="modal-body">
-                <form>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleModify();
+                  }}
+                >
                   <div className="form-group">
                     <label>
                       Categories Name <span className="text-danger">*</span>
@@ -185,7 +247,29 @@ const Category = () => {
                     <input
                       className="form-control"
                       type="text"
-                      defaultValue="Hardware"
+                      defaultValue={categoryToModify.name}
+                      onChange={(e) => {
+                        setCategoryToModify((s) => ({
+                          ...s,
+                          name: e.target.value,
+                        }));
+                      }}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>
+                      Description <span className="text-danger">*</span>
+                    </label>
+                    <textarea
+                      rows={4}
+                      className="form-control"
+                      defaultValue={categoryToModify.description}
+                      onChange={(e) => {
+                        setCategoryToModify((s) => ({
+                          ...s,
+                          description: e.target.value,
+                        }));
+                      }}
                     />
                   </div>
                   <div className="submit-section">

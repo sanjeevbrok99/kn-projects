@@ -310,10 +310,17 @@ const Sidebar = (props) => {
                 <li className="menu-title">
                   <span>Accounts</span>
                 </li>
-                <li>
+                <li
+                  className={pathname.includes('investments') ? 'active' : ''}
+                >
+                  <Link to="/app/performance/investments">
+                    <i className="la la-coins" /> <span>Investments</span>
+                  </Link>
+                </li>
+                {/* <li>
                   <Link
                     className={
-                      pathname.includes('categories') ||
+                      pathname.includes('catego') ||
                       pathname.includes('sub-category')
                         ? 'active'
                         : ''
@@ -323,14 +330,7 @@ const Sidebar = (props) => {
                     <i className="la la-bars"></i>
                     <span>Categories</span>
                   </Link>
-                </li>
-                <li
-                  className={pathname.includes('investments') ? 'active' : ''}
-                >
-                  <Link to="/app/performance/investments">
-                    <i className="la la-coins" /> <span>Investments</span>
-                  </Link>
-                </li>
+                </li> */}
                 <li className="submenu">
                   <a href="#">
                     <i className="las la-money-bill-wave"></i>{' '}
