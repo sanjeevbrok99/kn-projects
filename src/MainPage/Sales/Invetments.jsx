@@ -7,13 +7,51 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import '../antdstyle.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
+import { fetchInvestment } from '../../lib/api/index';
 import httpService from '../../lib/httpService';
 
 const Investments = () => {
-  const [data, setData] = useState([]);
-  const [investmentToEdit, setInvestmentToEdit] = useState({});
-  const [investmentToAdd, setInvestmentToAdd] = useState({});
+  const [itemName, setItemName] = useState('');
+  const [investmentFor, setInvestmentFor] = useState('');
+  const [date, setDate] = useState('');
+  const [comodity, setComodity] = useState('');
+  const [amount, setAmount] = useState('');
+  const [status, setStatus] = useState('');
+  const [payment, setPayment] = useState('');
+  const [editInvestment, setEditInvestment] = useState('');
+  useEffect(() => {
+    (async () => {
+      const res = await fetchInvestment();
+      console.log('Investment');
+      console.log(res);
+      setData(res.map((d) => ({ ...d, date: d.date.split('T')[0] })));
+    })();
+  }, []);
 
+  const handleAddInvestment = async () => {
+    const data = {
+      name: itemName,
+      for: investmentFor,
+      date: date,
+      amount: amount,
+      paidBy: payment,
+    };
+    const res = await httpService.post('/investment', data);
+    fetchInvestment();
+    console.log(res);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleEditEmployee = async () => {
+    const res = await httpService.put(
+      `/investment/${editInvestment._id}`,
+      editInvestment
+    );
+    fetchInvestment();
+    console.log(res);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+  const [data, setData] = useState([]);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -74,7 +112,7 @@ const Investments = () => {
     },
     {
       title: 'Investment Date',
-      dataIndex: 'Investmentdate',
+      dataIndex: 'date',
       sorter: (a, b) => a.Investmentdate.length - b.Investmentdate.length,
     },
     {
@@ -158,7 +196,7 @@ const Investments = () => {
                 data-toggle="modal"
                 data-target="#add_expense"
               >
-                <i className="fa fa-plus" /> Add Expense
+                <i className="fa fa-plus" /> Add Investment
               </a>
             </div>
           </div>
@@ -360,7 +398,9 @@ const Investments = () => {
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -376,7 +416,7 @@ const Investments = () => {
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Edit Expense</h5>
+              <h5 className="modal-title">Edit Investment</h5>
               <button
                 type="button"
                 className="close"
@@ -491,6 +531,7 @@ const Investments = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Submit</button>
                 </div>

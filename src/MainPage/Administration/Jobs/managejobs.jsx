@@ -9,7 +9,6 @@ import '../../antdstyle.css';
 import { fetchJobs } from '../../../lib/api';
 
 const Managedjobs = () => {
-  const [data, setData] = useState([]);
   useEffect(() => {
     (async () => {
       const res = await fetchJobs();
