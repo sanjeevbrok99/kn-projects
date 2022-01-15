@@ -45,6 +45,7 @@ const Taxes = () => {
     );
     fetchTax();
     console.log(res);
+    setData(res);
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
