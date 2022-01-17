@@ -10,60 +10,59 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import httpService from '../../../lib/httpService';
+import { fetchGoalList, fetchGoals } from '../../../lib/api';
 
 const GoalTracking = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      description: 'Lorem ipsum dollar',
-      status: 'Active',
-      type: 'Event Goal',
-      progress: 73,
-      subject: 'Test Goal',
-      startdate: '7 May 2021',
-      enddate: '10 May 2021',
-    },
-    {
-      id: 2,
-      description: 'Lorem ipsum dollar',
-      status: 'Active',
-      type: 'Invoice Goal',
-      progress: 100,
-      subject: 'Test Goal',
-      startdate: '7 May 2021',
-      enddate: '10 May 2021',
-    },
-    {
-      id: 3,
-      description: 'Lorem ipsum dollar',
-      status: 'Active',
-      type: 'Project Goal',
-      progress: 73,
-      subject: 'Test Goal',
-      startdate: '7 May 2021',
-      enddate: '10 May 2021',
-    },
-    {
-      id: 4,
-      description: 'Lorem ipsum dollar',
-      status: 'Inactive',
-      type: 'Employee Goal',
-      progress: 73,
-      subject: 'Test Goal',
-      startdate: '7 May 2021',
-      enddate: '10 May 2021',
-    },
-    {
-      id: 5,
-      description: 'Lorem ipsum dollar',
-      status: 'Inactive',
-      type: 'Invoice  Goal',
-      progress: 73,
-      subject: 'Test Goal',
-      startdate: '7 May 2021',
-      enddate: '10 May 2021',
-    },
-  ]);
+
+  const[subject,setSubject]=useState("");
+  const[target,setTarget]=useState("");
+  const[startDate,setStartDate]=useState("");
+  const[endDate,setEndDate]=useState("");
+  const[description,setDescription]=useState("");
+  const[goalTyped,setGoalTyped]=useState([]);
+  const[status,setStatus]=useState("");
+  const[type,setType]=useState("");
+  const[modifytype,setModifyType]=useState("");
+
+
+
+
+
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchGoalList();
+      console.log("hey");
+      console.log(res);
+      console.log('fetch Goals');
+      const goalTypeResponse=await fetchGoals();
+      setGoalTyped(goalTypeResponse);
+
+     
+    setData(res);
+    })();
+  }, []);
+
+  //add goal list form
+  const handleAddList = async () => {
+    const data = {
+      goalType: type,
+  subject: subject,
+  targetAchievement: target,
+  startDate: startDate,
+  endDate: endDate,
+  description: description,
+  status: status
+    }
+    const res = await httpService.post('/goal', data);
+   
+    console.log(res);
+    
+    fetchGoalList();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+  const [data, setData] = useState([]);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -72,16 +71,27 @@ const GoalTracking = () => {
       });
     }
   });
+  //edit
+  const handleEditGoalList = async () => {
+    const res = await httpService.put(
+      `/goal/${modifytype._id}`,   //edit 
+      modifytype
+    );
+    fetchGoals();
+    console.log(res);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
 
   const columns = [
     {
       title: '#',
-      dataIndex: 'id',
+      dataIndex: '_id',
       sorter: (a, b) => a.id.length - b.id.length,
     },
     {
       title: 'Goal Type',
-      dataIndex: 'type',
+      dataIndex: 'name',
       sorter: (a, b) => a.type.length - b.type.length,
     },
     {
@@ -91,17 +101,17 @@ const GoalTracking = () => {
     },
     {
       title: 'Target Achievement',
-      dataIndex: 'description',
+      dataIndex: 'targetAchivement',
       sorter: (a, b) => a.description.length - b.description.length,
     },
     {
       title: 'Start Date',
-      dataIndex: 'startdate',
+      dataIndex: 'startDate',
       sorter: (a, b) => a.startdate.length - b.startdate.length,
     },
     {
       title: 'End Date',
-      dataIndex: 'enddate',
+      dataIndex: 'endDate',
       sorter: (a, b) => a.enddate.length - b.enddate.length,
     },
     {
@@ -175,6 +185,12 @@ const GoalTracking = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_goal"
+              onClick={() => {
+                setModifyType(record);
+                
+                  console.log('editing');
+                  console.log(record);
+                }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -265,21 +281,32 @@ const GoalTracking = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                handleAddList();                }}>
                 <div className="row">
                   <div className="col-sm-12">
                     <div className="form-group">
                       <label className="col-form-label">Goal Type</label>
-                      <select className="select">
-                        <option>Invoice Goal</option>
-                        <option>Event Goal</option>
+                    
+                      <select  onChange={(event)=>setType(event.target.value)}>
+                       
+                      <option value={''}>Select Goal Type</option>
+                {goalTyped.map((role) => (
+                  <option key={role._id} value={role._id}>
+                    {role.name}
+                  </option>
+
+
+                ))}
                       </select>
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">Subject</label>
-                      <input className="form-control" type="text" />
+                      <input className="form-control" type="text" onChange={(event)=>setSubject(event.target.value)}/>
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -287,7 +314,7 @@ const GoalTracking = () => {
                       <label className="col-form-label">
                         Target Achievement
                       </label>
-                      <input className="form-control" type="text" />
+                      <input className="form-control" type="text" onChange={(event)=>setTarget(event.target.value)} />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -299,6 +326,7 @@ const GoalTracking = () => {
                         <input
                           className="form-control datetimepicker"
                           type="date"
+                          onChange={(event)=>setStartDate(event.target.value)}
                         />
                       </div>
                     </div>
@@ -312,6 +340,7 @@ const GoalTracking = () => {
                         <input
                           className="form-control datetimepicker"
                           type="date"
+                          onChange={(event)=>setEndDate(event.target.value)}
                         />
                       </div>
                     </div>
@@ -319,27 +348,26 @@ const GoalTracking = () => {
                   <div className="col-sm-12">
                     <div className="form-group">
                       <label>
-                        Description <span className="text-danger">*</span>
+                        Description <span className="text-danger" >*</span>
                       </label>
                       <textarea
                         className="form-control"
                         rows={4}
                         defaultValue={''}
+                        onChange={(event)=>setDescription(event.target.value)}
                       />
                     </div>
                   </div>
                   <div className="col-sm-12">
                     <div className="form-group">
                       <label className="col-form-label">Status</label>
-                      <select className="select">
-                        <option>Active</option>
-                        <option>Inactive</option>
-                      </select>
+                      <input className="form-control" type="text"  onChange={(event)=>setStatus(event.target.value)}/>
+                     
                     </div>
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type='submit'>Submit</button>
                 </div>
               </form>
             </div>
@@ -363,14 +391,28 @@ const GoalTracking = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEditGoalList();
+                }}>
                 <div className="row">
                   <div className="col-sm-12">
                     <div className="form-group">
                       <label className="col-form-label">Goal Type</label>
-                      <select className="select">
-                        <option>Invoice Goal</option>
-                        <option>Event Goal</option>
+                      <select  onChange={(e) => {
+                      setModifyType({
+                        ...modifytype,
+                        _id : e.target.value,
+                      });
+                    }}>
+                       <option value={''}>Select Goal Type</option>
+                {goalTyped.map((role) => (
+                  <option key={role._id} value={role._id}>
+                    {role.name})
+                  </option>
+                        ))}
+                       
                       </select>
                     </div>
                   </div>
@@ -381,6 +423,13 @@ const GoalTracking = () => {
                         className="form-control"
                         type="text"
                         defaultValue="Test Goal"
+                        onChange={(e) => {
+                          setModifyType({
+                            ...modifytype,
+                            subject : e.target.value,
+                          });
+                        }}
+
                       />
                     </div>
                   </div>
@@ -393,6 +442,12 @@ const GoalTracking = () => {
                         className="form-control"
                         type="text"
                         defaultValue="Lorem ipsum dollar"
+                        onChange={(e) => {
+                          setModifyType({
+                            ...modifytype,
+                            targetAchievement : e.target.value,
+                          });
+                        }}
                       />
                     </div>
                   </div>
@@ -406,6 +461,12 @@ const GoalTracking = () => {
                           className="form-control datetimepicker"
                           defaultValue="01-01-2021"
                           type="date"
+                          onChange={(e) => {
+                            setModifyType({
+                              ...modifytype,
+                              startDate : e.target.value,
+                            });
+                          }}
                         />
                       </div>
                     </div>
@@ -420,6 +481,12 @@ const GoalTracking = () => {
                           className="form-control datetimepicker"
                           defaultValue="01-01-2021"
                           type="date"
+                          onChange={(e) => {
+                            setModifyType({
+                              ...modifytype,
+                              endDate : e.target.value,
+                            });
+                          }}
                         />
                       </div>
                     </div>
@@ -446,16 +513,30 @@ const GoalTracking = () => {
                         className="form-control"
                         rows={4}
                         defaultValue={'Lorem ipsum dollar'}
+                        onChange={(e) => {
+                          setModifyType({
+                            ...modifytype,
+                            descriptionjo : e.target.value,
+                          });
+                        }}
                       />
                     </div>
                   </div>
                   <div className="col-sm-12">
                     <div className="form-group">
-                      <label className="col-form-label">Status</label>
-                      <select className="select">
-                        <option>Active</option>
-                        <option>Inactive</option>
-                      </select>
+                    <input
+                        className="form-control"
+                        type="text"
+                        defaultValue="Lorem ipsum dollar"
+                        onChange={(e) => {
+                          setModifyType({
+                            ...modifytype,
+                            status : e.target.value,
+                          });
+                        }}
+                      />
+                      <label className="col-form-label" type="submit">Status</label>
+                     
                     </div>
                   </div>
                 </div>

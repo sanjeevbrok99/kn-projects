@@ -10,22 +10,50 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import { fetchGoals } from '../../../lib/api';
+import httpService from '../../../lib/httpService';
+
+
+
 
 const GoalType = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      description: 'Lorem ipsum dollar',
-      status: 'Active',
-      type: 'Invoice Goal	',
-    },
-    {
-      id: 2,
-      description: 'Lorem ipsum dollar',
-      status: 'Inactive',
-      type: 'Event Goal	',
-    },
-  ]);
+  const[description,setDescription] = useState("");
+  const[status,setStatus]=useState("");
+  const[type,setType]=useState("");
+  const[modifytype,setModifyType]=useState("");
+
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchGoals();
+      console.log('fetch Goals');
+      console.log(res);
+    setData(res);
+    })();
+  }, []);
+  const handleAddGoals = async () => {
+    const data = {
+      name: type,
+      description: description,
+      status: status
+    };
+    const res = await httpService.post('/goal-type', data);
+    fetchGoals();
+    console.log(res);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+  const handleEditGoal = async () => {
+    const res = await httpService.put(
+      `/goal-type/${modifytype._id}`,   //edit 
+      modifytype
+    );
+    fetchGoals();
+    console.log(res);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+
+  const [data, setData] = useState([]);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -38,12 +66,12 @@ const GoalType = () => {
   const columns = [
     {
       title: '#',
-      dataIndex: 'id',
+      dataIndex: '_id',
       sorter: (a, b) => a.id.length - b.id.length,
     },
     {
       title: 'Type',
-      dataIndex: 'type',
+      dataIndex: 'name',
       sorter: (a, b) => a.type.length - b.type.length,
     },
     {
@@ -101,6 +129,12 @@ const GoalType = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_type"
+              onClick={() => {
+              setModifyType(record);
+              console.log("hello");
+                console.log('editing');
+                console.log(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -191,12 +225,16 @@ const GoalType = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAddGoals();
+                }}>
                 <div className="form-group">
                   <label>
                     Goal Type <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input className="form-control" type="text"  onChange={(event)=> setType(event.target.value)}/>
                 </div>
                 <div className="form-group">
                   <label>
@@ -206,17 +244,16 @@ const GoalType = () => {
                     className="form-control"
                     rows={4}
                     defaultValue={''}
+                    onChange={(event)=>setDescription(event.target.value)}
                   />
                 </div>
                 <div className="form-group">
                   <label className="col-form-label">Status</label>
-                  <select className="select">
-                    <option>Active</option>
-                    <option>Inactive</option>
-                  </select>
+                  <input className="form-control" type="text"  onChange={(event)=> setStatus(event.target.value)}/>
+
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn " type='submit'>Submit</button>
                 </div>
               </form>
             </div>
@@ -240,7 +277,11 @@ const GoalType = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEditGoal();
+                }}>
                 <div className="form-group">
                   <label>
                     Goal Type <span className="text-danger">*</span>
@@ -249,6 +290,12 @@ const GoalType = () => {
                     className="form-control"
                     type="text"
                     defaultValue="Invoice Goal"
+                    onChange={(e) => {
+                      setModifyType({
+                        ...modifytype,
+                        name: e.target.value,
+                      });
+                    }}
                   />
                 </div>
                 <div className="form-group">
@@ -259,17 +306,31 @@ const GoalType = () => {
                     className="form-control"
                     rows={4}
                     defaultValue={'Lorem ipsum ismap'}
+                    onChange={(e) => {
+                      setModifyType({
+                        ...modifytype,
+                        description : e.target.value,
+                      });
+                    }}
                   />
                 </div>
                 <div className="form-group">
                   <label className="col-form-label">Status</label>
-                  <select className="select">
-                    <option>Active</option>
-                    <option>Inactive</option>
-                  </select>
+                  <input
+                    className="form-control"
+                    type="text"
+                    defaultValue="Invoice Goal"
+                    onChange={(e) => {
+                      setModifyType({
+                        ...modifytype,
+                        status: e.target.value,
+                      });
+                    }}
+                  />
+                  
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn" type='submit'>Save</button>
                 </div>
               </form>
             </div>
