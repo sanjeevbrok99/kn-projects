@@ -219,6 +219,14 @@ const Sidebar = (props) => {
                 <ul style={{ display: 'none' }}>
                   <li>
                     <Link
+                      className={pathname.includes('clients') ? 'active' : ''}
+                      to="/app/employees/clients"
+                    >
+                      Leads
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       className={
                         pathname.includes('t_dashboard')
                           ? 'active'
@@ -242,7 +250,7 @@ const Sidebar = (props) => {
                       Tasks
                     </Link>
                   </li>
-
+                  {/* 
                   <li>
                     <Link
                       className={
@@ -252,7 +260,7 @@ const Sidebar = (props) => {
                     >
                       Task Board
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
             )}
@@ -295,12 +303,6 @@ const Sidebar = (props) => {
                       </Link>
                     </li>
                   </ul>
-                </li>
-
-                <li className={pathname.includes('clients') ? 'active' : ''}>
-                  <Link to="/app/employees/clients">
-                    <i className="la la-users" /> <span>Clients</span>
-                  </Link>
                 </li>
               </>
             )}
@@ -697,15 +699,6 @@ const Sidebar = (props) => {
             )}
             {isAdmin && (
               <>
-                <li
-                  className={
-                    pathname.includes('administrator/users') ? 'active' : ''
-                  }
-                >
-                  <Link to="/app/administrator/users">
-                    <i className="la la-user-plus" /> <span>Users</span>
-                  </Link>
-                </li>
                 <li className={pathname.includes('activities') ? 'active' : ''}>
                   <Link to="/app/administrator/activities">
                     <i className="la la-bell" /> <span>Activities</span>

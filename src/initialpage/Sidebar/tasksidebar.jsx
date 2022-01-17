@@ -5,7 +5,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-const Sidebar = (props) => {
+const Sidebar = ({ selectedProjects, setSelectedProjects, projects }) => {
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
@@ -20,17 +20,27 @@ const Sidebar = (props) => {
               </Link>
             </li>
             <li className="menu-title">
-              Projects{' '}
+              Projects
               <a href="#" data-toggle="modal" data-target="#create_project">
                 <i className="fa fa-plus" />
               </a>
             </li>
-            <li>
-              <Link to="/tasks/tasks">Basudev Nagar</Link>
-            </li>
-            <li>
-              <Link to="/tasks/tasks">TariniVihar-II</Link>
-            </li>
+            {projects.map((project) => (
+              <li>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedProjects(project);
+                  }}
+                  href=""
+                  style={{
+                    color: project._id === selectedProjects._id ? '#fff' : '',
+                  }}
+                >
+                  {project.name}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

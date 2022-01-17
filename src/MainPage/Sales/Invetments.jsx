@@ -11,47 +11,10 @@ import { fetchInvestment } from '../../lib/api/index';
 import httpService from '../../lib/httpService';
 
 const Investments = () => {
-  const [itemName, setItemName] = useState('');
-  const [investmentFor, setInvestmentFor] = useState('');
-  const [date, setDate] = useState('');
-  const [comodity, setComodity] = useState('');
-  const [amount, setAmount] = useState('');
-  const [status, setStatus] = useState('');
-  const [payment, setPayment] = useState('');
-  const [editInvestment, setEditInvestment] = useState('');
-  useEffect(() => {
-    (async () => {
-      const res = await fetchInvestment();
-      console.log('Investment');
-      console.log(res);
-      setData(res.map((d) => ({ ...d, date: d.date.split('T')[0] })));
-    })();
-  }, []);
-
-  const handleAddInvestment = async () => {
-    const data = {
-      name: itemName,
-      for: investmentFor,
-      date: date,
-      amount: amount,
-      paidBy: payment,
-    };
-    const res = await httpService.post('/investment', data);
-    fetchInvestment();
-    console.log(res);
-    document.querySelectorAll('.close')?.forEach((e) => e.click());
-  };
-
-  const handleEditEmployee = async () => {
-    const res = await httpService.put(
-      `/investment/${editInvestment._id}`,
-      editInvestment
-    );
-    fetchInvestment();
-    console.log(res);
-    document.querySelectorAll('.close')?.forEach((e) => e.click());
-  };
   const [data, setData] = useState([]);
+  const [investmentToAdd, setInvestmentToAdd] = useState({});
+  const [investmentToEdit, setInvestmentToEdit] = useState({});
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -112,7 +75,7 @@ const Investments = () => {
     },
     {
       title: 'Investment Date',
-      dataIndex: 'date',
+      dataIndex: 'Investmentdate',
       sorter: (a, b) => a.Investmentdate.length - b.Investmentdate.length,
     },
     {

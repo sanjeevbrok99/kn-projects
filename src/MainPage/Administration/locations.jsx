@@ -13,29 +13,19 @@ import {
 
 const Locations = () => {
   const [data, setData] = useState([]);
-  const [departmentToModify, setDepartmentToModify] = useState(null);
-  const [departmentNameToAdd, setDepartmentNameToAdd] = useState(null);
+  const [departmentToModify, setDepartmentToModify] = useState({});
+  const [departmentNameToAdd, setDepartmentNameToAdd] = useState({});
 
   useEffect(() => {
     async function fetchData() {
-      const res = await httpService.get('/private/location');
-      setFetched(true);
-      setDepartmentStore(res.data);
-      setData(
-        res.data.map((item, i) => ({
-          ...item,
-          id: i + 1,
-          department: item.departmentName,
-        }))
-      );
+      const res = await httpService.get('/location');
+      setData(res.data.map((d, i) => ({ ...d, id: i + 1 })));
     }
     fetchData();
   }, []);
 
   const handleAddDepartment = async () => {
-    const res = await httpService.post('/private/location', {
-      location: departmentNameToAdd,
-    });
+    const res = await httpService.post('/location', departmentNameToAdd);
     // console.log(res.data);
     setData((d) => [
       ...d,
@@ -49,27 +39,20 @@ const Locations = () => {
 
   const handleEditDepartment = async () => {
     if (departmentToModify.departmentName <= 0) return;
-    const res = await httpService.put(
-      '/private/location/' + departmentToModify.locationId,
-      {
-        ...departmentToModify,
-      }
-    );
+    const res = await httpService.put('/location/' + departmentToModify._id, {
+      ...departmentToModify,
+    });
     setData((d) =>
-      d.map((item) =>
-        item.locationId === res.data.locationId
-          ? { ...res.data, id: item.id }
-          : item
-      )
+      d.map((item) => (item._id === res.data._id ? departmentToModify : item))
     );
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
   const handleDeleteDepartment = async () => {
-    const res = await httpService.delete(
-      '/private/location/' + departmentToModify.locationId
+    const res = await httpService.delete('/location/' + departmentToModify._id);
+    const itemIndex = data.findIndex(
+      (item) => item._id === departmentToModify._id
     );
-    const itemIndex = departmentToModify.id - 1;
     setData((d) => [
       ...d.slice(0, itemIndex),
       ...d.slice(itemIndex + 1).map((i) => ({ ...i, id: i.id - 1 })),
@@ -85,7 +68,7 @@ const Locations = () => {
     },
     {
       title: 'Location Name',
-      dataIndex: 'location',
+      dataIndex: 'name',
       sorter: (a, b) => a.department.length - b.department.length,
     },
     {
@@ -219,8 +202,9 @@ const Locations = () => {
                   <input
                     className="form-control"
                     type="text"
-                    value={departmentNameToAdd || ''}
-                    onChange={(e) => setDepartmentNameToAdd(e.target.value)}
+                    onChange={(e) =>
+                      setDepartmentNameToAdd({ name: e.target.value })
+                    }
                   />
                 </div>
                 <div className="submit-section">
@@ -264,11 +248,11 @@ const Locations = () => {
                   </label>
                   <input
                     className="form-control"
-                    defaultValue={departmentToModify?.location || ''}
+                    defaultValue={departmentToModify?.name || ''}
                     onChange={(e) => {
                       setDepartmentToModify((v) => ({
                         ...v,
-                        location: e.target.value,
+                        name: e.target.value,
                       }));
                     }}
                     type="text"
