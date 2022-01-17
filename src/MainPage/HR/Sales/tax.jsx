@@ -1,8 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import { fetchTax } from '../../../lib/api/index';
+import httpService from '../../../lib/httpService';
 
 const Taxes = () => {
+  const [data, setData] = useState([]);
+  const [taxName, setTaxName] = useState('');
+  const [taxpercentage, setTaxPercentage] = useState('');
+  const [status, setStatus] = useState('');
+  const [type, setType] = useState('');
+  const [editTax, setEditTax] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchTax();
+      setData(res);
+    })();
+  }, []);
+
+  const handleAddTax = async () => {
+    const data = {
+      name: taxName,
+      type: type,
+      amount: taxpercentage,
+      status: true,
+    };
+    console.log(data);
+    const res = await httpService.post('/tax', data);
+    const resN = await fetchTax();
+    setData(resN);
+    console.log(res);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  // edit axios
+  const handleEditTax = async () => {
+    const res = await httpService.put(`/tax/${editTax._id}`, editTax);
+    const resN = await fetchTax();
+    setData(resN);
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleDelete = async () => {
+    await httpService.delete(`/tax/${editTax._id}`);
+    const res = await fetchTax();
+    setData(res);
+    document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+  };
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -53,128 +99,81 @@ const Taxes = () => {
                   <tr>
                     <th>#</th>
                     <th>Tax Name </th>
-                    <th>Tax Percentage (%) </th>
+                    <th>Tax type</th>
+                    <th>Amount</th>
                     <th>Status</th>
                     <th className="text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>VAT</td>
-                    <td>14%</td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          href="#"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-dot-circle-o text-danger" />{' '}
-                          Inactive
-                        </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Active
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            Inactive
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_tax"
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_tax"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>GST</td>
-                    <td>30%</td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          href="#"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-dot-circle-o text-success" />{' '}
-                          Active
-                        </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Active
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            Inactive
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_tax"
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_tax"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
+                  {data.map((record, i) => {
+                    return (
+                      <tr>
+                        <td>{i + 1}</td>
+                        <td>{record.name}</td>
+                        <td>{record.type}</td>
+                        <td>{record.amount}</td>
+                        <td>
+                          <div className="dropdown action-label">
+                            <a
+                              className="btn btn-white btn-sm btn-rounded"
+                              href="#"
+                              aria-expanded="false"
+                            >
+                              <i className="fa fa-dot-circle-o text-danger" />{' '}
+                              {record.status ? 'Active' : 'Inactive'}
+                            </a>
+                            <div className="dropdown-menu">
+                              <a className="dropdown-item" href="#">
+                                <i className="fa fa-dot-circle-o text-success" />{' '}
+                                Active
+                              </a>
+                              <a className="dropdown-item" href="#">
+                                <i className="fa fa-dot-circle-o text-danger" />{' '}
+                                Inactive
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="text-right">
+                          <div className="dropdown dropdown-action">
+                            <a
+                              href="#"
+                              className="action-icon dropdown-toggle"
+                              data-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i className="material-icons">more_vert</i>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                data-toggle="modal"
+                                data-target="#edit_tax"
+                                onClick={() => {
+                                  setEditTax(record);
+                                }}
+                              >
+                                <i className="fa fa-pencil m-r-5" /> Edit
+                              </a>
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                data-toggle="modal"
+                                data-target="#delete_tax"
+                                onClick={() => {
+                                  setEditTax(record);
+                                }}
+                              >
+                                <i className="fa fa-trash-o m-r-5" /> Delete
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -198,30 +197,63 @@ const Taxes = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAddTax();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Tax Name <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input
+                    className="form-control"
+                    type="text"
+                    onChange={(event) => setTaxName(event.target.value)}
+                  />
                 </div>
                 <div className="form-group">
                   <label>
-                    Tax Percentage (%) <span className="text-danger">*</span>
+                    Tax Type <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <select
+                    className="form-control"
+                    onChange={(event) => setType(event.target.value)}
+                  >
+                    <option value={''}>Tax type</option>
+                    <option>Percentage</option>
+                    <option>Amount</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>
+                    Amount <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    onChange={(event) => setTaxPercentage(event.target.value)}
+                  />
                 </div>
                 <div className="form-group">
                   <label>
                     Status <span className="text-danger">*</span>
                   </label>
-                  <select className="select">
-                    <option>Pending</option>
-                    <option>Approved</option>
+                  <select
+                    className="form-control"
+                    placeholder=" Pending / Approved "
+                    onChange={(event) => setStatus(event.target.value)}
+                  >
+                    <option value={''}>Tax status</option>
+                    <option value={true}>Active</option>
+                    <option value={false}>Inactive</option>
                   </select>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -245,38 +277,72 @@ const Taxes = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEditTax();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Tax Name <span className="text-danger">*</span>
                   </label>
                   <input
                     className="form-control"
-                    defaultValue="VAT"
                     type="text"
+                    defaultValue={editTax.name}
+                    onChange={(event) =>
+                      setEditTax({ ...editTax, name: event.target.value })
+                    }
                   />
                 </div>
                 <div className="form-group">
                   <label>
-                    Tax Percentage (%) <span className="text-danger">*</span>
+                    Tax Type <span className="text-danger">*</span>
+                  </label>
+                  <select
+                    className="form-control"
+                    value={editTax.type}
+                    onChange={(event) =>
+                      setEditTax((d) => ({ ...d, type: event.target.value }))
+                    }
+                  >
+                    <option>Percentage</option>
+                    <option>Amount</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>
+                    Amount <span className="text-danger">*</span>
                   </label>
                   <input
                     className="form-control"
-                    defaultValue="14%"
                     type="text"
+                    defaultValue={editTax.amount}
+                    onChange={(event) =>
+                      setEditTax((d) => ({ ...d, amount: event.target.value }))
+                    }
                   />
                 </div>
                 <div className="form-group">
                   <label>
                     Status <span className="text-danger">*</span>
                   </label>
-                  <select className="select">
-                    <option>Active</option>
-                    <option>Inactive</option>
+                  <select
+                    className="form-control"
+                    value={editTax.status}
+                    onChange={(event) =>
+                      setEditTax((d) => ({ ...d, status: event.target.value }))
+                    }
+                  >
+                    <option value={true}>Active</option>
+                    <option value={false}>Inactive</option>
                   </select>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn " type="submit">
+                    Save
+                  </button>
                 </div>
               </form>
             </div>
@@ -296,7 +362,14 @@ const Taxes = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDelete();
+                      }}
+                      href=""
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css'; // import styles
@@ -17,8 +17,13 @@ import {
   Avatar_08,
   Avatar_26,
 } from '../../../../Entryfile/imagepath';
+import { useSelector } from 'react-redux';
 
-const Tasks = () => {
+const Tasks = ({ selectedProjects }) => {
+  console.log(selectedProjects);
+  const authentication = useSelector((state) => state.authentication.value);
+  // const history = useHistory();
+  const [tasks, setTasks] = useState([]);
   const onImageUpload = (fileList) => {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -26,6 +31,14 @@ const Tasks = () => {
     };
     reader.readAsDataURL(fileList[0]);
   };
+
+  useEffect(() => {
+    console.log('selectd', selectedProjects);
+    const selectedTasks = selectedProjects?.tasks?.filter((t) =>
+      t.users.includes(authentication.user._id)
+    );
+    setTasks(selectedTasks);
+  }, [selectedProjects]);
 
   return (
     <div className="page-wrapper">
@@ -40,11 +53,7 @@ const Tasks = () => {
               <div className="fixed-header">
                 <div className="navbar">
                   <div className="float-left mr-auto">
-                    <div className="add-task-btn-wrapper">
-                      <span className="add-task-btn btn btn-white btn-sm">
-                        Add Task
-                      </span>
-                    </div>
+                    <div className="add-task-btn-wrapper"></div>
                   </div>
                   <a
                     className="task-chat profile-rightbar float-right"
@@ -86,72 +95,26 @@ const Tasks = () => {
                         <div className="task-list-container">
                           <div className="task-list-body">
                             <ul id="task-list">
-                              <li className="task">
-                                <div className="task-container">
-                                  <span className="task-action-btn task-check">
-                                    <span
-                                      className="action-circle large complete-btn"
-                                      title="Mark Complete"
-                                    >
-                                      <i className="material-icons">check</i>
+                              {tasks?.map((t) => (
+                                <li
+                                  className={`task ${
+                                    t.status ? 'completed' : ''
+                                  }`}
+                                >
+                                  <div className="task-container">
+                                    <span className="task-action-btn task-check">
+                                      <span
+                                        className="action-circle large complete-btn"
+                                        title="Mark Complete"
+                                      >
+                                        <i className="material-icons">check</i>
+                                      </span>
                                     </span>
-                                  </span>
-                                  <span
-                                    className="task-label"
-                                    contentEditable="true"
-                                    suppressContentEditableWarning={true}
-                                  >
-                                    Fix meeting with the customer
-                                  </span>
-                                  <span className="task-action-btn task-btn-right">
-                                    <span
-                                      className="action-circle large"
-                                      title="Assign"
-                                    >
-                                      <i className="material-icons">
-                                        person_add
-                                      </i>
-                                    </span>
-                                    <span
-                                      className="action-circle large delete-btn"
-                                      title="Delete Task"
-                                    >
-                                      <i className="material-icons">delete</i>
-                                    </span>
-                                  </span>
-                                </div>
-                              </li>
-                              <li className="completed task">
-                                <div className="task-container">
-                                  <span className="task-action-btn task-check">
-                                    <span
-                                      className="action-circle large complete-btn"
-                                      title="Mark Complete"
-                                    >
-                                      <i className="material-icons">check</i>
-                                    </span>
-                                  </span>
-                                  <span className="task-label">
-                                    Meet the customer
-                                  </span>
-                                  <span className="task-action-btn task-btn-right">
-                                    <span
-                                      className="action-circle large"
-                                      title="Assign"
-                                    >
-                                      <i className="material-icons">
-                                        person_add
-                                      </i>
-                                    </span>
-                                    <span
-                                      className="action-circle large delete-btn"
-                                      title="Delete Task"
-                                    >
-                                      <i className="material-icons">delete</i>
-                                    </span>
-                                  </span>
-                                </div>
-                              </li>
+                                    <span>{t.name}</span>
+                                    <span className="task-action-btn task-btn-right"></span>
+                                  </div>
+                                </li>
+                              ))}
                             </ul>
                           </div>
                           <div className="task-list-footer">

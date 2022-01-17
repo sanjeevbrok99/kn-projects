@@ -219,6 +219,14 @@ const Sidebar = (props) => {
                 <ul style={{ display: 'none' }}>
                   <li>
                     <Link
+                      className={pathname.includes('clients') ? 'active' : ''}
+                      to="/app/employees/clients"
+                    >
+                      Leads
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       className={
                         pathname.includes('t_dashboard')
                           ? 'active'
@@ -242,7 +250,7 @@ const Sidebar = (props) => {
                       Tasks
                     </Link>
                   </li>
-
+                  {/* 
                   <li>
                     <Link
                       className={
@@ -252,7 +260,7 @@ const Sidebar = (props) => {
                     >
                       Task Board
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
             )}
@@ -296,12 +304,6 @@ const Sidebar = (props) => {
                     </li>
                   </ul>
                 </li>
-
-                <li className={pathname.includes('clients') ? 'active' : ''}>
-                  <Link to="/app/employees/clients">
-                    <i className="la la-users" /> <span>Clients</span>
-                  </Link>
-                </li>
               </>
             )}
 
@@ -310,10 +312,17 @@ const Sidebar = (props) => {
                 <li className="menu-title">
                   <span>Accounts</span>
                 </li>
-                <li>
+                <li
+                  className={pathname.includes('investments') ? 'active' : ''}
+                >
+                  <Link to="/app/performance/investments">
+                    <i className="la la-coins" /> <span>Investments</span>
+                  </Link>
+                </li>
+                {/* <li>
                   <Link
                     className={
-                      pathname.includes('categories') ||
+                      pathname.includes('catego') ||
                       pathname.includes('sub-category')
                         ? 'active'
                         : ''
@@ -323,14 +332,7 @@ const Sidebar = (props) => {
                     <i className="la la-bars"></i>
                     <span>Categories</span>
                   </Link>
-                </li>
-                <li
-                  className={pathname.includes('investments') ? 'active' : ''}
-                >
-                  <Link to="/app/performance/investments">
-                    <i className="la la-coins" /> <span>Investments</span>
-                  </Link>
-                </li>
+                </li> */}
                 <li className="submenu">
                   <a href="#">
                     <i className="las la-money-bill-wave"></i>{' '}
@@ -697,15 +699,6 @@ const Sidebar = (props) => {
             )}
             {isAdmin && (
               <>
-                <li
-                  className={
-                    pathname.includes('administrator/users') ? 'active' : ''
-                  }
-                >
-                  <Link to="/app/administrator/users">
-                    <i className="la la-user-plus" /> <span>Users</span>
-                  </Link>
-                </li>
                 <li className={pathname.includes('activities') ? 'active' : ''}>
                   <Link to="/app/administrator/activities">
                     <i className="la la-bell" /> <span>Activities</span>
