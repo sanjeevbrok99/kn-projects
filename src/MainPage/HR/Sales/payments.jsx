@@ -1,32 +1,26 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-
+import { useEffect } from 'react';
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import { fetchPayment } from '../../../lib/api'; 
+
 
 const Payments = () => {
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchPayment();
+    
+      setData(res);
+    })();
+  }, []);
+
   const [data, setData] = useState([
-    {
-      id: 1,
-      invoicenumber: 'INV-0001',
-      client: '	Sunteck Realty Ltd',
-      paymenttype: 'Net Banking',
-      duedate: '11 Mar 2021',
-      amount: '2099',
-      status: 'Paid',
-    },
-    {
-      id: 2,
-      invoicenumber: 'INV-0002',
-      client: 'Godrej Properties Ltd',
-      paymenttype: 'Net Banking',
-      duedate: '11 Mar 2021',
-      amount: '2099',
-      status: 'Sent',
-    },
+   
   ]);
 
   const columns = [
@@ -40,18 +34,18 @@ const Payments = () => {
     },
     {
       title: 'Client',
-      dataIndex: 'client',
+      dataIndex: 'lead',
       sorter: (a, b) => a.client.length - b.client.length,
     },
 
     {
       title: 'Payment Type',
-      dataIndex: 'paymenttype',
+      dataIndex: 'paymentMode',
       sorter: (a, b) => a.paymenttype.length - b.paymenttype.length,
     },
     {
       title: 'Paid Date',
-      dataIndex: 'duedate',
+      dataIndex: 'PaymentDate',
       sorter: (a, b) => a.duedate.length - b.duedate.length,
     },
     {
