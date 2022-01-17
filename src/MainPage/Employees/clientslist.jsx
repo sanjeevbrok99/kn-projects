@@ -13,9 +13,9 @@ const Clients = () => {
     {
       id: 1,
       image: Avatar_07,
-      name: 'Prateek Tiwari',
+      name: 'Name',
       client_id: 'CLT-0001',
-      contactperson: 'Barry Cuda',
+      contactperson: 'New Employee',
       email: 'barrycuda@example.com',
       mobile: '9876543210',
       status: 'Active',
@@ -43,11 +43,6 @@ const Clients = () => {
         </h2>
       ),
       sorter: (a, b) => a.name.length - b.name.length,
-    },
-    {
-      title: 'Client ID',
-      dataIndex: 'client_id',
-      sorter: (a, b) => a.employee_id.length - b.employee_id.length,
     },
 
     {
