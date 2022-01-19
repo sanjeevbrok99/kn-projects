@@ -21,7 +21,7 @@ function AdminSettingSidebar(props) {
             <li className="menu-title">Settings</li>
             <li className={pathname.includes('profile') ? 'active' : ''}>
               <Link to="/settings/profile">
-                <i className="la la-building" /> <span>Profile</span>
+                <i className="la la-user" /> <span>Profile</span>
               </Link>
             </li>
             <li className={pathname.includes('companysetting') ? 'active' : ''}>
@@ -34,46 +34,21 @@ function AdminSettingSidebar(props) {
                 onClick={() => localStorage.setItem('selectbox', 'true')}
                 to="/settings/localization"
               >
-                <i className="la la-clock-o" /> <span>Localization</span>
+                <i className="la la-search-location" /> <span>Locations</span>
               </Link>
             </li>
             <li
               className={pathname.includes('roles-permissions') ? 'active' : ''}
             >
               <Link to="/settings/roles-permissions">
-                <i className="la la-key" /> <span>Roles &amp; Permissions</span>
+                <i className="la la-key" /> <span>Departments</span>
               </Link>
             </li>
-            <li className={pathname.includes('email-') ? 'active' : ''}>
-              <Link to="/settings/email-settings">
-                <i className="la la-at" /> <span>Email Settings</span>
-              </Link>
-            </li>
-            <li className={pathname.includes('performance-') ? 'active' : ''}>
-              <Link to="/settings/performance-setting">
-                <i className="la la-chart-bar" />{' '}
-                <span>Performance Settings</span>
-              </Link>
-            </li>
-            <li className={pathname.includes('approval-') ? 'active' : ''}>
-              <Link to="/settings/approval-setting">
-                <i className="la la-thumbs-up" /> <span>Approval Settings</span>
-              </Link>
-            </li>
-            <li className={pathname.includes('invoice-') ? 'active' : ''}>
-              <Link to="/settings/invoice-settings">
-                <i className="la la-pencil-square" />{' '}
-                <span>Invoice Settings</span>
-              </Link>
-            </li>
-            <li className={pathname.includes('salary-') ? 'active' : ''}>
-              <Link to="/settings/salary-settings">
-                <i className="la la-money" /> <span>Salary Settings</span>
-              </Link>
-            </li>
-            <li className={pathname.includes('notifications') ? 'active' : ''}>
-              <Link to="/settings/notifications">
-                <i className="la la-globe" /> <span>Notifications</span>
+            <li
+              className={pathname.includes('roles-permissions') ? 'active' : ''}
+            >
+              <Link to="/settings/roles-permissions">
+                <i className="la la-key" /> <span>Designations</span>
               </Link>
             </li>
             <li className={pathname.includes('-password') ? 'active' : ''}>

@@ -247,6 +247,63 @@ const CreateEstimate = () => {
                         </tr>
                       </thead>
                       <tbody>
+                        {itemsToAdd.map((item, index) => (
+                          <tr key={index}>
+                            <td>1</td>
+                            <td>
+                              <input
+                                className="form-control"
+                                type="text"
+                                value={item.name}
+                                style={{ minWidth: '150px' }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                type="text"
+                                style={{ minWidth: '150px' }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                style={{ width: '100px' }}
+                                type="text"
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                style={{ width: '80px' }}
+                                type="text"
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                readOnly
+                                style={{ width: '120px' }}
+                                type="text"
+                              />
+                            </td>
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setItemsToAdd((i) =>
+                                    i.filter((_, index) => index !== index)
+                                  );
+                                }}
+                                className="text-success font-18"
+                                title="Add"
+                              >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
                         <tr>
                           <td>1</td>
                           <td>
