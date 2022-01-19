@@ -31,10 +31,6 @@ const bar = [
             link: '/administrator/leave-request',
           },
           {
-            name: 'Absentees',
-            link: '/administrator/absentees',
-          },
-          {
             name: 'Jobs',
             link: '/administrator/jobs',
           },
@@ -68,7 +64,7 @@ const bar = [
         name: 'Leads',
         hasChildren: false,
         icon: 'la la-users',
-        link: '/leads/leads',
+        link: '/employees/leads',
       },
       {
         name: 'Contacts',
@@ -99,10 +95,6 @@ const bar = [
           {
             name: 'Customers',
             link: '/sales/customers',
-          },
-          {
-            name: 'Income',
-            link: '/sales/income',
           },
           {
             name: 'Invoices',

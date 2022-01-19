@@ -22,6 +22,7 @@ import Payroll from '../MainPage/HR/Payroll';
 import Employees from '../MainPage/Employees';
 import Projects from '../MainPage/Employees/Projects';
 import Employee from '../MainPage/Employees/Employees';
+import Purchase from '../MainPage/Purchase';
 
 export default [
   {
@@ -84,6 +85,10 @@ export default [
   {
     path: 'sales',
     component: Sales,
+  },
+  {
+    path: 'purchase',
+    component: Purchase,
   },
   {
     path: 'accounts',
