@@ -13,7 +13,7 @@ import {
 import { fetchJobs } from '../../lib/api/index.js';
 
 const JobsList = () => {
-  const[job,setJob]=useState([]);
+  const [job, setJob] = useState([]);
   useEffect(() => {
     // Anything in here is fired on component mount.
     localStorage.removeItem('jobview');
@@ -21,7 +21,7 @@ const JobsList = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchJobs();
-      console.log("hey");
+      console.log('hey');
       console.log(res);
       console.log('fetch Jobs');
       setJob(res);
@@ -50,7 +50,6 @@ const JobsList = () => {
         {/* /Header Title */}
         {/* Header Menu */}
         <ul className="nav user-menu">
-         
           <li className="nav-item">
             <Link className="nav-link" to="/login">
               Login
@@ -105,44 +104,37 @@ const JobsList = () => {
           </div>
           {/* /Page Header */}
           <div className="row">
-          {job?.map((e)=>{
-       return (
-        <div className="col-md-6">
-        <Link className="job-list" to="/applyjob/jobdetail">
-          
-          <div className="job-list-det">
-            <div className="job-list-desc">
-              <h3 className="job-list-title">{e.title}</h3>
-              <h4 className="job-department">{e.department}</h4>
-            </div>
-            <div className="job-type-info">
-              <span className="job-types">{e.jobType}</span>
-            </div>
-          </div>
-          <div className="job-list-footer">
-            <ul>
-              <li>
-                <i className="fa fa-map-signs" /> {e.location.name}
-              </li>
-              <li>
-                <i className="fa fa-money" /> {e.salaryFrom} - {e.salaryTo}
-              </li>
-              <li>
-                <i className="fa fa-clock-o" /> 2 days ago
-              </li>
-            </ul>
-          </div>
-        </Link>
-      </div>
-
-     
-     );})}
-           
-           
-            
-           
-
-           
+            {job?.map((e) => {
+              return (
+                <div className="col-md-6">
+                  <Link className="job-list" to="/applyjob/jobdetail">
+                    <div className="job-list-det">
+                      <div className="job-list-desc">
+                        <h3 className="job-list-title">{e.title}</h3>
+                        <h4 className="job-department">{e.department}</h4>
+                      </div>
+                      <div className="job-type-info">
+                        <span className="job-types">{e.jobType}</span>
+                      </div>
+                    </div>
+                    <div className="job-list-footer">
+                      <ul>
+                        <li>
+                          <i className="fa fa-map-signs" /> {e.location.name}
+                        </li>
+                        <li>
+                          <i className="fa fa-money" /> {e.salaryFrom} -{' '}
+                          {e.salaryTo}
+                        </li>
+                        <li>
+                          <i className="fa fa-clock-o" /> 2 days ago
+                        </li>
+                      </ul>
+                    </div>
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

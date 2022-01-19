@@ -9,21 +9,20 @@ import '../../antdstyle.css';
 import { fetchJobs } from '../../../lib/api';
 
 const Managedjobs = () => {
+  const [job, setJob] = useState([]);
   useEffect(() => {
     (async () => {
       const res = await fetchJobs();
 
-      console.log('jobs');
-      setData(
+      setJob(
         res.map((v, i) => ({
           ...v,
           id: i + 1,
           startdate: v.startDate.split('T')[0],
           expirydate: v.endDate.split('T')[0],
+          jobLocation: v.location?.name,
         }))
       );
-
-      console.log(res);
     })();
   }, []);
 
@@ -34,7 +33,7 @@ const Managedjobs = () => {
         width: '100%',
       });
     }
-  });
+  }, []);
 
   const columns = [
     {
@@ -52,8 +51,8 @@ const Managedjobs = () => {
     },
 
     {
-      title: 'Department',
-      dataIndex: 'department',
+      title: 'Job Location',
+      dataIndex: 'jobLocation',
       sorter: (a, b) => a.department.length - b.department.length,
     },
     {
@@ -73,9 +72,9 @@ const Managedjobs = () => {
       render: (text, record) => (
         <div className="dropdown action-label text-center">
           <a
-            className="btn btn-white btn-sm btn-rounded dropdown-toggle"
+            className="btn btn-white btn-sm btn-rounded"
             href="#"
-            data-toggle="dropdown"
+            onClick={(e) => e.preventDefault()}
             aria-expanded="false"
           >
             <i
@@ -89,7 +88,7 @@ const Managedjobs = () => {
                   : 'fa fa-dot-circle-o text-danger'
               }
             />
-            Full Time
+            {record.jobType}
           </a>
           <div className="dropdown-menu dropdown-menu-right">
             <a className="dropdown-item" href="#">
@@ -113,41 +112,9 @@ const Managedjobs = () => {
       sorter: (a, b) => a.jobtype.length - b.jobtype.length,
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      render: (text, record) => (
-        <div className="dropdown action-label text-center">
-          <a
-            className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-            href="#"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i
-              className={
-                text === 'Open'
-                  ? 'fa fa-dot-circle-o text-info'
-                  : text === 'Closed'
-                  ? 'fa fa-dot-circle-o text-success'
-                  : 'fa fa-dot-circle-o text-danger'
-              }
-            />{' '}
-            Open
-          </a>
-          <div className="dropdown-menu dropdown-menu-right">
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-info" /> Open
-            </a>
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-success" /> Closed
-            </a>
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-danger" /> Cancelled
-            </a>
-          </div>
-        </div>
-      ),
-      sorter: (a, b) => a.status.length - b.status.length,
+      title: 'Vacancies',
+      dataIndex: 'numberOfVacancies',
+      sorter: (a, b) => a.numberOfVacancies - b.numberOfVacancies,
     },
     {
       title: 'Applicants',
@@ -235,7 +202,7 @@ const Managedjobs = () => {
               <Table
                 className="table-striped"
                 pagination={{
-                  total: data.length,
+                  total: job.length,
                   showTotal: (total, range) =>
                     `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                   showSizeChanger: true,
@@ -245,8 +212,8 @@ const Managedjobs = () => {
                 style={{ overflowX: 'auto' }}
                 columns={columns}
                 // bordered
-                dataSource={data}
-                rowKey={(record) => record.id}
+                dataSource={job}
+                rowKey={(record) => record._id}
                 // onChange={this.handleTableChange}
               />
             </div>
