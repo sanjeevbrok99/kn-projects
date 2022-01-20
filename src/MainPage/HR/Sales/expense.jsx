@@ -40,13 +40,10 @@ const Expenses = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetchLoan();
-
-      console.log('loan');
-
-      setData(res.map((v, i) => ({ ...v, id: i + 1 })));
-
-      console.log(res);
+      // const res = await fetchLoan();
+      // console.log('loan');
+      // setData(res.map((v, i) => ({ ...v, id: i + 1 })));
+      // console.log(res);
     })();
   }, []);
 

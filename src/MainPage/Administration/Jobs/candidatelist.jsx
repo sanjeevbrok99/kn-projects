@@ -1,7 +1,3 @@
-/**
- * Signin Firebase
- */
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -15,13 +11,11 @@ import { fetchCandidate } from '../../../lib/api';
 const CandidateList = () => {
   const [data, setData] = useState([]);
 
-
   useEffect(() => {
     (async () => {
       const res = await fetchCandidate();
-     console.log(res);
-     setData(res);
-      
+      console.log(res);
+      setData(res);
     })();
   }, []);
 
@@ -127,7 +121,6 @@ const CandidateList = () => {
                   <li className="breadcrumb-item active">Candidates List</li>
                 </ul>
               </div>
-         
             </div>
           </div>
           {/* /Page Header */}
@@ -149,7 +142,6 @@ const CandidateList = () => {
                   // bordered
                   dataSource={data}
                   rowKey={(record) => record.id}
-                
                 />
               </div>
             </div>
@@ -167,7 +159,6 @@ const CandidateList = () => {
             role="document"
           >
             <div className="modal-content">
-             
               <div className="modal-body">
                 <form>
                   <div className="row">
