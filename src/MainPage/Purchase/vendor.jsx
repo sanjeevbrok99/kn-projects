@@ -15,8 +15,8 @@ function Vendor() {
       image: Avatar_07,
       name: 'Name',
       client_id: 'CLT-0001',
-      contactperson: 'New Employee',
-      email: 'barrycuda@example.com',
+      contactperson: 'New Customer',
+      email: 'new.customer@example.com',
       mobile: '9876543210',
       status: 'Active',
     },
@@ -139,12 +139,12 @@ function Vendor() {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Clients</h3>
+              <h3 className="page-title">Vendors</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item active">Clients</li>
+                <li className="breadcrumb-item active">Vendors</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">

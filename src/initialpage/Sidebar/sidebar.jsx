@@ -203,7 +203,7 @@ const bar = [
         children: [
           {
             name: 'Tickets',
-            link: '/tickets/tickets',
+            link: '/employees/tickets',
           },
           {
             name: 'Disputes',

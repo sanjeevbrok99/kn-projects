@@ -16,13 +16,13 @@ import Training from '../MainPage/Performance/Training';
 import HR from '../MainPage/HR';
 import Reports from '../MainPage/HR/Reports';
 import Sales from '../MainPage/HR/Sales';
-import Accounts from '../MainPage/HR/Accounts';
 import Payroll from '../MainPage/HR/Payroll';
 //Employees
 import Employees from '../MainPage/Employees';
 import Projects from '../MainPage/Employees/Projects';
 import Employee from '../MainPage/Employees/Employees';
 import Purchase from '../MainPage/Purchase';
+import Accounts from '../MainPage/Accounts/';
 
 export default [
   {
