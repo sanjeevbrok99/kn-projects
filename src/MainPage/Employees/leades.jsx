@@ -45,7 +45,7 @@ const Leads = () => {
           <Link to="/app/profile/lead-profile" className="avatar">
             <img alt="" src={record.image} />
           </Link>
-          <Link to="/app/profile/employee-profile">{text}</Link>
+          <Link to="/app/profile/lead-profile">{text}</Link>
         </h2>
       ),
       sorter: (a, b) => a.name.length - b.name.length,
@@ -229,10 +229,9 @@ const Leads = () => {
                 data-toggle="modal"
                 data-target="#add_"
               >
-                <i className="fa fa-plus" /> Add 
+                <i className="fa fa-plus" /> Add
               </a>
             </div>
-
           </div>
         </div>
         {/* /Page Header */}

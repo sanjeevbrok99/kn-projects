@@ -133,11 +133,11 @@ const EmployeeProfile = () => {
                     <div className="row">
                       <div className="col-md-5">
                         <div className="profile-info-left">
-                          <h3 className="user-name m-t-0 mb-0">Lead of ours</h3>
+                          <h3 className="user-name m-t-0 mb-0">Lead Profile</h3>
                         </div>
 
                         <div className="mt-3">
-                          <ul className="personal-info">
+                          <ul className="personal-info profile-info-left">
                             <li>
                               <div className="title">Phone:</div>
                               <div className="text">
@@ -171,7 +171,20 @@ const EmployeeProfile = () => {
                               <div className="text">Male</div>
                             </li>
                             <li>
-                              <div className="title">Reports to:</div>
+                              <div className="title">Assigned Employee</div>
+                              <div className="text">
+                                <div className="avatar-box">
+                                  <div className="avatar avatar-xs">
+                                    <img src={Avatar_16} alt="" />
+                                  </div>
+                                </div>
+                                <Link to="/app/profile/employee-profile">
+                                  Sushmita Singh
+                                </Link>
+                              </div>
+                            </li>
+                            <li>
+                              <div className="title">Created By</div>
                               <div className="text">
                                 <div className="avatar-box">
                                   <div className="avatar avatar-xs">
@@ -244,104 +257,64 @@ const EmployeeProfile = () => {
           >
             <h3>Timeline</h3>
             <Timeline align="alternate">
-              <TimelineItem>
-                <TimelineOppositeContent>
-                  <h3 className="mb-0 mt-2">9:30 &nbsp;3 Aug 2021</h3>
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot>
-                    <LaptopMacIcon />
-                  </TimelineDot>
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>
-                  <Paper elevation={3} className={classes.paper}>
-                    <h4>Work</h4>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Aut, rem?
-                    </p>
-                  </Paper>
-                </TimelineContent>
-              </TimelineItem>
-
-              <TimelineItem>
-                <TimelineOppositeContent>
-                  <h3 className="mb-0 mt-2">9:30 &nbsp;3 Aug 2021</h3>
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot>
-                    <LaptopMacIcon />
-                  </TimelineDot>
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>
-                  <Paper elevation={3} className={classes.paper}>
-                    <h4>work</h4>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Aut, rem?
-                    </p>
-                  </Paper>
-                </TimelineContent>
-              </TimelineItem>
-
-              <TimelineItem>
-                <TimelineSeparator>
-                  <TimelineDot>
-                    <LaptopMacIcon />
-                  </TimelineDot>
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>
-                  <Paper elevation={3} className={classes.paper}>
-                    <h4>Eat</h4>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Aut, rem?
-                    </p>
-                  </Paper>
-                </TimelineContent>
-              </TimelineItem>
-
-              <TimelineItem>
-                <TimelineOppositeContent>
-                  <h3 className="mb-0 mt-2">9:30 &nbsp;3 Aug 2021</h3>
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot>
-                    <LaptopMacIcon />
-                  </TimelineDot>
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>
-                  <Paper elevation={3} className={classes.paper}>
-                    <h4>Eat</h4>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Aut, rem?
-                    </p>
-                  </Paper>
-                </TimelineContent>
-              </TimelineItem>
+              {[1, 2, 3, 4, 5].map((n) => (
+                <TimelineItem>
+                  <TimelineOppositeContent>
+                    <h6
+                      style={{
+                        marginTop: '16px',
+                      }}
+                      className="mb-0"
+                    >
+                      <span
+                        style={{
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        3 Aug 2021
+                      </span>{' '}
+                      at 9:30
+                    </h6>
+                  </TimelineOppositeContent>
+                  <TimelineSeparator>
+                    <TimelineDot>
+                      <LaptopMacIcon />
+                    </TimelineDot>
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>
+                    <Paper
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                      }}
+                      elevation={1}
+                      className={classes.paper}
+                    >
+                      <h5>Work</h5>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing
+                        elit. Aut, rem?
+                      </p>
+                    </Paper>
+                  </TimelineContent>
+                </TimelineItem>
+              ))}
             </Timeline>
           </div>
           {/* /Profile Info Tab */}
           {/* Notes Tab */}
           <div className="tab-pane fade" id="emp_notes">
-            <h3>Notes</h3>
-
             <div className="row">
-              
               <div className="input-group mb-3 pl-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Add Note"
-                  aria-label="Add Note"
-                  aria-describedby="basic-addon2"
-                />
-                <div className="input-group-append">
+                <h3>Notes</h3>
+                <div
+                  style={{
+                    marginLeft: 'auto',
+                  }}
+                  className="input-group-append"
+                >
                   <div className="col-auto ml-auto">
                     <a
                       href="#"

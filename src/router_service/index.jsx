@@ -13,7 +13,6 @@ import Goals from '../MainPage/Performance/Goals';
 import Performances from '../MainPage/Performance/Performance';
 import Training from '../MainPage/Performance/Training';
 //HR
-import HR from '../MainPage/HR';
 import Reports from '../MainPage/HR/Reports';
 import Sales from '../MainPage/HR/Sales';
 import Payroll from '../MainPage/HR/Payroll';
@@ -23,6 +22,7 @@ import Projects from '../MainPage/Employees/Projects';
 import Employee from '../MainPage/Employees/Employees';
 import Purchase from '../MainPage/Purchase';
 import Accounts from '../MainPage/Accounts/';
+import Leads from '../MainPage/Lead';
 
 export default [
   {
@@ -89,6 +89,10 @@ export default [
   {
     path: 'purchase',
     component: Purchase,
+  },
+  {
+    path: 'leads',
+    component: Leads,
   },
   {
     path: 'accounts',
