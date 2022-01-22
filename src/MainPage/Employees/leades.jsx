@@ -42,7 +42,7 @@ const Leads = () => {
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to="/app/profile/employee-profile" className="avatar">
+          <Link to="/app/profile/lead-profile" className="avatar">
             <img alt="" src={record.image} />
           </Link>
           <Link to="/app/profile/employee-profile">{text}</Link>
@@ -211,7 +211,8 @@ const Leads = () => {
         {/* Page Header */}
         <div className="page-header">
           <div className="row">
-            <div className="col-sm-12">
+            {/* jin - changed col-sm-12 to col-sm-8  */}
+            <div className="col-sm-8">
               <h3 className="page-title">Leads</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
@@ -220,6 +221,18 @@ const Leads = () => {
                 <li className="breadcrumb-item active">Leads</li>
               </ul>
             </div>
+            {/* jin - pasted button here */}
+            <div className="col-auto float-right ml-auto">
+              <a
+                href="#"
+                className="btn add-btn"
+                data-toggle="modal"
+                data-target="#add_"
+              >
+                <i className="fa fa-plus" /> Add 
+              </a>
+            </div>
+
           </div>
         </div>
         {/* /Page Header */}
