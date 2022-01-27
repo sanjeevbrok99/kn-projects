@@ -1,8 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import httpService from '../../../lib/httpService';
 
 const Invoicecreate = () => {
+  const [customers, setCustomers] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [itemsToAdd, setItemsToAdd] = useState([
+    {
+      item: '',
+      description: '',
+      unitCost: 0,
+      quantity: 0,
+      amount: 0,
+    },
+  ]);
+  const [invoiceToAdd, setInvoiceToAdd] = useState({});
+  const history = useHistory();
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -10,7 +25,30 @@ const Invoicecreate = () => {
         width: '100%',
       });
     }
-  });
+    fetchCustomers();
+    fetchProject();
+  }, []);
+
+  const fetchCustomers = async () => {
+    const customers = await httpService.get('/customer');
+    setCustomers(customers.data);
+  };
+
+  const fetchProject = async () => {
+    const projects = await httpService.get('/project');
+    console.log(projects);
+    setProjects(projects.data);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const invoice = await httpService.post('/sale-invoice', {
+      ...invoiceToAdd,
+      items: itemsToAdd,
+      total: itemsToAdd.reduce((acc, cur) => acc + cur.amount, 0),
+    });
+    history.goBack();
+  };
 
   return (
     <div className="page-wrapper">
@@ -37,17 +75,28 @@ const Invoicecreate = () => {
         {/* /Page Header */}
         <div className="row">
           <div className="col-sm-12">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group">
                     <label>
-                      Client <span className="text-danger">*</span>
+                      Customer <span className="text-danger">*</span>
                     </label>
-                    <select className="select">
-                      <option>Please Select</option>
-                      <option selected>Barry Cuda</option>
-                      <option>Tressa Wexler</option>
+                    <select
+                      onChange={(e) => {
+                        setInvoiceToAdd({
+                          ...invoiceToAdd,
+                          customer: e.target.value,
+                        });
+                      }}
+                      className="custom-select"
+                    >
+                      <option selected>Please Select</option>
+                      {customers.map((customer) => (
+                        <option key={customer._id} value={customer._id}>
+                          {customer.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -56,48 +105,22 @@ const Invoicecreate = () => {
                     <label>
                       Project <span className="text-danger">*</span>
                     </label>
-                    <select className="select">
-                      <option>Select Project</option>
-                      <option selected>Office Management</option>
-                      <option>Project Management</option>
+                    <select
+                      onChange={(e) => {
+                        setInvoiceToAdd({
+                          ...invoiceToAdd,
+                          project: e.target.value,
+                        });
+                      }}
+                      className="custom-select"
+                    >
+                      <option selected>Select Project</option>
+                      {projects.map((project) => (
+                        <option key={project._id} value={project._id}>
+                          {project.name}
+                        </option>
+                      ))}
                     </select>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group">
-                    <label>Email</label>
-                    <input className="form-control" type="email" />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group">
-                    <label>Tax</label>
-                    <select className="select">
-                      <option>Select Tax</option>
-                      <option>VAT</option>
-                      <option>GST</option>
-                      <option>No Tax</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group">
-                    <label>Client Address</label>
-                    <textarea
-                      className="form-control"
-                      rows={3}
-                      defaultValue={''}
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group">
-                    <label>Billing Address</label>
-                    <textarea
-                      className="form-control"
-                      rows={3}
-                      defaultValue={''}
-                    />
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-3">
@@ -107,7 +130,13 @@ const Invoicecreate = () => {
                     </label>
                     <div>
                       <input
-                        className="form-control datetimepicker"
+                        onChange={(e) => {
+                          setInvoiceToAdd({
+                            ...invoiceToAdd,
+                            invoiceDate: e.target.value,
+                          });
+                        }}
+                        className="form-control"
                         type="date"
                       />
                     </div>
@@ -120,8 +149,14 @@ const Invoicecreate = () => {
                     </label>
                     <div>
                       <input
-                        className="form-control datetimepicker"
+                        className="form-control"
                         type="date"
+                        onChange={(e) => {
+                          setInvoiceToAdd({
+                            ...invoiceToAdd,
+                            dueDate: e.target.value,
+                          });
+                        }}
                       />
                     </div>
                   </div>
@@ -143,102 +178,124 @@ const Invoicecreate = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>
-                            <input
-                              className="form-control"
-                              type="text"
-                              style={{ minWidth: '150px' }}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              type="text"
-                              style={{ minWidth: '150px' }}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              style={{ width: '100px' }}
-                              type="text"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              style={{ width: '80px' }}
-                              type="text"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              readOnly
-                              style={{ width: '120px' }}
-                              type="text"
-                            />
-                          </td>
-                          <td>
-                            <a
-                              href="javascript:void(0)"
-                              className="text-success font-18"
-                              title="Add"
-                            >
-                              <i className="fa fa-plus" />
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>
-                            <input
-                              className="form-control"
-                              type="text"
-                              style={{ minWidth: '150px' }}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              type="text"
-                              style={{ minWidth: '150px' }}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              style={{ width: '100px' }}
-                              type="text"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              style={{ width: '80px' }}
-                              type="text"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              readOnly
-                              style={{ width: '120px' }}
-                              type="text"
-                            />
-                          </td>
-                          <td>
-                            <a
-                              href="javascript:void(0)"
-                              className="text-danger font-18"
-                              title="Remove"
-                            >
-                              <i className="fa fa-trash-o" />
-                            </a>
-                          </td>
-                        </tr>
+                        {itemsToAdd.map((item, index) => (
+                          <tr>
+                            <td>{index + 1}</td>
+                            <td>
+                              <input
+                                onChange={(e) => {
+                                  const items = itemsToAdd.map((item, i) => {
+                                    if (index === i) {
+                                      item.item = e.target.value;
+                                    }
+                                    return item;
+                                  });
+                                  setItemsToAdd(items);
+                                }}
+                                className="form-control"
+                                type="text"
+                                style={{ minWidth: '150px' }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                type="text"
+                                style={{ minWidth: '150px' }}
+                                onChange={(e) => {
+                                  const items = itemsToAdd.map((item, i) => {
+                                    if (index === i) {
+                                      item.description = e.target.value;
+                                    }
+                                    return item;
+                                  });
+                                  setItemsToAdd(items);
+                                }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                style={{ width: '100px' }}
+                                type="text"
+                                onChange={(e) => {
+                                  const items = itemsToAdd.map((item, i) => {
+                                    if (index === i) {
+                                      item.unitCost = e.target.value;
+                                      item.amount =
+                                        e.target.value * item.quantity;
+                                    }
+                                    return item;
+                                  });
+
+                                  setItemsToAdd(items);
+                                }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                style={{ width: '80px' }}
+                                type="text"
+                                onChange={(e) => {
+                                  const items = itemsToAdd.map((item, i) => {
+                                    if (index === i) {
+                                      item.quantity = e.target.value;
+                                      item.amount =
+                                        e.target.value * item.unitCost;
+                                    }
+                                    return item;
+                                  });
+
+                                  setItemsToAdd(items);
+                                }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                readOnly
+                                style={{ width: '120px' }}
+                                type="text"
+                                value={item.amount}
+                              />
+                            </td>
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                className={`${
+                                  index + 1 !== itemsToAdd.length
+                                    ? 'text-danger'
+                                    : 'text-success'
+                                } font-18`}
+                                title="Add"
+                                onClick={() => {
+                                  if (index + 1 !== itemsToAdd.length) {
+                                    setItemsToAdd((d) =>
+                                      d.filter((_, i) => i !== index)
+                                    );
+                                    return;
+                                  }
+                                  setItemsToAdd([
+                                    ...itemsToAdd,
+                                    {
+                                      item: '',
+                                      description: '',
+                                      unitCost: 0,
+                                      quantity: '',
+                                    },
+                                  ]);
+                                }}
+                              >
+                                {index + 1 === itemsToAdd.length ? (
+                                  <i className="fa fa-plus" />
+                                ) : (
+                                  <i className="fa fa-trash-o" />
+                                )}
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -258,7 +315,7 @@ const Invoicecreate = () => {
                               width: '230px',
                             }}
                           >
-                            0
+                            {itemsToAdd.reduce((p, c) => p + c.amount, 0)}
                           </td>
                         </tr>
                         <tr>
@@ -313,7 +370,7 @@ const Invoicecreate = () => {
                               width: '230px',
                             }}
                           >
-                            $ 0.00
+                            ₹ {itemsToAdd.reduce((p, c) => p + c.amount, 0)}
                           </td>
                         </tr>
                       </tbody>
@@ -323,16 +380,22 @@ const Invoicecreate = () => {
                     <div className="col-md-12">
                       <div className="form-group">
                         <label>Other Information</label>
-                        <textarea className="form-control" defaultValue={''} />
+                        <textarea
+                          onChange={(e) => {
+                            setInvoiceToAdd({
+                              ...invoiceToAdd,
+                              otherInformation: e.target.value,
+                            });
+                          }}
+                          className="form-control"
+                          defaultValue={''}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="submit-section">
-                <button className="btn btn-primary submit-btn m-r-10">
-                  Save &amp; Send
-                </button>
                 <button className="btn btn-primary submit-btn">Save</button>
               </div>
             </form>

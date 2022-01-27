@@ -4,7 +4,7 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   Avatar_02,
   Avatar_05,
@@ -50,22 +50,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EmployeeProfile = () => {
+  const { id } = useParams();
   const classes = useStyles();
-
   const [designationReason, setDesignationReason] = React.useState('');
-  const userId = useSelector(
-    (state) => state.authentication.value?.user?.userId
-  );
 
   useEffect(() => {
-    console.log('userId', userId);
     if ($('.select').length > 0) {
       $('.select').select2({
         minimumResultsForSearch: -1,
         width: '100%',
       });
     }
-  });
+    fetchLeadProfile();
+  }, []);
+
+  const fetchLeadProfile = async () => {
+    const response = await httpService.get(`/lead/${id}`);
+    console.log(response.data);
+  };
 
   const handleResign = async () => {
     if (!designationReason) {
