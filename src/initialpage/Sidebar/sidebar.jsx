@@ -131,10 +131,7 @@ const bar = [
             name: 'Projects',
             link: '/sales/projects',
           },
-          {
-            name: 'Quotations',
-            link: '/sales/quotations',
-          },
+
           {
             name: 'Credit Notes',
             link: '/sales/credit-notes',
@@ -209,10 +206,6 @@ const bar = [
             name: 'Project Sales',
             link: '/accounts/project-sales',
           },
-          {
-            name: 'Stock Summary',
-            link: '/accounts/stock-summary',
-          },
         ],
       },
       {
@@ -223,10 +216,6 @@ const bar = [
           {
             name: 'Tickets',
             link: '/employees/tickets',
-          },
-          {
-            name: 'Disputes',
-            link: '/tickets/disputes',
           },
         ],
       },
