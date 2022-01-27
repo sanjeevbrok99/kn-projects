@@ -24,6 +24,7 @@ import Vendoredit from './vendoredit';
 import RecurringBillCreate from './recurringbillcreate';
 import RecurringBillEdit from './recurringbilledit';
 // import RecurringInvoiceEdit from './recurringinvoiceedit';
+import CreditNotes from '../../Sales/CreditNotes';
 
 const SalesRoute = ({ match }) => (
   <Switch>
@@ -62,6 +63,7 @@ const SalesRoute = ({ match }) => (
     <Route path={`${match.url}/payment-received`} component={Payments} />
     <Route path={`${match.url}/provident-fund`} component={ProvidentFund} />
     <Route path={`${match.url}/taxes`} component={Taxs} />
+    <Route path={`${match.url}/credit-notes`} component={CreditNotes} />
   </Switch>
 );
 

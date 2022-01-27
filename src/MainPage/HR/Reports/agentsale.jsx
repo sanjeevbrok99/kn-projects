@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
-import { itemRender, onShowSizeChange } from '../paginationfunction';
-import '../antdstyle.css';
 
-const CreditNotes = () => {
+import { itemRender, onShowSizeChange } from '../../paginationfunction';
+import '../../antdstyle.css';
+
+const AgentSale = () => {
   const [data, setData] = useState([
     {
       id: 1,
@@ -44,7 +45,7 @@ const CreditNotes = () => {
       sorter: (a, b) => a.id.length - b.id.length,
     },
     {
-      title: 'Item Number',
+      title: 'Employee Name',
       dataIndex: 'invoicenumber',
       render: (text, record) => (
         <Link to="/app/sales/invoices-view">#{text}</Link>
@@ -52,7 +53,7 @@ const CreditNotes = () => {
       sorter: (a, b) => a.invoicenumber.length - b.invoicenumber.length,
     },
     {
-      title: 'Item',
+      title: 'Sale Item',
       dataIndex: 'client',
       sorter: (a, b) => a.client.length - b.client.length,
     },
@@ -130,12 +131,12 @@ const CreditNotes = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Credit Notes</h3>
+              <h3 className="page-title">Sales By Employee</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item active">Credit notes</li>
+                <li className="breadcrumb-item active">Sales By Employee</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
@@ -145,7 +146,7 @@ const CreditNotes = () => {
                 data-toggle="modal"
                 data-target="#add_job"
               >
-                <i className="fa fa-plus" /> Add Credit Notes
+                <i className="fa fa-plus" /> Add Sales
               </a>
             </div>
           </div>
@@ -158,7 +159,7 @@ const CreditNotes = () => {
               <div>
                 <input className="form-control floating " type="text" />
               </div>
-              <label className="focus-label">Item Name</label>
+              <label className="focus-label">Employee Name</label>
             </div>
           </div>
 
@@ -199,7 +200,7 @@ const CreditNotes = () => {
           >
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Add Credit</h5>
+                <h5 className="modal-title">Add Sales</h5>
                 <button
                   type="button"
                   className="close"
@@ -214,8 +215,16 @@ const CreditNotes = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Item Name</label>
-                        <input className="form-control" type="text" />
+                        <label>All Employee</label>
+                        <select className="select">
+                          <option>-</option>
+                          <option>Marketing Head</option>
+                          <option>Application Development</option>
+                          <option>IT Management</option>
+                          <option>Accounts Management</option>
+                          <option>Support Management</option>
+                          <option>Marketing</option>
+                        </select>
                       </div>
                     </div>
                     {/* <div className="col-md-6">
@@ -236,7 +245,7 @@ const CreditNotes = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Description</label>
+                        <label>Sale Item</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
@@ -258,7 +267,7 @@ const CreditNotes = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Address 1 </label>
+                        <label>Amount</label>
                         <input type="text" className="form-control" />
                       </div>
                     </div>
@@ -322,7 +331,7 @@ const CreditNotes = () => {
             </button>
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Edit Job</h5>
+                <h5 className="modal-title">Edit Employee Sale</h5>
                 <button
                   type="button"
                   className="close"
@@ -520,4 +529,4 @@ const CreditNotes = () => {
   );
 };
 
-export default CreditNotes;
+export default AgentSale;

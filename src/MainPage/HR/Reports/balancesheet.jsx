@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
-import { itemRender, onShowSizeChange } from '../paginationfunction';
-import '../antdstyle.css';
 
-const CreditNotes = () => {
+import { itemRender, onShowSizeChange } from '../../paginationfunction';
+import '../../antdstyle.css';
+
+const BalanceSheet = () => {
   const [data, setData] = useState([
     {
       id: 1,
@@ -44,7 +45,7 @@ const CreditNotes = () => {
       sorter: (a, b) => a.id.length - b.id.length,
     },
     {
-      title: 'Item Number',
+      title: 'Assets',
       dataIndex: 'invoicenumber',
       render: (text, record) => (
         <Link to="/app/sales/invoices-view">#{text}</Link>
@@ -52,23 +53,23 @@ const CreditNotes = () => {
       sorter: (a, b) => a.invoicenumber.length - b.invoicenumber.length,
     },
     {
-      title: 'Item',
+      title: 'Liabilities',
       dataIndex: 'client',
       sorter: (a, b) => a.client.length - b.client.length,
     },
 
     {
-      title: 'Qty',
+      title: 'Total Assets Amount',
       dataIndex: 'createddate',
       sorter: (a, b) => a.createddate.length - b.createddate.length,
     },
     {
-      title: 'Rate',
+      title: 'Total Liabiltie Amount',
       dataIndex: 'duedate',
       sorter: (a, b) => a.duedate.length - b.duedate.length,
     },
     {
-      title: 'Amount',
+      title: 'Date',
       dataIndex: 'amount',
       render: (text, record) => <span>₹ {text}</span>,
       sorter: (a, b) => a.amount.length - b.amount.length,
@@ -102,11 +103,14 @@ const CreditNotes = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            {/* <i className="fa fa-pencil m-r-5" /> Edit */}
-
-            <Link className="dropdown-item" to="/app/sales/invoices-view">
-              <i className="fa fa-eye m-r-5" /> View
-            </Link>
+            <a
+              className="dropdown-item"
+              href="#"
+              data-toggle="modal"
+              data-target="#edit_job"
+            >
+              <i className="fa fa-pencil m-r-5" /> Edit
+            </a>
             <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Download
             </a>
@@ -130,12 +134,12 @@ const CreditNotes = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Credit Notes</h3>
+              <h3 className="page-title">Balance Sheet</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item active">Credit notes</li>
+                <li className="breadcrumb-item active">Balance Sheet</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
@@ -145,7 +149,7 @@ const CreditNotes = () => {
                 data-toggle="modal"
                 data-target="#add_job"
               >
-                <i className="fa fa-plus" /> Add Credit Notes
+                <i className="fa fa-plus" /> Make Balance Sheet
               </a>
             </div>
           </div>
@@ -199,7 +203,7 @@ const CreditNotes = () => {
           >
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Add Credit</h5>
+                <h5 className="modal-title">Make Balance Sheet</h5>
                 <button
                   type="button"
                   className="close"
@@ -214,7 +218,7 @@ const CreditNotes = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Item Name</label>
+                        <label>Asset Name</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
@@ -236,13 +240,13 @@ const CreditNotes = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Description</label>
+                        <label>Liabilitie Name</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Quantity</label>
+                        <label>Asset total Amount</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
@@ -250,7 +254,7 @@ const CreditNotes = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Rate </label>
+                        <label>Liabiltie total Amount</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
@@ -258,13 +262,13 @@ const CreditNotes = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Address 1 </label>
+                        <label>Asset Total Amount</label>
                         <input type="text" className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Address 2</label>
+                        <label>DHDHDH</label>
                         <input type="text" className="form-control" />
                       </div>
                     </div>
@@ -322,7 +326,7 @@ const CreditNotes = () => {
             </button>
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Edit Job</h5>
+                <h5 className="modal-title">Edit Balance Sheet</h5>
                 <button
                   type="button"
                   className="close"
@@ -335,49 +339,13 @@ const CreditNotes = () => {
               <div className="modal-body">
                 <form>
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>Job Title</label>
+                        <label>Asset Name</label>
                         <input
                           className="form-control"
                           type="text"
-                          defaultValue="Product Manager"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Department</label>
-                        <select className="select">
-                          <option>-</option>
-                          <option>Marketing Head</option>
-                          <option>Application Development</option>
-                          <option>IT Management</option>
-                          <option>Accounts Management</option>
-                          <option>Support Management</option>
-                          <option>Marketing</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Job Location</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          defaultValue="California"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>No of Vacancies</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          defaultValue={5}
+                          defaultValue="Suntech Reality Ltd"
                         />
                       </div>
                     </div>
@@ -385,17 +353,39 @@ const CreditNotes = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Experience</label>
+                        <label>Liabiltie Name</label>
                         <input
                           className="form-control"
                           type="text"
-                          defaultValue="2 Years"
+                          defaultValue="Suncity Reality Ltd"
                         />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Age</label>
+                        <label>Total Amount of Liabiltie</label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          defaultValue="Rs. 5000000"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Total Amount of Assets</label>
+                        <input
+                          className="form-control"
+                          type="text"
+                          defaultValue=" Rs.5000000 "
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Description</label>
                         <input
                           className="form-control"
                           type="text"
@@ -404,71 +394,15 @@ const CreditNotes = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>Salary From</label>
+                        <label>Date</label>
                         <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="32k"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Salary To</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="38k"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Job Type</label>
-                        <select className="select">
-                          <option>Full Time</option>
-                          <option>Part Time</option>
-                          <option>Internship</option>
-                          <option>Temporary</option>
-                          <option>Remote</option>
-                          <option>Others</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Status</label>
-                        <select className="select">
-                          <option>Open</option>
-                          <option>Closed</option>
-                          <option>Cancelled</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Start Date</label>
-                        <input
-                          type="text"
+                          type="date"
                           className="form-control datetimepicker"
                           defaultValue="3 Mar 2021"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Expired Date</label>
-                        <input
-                          type="text"
-                          className="form-control datetimepicker"
-                          defaultValue="31 May 2021"
                         />
                       </div>
                     </div>
@@ -520,4 +454,4 @@ const CreditNotes = () => {
   );
 };
 
-export default CreditNotes;
+export default BalanceSheet;

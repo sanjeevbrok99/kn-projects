@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
-import { itemRender, onShowSizeChange } from '../paginationfunction';
-import '../antdstyle.css';
 
-const CreditNotes = () => {
+import { itemRender, onShowSizeChange } from '../../paginationfunction';
+import '../../antdstyle.css';
+
+const ProfitLoss = () => {
   const [data, setData] = useState([
     {
       id: 1,
@@ -520,4 +521,4 @@ const CreditNotes = () => {
   );
 };
 
-export default CreditNotes;
+export default ProfitLoss;
