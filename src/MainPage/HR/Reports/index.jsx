@@ -9,6 +9,7 @@ import ExpenseReport from './expensereport';
 import Invoicereport from './invoicereport';
 import PaymentReport from './paymentreport';
 import ProjectReport from './projectreport';
+import IssueTracking from './issuetracking';
 import TaskReport from './taskreport';
 import UserReport from './userreport';
 import EmployeeReport from './employeereport';
@@ -34,6 +35,7 @@ const ReportsRoute = ({ match }) => (
     <Route path={`${match.url}/invoice-reports`} component={Invoicereport} />
     <Route path={`${match.url}/payments-reports`} component={PaymentReport} />
     <Route path={`${match.url}/project-reports`} component={ProjectReport} />
+    <Route path={`${match.url}/issue-tracking`} component={IssueTracking} />
     <Route path={`${match.url}/task-reports`} component={TaskReport} />
     <Route path={`${match.url}/user-reports`} component={UserReport} />
     <Route path={`${match.url}/employee-reports`} component={EmployeeReport} />

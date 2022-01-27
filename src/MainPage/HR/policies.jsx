@@ -10,6 +10,8 @@ import httpService from '../../lib/httpService';
 
 const Policies = () => {
   const [data, setData] = useState([]);
+  const [_data, set_data] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [department, setDepartment] = useState([]);
   const [policyToAdd, setPolicyToAdd] = useState({});
   const [policyToEdit, setPolicyToEdit] = useState({});
@@ -62,6 +64,20 @@ const Policies = () => {
     fetchPolicies();
     fetchDepartments();
   }, []);
+
+  const fetchPolicies = async () => {
+    const res = await httpService.get('/policy');
+    const departments = await httpService.get('/department');
+    setDepartments(departments.data);
+    setData(
+      res.data.map((data) => ({
+        ...data,
+        name: data.name,
+        department: data.department,
+      }))
+    );
+    console.log(res.data);
+  };
 
   const columns = [
     {
