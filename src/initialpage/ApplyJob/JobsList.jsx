@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
 import {
   headerlogo,
   lnEnglish,
@@ -8,11 +10,22 @@ import {
   lnSpanish,
   lnGerman,
 } from '../../Entryfile/imagepath.jsx';
+import { fetchJobs } from '../../lib/api/index.js';
 
 const JobsList = () => {
+  const [job, setJob] = useState([]);
   useEffect(() => {
     // Anything in here is fired on component mount.
     localStorage.removeItem('jobview');
+  }, []);
+  useEffect(() => {
+    (async () => {
+      const res = await fetchJobs();
+      console.log('hey');
+      console.log(res);
+      console.log('fetch Jobs');
+      setJob(res);
+    })();
   }, []);
 
   return (
@@ -37,51 +50,6 @@ const JobsList = () => {
         {/* /Header Title */}
         {/* Header Menu */}
         <ul className="nav user-menu">
-          {/* Search */}
-          {/* <li className="nav-item">
-            <div className="top-nav-search">
-              <a to="" className="responsive-search">
-                <i className="fa fa-search" />
-              </a>
-              <form>
-                <input
-                  className="form-control"
-                  type="text"
-                  placeholder="Search here"
-                />
-                <button className="btn" type="submit">
-                  <i className="fa fa-search" />
-                </button>
-              </form>
-            </div>
-          </li> */}
-          {/* /Search */}
-          {/* Flag */}
-          {/* <li className="nav-item dropdown has-arrow flag-nav">
-            <a
-              className="nav-link dropdown-toggle"
-              data-toggle="dropdown"
-              href="#"
-              role="button"
-            >
-              <img src={lnEnglish} alt="" height={20} /> <span>English</span>
-            </a>
-            <div className="dropdown-menu dropdown-menu-right">
-              <a href="" className="dropdown-item">
-                <img src={lnEnglish} alt="" height={16} /> English
-              </a>
-              <a href="" className="dropdown-item">
-                <img src={lnFrench} alt="" height={16} /> French
-              </a>
-              <a href="" className="dropdown-item">
-                <img src={lnSpanish} alt="" height={16} /> Spanish
-              </a>
-              <a href="" className="dropdown-item">
-                <img src={lnGerman} alt="" height={16} /> German
-              </a>
-            </div>
-          </li> */}
-          {/* /Flag */}
           <li className="nav-item">
             <Link className="nav-link" to="/login">
               Login
@@ -136,214 +104,37 @@ const JobsList = () => {
           </div>
           {/* /Page Header */}
           <div className="row">
-            <div className="col-md-6">
-              <Link className="job-list" to="/applyjob/jobdetail">
-                <div className="job-list-det">
-                  <div className="job-list-desc">
-                    <h3 className="job-list-title">Web Devloper</h3>
-                    <h4 className="job-department">Development</h4>
-                  </div>
-                  <div className="job-type-info">
-                    <span className="job-types">Full Time</span>
-                  </div>
+            {job?.map((e) => {
+              return (
+                <div className="col-md-6">
+                  <Link className="job-list" to="/applyjob/jobdetail">
+                    <div className="job-list-det">
+                      <div className="job-list-desc">
+                        <h3 className="job-list-title">{e.title}</h3>
+                        <h4 className="job-department">{e.department}</h4>
+                      </div>
+                      <div className="job-type-info">
+                        <span className="job-types">{e.jobType}</span>
+                      </div>
+                    </div>
+                    <div className="job-list-footer">
+                      <ul>
+                        <li>
+                          <i className="fa fa-map-signs" /> {e.location.name}
+                        </li>
+                        <li>
+                          <i className="fa fa-money" /> {e.salaryFrom} -{' '}
+                          {e.salaryTo}
+                        </li>
+                        <li>
+                          <i className="fa fa-clock-o" /> 2 days ago
+                        </li>
+                      </ul>
+                    </div>
+                  </Link>
                 </div>
-                <div className="job-list-footer">
-                  <ul>
-                    <li>
-                      <i className="fa fa-map-signs" /> India
-                    </li>
-                    <li>
-                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
-                    </li>
-                    <li>
-                      <i className="fa fa-clock-o" /> 2 days ago
-                    </li>
-                  </ul>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-6">
-              <Link className="job-list" to="/applyjob/jobdetail">
-                <div className="job-list-det">
-                  <div className="job-list-desc">
-                    <h3 className="job-list-title">Android Devloper</h3>
-                    <h4 className="job-department">App Development</h4>
-                  </div>
-                  <div className="job-type-info">
-                    <span className="job-types">Part Time</span>
-                  </div>
-                </div>
-                <div className="job-list-footer">
-                  <ul>
-                    <li>
-                      <i className="fa fa-map-signs" /> India
-                    </li>
-                    <li>
-                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
-                    </li>
-                    <li>
-                      <i className="fa fa-clock-o" /> 2 days ago
-                    </li>
-                  </ul>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-6">
-              <Link className="job-list" to="/applyjob/jobdetail">
-                <div className="job-list-det">
-                  <div className="job-list-desc">
-                    <h3 className="job-list-title">Web Devloper</h3>
-                    <h4 className="job-department">Development</h4>
-                  </div>
-                  <div className="job-type-info">
-                    <span className="job-types">Full Time</span>
-                  </div>
-                </div>
-                <div className="job-list-footer">
-                  <ul>
-                    <li>
-                      <i className="fa fa-map-signs" /> India
-                    </li>
-                    <li>
-                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
-                    </li>
-                    <li>
-                      <i className="fa fa-clock-o" /> 2 days ago
-                    </li>
-                  </ul>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-6">
-              <Link className="job-list" to="/applyjob/jobdetail">
-                <div className="job-list-det">
-                  <div className="job-list-desc">
-                    <h3 className="job-list-title">Android Devloper</h3>
-                    <h4 className="job-department">App Development</h4>
-                  </div>
-                  <div className="job-type-info">
-                    <span className="job-types">Part Time</span>
-                  </div>
-                </div>
-                <div className="job-list-footer">
-                  <ul>
-                    <li>
-                      <i className="fa fa-map-signs" /> India
-                    </li>
-                    <li>
-                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
-                    </li>
-                    <li>
-                      <i className="fa fa-clock-o" /> 2 days ago
-                    </li>
-                  </ul>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-6">
-              <Link className="job-list" to="/applyjob/jobdetail">
-                <div className="job-list-det">
-                  <div className="job-list-desc">
-                    <h3 className="job-list-title">Web Devloper</h3>
-                    <h4 className="job-department">Development</h4>
-                  </div>
-                  <div className="job-type-info">
-                    <span className="job-types">Full Time</span>
-                  </div>
-                </div>
-                <div className="job-list-footer">
-                  <ul>
-                    <li>
-                      <i className="fa fa-map-signs" /> India
-                    </li>
-                    <li>
-                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
-                    </li>
-                    <li>
-                      <i className="fa fa-clock-o" /> 2 days ago
-                    </li>
-                  </ul>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-6">
-              <Link className="job-list" to="/applyjob/jobdetail">
-                <div className="job-list-det">
-                  <div className="job-list-desc">
-                    <h3 className="job-list-title">Android Devloper</h3>
-                    <h4 className="job-department">App Development</h4>
-                  </div>
-                  <div className="job-type-info">
-                    <span className="job-types">Part Time</span>
-                  </div>
-                </div>
-                <div className="job-list-footer">
-                  <ul>
-                    <li>
-                      <i className="fa fa-map-signs" /> India
-                    </li>
-                    <li>
-                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
-                    </li>
-                    <li>
-                      <i className="fa fa-clock-o" /> 2 days ago
-                    </li>
-                  </ul>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-6">
-              <Link className="job-list" to="/applyjob/jobdetail">
-                <div className="job-list-det">
-                  <div className="job-list-desc">
-                    <h3 className="job-list-title">Web Devloper</h3>
-                    <h4 className="job-department">Development</h4>
-                  </div>
-                  <div className="job-type-info">
-                    <span className="job-types">Full Time</span>
-                  </div>
-                </div>
-                <div className="job-list-footer">
-                  <ul>
-                    <li>
-                      <i className="fa fa-map-signs" /> India
-                    </li>
-                    <li>
-                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
-                    </li>
-                    <li>
-                      <i className="fa fa-clock-o" /> 2 days ago
-                    </li>
-                  </ul>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-6">
-              <Link className="job-list" to="/applyjob/jobdetail">
-                <div className="job-list-det">
-                  <div className="job-list-desc">
-                    <h3 className="job-list-title">Android Devloper</h3>
-                    <h4 className="job-department">App Development</h4>
-                  </div>
-                  <div className="job-type-info">
-                    <span className="job-types">Part Time</span>
-                  </div>
-                </div>
-                <div className="job-list-footer">
-                  <ul>
-                    <li>
-                      <i className="fa fa-map-signs" /> India
-                    </li>
-                    <li>
-                      <i className="fa fa-money" /> Rs. 35000-Rs. 38000
-                    </li>
-                    <li>
-                      <i className="fa fa-clock-o" /> 2 days ago
-                    </li>
-                  </ul>
-                </div>
-              </Link>
-            </div>
+              );
+            })}
           </div>
         </div>
       </div>

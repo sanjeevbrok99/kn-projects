@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import {
@@ -16,20 +16,43 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
+import httpService from '../../lib/httpService';
 
 const Leads = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      image: Avatar_11,
-      name: 'Prateek Tiwari',
-      email: 'barrycuda@example.com',
-      mobile: '9876543210',
-      project: 'TariniVihar-II',
-      status: 'Working',
-      created: '10 hours ago',
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [leadToAdd, setLeadToAdd] = useState({});
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    fetchLeads();
+    fetchProjects();
+  }, []);
+
+  const fetchLeads = async () => {
+    const leads = await httpService.get('http://localhost:3000/api/v1/lead');
+    setData(
+      leads.data.map((lead, i) => ({
+        ...lead,
+        id: i + 1,
+        projectName: lead.project.name,
+        assignedstaff:
+          lead.assignedTo.firstName + ' ' + lead.assignedTo.lastName,
+        status: lead.status,
+        created: new Date(lead.createdAt).toGMTString().substring(4, 16),
+      }))
+    );
+  };
+
+  const fetchProjects = async () => {
+    const projects = await httpService.get('/project');
+    setProjects(projects.data);
+  };
+
+  const handleAddLead = async () => {
+    await httpService.post('/lead', leadToAdd);
+    fetchLeads();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
 
   const columns = [
     {
@@ -42,10 +65,10 @@ const Leads = () => {
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to="/app/profile/employee-profile" className="avatar">
+          <Link to="/app/profile/lead-profile" className="avatar">
             <img alt="" src={record.image} />
           </Link>
-          <Link to="/app/profile/employee-profile">{text}</Link>
+          <Link to={`/app/profile/lead-profile/${record._id}`}>{text}</Link>
         </h2>
       ),
       sorter: (a, b) => a.name.length - b.name.length,
@@ -58,13 +81,13 @@ const Leads = () => {
 
     {
       title: 'Mobile',
-      dataIndex: 'mobile',
+      dataIndex: 'phone',
       sorter: (a, b) => a.mobile.length - b.mobile.length,
     },
 
     {
       title: 'Project',
-      dataIndex: 'project',
+      dataIndex: 'projectName',
       render: (text, record) => (
         <Link to="/app/projects/projects-view">{text}</Link>
       ),
@@ -74,87 +97,6 @@ const Leads = () => {
     {
       title: 'Assigned Staff',
       dataIndex: 'assignedstaff',
-      render: (text, record) => (
-        <ul className="team-members">
-          <li>
-            <a href="#" title="Prateek Tiwari" data-toggle="tooltip">
-              <img alt="" src={Avatar_02} />
-            </a>
-          </li>
-          <li>
-            <a href="#" title="Shital Agarwal" data-toggle="tooltip">
-              <img alt="" src={Avatar_09} />
-            </a>
-          </li>
-          <li className="dropdown avatar-dropdown">
-            <a
-              href="#"
-              className="all-users dropdown-toggle"
-              data-toggle="dropdown"
-              aria-expanded="false"
-            >
-              +15
-            </a>
-            <div className="dropdown-menu dropdown-menu-right">
-              <div className="avatar-group">
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_02} />
-                </a>
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_09} />
-                </a>
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_10} />
-                </a>
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_05} />
-                </a>
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_11} />
-                </a>
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_12} />
-                </a>
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_13} />
-                </a>
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_01} />
-                </a>
-                <a className="avatar avatar-xs" href="#">
-                  <img alt="" src={Avatar_16} />
-                </a>
-              </div>
-              <div className="avatar-pagination">
-                <ul className="pagination">
-                  <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">«</span>
-                      <span className="sr-only">Previous</span>
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      1
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      2
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">»</span>
-                      <span className="sr-only">Next</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </li>
-        </ul>
-      ),
     },
     {
       title: 'Status',
@@ -211,7 +153,8 @@ const Leads = () => {
         {/* Page Header */}
         <div className="page-header">
           <div className="row">
-            <div className="col-sm-12">
+            {/* jin - changed col-sm-12 to col-sm-8  */}
+            <div className="col-sm-8">
               <h3 className="page-title">Leads</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
@@ -219,6 +162,17 @@ const Leads = () => {
                 </li>
                 <li className="breadcrumb-item active">Leads</li>
               </ul>
+            </div>
+            {/* jin - pasted button here */}
+            <div className="col-auto float-right ml-auto">
+              <a
+                href="#"
+                className="btn add-btn"
+                data-toggle="modal"
+                data-target="#add_lead"
+              >
+                <i className="fa fa-plus" /> Add Lead
+              </a>
             </div>
           </div>
         </div>
@@ -248,6 +202,131 @@ const Leads = () => {
         </div>
       </div>
       {/* /Page Content */}
+      <div id="add_lead" className="modal custom-modal fade" role="dialog">
+        <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Add Employee</h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAddLead();
+                }}
+              >
+                <div className="row">
+                  <div className="col-sm-6">
+                    <div className="form-group">
+                      <label className="col-form-label">
+                        Name <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        onChange={(e) => {
+                          setLeadToAdd({
+                            ...leadToAdd,
+                            name: e.target.value,
+                          });
+                        }}
+                        className="form-control"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-sm-6">
+                    <div className="form-group">
+                      <label className="col-form-label">
+                        Email <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        onChange={(e) => {
+                          setLeadToAdd({
+                            ...leadToAdd,
+                            email: e.target.value,
+                          });
+                        }}
+                        className="form-control"
+                        type="email"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-sm-6">
+                    <div className="form-group">
+                      <label className="col-form-label">
+                        Phone <span className="text-danger">*</span>
+                      </label>
+                      <input
+                        onChange={(e) => {
+                          setLeadToAdd({
+                            ...leadToAdd,
+                            phone: e.target.value,
+                          });
+                        }}
+                        className="form-control"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label className="col-form-label">
+                        Project <span className="text-danger">*</span>
+                      </label>
+                      <select
+                        onChange={(e) => {
+                          setLeadToAdd({
+                            ...leadToAdd,
+                            project: e.target.value,
+                          });
+                        }}
+                        className="form-control custom-select"
+                      >
+                        <option value={''}>Select Project</option>
+                        {projects.map((project, index) => (
+                          <option key={index} value={project._id}>
+                            {project.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="form-group">
+                      <label>Address</label>
+                      <textarea
+                        onChange={(e) => {
+                          setLeadToAdd({
+                            ...leadToAdd,
+                            address: e.target.value,
+                          });
+                        }}
+                        defaultValue={''}
+                        className="form-control"
+                        rows={4}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="submit-section">
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -6,28 +6,10 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import httpService from '../../../lib/httpService';
 
 const Invoices = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      invoicenumber: 'INV-0001',
-      client: '	Sunteck Realty Ltd',
-      createddate: '11 Mar 2021',
-      duedate: '11 Mar 2021',
-      amount: '2099',
-      status: 'Paid',
-    },
-    {
-      id: 2,
-      invoicenumber: 'INV-0002',
-      client: 'Godrej Properties Ltd',
-      createddate: '11 Mar 2021',
-      duedate: '11 Mar 2021',
-      amount: '2099',
-      status: 'Sent',
-    },
-  ]);
+  const [data, setData] = useState([]);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -35,7 +17,24 @@ const Invoices = () => {
         width: '100%',
       });
     }
-  });
+    fetchInvoice();
+  }, []);
+
+  const fetchInvoice = async () => {
+    const invoices = await httpService.get('/sale-invoice');
+    console.log(invoices);
+    setData(
+      invoices.data?.map((invoice) => ({
+        id: invoice._id,
+        invoicenumber: 'INV-' + invoice._id.toString().padStart(4, '0'),
+        createddate: new Date(invoice.createdAt).toGMTString().substring(4, 16),
+        duedate: new Date(invoice.invoiceDate).toGMTString().substring(4, 16),
+        client: invoice.customer.name,
+        amount: invoice.total,
+        status: invoice.status,
+      }))
+    );
+  };
 
   const columns = [
     {
@@ -108,6 +107,10 @@ const Invoices = () => {
             <Link className="dropdown-item" to="/app/sales/invoices-view">
               <i className="fa fa-eye m-r-5" /> View
             </Link>
+            <a className="dropdown-item" href="#">
+              <i className="fa fa-email-square m-r-5" />
+              Email
+            </a>
             <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Download
             </a>

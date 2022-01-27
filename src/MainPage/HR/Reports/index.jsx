@@ -17,6 +17,12 @@ import PayslipReport from './payslipreport';
 import AttendanceReport from './attendancereport';
 import LeaveReport from './leavereport';
 import DailyReport from './dailyreport';
+import BalanceSheet from './balancesheet';
+import AgentSale from './agentsale';
+import CashFlow from './cashflow';
+import CustomerSale from './customersale';
+import ProfitLoss from './profitloss';
+import ProductSale from './productsale';
 
 const ReportsRoute = ({ match }) => (
   <Switch>
@@ -40,6 +46,12 @@ const ReportsRoute = ({ match }) => (
     />
     <Route path={`${match.url}/leave-reports`} component={LeaveReport} />
     <Route path={`${match.url}/daily-reports`} component={DailyReport} />
+    <Route path={`${match.url}/sales-by-agent`} component={AgentSale} />
+    <Route path={`${match.url}/balance-sheet`} component={BalanceSheet} />
+    <Route path={`${match.url}/sales-by-customer`} component={CustomerSale} />
+    <Route path={`${match.url}/profit-and-loss`} component={ProfitLoss} />
+    <Route path={`${match.url}/cash-flow-statement`} component={CashFlow} />
+    <Route path={`${match.url}/sales-by-product`} component={ProductSale} />
   </Switch>
 );
 

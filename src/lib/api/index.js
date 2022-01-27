@@ -196,3 +196,101 @@ export async function fetchTax() {
   });
   return fetchTaxResponse;
 }
+
+
+export async function fetchGoals() {
+  const fetchGoalTypeResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/goal-type')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchGoalTypeResponse;
+}
+
+
+export async function fetchGoalList() {
+  const GoalListResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/goal')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return GoalListResponse;
+}
+
+
+export async function fetchPayment() {
+  const fetchPaymentResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/sale-payment')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchPaymentResponse;
+}
+
+
+
+
+
+export async function fetchEstimate() {
+  const fetchEstimateResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/sale-payment')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchEstimateResponse;
+}
+
+export async function fetchCandidate() {
+  const fetchCandidateResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/candidate')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchCandidateResponse;
+}
+

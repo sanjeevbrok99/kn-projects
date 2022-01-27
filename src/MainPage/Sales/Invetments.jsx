@@ -11,47 +11,10 @@ import { fetchInvestment } from '../../lib/api/index';
 import httpService from '../../lib/httpService';
 
 const Investments = () => {
-  const [itemName, setItemName] = useState('');
-  const [investmentFor, setInvestmentFor] = useState('');
-  const [date, setDate] = useState('');
-  const [comodity, setComodity] = useState('');
-  const [amount, setAmount] = useState('');
-  const [status, setStatus] = useState('');
-  const [payment, setPayment] = useState('');
-  const [editInvestment, setEditInvestment] = useState('');
-  useEffect(() => {
-    (async () => {
-      const res = await fetchInvestment();
-      console.log('Investment');
-      console.log(res);
-      setData(res.map((d) => ({ ...d, date: d.date.split('T')[0] })));
-    })();
-  }, []);
-
-  const handleAddInvestment = async () => {
-    const data = {
-      name: itemName,
-      for: investmentFor,
-      date: date,
-      amount: amount,
-      paidBy: payment,
-    };
-    const res = await httpService.post('/investment', data);
-    fetchInvestment();
-    console.log(res);
-    document.querySelectorAll('.close')?.forEach((e) => e.click());
-  };
-
-  const handleEditEmployee = async () => {
-    const res = await httpService.put(
-      `/investment/${editInvestment._id}`,
-      editInvestment
-    );
-    fetchInvestment();
-    console.log(res);
-    document.querySelectorAll('.close')?.forEach((e) => e.click());
-  };
   const [data, setData] = useState([]);
+  const [investmentToAdd, setInvestmentToAdd] = useState({});
+  const [investmentToEdit, setInvestmentToEdit] = useState({});
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -59,27 +22,66 @@ const Investments = () => {
         width: '100%',
       });
     }
-  });
+    fetchInvestments();
+  }, []);
+
+  const fetchInvestments = async () => {
+    const investments = await httpService.get('/investment');
+    setData(
+      investments.data.map((d) => ({
+        ...d,
+        Investmentdate: d.date.split('T')[0],
+      }))
+    );
+  };
+
+  const handleAdd = async () => {
+    const response = await httpService.post('/investment', investmentToAdd);
+    if (response.status < 400) {
+      fetchInvestments();
+      setInvestmentToAdd({});
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+    }
+  };
+
+  const handleEdit = async () => {
+    const response = await httpService.put(
+      `/investment/${investmentToEdit._id}`,
+      investmentToEdit
+    );
+    if (response.status < 400) {
+      fetchInvestments();
+      setInvestmentToEdit({});
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+    }
+  };
+
+  const handleDelete = async () => {
+    const response = await httpService.delete(
+      `/investment/${investmentToEdit._id}`
+    );
+    if (response.status < 400) {
+      fetchInvestments();
+      setInvestmentToEdit({});
+      document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+    }
+  };
 
   const columns = [
     {
-      title: 'Investment For',
-      dataIndex: 'for',
-      sorter: (a, b) => a.Investmentfrom.length - b.Investmentfrom.length,
+      title: 'Name',
+      dataIndex: 'name',
+      sorter: (a, b) => a.name.length - b.name.length,
     },
     {
       title: 'Investment Date',
-      dataIndex: 'date',
+      dataIndex: 'Investmentdate',
       sorter: (a, b) => a.Investmentdate.length - b.Investmentdate.length,
     },
     {
-      title: 'Item',
-      dataIndex: 'name',
-      render: (text, record) => (
-        <h2 className="table-avatar">
-          {text} <span>{record.role}</span>
-        </h2>
-      ),
+      title: 'Commodity',
+      dataIndex: 'for',
+      render: (text, record) => <h2 className="table-avatar">{text}</h2>,
       sorter: (a, b) => a.name.length - b.name.length,
     },
     {
@@ -112,11 +114,7 @@ const Investments = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_expense"
-              onClick={() => {
-                setEditInvestment(record);
-                console.log('editing');
-                console.log(record);
-              }}
+              onClick={() => setInvestmentToEdit(record)}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -125,6 +123,7 @@ const Investments = () => {
               href="#"
               data-toggle="modal"
               data-target="#delete_expense"
+              onClick={() => setInvestmentToEdit(record)}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -239,10 +238,8 @@ const Investments = () => {
                 }}
                 style={{ overflowX: 'auto' }}
                 columns={columns}
-                // bordered
                 dataSource={data}
                 rowKey={(record) => record.id}
-                // onChange={this.handleTableChange}
               />
             </div>
           </div>
@@ -271,30 +268,41 @@ const Investments = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleAddInvestment();
+                  handleAdd();
                 }}
               >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Item Name</label>
+                      <label>Name</label>
                       <input
+                        onChange={(e) => {
+                          setInvestmentToAdd((d) => ({
+                            ...d,
+                            name: e.target.value,
+                          }));
+                        }}
                         className="form-control"
                         type="text"
-                        onChange={(event) => setItemName(event.target.value)}
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Investment For</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        onChange={(event) =>
-                          setInvestmentFor(event.target.value)
-                        }
-                      />
+                      <label>Paid By</label>
+                      <select
+                        onChange={(e) => {
+                          setInvestmentToAdd((d) => ({
+                            ...d,
+                            paidBy: e.target.value,
+                          }));
+                        }}
+                        className="custom-select"
+                      >
+                        <option value={''}>Select method</option>
+                        <option>Cash</option>
+                        <option>Cheque</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -304,9 +312,14 @@ const Investments = () => {
                       <label>Investment Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          onChange={(e) => {
+                            setInvestmentToAdd((d) => ({
+                              ...d,
+                              date: e.target.value,
+                            }));
+                          }}
+                          className="form-control"
                           type="date"
-                          onChange={(event) => setDate(event.target.value)}
                         />
                       </div>
                     </div>
@@ -314,13 +327,17 @@ const Investments = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Commodity</label>
-                      <select
-                        className="select"
-                        onChange={(event) => setComodity(event.target.value)}
-                      >
-                        <option>Daniel Porter</option>
-                        <option>Roger Dixon</option>
-                      </select>
+                      <input
+                        placeholder="Commodity"
+                        className="form-control"
+                        type="text"
+                        onChange={(e) => {
+                          setInvestmentToAdd((d) => ({
+                            ...d,
+                            for: e.target.value,
+                          }));
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -329,57 +346,20 @@ const Investments = () => {
                     <div className="form-group">
                       <label>Amount</label>
                       <input
-                        placeholder="$50"
+                        placeholder="₹
+                        50"
                         className="form-control"
                         type="text"
-                        onChange={(event) => setAmount(event.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Paid By</label>
-                      <input
-                        placeholder="Cash/Cheque"
-                        className="form-control"
-                        type="text"
-                        onChange={(event) => setPayment(event.target.value)}
+                        onChange={(e) => {
+                          setInvestmentToAdd((d) => ({
+                            ...d,
+                            amount: e.target.value,
+                          }));
+                        }}
                       />
                     </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Status</label>
-                      <select
-                        className="select"
-                        onChange={(event) => setStatus(event.target.value)}
-                      >
-                        <option>Pending</option>
-                        <option>Approved</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    {/* <div className="form-group">
-                      <label>Attachments</label>
-                      <input className="form-control" type="file" />
-                    </div> */}
-                  </div>
-                </div>
-                {/* <div className="attach-files">
-                  <ul>
-                    <li>
-                      <img src={PlaceHolder} alt="" />
-                      <a href="#" className="fa fa-close file-remove" />
-                    </li>
-                    <li>
-                      <img src={PlaceHolder} alt="" />
-                      <a href="#" className="fa fa-close file-remove"/>
-                    </li>
-                  </ul>
-                </div> */}
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn" type="submit">
                     Submit
@@ -413,40 +393,42 @@ const Investments = () => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleEditEmployee();
+                  handleEdit();
                 }}
               >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Item Name</label>
+                      <label>Name</label>
                       <input
-                        className="form-control"
-                        defaultValue={editInvestment?.name || ''}
-                        type="text"
+                        defaultValue={investmentToEdit.name}
                         onChange={(e) => {
-                          setEditInvestment({
-                            ...editInvestment,
+                          setInvestmentToEdit((d) => ({
+                            ...d,
                             name: e.target.value,
-                          });
+                          }));
                         }}
+                        className="form-control"
+                        type="text"
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Investment For</label>
-                      <input
-                        className="form-control"
-                        defaultValue="Amazon"
-                        type="text"
+                      <label>Paid By</label>
+                      <select
+                        defaultValue={investmentToEdit.paidBy}
                         onChange={(e) => {
-                          setEditInvestment({
-                            ...editInvestment,
-                            for: e.target.value,
-                          });
+                          setInvestmentToEdit((d) => ({
+                            ...d,
+                            paidBy: e.target.value,
+                          }));
                         }}
-                      />
+                        className="custom-select"
+                      >
+                        <option>Cash</option>
+                        <option>Cheque</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -456,16 +438,40 @@ const Investments = () => {
                       <label>Investment Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
-                          type="date"
+                          defaultValue={
+                            investmentToEdit?.date
+                              ? new Date(investmentToEdit.date)
+                                  .toISOString()
+                                  .substring(0, 10)
+                              : ''
+                          }
                           onChange={(e) => {
-                            setEditInvestment({
-                              ...editInvestment,
+                            setInvestmentToEdit((d) => ({
+                              ...d,
                               date: e.target.value,
-                            });
+                            }));
                           }}
+                          className="form-control"
+                          type="date"
                         />
                       </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Commodity</label>
+                      <input
+                        placeholder="Commodity"
+                        className="form-control"
+                        type="text"
+                        defaultValue={investmentToEdit.for}
+                        onChange={(e) => {
+                          setInvestmentToEdit((d) => ({
+                            ...d,
+                            for: e.target.value,
+                          }));
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -474,53 +480,23 @@ const Investments = () => {
                     <div className="form-group">
                       <label>Amount</label>
                       <input
-                        placeholder="cash/cheque"
+                        placeholder="₹50"
                         className="form-control"
                         type="text"
+                        defaultValue={investmentToEdit.amount}
                         onChange={(e) => {
-                          setEditInvestment({
-                            ...editInvestment,
+                          setInvestmentToEdit((d) => ({
+                            ...d,
                             amount: e.target.value,
-                          });
+                          }));
                         }}
                       />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Paid By</label>
-                      <input
-                        placeholder="cash/cheque"
-                        className="form-control"
-                        defaultValue="$10000"
-                        type="text"
-                        onChange={(e) => {
-                          setEditInvestment({
-                            ...editInvestment,
-                            paidBy: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Status</label>
-                      <select
-                        className="select"
-                        onChange={(event) => setStatus(event.target.value)}
-                      >
-                        <option>Pending</option>
-                        <option>Approved</option>
-                      </select>
                     </div>
                   </div>
                 </div>
 
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn">Submit</button>
                 </div>
               </form>
             </div>
@@ -544,7 +520,14 @@ const Investments = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDelete();
+                      }}
+                      href=""
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>

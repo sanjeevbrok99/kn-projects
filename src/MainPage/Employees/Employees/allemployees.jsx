@@ -33,17 +33,21 @@ const AllEmployees = () => {
 
   useEffect(() => {
     fetchEmployees();
+    fetchRolesAndDepartments();
   }, []);
 
   const fetchEmployees = async () => {
     const res = await allemployee();
+    setEmployees(res);
+    set_employees(res);
+    setIsLoading(false);
+  };
+
+  const fetchRolesAndDepartments = async () => {
     const roles = await httpService.get('/role');
     const departments = await httpService.get('/department');
     setRoles(roles.data);
     setDepartments(departments.data);
-    setEmployees(res);
-    set_employees(res);
-    setIsLoading(false);
   };
 
   useEffect(() => {

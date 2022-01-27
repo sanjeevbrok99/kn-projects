@@ -1,7 +1,3 @@
-/**
- * Signin Firebase
- */
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -11,34 +7,18 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
-
+import { fetchCandidate } from '../../../lib/api';
 const CandidateList = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      image: Avatar_02,
-      name: 'Prateek Tiwari',
-      mobilenumber: '9876543210',
-      email: 'johndoe@example.com',
-      createddate: '1 Jan 2023',
-    },
-    {
-      id: 2,
-      image: Avatar_01,
-      name: 'Shital Agarwal',
-      mobilenumber: '9876543210',
-      email: 'richardmiles@example.com',
-      createddate: '18 Mar 2024',
-    },
-    {
-      id: 3,
-      image: Avatar_03,
-      name: 'Harvinder',
-      mobilenumber: '9876543210',
-      email: 'johnsmith@example.com',
-      createddate: '1 Apr 2024',
-    },
-  ]);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetchCandidate();
+      console.log(res);
+      setData(res);
+    })();
+  }, []);
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -69,7 +49,7 @@ const CandidateList = () => {
     },
     {
       title: 'Mobile Number',
-      dataIndex: 'mobilenumber',
+      dataIndex: 'mobile',
       sorter: (a, b) => a.mobilenumber.length - b.mobilenumber.length,
     },
 
@@ -80,7 +60,7 @@ const CandidateList = () => {
     },
     {
       title: 'Created Date',
-      dataIndex: 'createddate',
+      dataIndex: 'createdAt',
       sorter: (a, b) => a.createddate.length - b.createddate.length,
     },
     {
@@ -141,17 +121,6 @@ const CandidateList = () => {
                   <li className="breadcrumb-item active">Candidates List</li>
                 </ul>
               </div>
-              <div className="col-auto float-right ml-auto">
-                <a
-                  href="#"
-                  data-toggle="modal"
-                  data-target="#add_employee"
-                  className="btn add-btn"
-                >
-                  {' '}
-                  Add Candidates
-                </a>
-              </div>
             </div>
           </div>
           {/* /Page Header */}
@@ -173,7 +142,6 @@ const CandidateList = () => {
                   // bordered
                   dataSource={data}
                   rowKey={(record) => record.id}
-                  //  onChange={this.handleTableChange}
                 />
               </div>
             </div>
@@ -191,17 +159,6 @@ const CandidateList = () => {
             role="document"
           >
             <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Add Candidates</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
               <div className="modal-body">
                 <form>
                   <div className="row">

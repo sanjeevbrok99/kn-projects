@@ -1,8 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import httpService from '../../../lib/httpService';
 
 const CreateEstimate = () => {
+  const [leads, setLeads] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [taxes, setTaxes] = useState([]);
+  const [estimateToAdd, setEstimateToAdd] = useState({});
+  const [itemsToAdd, setItemsToAdd] = useState([
+    {
+      item: '',
+      description: '',
+      unitCost: 0,
+      quantity: '',
+      amount: '',
+    },
+  ]);
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -10,7 +25,26 @@ const CreateEstimate = () => {
         width: '100%',
       });
     }
-  });
+    fetchLeads();
+    fetchProjects();
+    fetchTaxes();
+  }, []);
+
+  const fetchLeads = async () => {
+    const leads = await httpService.get('/lead');
+    setLeads(leads.data);
+  };
+
+  const fetchProjects = async () => {
+    const projects = await httpService.get('/project');
+    setProjects(projects.data);
+  };
+
+  const fetchTaxes = async () => {
+    const taxes = await httpService.get('/tax');
+    setTaxes(taxes.data);
+  };
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -36,46 +70,93 @@ const CreateEstimate = () => {
         {/* /Page Header */}
         <div className="row">
           <div className="col-sm-12">
-            <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log(estimateToAdd);
+              }}
+            >
               <div className="row">
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group">
                     <label>
-                      Client <span className="text-danger">*</span>
+                      Project <span className="text-danger">*</span>
                     </label>
-                    <select className="select">
-                      <option>Please Select</option>
-                      <option selected>Barry Cuda</option>
-                      <option>Tressa Wexler</option>
+                    <select
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                        setEstimateToAdd({
+                          ...estimateToAdd,
+                          project: e.target.value,
+                        });
+                      }}
+                      className="custom-select"
+                    >
+                      <option>Select Project</option>
+                      {projects.map((project) => (
+                        <option key={project._id} value={project._id}>
+                          {project.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group">
                     <label>
-                      Project <span className="text-danger">*</span>
+                      Lead <span className="text-danger">*</span>
                     </label>
-                    <select className="select">
-                      <option>Select Project</option>
-                      <option selected>Office Management</option>
-                      <option>Project Management</option>
+                    <select
+                      onChange={(e) => {
+                        setEstimateToAdd({
+                          ...estimateToAdd,
+                          lead: e.target.value,
+                        });
+                      }}
+                      className="custom-select"
+                    >
+                      <option>Please Select</option>
+                      {leads.map((lead) => (
+                        <option key={lead._id} value={lead._id}>
+                          {lead.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group">
                     <label>Email</label>
-                    <input className="form-control" type="email" />
+                    <input
+                      onChange={(e) => {
+                        setEstimateToAdd({
+                          ...estimateToAdd,
+                          email: e.target.value,
+                        });
+                      }}
+                      className="form-control"
+                      type="email"
+                    />
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group">
                     <label>Tax</label>
-                    <select className="select">
+                    <select
+                      onChange={(e) => {
+                        setEstimateToAdd({
+                          ...estimateToAdd,
+                          tax: e.target.value,
+                        });
+                      }}
+                      className="custom-select"
+                    >
                       <option>Select Tax</option>
-                      <option>VAT</option>
-                      <option>GST</option>
-                      <option>No Tax</option>
+                      {taxes.map((tax) => (
+                        <option key={tax._id} value={tax._id}>
+                          {tax.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -83,6 +164,12 @@ const CreateEstimate = () => {
                   <div className="form-group">
                     <label>Client Address</label>
                     <textarea
+                      onChange={(e) => {
+                        setEstimateToAdd({
+                          ...estimateToAdd,
+                          clientAddress: e.target.value,
+                        });
+                      }}
                       className="form-control"
                       rows={3}
                       defaultValue={''}
@@ -94,6 +181,12 @@ const CreateEstimate = () => {
                     <label>Billing Address</label>
                     <textarea
                       className="form-control"
+                      onChange={(e) => {
+                        setEstimateToAdd({
+                          ...estimateToAdd,
+                          billingAddress: e.target.value,
+                        });
+                      }}
                       rows={3}
                       defaultValue={''}
                     />
@@ -106,7 +199,13 @@ const CreateEstimate = () => {
                     </label>
                     <div>
                       <input
-                        className="form-control datetimepicker"
+                        className="form-control"
+                        onChange={(e) => {
+                          setEstimateToAdd({
+                            ...estimateToAdd,
+                            estimateDate: e.target.value,
+                          });
+                        }}
                         type="date"
                       />
                     </div>
@@ -119,7 +218,13 @@ const CreateEstimate = () => {
                     </label>
                     <div>
                       <input
-                        className="form-control datetimepicker"
+                        onChange={(e) => {
+                          setEstimateToAdd({
+                            ...estimateToAdd,
+                            expiryDate: e.target.value,
+                          });
+                        }}
+                        className="form-control"
                         type="date"
                       />
                     </div>
@@ -142,6 +247,63 @@ const CreateEstimate = () => {
                         </tr>
                       </thead>
                       <tbody>
+                        {itemsToAdd.map((item, index) => (
+                          <tr key={index}>
+                            <td>1</td>
+                            <td>
+                              <input
+                                className="form-control"
+                                type="text"
+                                value={item.name}
+                                style={{ minWidth: '150px' }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                type="text"
+                                style={{ minWidth: '150px' }}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                style={{ width: '100px' }}
+                                type="text"
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                style={{ width: '80px' }}
+                                type="text"
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="form-control"
+                                readOnly
+                                style={{ width: '120px' }}
+                                type="text"
+                              />
+                            </td>
+                            <td>
+                              <a
+                                href="javascript:void(0)"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setItemsToAdd((i) =>
+                                    i.filter((_, index) => index !== index)
+                                  );
+                                }}
+                                className="text-success font-18"
+                                title="Add"
+                              >
+                                <i className="fa fa-plus" />
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
                         <tr>
                           <td>1</td>
                           <td>

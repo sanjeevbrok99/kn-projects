@@ -12,6 +12,48 @@ const Policies = () => {
   const [data, setData] = useState([]);
   const [_data, set_data] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [department, setDepartment] = useState([]);
+  const [policyToAdd, setPolicyToAdd] = useState({});
+  const [policyToEdit, setPolicyToEdit] = useState({});
+
+  const fetchPolicies = async () => {
+    const response = await httpService.get('/policy');
+    console.log(response);
+    setData(
+      response.data.map((item, i) => ({
+        ...item,
+        id: i + 1,
+        departmentName: item.department.name,
+        creatat: item.createdAt
+          ? item.createdAt.slice(0, 10)
+          : new Date().toISOString().slice(0, 10),
+      }))
+    );
+  };
+
+  const fetchDepartments = async () => {
+    const response = await httpService.get('/department');
+    setDepartment(response.data);
+  };
+
+  const handleAdd = async () => {
+    await httpService.post('/policy', policyToAdd);
+    fetchPolicies();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleDelete = async () => {
+    await httpService.delete(`/policy/${policyToEdit._id}`);
+    fetchPolicies();
+    document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+  };
+
+  const handleEdit = async () => {
+    await httpService.put(`/policy/${policyToEdit._id}`, policyToEdit);
+    fetchPolicies();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -20,7 +62,8 @@ const Policies = () => {
       });
     }
     fetchPolicies();
-  });
+    fetchDepartments();
+  }, []);
 
   const fetchPolicies = async () => {
     const res = await httpService.get('/policy');
@@ -49,7 +92,7 @@ const Policies = () => {
     },
     {
       title: 'Department',
-      dataIndex: 'department',
+      dataIndex: 'departmentName',
       sorter: (a, b) => a.department.length - b.department.length,
     },
     {
@@ -83,6 +126,9 @@ const Policies = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_policy"
+              onClick={() => {
+                setPolicyToEdit(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -91,6 +137,9 @@ const Policies = () => {
               href="#"
               data-toggle="modal"
               data-target="#delete_policy"
+              onClick={() => {
+                setPolicyToEdit(record);
+              }}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -173,12 +222,23 @@ const Policies = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleAdd();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Policy Name <span className="text-danger">*</span>
                   </label>
-                  <input className="form-control" type="text" />
+                  <input
+                    className="form-control"
+                    type="text"
+                    onChange={(e) =>
+                      setPolicyToAdd((d) => ({ ...d, name: e.target.value }))
+                    }
+                  />
                 </div>
                 <div className="form-group">
                   <label>
@@ -187,16 +247,32 @@ const Policies = () => {
                   <textarea
                     className="form-control"
                     rows={4}
+                    onChange={(e) => {
+                      setPolicyToAdd((d) => ({
+                        ...d,
+                        description: e.target.value,
+                      }));
+                    }}
                     defaultValue={''}
                   />
                 </div>
                 <div className="form-group">
                   <label className="col-form-label">Department</label>
-                  <select className="select">
+                  <select
+                    onChange={(e) =>
+                      setPolicyToAdd((d) => ({
+                        ...d,
+                        department: e.target.value,
+                      }))
+                    }
+                    className="custom-select"
+                  >
                     <option>All Departments</option>
-                    <option>Marketing Head</option>
-                    <option>Marketing</option>
-                    <option>IT Management</option>
+                    {department.map((d) => (
+                      <option key={d._id} value={d._id}>
+                        {d.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">
@@ -242,7 +318,12 @@ const Policies = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEdit();
+                }}
+              >
                 <div className="form-group">
                   <label>
                     Policy Name <span className="text-danger">*</span>
@@ -250,7 +331,10 @@ const Policies = () => {
                   <input
                     className="form-control"
                     type="text"
-                    defaultValue="Leave Policy"
+                    defaultValue={policyToEdit.name}
+                    onChange={(e) =>
+                      setPolicyToEdit((d) => ({ ...d, name: e.target.value }))
+                    }
                   />
                 </div>
                 <div className="form-group">
@@ -260,16 +344,31 @@ const Policies = () => {
                   <textarea
                     className="form-control"
                     rows={4}
-                    defaultValue={''}
+                    defaultValue={policyToEdit.description}
+                    onChange={(e) =>
+                      setPolicyToEdit((d) => ({
+                        ...d,
+                        description: e.target.value,
+                      }))
+                    }
                   />
                 </div>
                 <div className="form-group">
                   <label className="col-form-label">Department</label>
-                  <select className="select">
-                    <option>All Departments</option>
-                    <option>Marketing Head</option>
-                    <option>Marketing</option>
-                    <option>IT Management</option>
+                  <select
+                    onChange={(e) =>
+                      setPolicyToEdit((d) => ({
+                        ...d,
+                        department: e.target.value,
+                      }))
+                    }
+                    className="select"
+                  >
+                    {department.map((d) => (
+                      <option key={d._id} value={d._id}>
+                        {d.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">
@@ -311,7 +410,14 @@ const Policies = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      href=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDelete();
+                      }}
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>
