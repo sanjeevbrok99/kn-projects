@@ -19,6 +19,7 @@ import Taxs from './tax';
 import Customer from './Customers';
 import Projects from './project';
 import RecurringInvoices from './recurringInvoices';
+import CreditNotes from '../../Sales/CreditNotes';
 
 const SalesRoute = ({ match }) => (
   <Switch>
@@ -43,6 +44,7 @@ const SalesRoute = ({ match }) => (
     <Route path={`${match.url}/payment-received`} component={Payments} />
     <Route path={`${match.url}/provident-fund`} component={ProvidentFund} />
     <Route path={`${match.url}/taxes`} component={Taxs} />
+    <Route path={`${match.url}/credit-notes`} component={CreditNotes} />
   </Switch>
 );
 
