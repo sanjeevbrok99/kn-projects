@@ -31,6 +31,10 @@ import Questions from './Jobs/questions';
 import Policies from '../HR/policies';
 import Locations from './locations';
 import LeaveRequest from './leaveRequest';
+import DailyReport from '../HR/Reports/dailyreport';
+import PayrollItems from '../HR/Payroll/payrollitem';
+import SkillDevelopment from './skilldevelopment';
+import BenifitManagement from './benifitmanagement';
 
 const Uiinterfaceroute = ({ match }) => {
   console.log('match', match);
@@ -59,6 +63,16 @@ const Uiinterfaceroute = ({ match }) => {
       <Route path={`${match.url}/jobs`} component={Managedjobs} />
       <Route path={`${match.url}/manage-resumes`} component={ManageResumes} />
       <Route path={`${match.url}/onboarding`} component={ShortlistCandidate} />
+      <Route path={`${match.url}/daily-activity`} component={DailyReport} />
+      <Route path={`${match.url}/payroll`} component={PayrollItems} />
+      <Route
+        path={`${match.url}/skill-development`}
+        component={SkillDevelopment}
+      />
+      <Route
+        path={`${match.url}/benefits-management`}
+        component={BenifitManagement}
+      />
       <Route
         path={`${match.url}/interview-questions`}
         component={Interviewquestion}

@@ -25,7 +25,7 @@ const Expense = () => {
       createddate: '11 Mar 2021',
       duedate: '11 Mar 2021',
       amount: '2099',
-      status: 'Sent',
+      status: 'Partially Paid',
     },
   ]);
   useEffect(() => {
@@ -102,16 +102,23 @@ const Expense = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <Link className="dropdown-item" to="/app/sales/invoices-edit">
+            <a
+              href="#"
+              className="dropdown-item"
+              data-toggle="modal"
+              data-target="#edit_expense"
+            >
               <i className="fa fa-pencil m-r-5" /> Edit
-            </Link>
-            <Link className="dropdown-item" to="/app/sales/invoices-view">
-              <i className="fa fa-eye m-r-5" /> View
-            </Link>
+            </a>
             <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Download
             </a>
-            <a className="dropdown-item" href="#">
+            <a
+              href="#"
+              className="dropdown-item"
+              data-toggle="modal"
+              data-target="#delete_expense"
+            >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -140,9 +147,14 @@ const Expense = () => {
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
-              <Link to="/app/sales/invoices-create" className="btn add-btn">
-                <i className="fa fa-plus" /> Create Invoice
-              </Link>
+              <a
+                href="#"
+                className="btn add-btn"
+                data-toggle="modal"
+                data-target="#add_expense"
+              >
+                <i className="fa fa-plus" /> Add Expense
+              </a>
             </div>
           </div>
         </div>
@@ -215,6 +227,318 @@ const Expense = () => {
         </div>
       </div>
       {/* /Page Content */}
+      {/* Add Job Modal */}
+      <div id="add_expense" className="modal custom-modal fade" role="dialog">
+        <div
+          className="modal-dialog modal-dialog-centered modal-lg"
+          role="document"
+        >
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Add Expense</h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Invoice Number</label>
+                      <input className="form-control" type="text" />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    {/* <div className="form-group">
+                      <label>Department</label>
+                      <select className="select">
+                        <option>-</option>
+                        <option>Marketing Head</option>
+                        <option>Application Development</option>
+                        <option>IT Management</option>
+                        <option>Accounts Management</option>
+                        <option>Support Management</option>
+                        <option>Marketing</option>
+                      </select>
+                    </div> */}
+                    <div className="form-group">
+                      <label>Client</label>
+                      <input className="form-control" type="text" />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label>Amount Sent</label>
+                      <input className="form-control" type="text" />
+                    </div>
+                  </div>
+                  {/* <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Age</label>
+                      <input className="form-control" type="text" />
+                    </div>
+                  </div> */}
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Sent From</label>
+                      <input type="text" className="form-control" />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Sent To</label>
+                      <input type="text" className="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Payment Mode</label>
+                      <select className="select">
+                        <option>Online</option>
+                        <option>Net Banking</option>
+                        <option>Cash</option>
+                        <option>Cheque</option>
+                        <option>Demand Draft</option>
+                        <option>Others</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select className="select">
+                        <option>Partially Paid</option>
+                        <option>Paid</option>
+                        <option>Pending</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Payment Start Date</label>
+                      <input
+                        type="text"
+                        className="form-control datetimepicker"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Payment Processed Date</label>
+                      <input
+                        type="text"
+                        className="form-control datetimepicker"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label>Description</label>
+                      <textarea className="form-control" defaultValue={''} />
+                    </div>
+                  </div>
+                </div>
+                <div className="submit-section">
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* /Add Job Modal */}
+      {/* Edit Job Modal */}
+      <div id="edit_expense" className="modal custom-modal fade" role="dialog">
+        <div
+          className="modal-dialog modal-dialog-centered modal-lg"
+          role="document"
+        >
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Edit Expense</h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Invoice Number</label>
+                      <input className="form-control" type="text" />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    {/* <div className="form-group">
+                      <label>Department</label>
+                      <select className="select">
+                        <option>-</option>
+                        <option>Marketing Head</option>
+                        <option>Application Development</option>
+                        <option>IT Management</option>
+                        <option>Accounts Management</option>
+                        <option>Support Management</option>
+                        <option>Marketing</option>
+                      </select>
+                    </div> */}
+                    <div className="form-group">
+                      <label>Client</label>
+                      <input className="form-control" type="text" />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label>Amount Sent</label>
+                      <input className="form-control" type="text" />
+                    </div>
+                  </div>
+                  {/* <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Age</label>
+                      <input className="form-control" type="text" />
+                    </div>
+                  </div> */}
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Sent From</label>
+                      <input type="text" className="form-control" />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Sent To</label>
+                      <input type="text" className="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Payment Mode</label>
+                      <select className="select">
+                        <option>Online</option>
+                        <option>Net Banking</option>
+                        <option>Cash</option>
+                        <option>Cheque</option>
+                        <option>Demand Draft</option>
+                        <option>Others</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select className="select">
+                        <option>Partially Paid</option>
+                        <option>Paid</option>
+                        <option>Pending</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Payment Start Date</label>
+                      <input
+                        type="text"
+                        className="form-control datetimepicker"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Payment Processed Date</label>
+                      <input
+                        type="text"
+                        className="form-control datetimepicker"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label>Description</label>
+                      <textarea className="form-control" defaultValue={''} />
+                    </div>
+                  </div>
+                </div>
+                <div className="submit-section">
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* /Edit Job Modal */}
+      {/* Delete Job Modal */}
+      <div
+        className="modal custom-modal fade"
+        id="delete_expense"
+        role="dialog"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-body">
+              <div className="form-header">
+                <h3>Delete Expense</h3>
+                <p>Are you sure want to delete?</p>
+              </div>
+              <div className="modal-btn delete-action">
+                <div className="row">
+                  <div className="col-6">
+                    <a href="" className="btn btn-primary continue-btn">
+                      Delete
+                    </a>
+                  </div>
+                  <div className="col-6">
+                    <a
+                      href=""
+                      data-dismiss="modal"
+                      className="btn btn-primary cancel-btn"
+                    >
+                      Cancel
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* /Delete Job Modal */}
     </div>
   );
 };

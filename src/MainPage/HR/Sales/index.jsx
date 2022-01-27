@@ -19,6 +19,11 @@ import Taxs from './tax';
 import Customer from './Customers';
 import Projects from './project';
 import RecurringInvoices from './recurringInvoices';
+import Vendorcreate from './vendorcreate';
+import Vendoredit from './vendoredit';
+import RecurringBillCreate from './recurringbillcreate';
+import RecurringBillEdit from './recurringbilledit';
+// import RecurringInvoiceEdit from './recurringinvoiceedit';
 
 const SalesRoute = ({ match }) => (
   <Switch>
@@ -37,7 +42,21 @@ const SalesRoute = ({ match }) => (
       component={RecurringInvoices}
     />
     <Route path={`${match.url}/invoices-create`} component={Invoicecreate} />
+    <Route path={`${match.url}/vendor-create`} component={Vendorcreate} />
+    <Route
+      path={`${match.url}/recurring-bill-create`}
+      component={RecurringBillCreate}
+    />
     <Route path={`${match.url}/invoices-edit`} component={Invoiceedit} />
+    <Route path={`${match.url}/vendor-edit`} component={Vendoredit} />
+    <Route
+      path={`${match.url}/recurring-bill-edit`}
+      component={RecurringBillEdit}
+    />
+    {/* <Route
+      path={`${match.url}/recurring-invoice-edit`}
+      component={RecurringInvoiceEdit}
+    /> */}
     <Route path={`${match.url}/invoices-view`} component={Invoiceview} />
 
     <Route path={`${match.url}/payment-received`} component={Payments} />
