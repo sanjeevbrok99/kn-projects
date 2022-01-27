@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import AccountPayable from './accountPayable';
 import AccountReceiveable from './accountReceiveable';
 import CustomerBalances from './customerBalances';
+import FixedAssets from './fixedAssets';
 import GeneralLedger from './generalLedger';
 
 const Purchase = ({ match }) => (
@@ -22,6 +23,7 @@ const Purchase = ({ match }) => (
       component={CustomerBalances}
     />
     <Route path={`${match.url}/general-ledger`} component={GeneralLedger} />
+    <Route path={`${match.url}/fixed-assets`} component={FixedAssets} />
   </Switch>
 );
 
