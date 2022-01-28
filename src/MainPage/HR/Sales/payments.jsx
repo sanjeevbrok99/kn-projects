@@ -6,22 +6,18 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
-import { fetchPayment } from '../../../lib/api'; 
-
+import { fetchPayment } from '../../../lib/api';
 
 const Payments = () => {
-
   useEffect(() => {
     (async () => {
       const res = await fetchPayment();
-    
+
       setData(res);
     })();
   }, []);
 
-  const [data, setData] = useState([
-   
-  ]);
+  const [data, setData] = useState([]);
 
   const columns = [
     {
@@ -33,8 +29,8 @@ const Payments = () => {
       sorter: (a, b) => a.invoicenumber.length - b.invoicenumber.length,
     },
     {
-      title: 'Client',
-      dataIndex: 'lead',
+      title: 'Customer',
+      dataIndex: 'customer',
       sorter: (a, b) => a.client.length - b.client.length,
     },
 
@@ -65,8 +61,8 @@ const Payments = () => {
       <div className="content container-fluid">
         {/* Page Header */}
         <div className="page-header">
-          <div className="row">
-            <div className="col-sm-12">
+          <div className="row align-items-center">
+            <div className="col">
               <h3 className="page-title">Payments</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
@@ -74,6 +70,16 @@ const Payments = () => {
                 </li>
                 <li className="breadcrumb-item active">Payments</li>
               </ul>
+            </div>
+            <div className="col-auto float-right ml-auto">
+              <a
+                href="#"
+                className="btn add-btn"
+                data-toggle="modal"
+                data-target="#add_job"
+              >
+                <i className="fa fa-plus" /> Add Payment
+              </a>
             </div>
           </div>
         </div>

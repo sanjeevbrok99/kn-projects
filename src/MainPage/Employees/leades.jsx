@@ -29,7 +29,9 @@ const Leads = () => {
   }, []);
 
   const fetchLeads = async () => {
-    const leads = await httpService.get('http://localhost:3000/api/v1/lead');
+    const leads = await httpService.get(
+      'https://kn-multiprojects-tldi7.ondigitalocean.app/api/v1/lead'
+    );
     setData(
       leads.data.map((lead, i) => ({
         ...lead,
