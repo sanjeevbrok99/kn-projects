@@ -139,7 +139,7 @@ const BenifitManagement = () => {
                 data-toggle="modal"
                 data-target="#add_job"
               >
-                <i className="fa fa-plus" /> Give Benefits
+                <i className="fa fa-plus" /> Add Benefits
               </a>
             </div>
           </div>
@@ -219,7 +219,7 @@ const BenifitManagement = () => {
               ×
             </button>
             <div className="modal-header">
-              <h5 className="modal-title">Add Benefits</h5>
+              <h5 className="modal-title">Add Benifits</h5>
               {/* <button
                 type="button"
                 className="close"
@@ -234,25 +234,27 @@ const BenifitManagement = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Job Title</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="Product Manager"
-                      />
+                      <label>Employee</label>
+                      <select className="select">
+                        <option>-</option>
+                        <option>Employee 1</option>
+                        <option>Employee 2</option>
+                        <option>Employee 3</option>
+                        <option>Employee 4</option>
+                        <option>Employee 5</option>
+                        <option>Employee 6</option>
+                      </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Department</label>
+                      <label>Benifits</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
+                        <option>Benifit 1</option>
+                        <option>Benifit 2</option>
+                        <option>Benifit 3</option>
+                        <option>Benifit 4</option>
                       </select>
                     </div>
                   </div>
@@ -279,28 +281,6 @@ const BenifitManagement = () => {
                     </div>
                   </div>
                 </div> */}
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Benifits</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="Insurance"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="-"
-                      />
-                    </div>
-                  </div>
-                </div>
                 {/* <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
@@ -324,7 +304,7 @@ const BenifitManagement = () => {
                   </div>
                 </div> */}
                 <div className="row">
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
                       <select className="select">
@@ -336,8 +316,8 @@ const BenifitManagement = () => {
                         <option>Others</option>
                       </select>
                     </div>
-                  </div>
-                  <div className="col-md-6">
+                  </div> */}
+                  {/* <div className="col-md-12">
                     <div className="form-group">
                       <label>Status</label>
                       <select className="select">
@@ -347,7 +327,7 @@ const BenifitManagement = () => {
                         <option>Learning</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="row">
                   <div className="col-md-6">
@@ -411,25 +391,27 @@ const BenifitManagement = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Job Title</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="Product Manager"
-                      />
+                      <label>Employee</label>
+                      <select className="select">
+                        <option>-</option>
+                        <option>Employee 1</option>
+                        <option>Employee 2</option>
+                        <option>Employee 3</option>
+                        <option>Employee 4</option>
+                        <option>Employee 5</option>
+                        <option>Employee 6</option>
+                      </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Department</label>
+                      <label>Benifits</label>
                       <select className="select">
                         <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
+                        <option>Benifit 1</option>
+                        <option>Benifit 2</option>
+                        <option>Benifit 3</option>
+                        <option>Benifit 4</option>
                       </select>
                     </div>
                   </div>
@@ -456,28 +438,6 @@ const BenifitManagement = () => {
                     </div>
                   </div>
                 </div> */}
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Benifits</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="insurance"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="-"
-                      />
-                    </div>
-                  </div>
-                </div>
                 {/* <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
@@ -501,7 +461,7 @@ const BenifitManagement = () => {
                   </div>
                 </div> */}
                 <div className="row">
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
                       <select className="select">
@@ -513,17 +473,18 @@ const BenifitManagement = () => {
                         <option>Others</option>
                       </select>
                     </div>
-                  </div>
-                  <div className="col-md-6">
+                  </div> */}
+                  {/* <div className="col-md-12">
                     <div className="form-group">
                       <label>Status</label>
                       <select className="select">
-                        <option>Open</option>
-                        <option>Closed</option>
-                        <option>Cancelled</option>
+                        <option>-</option>
+                        <option>Not Started</option>
+                        <option>Learned</option>
+                        <option>Learning</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="row">
                   <div className="col-md-6">
