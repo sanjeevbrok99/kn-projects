@@ -69,12 +69,6 @@ function Customer() {
       ),
       sorter: (a, b) => a.name.length - b.name.length,
     },
-
-    {
-      title: 'Comapny',
-      dataIndex: 'company',
-      sorter: (a, b) => a.contactperson.length - b.contactperson.length,
-    },
     {
       title: 'Email',
       dataIndex: 'email',
@@ -85,11 +79,6 @@ function Customer() {
       title: 'Mobile',
       dataIndex: 'phone',
       sorter: (a, b) => a.mobile.length - b.mobile.length,
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      render: (text, record) => <div>{text?.substring(0, 10)}</div>,
     },
     {
       title: 'Action',

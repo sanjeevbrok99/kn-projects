@@ -67,7 +67,7 @@ const bar = [
         icon: 'la la-users',
         children: [
           {
-            name: 'All Leads',
+            name: 'Active Leads',
             link: '/employees/leads',
           },
           {
