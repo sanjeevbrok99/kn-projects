@@ -167,10 +167,6 @@ const bar = [
             name: 'Vendor Credits',
             link: '/purchase/vendor-credits',
           },
-          {
-            name: 'Recurring Bills',
-            link: '/purchase/recurring-bills',
-          },
         ],
       },
       {

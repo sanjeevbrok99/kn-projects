@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const EmployeeProfile = () => {
   const { id } = useParams();
   const classes = useStyles();
+  const [profile, setProfile] = React.useState({});
   const [designationReason, setDesignationReason] = React.useState('');
 
   useEffect(() => {
@@ -67,6 +68,10 @@ const EmployeeProfile = () => {
   const fetchLeadProfile = async () => {
     const response = await httpService.get(`/lead/${id}`);
     console.log(response.data);
+    setProfile(response.data);
+    console.log(profile);
+
+    console.log('hey');
   };
 
   const handleResign = async () => {
@@ -135,7 +140,9 @@ const EmployeeProfile = () => {
                     <div className="row">
                       <div className="col-md-5">
                         <div className="profile-info-left">
-                          <h3 className="user-name m-t-0 mb-0">Lead Profile</h3>
+                          <h3 className="user-name m-t-0 mb-0">
+                            {profile.name}
+                          </h3>
                         </div>
 
                         <div className="mt-3">
@@ -143,18 +150,18 @@ const EmployeeProfile = () => {
                             <li>
                               <div className="title">Phone:</div>
                               <div className="text">
-                                <a href="">9876543210</a>
+                                <a href="">{profile.phone}</a>
                               </div>
                             </li>
                             <li>
                               <div className="title">Email:</div>
                               <div className="text">
-                                <a href="">johndoe@example.com</a>
+                                <a href="">{profile.email}</a>
                               </div>
                             </li>
                             <li>
-                              <div className="title">Birthday:</div>
-                              <div className="text">24th July</div>
+                              <div className="title">Created At</div>
+                              <div className="text">{profile.createdAt}</div>
                             </li>
                           </ul>
                         </div>
@@ -164,9 +171,7 @@ const EmployeeProfile = () => {
                           <ul className="personal-info">
                             <li>
                               <div className="title">Address:</div>
-                              <div className="text">
-                                1861 Bayonne Ave, Manchester Township, NJ, 08759
-                              </div>
+                              <div className="text">{profile.address}</div>
                             </li>
                             <li>
                               <div className="title">Gender:</div>
@@ -181,7 +186,7 @@ const EmployeeProfile = () => {
                                   </div>
                                 </div>
                                 <Link to="/app/profile/employee-profile">
-                                  Sushmita Singh
+                                  {profile.assignedTo?.firstName}
                                 </Link>
                               </div>
                             </li>
@@ -194,7 +199,7 @@ const EmployeeProfile = () => {
                                   </div>
                                 </div>
                                 <Link to="/app/profile/employee-profile">
-                                  Sushmita Singh
+                                  {profile.createdBy?.firstName}
                                 </Link>
                               </div>
                             </li>

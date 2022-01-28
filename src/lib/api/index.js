@@ -197,7 +197,6 @@ export async function fetchTax() {
   return fetchTaxResponse;
 }
 
-
 export async function fetchGoals() {
   const fetchGoalTypeResponse = new Promise(async (resolve) => {
     httpService
@@ -215,7 +214,6 @@ export async function fetchGoals() {
   });
   return fetchGoalTypeResponse;
 }
-
 
 export async function fetchGoalList() {
   const GoalListResponse = new Promise(async (resolve) => {
@@ -235,7 +233,6 @@ export async function fetchGoalList() {
   return GoalListResponse;
 }
 
-
 export async function fetchPayment() {
   const fetchPaymentResponse = new Promise(async (resolve) => {
     httpService
@@ -253,10 +250,6 @@ export async function fetchPayment() {
   });
   return fetchPaymentResponse;
 }
-
-
-
-
 
 export async function fetchEstimate() {
   const fetchEstimateResponse = new Promise(async (resolve) => {
@@ -294,3 +287,38 @@ export async function fetchCandidate() {
   return fetchCandidateResponse;
 }
 
+export async function fetchProjects() {
+  const fetchCandidateResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/project')
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchCandidateResponse;
+}
+
+export async function fetchProject(data) {
+  const fetchCandidateResponse = new Promise(async (resolve) => {
+    httpService
+      .post('/project', data)
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchCandidateResponse;
+}
