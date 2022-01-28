@@ -202,10 +202,10 @@ const bar = [
             name: 'Fixed Assets',
             link: '/accounts/fixed-assets',
           },
-          {
-            name: 'Project Sales',
-            link: '/accounts/project-sales',
-          },
+          // {
+          //   name: 'Project Sales',
+          //   link: '/accounts/project-sales',
+          // },
         ],
       },
       {

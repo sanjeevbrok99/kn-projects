@@ -5,14 +5,16 @@ import AccountReceiveable from './accountReceiveable';
 import CustomerBalances from './customerBalances';
 import FixedAssets from './fixedAssets';
 import GeneralLedger from './generalLedger';
+import ManualJournals from './manualJournals';
 
 const Purchase = ({ match }) => (
   <Switch>
-    <Redirect
+    {/* <Redirect
       exact
       from={`${match.url}/`}
       to={`${match.url}/manual-journals`}
-    />
+    /> */}
+    <Route path={`${match.url}/manual-journals`} component={ManualJournals} />
     <Route
       path={`${match.url}/account-receiveable`}
       component={AccountReceiveable}

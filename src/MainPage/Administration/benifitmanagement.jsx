@@ -115,7 +115,7 @@ const BenifitManagement = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Invoices </title>
+        <title>Benefits Management</title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
@@ -124,12 +124,12 @@ const BenifitManagement = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Invoices</h3>
+              <h3 className="page-title">Benefits Management</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item active">Invoices</li>
+                <li className="breadcrumb-item active">Benefits Management</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
@@ -282,11 +282,11 @@ const BenifitManagement = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Experience</label>
+                      <label>Benifits</label>
                       <input
                         className="form-control"
                         type="text"
-                        defaultValue="2 Years"
+                        defaultValue="Insurance"
                       />
                     </div>
                   </div>
@@ -459,11 +459,11 @@ const BenifitManagement = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Experience</label>
+                      <label>Benifits</label>
                       <input
                         className="form-control"
                         type="text"
-                        defaultValue="2 Years"
+                        defaultValue="insurance"
                       />
                     </div>
                   </div>
