@@ -130,7 +130,7 @@ function Vendor() {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Clients </title>
+        <title>Vendors </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}

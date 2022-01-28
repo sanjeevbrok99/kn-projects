@@ -121,7 +121,7 @@ const CreditNotes = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Invoices </title>
+        <title>Credit Notes </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}

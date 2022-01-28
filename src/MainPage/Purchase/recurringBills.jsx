@@ -127,7 +127,7 @@ const RecurringBills = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Expenses </title>
+        <title>Recurring Bills </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}

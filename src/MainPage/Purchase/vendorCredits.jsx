@@ -127,7 +127,7 @@ const VendorCredits = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Expenses </title>
+        <title>Vendor Credits </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
@@ -141,8 +141,7 @@ const VendorCredits = () => {
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item">Purchase</li>
-                <li className="breadcrumb-item active">Expenses</li>
+                <li className="breadcrumb-item">Vendor Credits</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
