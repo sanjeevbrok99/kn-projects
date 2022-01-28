@@ -16,21 +16,6 @@ const Policies = () => {
   const [policyToAdd, setPolicyToAdd] = useState({});
   const [policyToEdit, setPolicyToEdit] = useState({});
 
-  const fetchPolicies = async () => {
-    const response = await httpService.get('/policy');
-    console.log(response);
-    setData(
-      response.data.map((item, i) => ({
-        ...item,
-        id: i + 1,
-        departmentName: item.department.name,
-        creatat: item.createdAt
-          ? item.createdAt.slice(0, 10)
-          : new Date().toISOString().slice(0, 10),
-      }))
-    );
-  };
-
   const fetchDepartments = async () => {
     const response = await httpService.get('/department');
     setDepartment(response.data);
