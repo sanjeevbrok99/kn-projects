@@ -240,7 +240,7 @@ const SkillDevelopment = () => {
               ×
             </button>
             <div className="modal-header">
-              <h5 className="modal-title">Edit Skill Development</h5>
+              <h5 className="modal-title">Add Skill Development</h5>
               {/* <button
                 type="button"
                 className="close"
@@ -255,17 +255,21 @@ const SkillDevelopment = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Job Title</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="Product Manager"
-                      />
+                      <label>Employee</label>
+                      <select className="select">
+                        <option>-</option>
+                        <option>Employee 1</option>
+                        <option>Employee 2</option>
+                        <option>Employee 3</option>
+                        <option>Employee 4</option>
+                        <option>Employee 5</option>
+                        <option>Employee 6</option>
+                      </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Department</label>
+                      <label>Skill</label>
                       <select className="select">
                         <option>-</option>
                         <option>Marketing Head</option>
@@ -300,28 +304,6 @@ const SkillDevelopment = () => {
                     </div>
                   </div>
                 </div> */}
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Experience</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="2 Years"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="-"
-                      />
-                    </div>
-                  </div>
-                </div>
                 {/* <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
@@ -345,7 +327,7 @@ const SkillDevelopment = () => {
                   </div>
                 </div> */}
                 <div className="row">
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
                       <select className="select">
@@ -357,8 +339,8 @@ const SkillDevelopment = () => {
                         <option>Others</option>
                       </select>
                     </div>
-                  </div>
-                  <div className="col-md-6">
+                  </div> */}
+                  <div className="col-md-12">
                     <div className="form-group">
                       <label>Status</label>
                       <select className="select">
@@ -421,23 +403,35 @@ const SkillDevelopment = () => {
             </button>
             <div className="modal-header">
               <h5 className="modal-title">Edit Skill Development</h5>
+              {/* <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button> */}
             </div>
             <div className="modal-body">
               <form>
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Job Title</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="Product Manager"
-                      />
+                      <label>Employee</label>
+                      <select className="select">
+                        <option>-</option>
+                        <option>Employee 1</option>
+                        <option>Employee 2</option>
+                        <option>Employee 3</option>
+                        <option>Employee 4</option>
+                        <option>Employee 5</option>
+                        <option>Employee 6</option>
+                      </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Department</label>
+                      <label>Skill</label>
                       <select className="select">
                         <option>-</option>
                         <option>Marketing Head</option>
@@ -472,28 +466,6 @@ const SkillDevelopment = () => {
                     </div>
                   </div>
                 </div> */}
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Experience</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="2 Years"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="-"
-                      />
-                    </div>
-                  </div>
-                </div>
                 {/* <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
@@ -517,7 +489,7 @@ const SkillDevelopment = () => {
                   </div>
                 </div> */}
                 <div className="row">
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
                       <select className="select">
@@ -529,14 +501,15 @@ const SkillDevelopment = () => {
                         <option>Others</option>
                       </select>
                     </div>
-                  </div>
-                  <div className="col-md-6">
+                  </div> */}
+                  <div className="col-md-12">
                     <div className="form-group">
                       <label>Status</label>
                       <select className="select">
-                        <option>Open</option>
-                        <option>Closed</option>
-                        <option>Cancelled</option>
+                        <option>-</option>
+                        <option>Not Started</option>
+                        <option>Learned</option>
+                        <option>Learning</option>
                       </select>
                     </div>
                   </div>

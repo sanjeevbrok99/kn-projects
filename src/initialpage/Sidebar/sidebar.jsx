@@ -241,7 +241,7 @@ const bar = [
             link: '/reports/sales-by-customer',
           },
           {
-            name: 'Sales By Agent',
+            name: 'Sales By Employee',
             link: '/reports/sales-by-agent',
           },
           {
