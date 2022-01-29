@@ -67,7 +67,7 @@ const bar = [
         icon: 'la la-users',
         children: [
           {
-            name: 'All Leads',
+            name: 'Active Leads',
             link: '/employees/leads',
           },
           {
@@ -122,10 +122,6 @@ const bar = [
           {
             name: 'Payment Received',
             link: '/sales/payment-received',
-          },
-          {
-            name: 'Recurring Invoices',
-            link: '/sales/recurring-invoices',
           },
           {
             name: 'Projects',
