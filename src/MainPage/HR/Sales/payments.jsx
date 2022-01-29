@@ -16,18 +16,19 @@ const Payments = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchPayment();
-
-      setData(res);
+      setData(
+        res.map((payment) => ({
+          ...payment,
+          customerName: payment.customer.name,
+          date: new Date(payment.paymentDate).toLocaleDateString(),
+          invoicenumber:
+            'INV-' + payment.invoice._id.toString().padStart(4, '0'),
+        }))
+      );
     })();
-    fetchInvoices();
   }, []);
 
   const [data, setData] = useState([]);
-
-  const fetchInvoices = async () => {
-    const res = await httpService.get('/sale-invoice');
-    setInvoices(res.data);
-  };
 
   const columns = [
     {
@@ -40,7 +41,7 @@ const Payments = () => {
     },
     {
       title: 'Customer',
-      dataIndex: 'customer',
+      dataIndex: 'customerName',
       sorter: (a, b) => a.client.length - b.client.length,
     },
 
@@ -51,7 +52,7 @@ const Payments = () => {
     },
     {
       title: 'Paid Date',
-      dataIndex: 'PaymentDate',
+      dataIndex: 'date',
       sorter: (a, b) => a.duedate.length - b.duedate.length,
     },
     {
@@ -80,16 +81,6 @@ const Payments = () => {
                 </li>
                 <li className="breadcrumb-item active">Payment Received</li>
               </ul>
-            </div>
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_record"
-              >
-                <i className="fa fa-plus" /> Add Record
-              </a>
             </div>
           </div>
         </div>
