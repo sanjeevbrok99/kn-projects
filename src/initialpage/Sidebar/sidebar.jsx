@@ -124,10 +124,6 @@ const bar = [
             link: '/sales/payment-received',
           },
           {
-            name: 'Recurring Invoices',
-            link: '/sales/recurring-invoices',
-          },
-          {
             name: 'Projects',
             link: '/sales/projects',
           },
