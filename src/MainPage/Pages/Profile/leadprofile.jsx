@@ -69,9 +69,17 @@ const EmployeeProfile = () => {
     const response = await httpService.get(`/lead/${id}`);
     console.log(response.data);
     setProfile(response.data);
-    console.log(profile);
+  };
 
-    console.log('hey');
+  const addNote = async () => {
+    const response = await httpService.put(`/lead/${id}`, {
+      note: designationReason,
+    });
+    console.log(response);
+    if (response.status === 201) {
+      toast.success('Note added successfully');
+      fetchLeadProfile();
+    }
   };
 
   const handleResign = async () => {
@@ -327,14 +335,70 @@ const EmployeeProfile = () => {
                       href="#"
                       className="btn btn-primary"
                       data-toggle="modal"
-                      data-target="#add_"
+                      data-target="#add_note"
                     >
                       <i className="fa fa-plus" /> Add
                     </a>
                   </div>
                 </div>
               </div>
-
+              <div
+                id="add_note"
+                className="modal custom-modal fade"
+                role="dialog"
+              >
+                <div
+                  className="modal-dialog modal-dialog-centered modal-lg"
+                  role="document"
+                >
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Add Note</h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      <form>
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="form-group">
+                              <label className="col-form-label">
+                                Title
+                                <span className="text-danger">*</span>
+                              </label>
+                              <input className="form-control" type="text" />
+                            </div>
+                          </div>
+                          <div className="col-12">
+                            <div className="form-group">
+                              <label className="col-form-label">
+                                Description
+                                <span className="text-danger">*</span>
+                              </label>
+                              <textarea
+                                rows={4}
+                                className="form-control"
+                                defaultValue={''}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="submit-section">
+                          <button className="btn btn-primary submit-btn">
+                            Submit
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                 <div className="card">
                   <div className="card-body">
