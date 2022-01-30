@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+console.log('Test');
+
 const bar = [
   {
     name: 'Main',
