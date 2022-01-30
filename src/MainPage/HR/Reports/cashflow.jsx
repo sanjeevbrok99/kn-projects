@@ -207,7 +207,7 @@ const CashFlow = () => {
               <div className="modal-body">
                 <form>
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div className="form-group">
                         <label>Total Amount Cash</label>
                         <input className="form-control" type="text" />
