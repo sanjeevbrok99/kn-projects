@@ -108,7 +108,13 @@ const GeneralLedger = () => {
               <div className="modal-body">
                 <form>
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Invoice Id</label>
+                        <input className="form-control" type="text" />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
                       <div className="form-group">
                         <label>Customer Name</label>
                         <input className="form-control" type="text" />

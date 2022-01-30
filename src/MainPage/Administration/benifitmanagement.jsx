@@ -351,14 +351,14 @@ const BenifitManagement = () => {
                     </div>
                   </div>
                 </div>
-                <div className="row">
+                {/* <div className="row">
                   <div className="col-md-12">
                     <div className="form-group">
                       <label>Description</label>
                       <textarea className="form-control" defaultValue={''} />
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Save</button>
                 </div>
@@ -508,14 +508,14 @@ const BenifitManagement = () => {
                     </div>
                   </div>
                 </div>
-                <div className="row">
+                {/* <div className="row">
                   <div className="col-md-12">
                     <div className="form-group">
                       <label>Description</label>
                       <textarea className="form-control" defaultValue={''} />
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Save</button>
                 </div>
