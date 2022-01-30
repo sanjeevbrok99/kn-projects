@@ -237,7 +237,7 @@ const bar = [
             link: '/reports/sales-by-agent',
           },
           {
-            name: 'Sales By Product',
+            name: 'Sales By Projects',
             link: '/reports/sales-by-product',
           },
         ],
