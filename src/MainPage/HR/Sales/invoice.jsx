@@ -231,7 +231,7 @@ const Invoices = () => {
         {/* /Page Header */}
         {/* Search Filter */}
         <div className="row filter-row">
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-4">
             <div className="form-group form-focus select-focus">
               <div>
                 <input
@@ -242,7 +242,7 @@ const Invoices = () => {
               <label className="focus-label">From</label>
             </div>
           </div>
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-4">
             <div className="form-group form-focus select-focus">
               <div>
                 <input
@@ -253,18 +253,7 @@ const Invoices = () => {
               <label className="focus-label">To</label>
             </div>
           </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option>Select Status</option>
-                <option>Pending</option>
-                <option>Paid</option>
-                <option>Partially Paid</option>
-              </select>
-              <label className="focus-label">Status</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-4">
             <a href="#" className="btn btn-success btn-block">
               {' '}
               Search{' '}

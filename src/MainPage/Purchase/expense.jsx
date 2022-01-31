@@ -113,14 +113,9 @@ const Expense = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a
-              href="#"
-              className="dropdown-item"
-              data-toggle="modal"
-              data-target="#edit_expense"
-            >
+            <Link className="dropdown-item" to="/app/sales/expenses-edit">
               <i className="fa fa-pencil m-r-5" /> Edit
-            </a>
+            </Link>
             <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Download
             </a>
@@ -158,14 +153,9 @@ const Expense = () => {
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_expense"
-              >
+              <Link to="/app/sales/expenses-create" className="btn add-btn">
                 <i className="fa fa-plus" /> Add Expense
-              </a>
+              </Link>
             </div>
           </div>
         </div>
