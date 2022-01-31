@@ -6,6 +6,7 @@ import httpService from '../../../lib/httpService';
 const Invoicecreate = () => {
   const [customers, setCustomers] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [invoiceType, setInvoiceType] = useState('');
   const [itemsToAdd, setItemsToAdd] = useState([
     {
       item: '',
@@ -42,8 +43,9 @@ const Invoicecreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const invoice = await httpService.post('/sale-invoice', {
+    await httpService.post('/sale-invoice', {
       ...invoiceToAdd,
+      type: invoiceType,
       items: itemsToAdd,
       total: itemsToAdd.reduce((acc, cur) => acc + cur.amount, 0),
     });
@@ -158,6 +160,33 @@ const Invoicecreate = () => {
                           });
                         }}
                       />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm-6 col-md-3">
+                  <div className="form-group">
+                    <label>
+                      Invoice Type<span className="text-danger">*</span>
+                    </label>
+                    <div
+                      onChange={(e) => {
+                        setInvoiceType(e.target.value);
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name="type"
+                        id="ONE_TIME"
+                        value={'ONE_TIME'}
+                      />{' '}
+                      One Time{' '}
+                      <input
+                        type="radio"
+                        name="type"
+                        id="RECURRING"
+                        value={'RECURRING'}
+                      />{' '}
+                      Recurring
                     </div>
                   </div>
                 </div>

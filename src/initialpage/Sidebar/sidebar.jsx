@@ -67,7 +67,7 @@ const bar = [
         icon: 'la la-users',
         children: [
           {
-            name: 'All Leads',
+            name: 'Active Leads',
             link: '/employees/leads',
           },
           {
@@ -124,10 +124,6 @@ const bar = [
             link: '/sales/payment-received',
           },
           {
-            name: 'Recurring Invoices',
-            link: '/sales/recurring-invoices',
-          },
-          {
             name: 'Projects',
             link: '/sales/projects',
           },
@@ -166,10 +162,6 @@ const bar = [
           {
             name: 'Vendor Credits',
             link: '/purchase/vendor-credits',
-          },
-          {
-            name: 'Recurring Bills',
-            link: '/purchase/recurring-bills',
           },
         ],
       },
@@ -245,7 +237,7 @@ const bar = [
             link: '/reports/sales-by-agent',
           },
           {
-            name: 'Sales By Product',
+            name: 'Sales By Projects',
             link: '/reports/sales-by-product',
           },
         ],

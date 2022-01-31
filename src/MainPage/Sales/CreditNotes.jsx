@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
+
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
+import httpService from '../../lib/httpService';
 
 const CreditNotes = () => {
   const [data, setData] = useState([
@@ -36,6 +38,14 @@ const CreditNotes = () => {
       });
     }
   });
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const {data} = await httpService.get('/credit-note');
+      console.log(data);
+      };
+      fetchData();
+  }, []);
 
   const columns = [
     {
