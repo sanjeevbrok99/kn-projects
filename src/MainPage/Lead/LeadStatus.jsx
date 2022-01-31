@@ -2,75 +2,142 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-
-const itemsFromBackend = [
-  { id: 'dkjd', content: 'Lead 1' },
-  { id: 'dkjdj', content: 'Lead 2' },
-  { id: 'ddkdm', content: 'Lead 3' },
-];
-
-const columnsFromBackend = {
-  ['New Lead']: {
-    name: 'New Lead',
-    items: itemsFromBackend,
-  },
-  ['Cold Lead']: {
-    name: 'Cold Lead',
-    items: [],
-  },
-  ['Negotiations']: {
-    name: 'Negotiations',
-    items: [],
-  },
-  ['Lead Won']: {
-    name: 'Lead Won',
-    items: [],
-  },
-  ['Lead Lost']: {
-    name: 'Lead Lost',
-    items: [],
-  },
-};
-
-const onDragEnd = (result, columns, setColumns) => {
-  if (!result.destination) return;
-  const { source, destination } = result;
-
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    });
-  } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems,
-      },
-    });
-  }
-};
+import { useEffect } from 'react';
+import httpService from '../../lib/httpService';
+import Swal from 'sweetalert2';
 
 function LeadStatus() {
-  const [columns, setColumns] = useState(columnsFromBackend);
+  const [columns, setColumns] = useState({
+    ['New Lead']: {
+      name: 'New Lead',
+      items: [],
+    },
+    ['Cold Lead']: {
+      name: 'Cold Lead',
+      items: [],
+    },
+    ['Negotiations']: {
+      name: 'Negotiations',
+      items: [],
+    },
+    ['Lead Won']: {
+      name: 'Lead Won',
+      items: [],
+    },
+    ['Lead Lost']: {
+      name: 'Lead Lost',
+      items: [],
+    },
+  });
+
+  const onDragEnd = (result, columns, setColumns) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      Swal.fire({
+        title: `Confirming updating`,
+        text: `Are you sure you want to update the status of ${removed.name}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Proceed',
+        preConfirm: () => {
+          return httpService.put(`/lead/${removed._id}`, {
+            status: destination.droppableId,
+          });
+        },
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          if (
+            destination.droppableId === 'Lead Won' ||
+            destination.droppableId === 'Lead Lost'
+          ) {
+            if (destination.droppableId === 'Lead Won')
+              await httpService.post(`/customer`, {
+                ...removed,
+                _id: undefined,
+              });
+            setColumns({
+              ...columns,
+              [source.droppableId]: {
+                ...sourceColumn,
+                items: sourceItems,
+              },
+            });
+            Swal.fire(
+              'Status Updated',
+              'Leave status has been updated.',
+              'success'
+            );
+            return;
+          }
+
+          setColumns({
+            ...columns,
+            [source.droppableId]: {
+              ...sourceColumn,
+              items: sourceItems,
+            },
+            [destination.droppableId]: {
+              ...destColumn,
+              items: destItems,
+            },
+          });
+          Swal.fire(
+            'Status Updated',
+            'Leave status has been updated.',
+            'success'
+          );
+        }
+      });
+    } else {
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
+
+  const fetchLeads = async () => {
+    const leads = await httpService.get('/lead');
+    if (leads.status === 200) {
+      for (let i = 0; i < leads.data.length; i++) {
+        setColumns((columns) => ({
+          ...columns,
+          [leads.data[i].status]: {
+            ...columns[leads.data[i].status],
+            items: [
+              ...columns[leads.data[i].status].items,
+              {
+                ...leads.data[i],
+                id: leads.data[i]._id,
+                content: leads.data[i].name,
+              },
+            ],
+          },
+        }));
+      }
+    }
+  };
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -150,7 +217,7 @@ function LeadStatus() {
                               minHeight: 600,
                             }}
                           >
-                            {column.items.map((item, index) => {
+                            {column.items?.map((item, index) => {
                               return (
                                 <Draggable
                                   key={item.id}

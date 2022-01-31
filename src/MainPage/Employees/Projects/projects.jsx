@@ -6,7 +6,7 @@ import '../../index.css';
 import httpService from '../../../lib/httpService';
 
 const Projects = () => {
-  const [project, setProject] = React.useState([]);
+  const [projects, setProjects] = React.useState([]);
   const [nameToSearch, setNameToSearch] = React.useState('');
   const [projectToAdd, setProjectToAdd] = React.useState({});
   const [projectToEdit, setProjectToEdit] = React.useState({});
@@ -31,8 +31,14 @@ const Projects = () => {
   };
 
   const fetchProjects = async () => {
-    const res = await httpService.get('/project');
-    setProject(res.data);
+    try {
+      const res = await httpService.get('/project');
+    setProjects(res.data);
+      
+    } catch (error) {
+      console.log(error.message)
+      
+    }
   };
 
   const editProjects = async () => {
@@ -152,7 +158,7 @@ const Projects = () => {
         </div>
         {/* Search Filter */}
         <div className="row">
-          {project.map((item, index) => (
+          {projects.map((item, index) => (
             <div key={index} className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
               <div className="card">
                 <div className="card-body">

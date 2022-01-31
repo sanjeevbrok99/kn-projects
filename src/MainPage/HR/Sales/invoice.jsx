@@ -7,6 +7,7 @@ import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
 import httpService from '../../../lib/httpService';
+import Swal from 'sweetalert2';
 
 const Invoices = () => {
   const [data, setData] = useState([]);
@@ -20,18 +21,77 @@ const Invoices = () => {
     fetchInvoice();
   }, []);
 
+  const handleDelete = async (id) => {
+    console.log(id);
+    Swal.fire({
+      title: 'Delete Invoice',
+      text: 'Are you sure you want to delete this invoice?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Proceed',
+      preConfirm: () => {
+        return httpService.delete(`/sale-invoice/${id}`);
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetchInvoice();
+        Swal.fire(
+          'Invoice Deleted',
+          'Invoice has been deleted successfully',
+          'success'
+        );
+      }
+    });
+  };
+
+  const handleMarkAsPaid = async (invoice) => {
+    Swal.fire({
+      title: 'Mark as Paid',
+      text: 'Are you sure you want to mark this invoice as paid?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Proceed',
+      preConfirm: () => {
+        return httpService.post(`/sale-payment`, {
+          invoice: invoice._id,
+          customer: invoice.customer._id,
+          amount: invoice.total,
+          paymentMode: 'Manual Record',
+          paymentDate: new Date(),
+        });
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetchInvoice();
+        Swal.fire(
+          'Invoice Marked as Paid',
+          'Invoice has been marked as paid successfully',
+          'success'
+        );
+      }
+    });
+  };
+
   const fetchInvoice = async () => {
     const invoices = await httpService.get('/sale-invoice');
     console.log(invoices);
     setData(
-      invoices.data?.map((invoice) => ({
-        id: invoice._id,
+      invoices.data?.map((invoice, index) => ({
+        ...invoice,
+        id: index + 1,
         invoicenumber: 'INV-' + invoice._id.toString().padStart(4, '0'),
         createddate: new Date(invoice.createdAt).toGMTString().substring(4, 16),
         duedate: new Date(invoice.invoiceDate).toGMTString().substring(4, 16),
         client: invoice.customer.name,
         amount: invoice.total,
-        status: invoice.status,
+        status:
+          invoice.type === 'RECURRING'
+            ? 'Monthly ' + invoice.status
+            : invoice.status,
       }))
     );
   };
@@ -78,7 +138,7 @@ const Invoices = () => {
       render: (text, record) => (
         <span
           className={
-            text === 'Paid'
+            text.includes('Paid')
               ? 'badge bg-inverse-success'
               : 'badge bg-inverse-info'
           }
@@ -101,6 +161,21 @@ const Invoices = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                console.log(record.status);
+                if (record.status === 'Paid') {
+                  Swal.fire('Invoice Paid already', '', 'success');
+                  return;
+                }
+                handleMarkAsPaid(record);
+              }}
+              className="dropdown-item"
+              href="#"
+            >
+              <i className="fa fa-file-pdf-o m-r-5" /> Mark Paid
+            </a>
             <Link className="dropdown-item" to="/app/sales/invoices-edit">
               <i className="fa fa-pencil m-r-5" /> Edit
             </Link>
@@ -108,13 +183,17 @@ const Invoices = () => {
               <i className="fa fa-eye m-r-5" /> View
             </Link>
             <a className="dropdown-item" href="#">
-              <i className="fa fa-email-square m-r-5" />
-              Email
-            </a>
-            <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Download
             </a>
-            <a className="dropdown-item" href="#">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                // console.log(record);
+                handleDelete(record._id);
+              }}
+              className="dropdown-item"
+              href="#"
+            >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>

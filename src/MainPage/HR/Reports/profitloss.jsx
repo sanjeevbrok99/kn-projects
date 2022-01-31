@@ -136,7 +136,7 @@ const ProfitLoss = () => {
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item active">Profit & Loss</li>
+                <li className="breadcrumb-item active">Profit Loss</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">

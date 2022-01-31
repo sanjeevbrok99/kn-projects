@@ -17,8 +17,12 @@ import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css'; // import styles
 
 import '../../index.css';
+import httpService from '../../../lib/httpService';
 
 const ProjectList = () => {
+  const [projectList, setProjectList] = React.useState([]);
+  const [projectToEdit,setProjectToEdit]=React.useState(null);
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -27,6 +31,24 @@ const ProjectList = () => {
       });
     }
   });
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+  const fetchData = async () => {
+    try {
+      const result = await httpService.get('/project');
+      setProjectList(result.data);
+      
+    } catch (error) {
+      console.log(error);
+    }
+      
+    };
+
+
   const onImageUpload = (fileList) => {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -34,6 +56,18 @@ const ProjectList = () => {
     };
     reader.readAsDataURL(fileList[0]);
   };
+  const  CapitalizeFirst=(string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+
+  const convertDate=(date)=>{
+    var newDate = new Date(date);
+    var dateString = newDate.getDate() + "/" + (newDate.getMonth() + 1) + "/" + newDate.getFullYear();
+    return dateString;
+  }
+
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -122,175 +156,60 @@ const ProjectList = () => {
                 <thead>
                   <tr>
                     <th>Project</th>
-                    <th>Project Id</th>
-                    <th>Leader</th>
-                    <th>Team</th>
+                    <th>Project Type</th>
+                    <th>Members</th>
                     <th>Deadline</th>
                     <th>Priority</th>
-                    <th>Status</th>
+                    <th>Leads</th>
                     <th className="text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  { projectList && projectList.map((project) => (
+                    <tr key={project._id}>
                     <td>
-                      <Link to="/app/projects/projects-view">
-                        TriniVihar-II
+                      <Link to={`/app/projects/projects-view/${project._id}`}>
+                        {project.name}
                       </Link>
                     </td>
-                    <td>PRO-0001</td>
+                    <td>{project && project.type}</td>
                     <td>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            data-toggle="tooltip"
-                            title="Sushmita Singh"
-                          >
-                            <img alt="" src={Avatar_16} />
-                          </a>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul className="team-members text-nowrap">
-                        <li>
-                          <a
-                            href="#"
-                            title="Prateek Tiwari"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_02} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            title="Shital Agarwal"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_09} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" title="Harvinder" data-toggle="tooltip">
-                            <img alt="" src={Avatar_10} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            title="Shreya Singh"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_05} />
-                          </a>
-                        </li>
-                        <li className="dropdown avatar-dropdown">
-                          <a
-                            href="#"
-                            className="all-users dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            +15
-                          </a>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <div className="avatar-group">
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_02} />
-                              </a>
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_09} />
-                              </a>
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_10} />
-                              </a>
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_05} />
-                              </a>
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_11} />
-                              </a>
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_12} />
-                              </a>
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_13} />
-                              </a>
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_01} />
-                              </a>
-                              <a className="avatar avatar-xs" href="#">
-                                <img alt="" src={Avatar_16} />
-                              </a>
-                            </div>
-                            <div className="avatar-pagination">
-                              <ul className="pagination">
-                                <li className="page-item">
-                                  <a
-                                    className="page-link"
-                                    href="#"
-                                    aria-label="Previous"
-                                  >
-                                    <span aria-hidden="true">«</span>
-                                    <span className="sr-only">Previous</span>
-                                  </a>
-                                </li>
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    1
-                                  </a>
-                                </li>
-                                <li className="page-item">
-                                  <a className="page-link" href="#">
-                                    2
-                                  </a>
-                                </li>
-                                <li className="page-item">
-                                  <a
-                                    className="page-link"
-                                    href="#"
-                                    aria-label="Next"
-                                  >
-                                    <span aria-hidden="true">»</span>
-                                    <span className="sr-only">Next</span>
-                                  </a>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>17 Apr 2021 </td>
-                    <td>
-                      <div className="dropdown action-label">
+                    <div className="dropdown action-label">
                         <a
                           href
                           className="btn btn-white btn-sm btn-rounded dropdown-toggle"
                           data-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <i className="fa fa-dot-circle-o text-danger" /> High{' '}
+                          
+                          {project.members.length} Member 's
                         </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            High
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-warning" />{' '}
-                            Medium
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Low
-                          </a>
-                        </div>
+                        {project.leads.length>0 && 
+                        <div className="dropdown-menu ">
+                          {project.members.map((member,i) => (
+                            <a className="dropdown-item" href="#" key={i}>
+                              {member.userName}
+                            </a>  
+                          ))}
+                        </div>}
+                      </div>
+                      
+                    </td>
+                   
+                    <td>{convertDate(project.endDate)} </td>
+                    <td>
+                      <div className="dropdown action-label">
+                        <a
+                          href
+                          className="btn btn-white btn-sm btn-rounded "
+                          aria-expanded="false"
+                        >
+                          <i className={`fa fa-dot-circle-o  ${project.priority==='HIGH' && 'text-danger' || project.priority==='MEDIUM' && 'text-warning' || project.priority==='LOW'&& 'text-success'} `}/> {CapitalizeFirst(project.priority)}{' '}
+                        </a>
+                        
                       </div>
                     </td>
-                    <td>
+                    <td >
                       <div className="dropdown action-label">
                         <a
                           href
@@ -298,10 +217,19 @@ const ProjectList = () => {
                           data-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <i className="fa fa-dot-circle-o text-success" />{' '}
-                          Active{' '}
+                          
+                          {project.leads.length} Leads
                         </a>
-                        <div className="dropdown-menu">
+                        {project.leads.length>0 && 
+                        <div className="dropdown-menu ">
+                          {project.leads.map((lead,i) => (
+                            <a className="dropdown-item" href="#" key={i}>
+                              {lead.name}
+                            </a>
+                          ))}
+                        </div>}
+
+                        {/* <div className="dropdown-menu">
                           <a className="dropdown-item" href="#">
                             <i className="fa fa-dot-circle-o text-success" />{' '}
                             Active
@@ -310,7 +238,7 @@ const ProjectList = () => {
                             <i className="fa fa-dot-circle-o text-danger" />{' '}
                             Inactive
                           </a>
-                        </div>
+                        </div> */}
                       </div>
                     </td>
                     <td className="text-right">
@@ -329,6 +257,7 @@ const ProjectList = () => {
                             href="#"
                             data-toggle="modal"
                             data-target="#edit_project"
+                            onClick={() => setProjectToEdit(project)}
                           >
                             <i className="fa fa-pencil m-r-5" /> Edit
                           </a>
@@ -344,433 +273,10 @@ const ProjectList = () => {
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <Link to="/app/projects/projects-view">
-                        Mahadev Nagar
-                      </Link>
-                    </td>
-                    <td>PRO-0002</td>
-                    <td>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            data-toggle="tooltip"
-                            title="Sushmita Singh"
-                          >
-                            <img alt="" src={Avatar_16} />
-                          </a>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            title="Prateek Tiwari"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_02} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            title="Shital Agarwal"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_09} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" title="Harvinder" data-toggle="tooltip">
-                            <img alt="" src={Avatar_10} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            title="Shreya Singh"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_05} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="all-users">
-                            +15
-                          </a>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>17 Apr 2021 </td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-dot-circle-o text-warning" />{' '}
-                          Medium{' '}
-                        </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            High
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-warning" />{' '}
-                            Medium
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Low
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-dot-circle-o text-danger" />{' '}
-                          Inactive{' '}
-                        </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Active
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            Inactive
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_project"
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_project"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/app/projects/projects-view">
-                        Basudev Nagar
-                      </Link>
-                    </td>
-                    <td>PRO-0003</td>
-                    <td>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            data-toggle="tooltip"
-                            title="Sushmita Singh"
-                          >
-                            <img alt="" src={Avatar_16} />
-                          </a>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            title="Prateek Tiwari"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_02} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            title="Shital Agarwal"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_09} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" title="Harvinder" data-toggle="tooltip">
-                            <img alt="" src={Avatar_10} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            title="Shreya Singh"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_05} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="all-users">
-                            +15
-                          </a>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>17 Apr 2021 </td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-dot-circle-o text-success" /> Low{' '}
-                        </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            High
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-warning" />{' '}
-                            Medium
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Low
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-dot-circle-o text-success" />{' '}
-                          Active{' '}
-                        </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Active
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            Inactive
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_project"
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_project"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/app/projects/projects-view">
-                        TariniVihar-II
-                      </Link>
-                    </td>
-                    <td>PRO-0004</td>
-                    <td>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            data-toggle="tooltip"
-                            title="Sushmita Singh"
-                          >
-                            <img alt="" src={Avatar_16} />
-                          </a>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            title="Prateek Tiwari"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_02} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            title="Shital Agarwal"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_09} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" title="Harvinder" data-toggle="tooltip">
-                            <img alt="" src={Avatar_10} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            title="Shreya Singh"
-                            data-toggle="tooltip"
-                          >
-                            <img alt="" src={Avatar_05} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="all-users">
-                            +15
-                          </a>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>17 Apr 2021 </td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-dot-circle-o text-danger" /> High{' '}
-                        </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            High
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-warning" />{' '}
-                            Medium
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Low
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-dot-circle-o text-success" />{' '}
-                          Active{' '}
-                        </a>
-                        <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Active
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            Inactive
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_project"
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_project"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
+
+                  ))}
+                  
+                  
                 </tbody>
               </table>
             </div>
@@ -1007,17 +513,21 @@ const ProjectList = () => {
                       <label>Project Name</label>
                       <input
                         className="form-control"
-                        defaultValue="Project Management"
                         type="text"
+                        value={projectToEdit&& projectToEdit.name}
                       />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Client</label>
+                      <label>Members</label>
                       <select className="select">
-                        <option>Sunteck Realty Ltd</option>
-                        <option>Godrej Properties Ltd</option>
+                        {
+                          projectToEdit && projectToEdit.members.map(member => (
+                            <option key={member._id}>{member.userName}</option>
+                          ))
+                        }
+                     
                       </select>
                     </div>
                   </div>
@@ -1025,11 +535,12 @@ const ProjectList = () => {
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Start Date</label>
+                      <label> Start Date</label>
                       <div>
                         <input
                           className="form-control datetimepicker"
                           type="date"
+                          value={projectToEdit && new Date(projectToEdit.startDate).toISOString().substring(0, 10)}
                         />
                       </div>
                     </div>
@@ -1041,123 +552,40 @@ const ProjectList = () => {
                         <input
                           className="form-control datetimepicker"
                           type="date"
+                          value={projectToEdit && new Date(projectToEdit.endDate).toISOString().substring(0, 10)}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-sm-3">
+                  <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Rate</label>
+                      <label>Project Priority</label>
                       <input
-                        placeholder="$50"
                         className="form-control"
-                        defaultValue="$5000"
                         type="text"
+                        value={projectToEdit&& projectToEdit.priority}
                       />
                     </div>
                   </div>
-                  <div className="col-sm-3">
-                    <div className="form-group">
-                      <label>&nbsp;</label>
-                      <select className="select">
-                        <option>Hourly</option>
-                        <option>Fixed</option>
-                      </select>
-                    </div>
-                  </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Priority</label>
+                      <label>Leads</label>
                       <select className="select">
-                        <option>High</option>
-                        <option>Medium</option>
-                        <option>Low</option>
+                        {
+                          projectToEdit && projectToEdit.leads.map(lead => (
+                            <option key={lead._id}>{lead.name}</option>
+                          ))
+                        }
+                     
                       </select>
                     </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Add Project Leader</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Team Leader</label>
-                      <div className="project-members">
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Sushmita Singh"
-                          className="avatar"
-                        >
-                          <img src={Avatar_16} alt="" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Add Team</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Team Members</label>
-                      <div className="project-members">
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Prateek Tiwari"
-                          className="avatar"
-                        >
-                          <img src={Avatar_16} alt="" />
-                        </a>
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Shital Agarwal"
-                          className="avatar"
-                        >
-                          <img src={Avatar_09} alt="" />
-                        </a>
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Harvinder"
-                          className="avatar"
-                        >
-                          <img src={Avatar_10} alt="" />
-                        </a>
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Shreya Singh"
-                          className="avatar"
-                        >
-                          <img src={Avatar_05} alt="" />
-                        </a>
-                        <span className="all-team">+2</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Description</label>
-                  <textarea
-                    rows={4}
-                    className="form-control"
-                    placeholder="Enter your message here"
-                    defaultValue={''}
-                  />
-                </div>
+               
+              
+               
                 <div className="form-group">
                   <label>Upload Files</label>
                   <input className="form-control" type="file" />

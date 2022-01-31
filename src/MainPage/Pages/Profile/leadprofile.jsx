@@ -1,28 +1,13 @@
 /**
  * TermsCondition Page
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import {
-  Avatar_02,
-  Avatar_05,
-  Avatar_09,
-  Avatar_10,
-  Avatar_16,
-} from '../../../Entryfile/imagepath';
+import { Avatar_02, Avatar_16 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
-import { toast } from 'react-toastify';
 
-import {
-  makeStyles,
-  Paper,
-  FormControl,
-  InputLabel,
-  Input,
-  Button,
-} from '@material-ui/core';
+import { makeStyles, Paper } from '@material-ui/core';
 import {
   Timeline,
   TimelineItem,
@@ -33,7 +18,6 @@ import {
   TimelineDot,
 } from '@material-ui/lab';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,7 +36,9 @@ const useStyles = makeStyles((theme) => ({
 const EmployeeProfile = () => {
   const { id } = useParams();
   const classes = useStyles();
-  const [designationReason, setDesignationReason] = React.useState('');
+  const [profile, setProfile] = React.useState({});
+  const [noteToAdd, setNoteToAdd] = useState({});
+  const [activityToAdd, setActivityToAdd] = useState({});
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -67,33 +53,31 @@ const EmployeeProfile = () => {
   const fetchLeadProfile = async () => {
     const response = await httpService.get(`/lead/${id}`);
     console.log(response.data);
+    setProfile(response.data);
   };
 
-  const handleResign = async () => {
-    if (!designationReason) {
-      return;
-    }
-    toast
-      .promise(
-        httpService.post('/private/resignation', {
-          userId,
-          reason: designationReason,
-          noticeDate: new Date().toISOString().substring(0, 10),
-          resignationDate: new Date(
-            new Date().setDate(new Date().getDate() + 30)
-          )
-            .toISOString()
-            .substring(0, 10),
-        }),
-        {
-          pending: 'Submitting',
-          success: 'Success',
-          error: 'Failed',
-        }
-      )
-      .finally(() =>
-        document.querySelectorAll('.cancel-btn').forEach((el) => el.click())
-      );
+  const addNote = async () => {
+    const response = await httpService.put(`/lead/${id}`, {
+      notes: profile.notes.concat({
+        ...noteToAdd,
+        dateTime: new Date(),
+        id: profile.notes.length + 1,
+      }),
+    });
+    fetchLeadProfile();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const addActivity = async () => {
+    const response = await httpService.put(`/lead/${id}`, {
+      activities: profile.activities.concat({
+        ...activityToAdd,
+        dateTime: new Date(),
+        id: profile.activities.length + 1,
+      }),
+    });
+    fetchLeadProfile();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
   return (
@@ -108,11 +92,9 @@ const EmployeeProfile = () => {
         <div className="page-header">
           <div className="row">
             <div className="col-sm-12">
-              <h3 className="page-title">Profile</h3>
+              <h3 className="page-title">Lead Profile</h3>
               <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Settings</Link>
-                </li>
+                <li className="breadcrumb-item active">Dashboard</li>
                 <li className="breadcrumb-item active">Profile</li>
               </ul>
             </div>
@@ -135,7 +117,9 @@ const EmployeeProfile = () => {
                     <div className="row">
                       <div className="col-md-5">
                         <div className="profile-info-left">
-                          <h3 className="user-name m-t-0 mb-0">Lead Profile</h3>
+                          <h3 className="user-name m-t-0 mb-0">
+                            {profile.name}
+                          </h3>
                         </div>
 
                         <div className="mt-3">
@@ -143,18 +127,22 @@ const EmployeeProfile = () => {
                             <li>
                               <div className="title">Phone:</div>
                               <div className="text">
-                                <a href="">9876543210</a>
+                                <a href="">{profile.phone}</a>
                               </div>
                             </li>
                             <li>
                               <div className="title">Email:</div>
                               <div className="text">
-                                <a href="">johndoe@example.com</a>
+                                <a href="">{profile.email}</a>
                               </div>
                             </li>
                             <li>
-                              <div className="title">Birthday:</div>
-                              <div className="text">24th July</div>
+                              <div className="title">Created At</div>
+                              <div className="text">
+                                {new Date(
+                                  profile.createdAt
+                                ).toLocaleDateString()}
+                              </div>
                             </li>
                           </ul>
                         </div>
@@ -164,9 +152,7 @@ const EmployeeProfile = () => {
                           <ul className="personal-info">
                             <li>
                               <div className="title">Address:</div>
-                              <div className="text">
-                                1861 Bayonne Ave, Manchester Township, NJ, 08759
-                              </div>
+                              <div className="text">{profile.address}</div>
                             </li>
                             <li>
                               <div className="title">Gender:</div>
@@ -181,7 +167,7 @@ const EmployeeProfile = () => {
                                   </div>
                                 </div>
                                 <Link to="/app/profile/employee-profile">
-                                  Sushmita Singh
+                                  {profile.assignedTo?.firstName}
                                 </Link>
                               </div>
                             </li>
@@ -194,7 +180,7 @@ const EmployeeProfile = () => {
                                   </div>
                                 </div>
                                 <Link to="/app/profile/employee-profile">
-                                  Sushmita Singh
+                                  {profile.createdBy?.firstName}
                                 </Link>
                               </div>
                             </li>
@@ -205,7 +191,7 @@ const EmployeeProfile = () => {
                   </div>
                   <div className="pro-edit">
                     <a
-                      data-target="#profile_info"
+                      data-target="#profile_"
                       data-toggle="modal"
                       className="edit-icon"
                       href="#"
@@ -259,7 +245,7 @@ const EmployeeProfile = () => {
           >
             <h3>Timeline</h3>
             <Timeline align="alternate">
-              {[1, 2, 3, 4, 5].map((n) => (
+              {profile.activities?.map((n) => (
                 <TimelineItem>
                   <TimelineOppositeContent>
                     <h6
@@ -273,9 +259,9 @@ const EmployeeProfile = () => {
                           fontWeight: 'bold',
                         }}
                       >
-                        3 Aug 2021
+                        {new Date(n.dateTime).toLocaleDateString()}
                       </span>{' '}
-                      at 9:30
+                      at {new Date(n.dateTime).toLocaleTimeString()}
                     </h6>
                   </TimelineOppositeContent>
                   <TimelineSeparator>
@@ -294,11 +280,60 @@ const EmployeeProfile = () => {
                       elevation={1}
                       className={classes.paper}
                     >
-                      <h5>Work</h5>
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Aut, rem?
-                      </p>
+                      <h5>{n.activityType}</h5>
+                      <p>{n.description}</p>
+                    </Paper>
+                  </TimelineContent>
+                </TimelineItem>
+              ))}
+              {profile.notes?.length > 0 && (
+                <h3
+                  style={{
+                    textAlign: 'center',
+                    marginTop: '20px',
+                    marginBottom: '20px',
+                  }}
+                >
+                  Notes
+                </h3>
+              )}
+              {profile.notes?.map((n) => (
+                <TimelineItem>
+                  <TimelineOppositeContent>
+                    <h6
+                      style={{
+                        marginTop: '16px',
+                      }}
+                      className="mb-0"
+                    >
+                      <span
+                        style={{
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {new Date(n.dateTime).toLocaleDateString()}
+                      </span>{' '}
+                      at {new Date(n.dateTime).toLocaleTimeString()}
+                    </h6>
+                  </TimelineOppositeContent>
+                  <TimelineSeparator>
+                    <TimelineDot>
+                      <LaptopMacIcon />
+                    </TimelineDot>
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>
+                    <Paper
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                      }}
+                      elevation={1}
+                      className={classes.paper}
+                    >
+                      <h5>{n.title}</h5>
+                      <p>{n.description}</p>
                     </Paper>
                   </TimelineContent>
                 </TimelineItem>
@@ -322,277 +357,145 @@ const EmployeeProfile = () => {
                       href="#"
                       className="btn btn-primary"
                       data-toggle="modal"
-                      data-target="#add_"
+                      data-target="#add_note"
                     >
                       <i className="fa fa-plus" /> Add
                     </a>
                   </div>
                 </div>
               </div>
-
-              <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dropdown profile-action">
-                      <a
-                        aria-expanded="false"
-                        data-toggle="dropdown"
-                        className="action-icon dropdown-toggle"
-                        href="#"
+              <div
+                id="add_note"
+                className="modal custom-modal fade"
+                role="dialog"
+              >
+                <div
+                  className="modal-dialog modal-dialog-centered modal-lg"
+                  role="document"
+                >
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Add Note</h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
                       >
-                        <i className="material-icons">more_vert</i>
-                      </a>
-                      <div className="dropdown-menu dropdown-menu-right">
-                        <a
-                          data-target="#edit_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-pencil m-r-5" /> Edit
-                        </a>
-                        <a
-                          data-target="#delete_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-trash-o m-r-5" /> Delete
-                        </a>
-                      </div>
+                        <span aria-hidden="true">×</span>
+                      </button>
                     </div>
-                    <h4 className="project-title">
-                      {/* <Link to="/app/projects/projects-view">
-                         Office Management
-                       </Link> */}
-                      Note Title
-                    </h4>
-                    <small className="block text-ellipsis m-b-15">
-                      {/* <span className="text-xs">1</span>{' '}
-                       <span className="text-muted">open tasks, </span> */}
-                      <span className="text-muted mr-3">10 Apr 2021</span>
-                      <span className="text-xs">9:30 am</span>{' '}
-                    </small>
-                    <p className="text-muted">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. When an unknown printer took a
-                      galley of type and scrambled it...
-                    </p>
+                    <div className="modal-body">
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          addNote();
+                        }}
+                      >
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="form-group">
+                              <label className="col-form-label">
+                                Title
+                                <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                onChange={(e) => {
+                                  setNoteToAdd({
+                                    ...noteToAdd,
+                                    title: e.target.value,
+                                  });
+                                }}
+                                className="form-control"
+                                type="text"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-12">
+                            <div className="form-group">
+                              <label className="col-form-label">
+                                Description
+                                <span className="text-danger">*</span>
+                              </label>
+                              <textarea
+                                onChange={(e) =>
+                                  setNoteToAdd({
+                                    ...noteToAdd,
+                                    description: e.target.value,
+                                  })
+                                }
+                                rows={4}
+                                className="form-control"
+                                defaultValue={''}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="submit-section">
+                          <button className="btn btn-primary submit-btn">
+                            Submit
+                          </button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dropdown profile-action">
-                      <a
-                        aria-expanded="false"
-                        data-toggle="dropdown"
-                        className="action-icon dropdown-toggle"
-                        href="#"
-                      >
-                        <i className="material-icons">more_vert</i>
-                      </a>
-                      <div className="dropdown-menu dropdown-menu-right">
+              {profile?.notes?.map((p) => (
+                <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dropdown profile-action">
                         <a
-                          data-target="#edit_project"
-                          data-toggle="modal"
+                          aria-expanded="false"
+                          data-toggle="dropdown"
+                          className="action-icon dropdown-toggle"
                           href="#"
-                          className="dropdown-item"
                         >
-                          <i className="fa fa-pencil m-r-5" /> Edit
+                          <i className="material-icons">more_vert</i>
                         </a>
-                        <a
-                          data-target="#delete_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-trash-o m-r-5" /> Delete
-                        </a>
+                        <div className="dropdown-menu dropdown-menu-right">
+                          <a
+                            data-target="#edit_project"
+                            data-toggle="modal"
+                            href="#"
+                            className="dropdown-item"
+                          >
+                            <i className="fa fa-pencil m-r-5" /> Edit
+                          </a>
+                          <a
+                            data-target="#delete_project"
+                            data-toggle="modal"
+                            href="#"
+                            className="dropdown-item"
+                          >
+                            <i className="fa fa-trash-o m-r-5" /> Delete
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                    <h4 className="project-title">
-                      {/* <Link to="/app/projects/projects-view">
+                      <h4 className="project-title">
+                        {/* <Link to="/app/projects/projects-view">
                          Office Management
                        </Link> */}
-                      Note Title
-                    </h4>
-                    <small className="block text-ellipsis m-b-15">
-                      {/* <span className="text-xs">1</span>{' '}
+                        {p.title}
+                      </h4>
+                      <small className="block text-ellipsis m-b-15">
+                        {/* <span className="text-xs">1</span>{' '}
                        <span className="text-muted">open tasks, </span> */}
-                      <span className="text-muted mr-3">10 Apr 2021</span>
-                      <span className="text-xs">9:30 am</span>{' '}
-                    </small>
-                    <p className="text-muted">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. When an unknown printer took a
-                      galley of type and scrambled it...
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dropdown profile-action">
-                      <a
-                        aria-expanded="false"
-                        data-toggle="dropdown"
-                        className="action-icon dropdown-toggle"
-                        href="#"
-                      >
-                        <i className="material-icons">more_vert</i>
-                      </a>
-                      <div className="dropdown-menu dropdown-menu-right">
-                        <a
-                          data-target="#edit_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-pencil m-r-5" /> Edit
-                        </a>
-                        <a
-                          data-target="#delete_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-trash-o m-r-5" /> Delete
-                        </a>
-                      </div>
+                        <span className="text-muted mr-3">
+                          {new Date(p.dateTime).toLocaleDateString()}
+                        </span>
+                        <span className="text-xs">
+                          {new Date(p.dateTime).toLocaleTimeString()}
+                        </span>{' '}
+                      </small>
+                      <p className="text-muted">{p.description}</p>
                     </div>
-                    <h4 className="project-title">
-                      {/* <Link to="/app/projects/projects-view">
-                         Office Management
-                       </Link> */}
-                      Note Title
-                    </h4>
-                    <small className="block text-ellipsis m-b-15">
-                      {/* <span className="text-xs">1</span>{' '}
-                       <span className="text-muted">open tasks, </span> */}
-                      <span className="text-muted mr-3">10 Apr 2021</span>
-                      <span className="text-xs">9:30 am</span>{' '}
-                    </small>
-                    <p className="text-muted">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. When an unknown printer took a
-                      galley of type and scrambled it...
-                    </p>
                   </div>
                 </div>
-              </div>
-
-              <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dropdown profile-action">
-                      <a
-                        aria-expanded="false"
-                        data-toggle="dropdown"
-                        className="action-icon dropdown-toggle"
-                        href="#"
-                      >
-                        <i className="material-icons">more_vert</i>
-                      </a>
-                      <div className="dropdown-menu dropdown-menu-right">
-                        <a
-                          data-target="#edit_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-pencil m-r-5" /> Edit
-                        </a>
-                        <a
-                          data-target="#delete_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-trash-o m-r-5" /> Delete
-                        </a>
-                      </div>
-                    </div>
-                    <h4 className="project-title">
-                      {/* <Link to="/app/projects/projects-view">
-                         Office Management
-                       </Link> */}
-                      Note Title
-                    </h4>
-                    <small className="block text-ellipsis m-b-15">
-                      {/* <span className="text-xs">1</span>{' '}
-                       <span className="text-muted">open tasks, </span> */}
-                      <span className="text-muted mr-3">10 Apr 2021</span>
-                      <span className="text-xs">9:30 am</span>{' '}
-                    </small>
-                    <p className="text-muted">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. When an unknown printer took a
-                      galley of type and scrambled it...
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dropdown profile-action">
-                      <a
-                        aria-expanded="false"
-                        data-toggle="dropdown"
-                        className="action-icon dropdown-toggle"
-                        href="#"
-                      >
-                        <i className="material-icons">more_vert</i>
-                      </a>
-                      <div className="dropdown-menu dropdown-menu-right">
-                        <a
-                          data-target="#edit_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-pencil m-r-5" /> Edit
-                        </a>
-                        <a
-                          data-target="#delete_project"
-                          data-toggle="modal"
-                          href="#"
-                          className="dropdown-item"
-                        >
-                          <i className="fa fa-trash-o m-r-5" /> Delete
-                        </a>
-                      </div>
-                    </div>
-                    <h4 className="project-title">
-                      {/* <Link to="/app/projects/projects-view">
-                         Office Management
-                       </Link> */}
-                      Note Title
-                    </h4>
-                    <small className="block text-ellipsis m-b-15">
-                      {/* <span className="text-xs">1</span>{' '}
-                       <span className="text-muted">open tasks, </span> */}
-                      <span className="text-muted mr-3">10 Apr 2021</span>
-                      <span className="text-xs">9:30 am</span>{' '}
-                    </small>
-                    <p className="text-muted">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. When an unknown printer took a
-                      galley of type and scrambled it...
-                    </p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-          {/* /Activities Tab */}
-          {/* Bank Statutory Tab */}
           <div className="tab-pane fade" id="bank_statutory">
             <div className="card">
               <div className="card-body">
@@ -607,1009 +510,114 @@ const EmployeeProfile = () => {
                           href="#"
                           className="btn btn-primary"
                           data-toggle="modal"
-                          data-target="#add_"
+                          data-target="#add_activity"
                         >
-                          <i className="fa fa-plus" /> Task
-                        </a>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="col-auto ml-auto">
-                        <a
-                          href="#"
-                          className="btn btn-primary"
-                          data-toggle="modal"
-                          data-target="#add_"
-                        >
-                          <i className="fa fa-plus" /> Event
-                        </a>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="col-auto ml-auto">
-                        <a
-                          href="#"
-                          className="btn btn-primary"
-                          data-toggle="modal"
-                          data-target="#add_"
-                        >
-                          <i className="fa fa-plus" /> Calls
+                          <i className="fa fa-plus" /> Activity
                         </a>
                       </div>
                     </div>
                   </div>
                 </div>
-
                 <hr />
-
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Activity</h5>
-                    <p class="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a href="#" class="btn btn-primary">
-                      any link
-                    </a>
-                  </div>
-                </div>
-
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Activity</h5>
-                    <p class="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a href="#" class="btn btn-primary">
-                      any link
-                    </a>
-                  </div>
-                </div>
-
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Activity</h5>
-                    <p class="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <a href="#" class="btn btn-primary">
-                      any link
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* /Bank Statutory Tab */}
-        </div>
-      </div>
-      {/* /Page Content */}
-      {/* Profile Modal */}
-      <div id="profile_info" className="modal custom-modal fade" role="dialog">
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Profile Information</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="profile-img-wrap edit-img">
-                      <img
-                        className="inline-block"
-                        src={Avatar_02}
-                        alt="user"
-                      />
-                      <div className="fileupload btn">
-                        <span className="btn-text">edit</span>
-                        <input className="upload" type="file" />
+                <div
+                  id="add_activity"
+                  className="modal custom-modal fade"
+                  role="dialog"
+                >
+                  <div
+                    className="modal-dialog modal-dialog-centered modal-lg"
+                    role="document"
+                  >
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Add Activity</h5>
+                        <button
+                          type="button"
+                          className="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">×</span>
+                        </button>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>First Name</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            defaultValue="John"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>Last Name</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            defaultValue="Doe"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>Birth Date</label>
-                          <div>
-                            <input
-                              className="form-control datetimepicker"
-                              type="date"
-                              defaultValue="05/06/1985"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>Gender</label>
-                          <select className="select form-control">
-                            <option value="male selected">Male</option>
-                            <option value="female">Female</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label>Address</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="4487 Snowbird Lane"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>State</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="New York"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Country</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="United States"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Pin Code</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue={10523}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Phone Number</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="631-889-3206"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>
-                        Department <span className="text-danger">*</span>
-                      </label>
-                      <select className="select">
-                        <option>Select Department</option>
-                        <option>Marketing Head</option>
-                        <option>IT Management</option>
-                        <option>Marketing</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>
-                        Designation <span className="text-danger">*</span>
-                      </label>
-                      <select className="select">
-                        <option>Select Designation</option>
-                        <option>CIO</option>
-                        <option>Product Manager</option>
-                        <option>Product Manager</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>
-                        Reports To <span className="text-danger">*</span>
-                      </label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Wilmer Deluna</option>
-                        <option>Lesley Grauer</option>
-                        <option>Sushmita Singh</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Profile Modal */}
-      {/* Personal Info Modal */}
-      <div
-        id="personal_info_modal"
-        className="modal custom-modal fade"
-        role="dialog"
-      >
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Personal Information</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Passport No</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Passport Expiry Date</label>
-                      <div>
-                        <input
-                          className="form-control datetimepicker"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Tel</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>
-                        Nationality <span className="text-danger">*</span>
-                      </label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Religion</label>
-                      <div>
-                        <input className="form-control" type="date" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>
-                        Marital status <span className="text-danger">*</span>
-                      </label>
-                      <select className="select form-control">
-                        <option>-</option>
-                        <option>Single</option>
-                        <option>Married</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Employment of spouse</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>No. of children </label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Personal Info Modal */}
-      {/* Family Info Modal */}
-      <div
-        id="family_info_modal"
-        className="modal custom-modal fade"
-        role="dialog"
-      >
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title"> Family Informations</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="form-scroll">
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Family Member{' '}
-                        <a href="" className="delete-icon">
-                          <i className="fa fa-trash-o" />
-                        </a>
-                      </h3>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Name <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Relationship{' '}
-                              <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Date of birth{' '}
-                              <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Phone <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Education Informations{' '}
-                        <a href="" className="delete-icon">
-                          <i className="fa fa-trash-o" />
-                        </a>
-                      </h3>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Name <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Relationship{' '}
-                              <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Date of birth{' '}
-                              <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>
-                              Phone <span className="text-danger">*</span>
-                            </label>
-                            <input className="form-control" type="text" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="add-more">
-                        <a href="">
-                          <i className="fa fa-plus-circle" /> Add More
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Family Info Modal */}
-      {/* Emergency Contact Modal */}
-      <div
-        id="emergency_contact_modal"
-        className="modal custom-modal fade"
-        role="dialog"
-      >
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Personal Information</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="card">
-                  <div className="card-body">
-                    <h3 className="card-title">Primary Contact</h3>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>
-                            Name <span className="text-danger">*</span>
-                          </label>
-                          <input type="text" className="form-control" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>
-                            Relationship <span className="text-danger">*</span>
-                          </label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>
-                            Phone <span className="text-danger">*</span>
-                          </label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>Phone 2</label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="card">
-                  <div className="card-body">
-                    <h3 className="card-title">Primary Contact</h3>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>
-                            Name <span className="text-danger">*</span>
-                          </label>
-                          <input type="text" className="form-control" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>
-                            Relationship <span className="text-danger">*</span>
-                          </label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>
-                            Phone <span className="text-danger">*</span>
-                          </label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label>Phone 2</label>
-                          <input className="form-control" type="text" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Emergency Contact Modal */}
-      {/* Education Modal */}
-      <div
-        id="education_info"
-        className="modal custom-modal fade"
-        role="dialog"
-      >
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title"> Education Informations</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="form-scroll">
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Education Informations{' '}
-                        <a href="" className="delete-icon">
-                          <i className="fa fa-trash-o" />
-                        </a>
-                      </h3>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              defaultValue="Oxford University"
-                              className="form-control floating"
-                            />
-                            <label className="focus-label">Institution</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              defaultValue="Computer Science"
-                              className="form-control floating"
-                            />
-                            <label className="focus-label">Subject</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <div>
-                              <input
-                                type="date"
-                                defaultValue="01/06/2002"
-                                className="form-control floating datetimepicker"
-                              />
+                      <div className="modal-body">
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            addActivity();
+                          }}
+                        >
+                          <div className="row">
+                            <div className="col-12">
+                              <div className="form-group">
+                                <label className="col-form-label">
+                                  Type
+                                  <span className="text-danger">*</span>
+                                </label>
+                                <select
+                                  onChange={(e) => {
+                                    setActivityToAdd((activityToAdd) => ({
+                                      ...activityToAdd,
+                                      activityType: e.target.value,
+                                    }));
+                                  }}
+                                  className="custom-select"
+                                >
+                                  <option value="">Select Type</option>
+                                  <option value="Call">Call</option>
+                                  <option value="Meeting">Meeting</option>
+                                  <option value="Email">Email</option>
+                                </select>
+                              </div>
                             </div>
-                            <label className="focus-label">Starting Date</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <div>
-                              <input
-                                type="date"
-                                defaultValue="31/05/2006"
-                                className="form-control floating datetimepicker"
-                              />
+                            <div className="col-12">
+                              <div className="form-group">
+                                <label className="col-form-label">
+                                  Description
+                                  <span className="text-danger">*</span>
+                                </label>
+                                <textarea
+                                  onChange={(e) =>
+                                    setActivityToAdd((activityToAdd) => ({
+                                      ...activityToAdd,
+                                      description: e.target.value,
+                                    }))
+                                  }
+                                  rows={4}
+                                  className="form-control"
+                                  defaultValue={''}
+                                />
+                              </div>
                             </div>
-                            <label className="focus-label">Complete Date</label>
                           </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              defaultValue="BE Computer Science"
-                              className="form-control floating"
-                            />
-                            <label className="focus-label">Degree</label>
+                          <div className="submit-section">
+                            <button className="btn btn-primary submit-btn">
+                              Submit
+                            </button>
                           </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              defaultValue="Grade A"
-                              className="form-control floating"
-                            />
-                            <label className="focus-label">Grade</label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Education Informations{' '}
-                        <a href="" className="delete-icon">
-                          <i className="fa fa-trash-o" />
-                        </a>
-                      </h3>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              defaultValue="Oxford University"
-                              className="form-control floating"
-                            />
-                            <label className="focus-label">Institution</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              defaultValue="Computer Science"
-                              className="form-control floating"
-                            />
-                            <label className="focus-label">Subject</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <div>
-                              <input
-                                type="date"
-                                defaultValue="01/06/2002"
-                                className="form-control floating datetimepicker"
-                              />
-                            </div>
-                            <label className="focus-label">Starting Date</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <div>
-                              <input
-                                type="date"
-                                defaultValue="31/05/2006"
-                                className="form-control floating datetimepicker"
-                              />
-                            </div>
-                            <label className="focus-label">Complete Date</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              defaultValue="BE Computer Science"
-                              className="form-control floating"
-                            />
-                            <label className="focus-label">Degree</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              defaultValue="Grade A"
-                              className="form-control floating"
-                            />
-                            <label className="focus-label">Grade</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="add-more">
-                        <a href="">
-                          <i className="fa fa-plus-circle" /> Add More
-                        </a>
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Education Modal */}
-      {/* Experience Modal */}
-      <div
-        id="experience_info"
-        className="modal custom-modal fade"
-        role="dialog"
-      >
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Experience Informations</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="form-scroll">
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Experience Informations{' '}
-                        <a href="" className="delete-icon">
-                          <i className="fa fa-trash-o" />
-                        </a>
-                      </h3>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              className="form-control floating"
-                              defaultValue="Digital Devlopment Inc"
-                            />
-                            <label className="focus-label">Company Name</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              className="form-control floating"
-                              defaultValue="United States"
-                            />
-                            <label className="focus-label">Location</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              className="form-control floating"
-                              defaultValue="Product Manager"
-                            />
-                            <label className="focus-label">Job Position</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <div>
-                              <input
-                                type="date"
-                                className="form-control floating datetimepicker"
-                                defaultValue="01/07/2007"
-                              />
-                            </div>
-                            <label className="focus-label">Period From</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <div>
-                              <input
-                                type="date"
-                                className="form-control floating datetimepicker"
-                                defaultValue="08/06/2018"
-                              />
-                            </div>
-                            <label className="focus-label">Period To</label>
-                          </div>
-                        </div>
-                      </div>
+                {profile.activities?.map((activity) => (
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">{activity.activityType}</h5>
+                      <small className="block text-ellipsis m-b-15">
+                        {/* <span className="text-xs">1</span>{' '}
+                       <span className="text-muted">open tasks, </span> */}
+                        <span className="text-muted mr-1">
+                          {new Date(activity.dateTime).toLocaleDateString()} at
+                        </span>
+                        <span className="text-muted">
+                          {new Date(activity.dateTime).toLocaleTimeString()}
+                        </span>{' '}
+                      </small>
+                      <p class="card-text">{activity.description}</p>
                     </div>
                   </div>
-                  <div className="card">
-                    <div className="card-body">
-                      <h3 className="card-title">
-                        Experience Informations{' '}
-                        <a href="" className="delete-icon">
-                          <i className="fa fa-trash-o" />
-                        </a>
-                      </h3>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              className="form-control floating"
-                              defaultValue="Digital Devlopment Inc"
-                            />
-                            <label className="focus-label">Company Name</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              className="form-control floating"
-                              defaultValue="United States"
-                            />
-                            <label className="focus-label">Location</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <input
-                              type="text"
-                              className="form-control floating"
-                              defaultValue="Product Manager"
-                            />
-                            <label className="focus-label">Job Position</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <div>
-                              <input
-                                type="date"
-                                className="form-control floating datetimepicker"
-                                defaultValue="01/07/2007"
-                              />
-                            </div>
-                            <label className="focus-label">Period From</label>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group form-focus focused">
-                            <div>
-                              <input
-                                type="date"
-                                className="form-control floating datetimepicker"
-                                defaultValue="08/06/2018"
-                              />
-                            </div>
-                            <label className="focus-label">Period To</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="add-more">
-                        <a href="">
-                          <i className="fa fa-plus-circle" /> Add More
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Experience Modal */}
-      <div
-        className="modal custom-modal fade"
-        id="fill_resignation"
-        role="dialog"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-body">
-              <div className="form-header">
-                <h3>Apply Resignation</h3>
-                <p>Apply for a Resignation? This is an irreversible action.</p>
-              </div>
-              <div className="form-group">
-                <label className="col-form-label">Reason</label>
-                <textarea
-                  className="form-control"
-                  onChange={(e) => {
-                    setDesignationReason(e.target.value);
-                  }}
-                />
-              </div>
-              <div className="modal-btn delete-action">
-                <div className="row">
-                  <div className="col-6">
-                    <a
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleResign();
-                      }}
-                      className="btn btn-primary continue-btn"
-                    >
-                      Confirm
-                    </a>
-                  </div>
-                  <div className="col-6">
-                    <a
-                      href=""
-                      data-dismiss="modal"
-                      className="btn btn-primary cancel-btn"
-                    >
-                      Cancel
-                    </a>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
