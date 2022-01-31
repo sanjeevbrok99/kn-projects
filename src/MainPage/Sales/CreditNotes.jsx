@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
-
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
@@ -30,6 +29,9 @@ const CreditNotes = () => {
       status: 'Sent',
     },
   ]);
+
+  const [customerData, setCustomerData] = useState([]);
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -40,12 +42,23 @@ const CreditNotes = () => {
   });
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      const {data} = await httpService.get('/credit-note');
-      console.log(data);
-      };
-      fetchData();
+    fetchData();
+    fetchCustomers();
   }, []);
+
+  const fetchData = async () => {
+    const { data } = await httpService.get('/credit-note');
+    console.log(data);
+  };
+
+  const fetchCustomers = async () => {
+    const res = await httpService.get('/customer');
+    setCustomerData(res.data);
+  };
+
+  const addCreditNote = async () => {
+    const res = await httpService.post('/credit-note', {});
+  };
 
   const columns = [
     {
@@ -153,7 +166,7 @@ const CreditNotes = () => {
                 href="#"
                 className="btn add-btn"
                 data-toggle="modal"
-                data-target="#add_job"
+                data-target="#add_note"
               >
                 <i className="fa fa-plus" /> Add Credit Notes
               </a>
@@ -202,7 +215,7 @@ const CreditNotes = () => {
         </div>
 
         {/* / add credit modal */}
-        <div id="add_job" className="modal custom-modal fade" role="dialog">
+        <div id="add_note" className="modal custom-modal fade" role="dialog">
           <div
             className="modal-dialog modal-dialog-centered modal-lg"
             role="document"
@@ -228,20 +241,6 @@ const CreditNotes = () => {
                         <input className="form-control" type="text" />
                       </div>
                     </div>
-                    {/* <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Department</label>
-                        <select className="select">
-                          <option>-</option>
-                          <option>Marketing Head</option>
-                          <option>Application Development</option>
-                          <option>IT Management</option>
-                          <option>Accounts Management</option>
-                          <option>Support Management</option>
-                          <option>Marketing</option>
-                        </select>
-                      </div>
-                    </div> */}
                   </div>
                   <div className="row">
                     <div className="col-md-6">
@@ -265,21 +264,6 @@ const CreditNotes = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Address 1 </label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Address 2</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                  </div>
-
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">

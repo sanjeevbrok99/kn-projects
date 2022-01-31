@@ -21,7 +21,8 @@ import httpService from '../../../lib/httpService';
 
 const ProjectList = () => {
   const [projectList, setProjectList] = React.useState([]);
-  const [projectToEdit,setProjectToEdit]=React.useState(null);
+  const [projectToAdd, setProjectToAdd] = React.useState({});
+  const [projectToEdit, setProjectToEdit] = React.useState({});
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -36,18 +37,44 @@ const ProjectList = () => {
     fetchData();
   }, []);
 
-
   const fetchData = async () => {
     try {
       const result = await httpService.get('/project');
       setProjectList(result.data);
-      
     } catch (error) {
       console.log(error);
     }
-      
-    };
+  };
 
+  const addProjects = async () => {
+    const res = await httpService.post('/project', projectToAdd);
+    if (res.status < 400) {
+      fetchData();
+      setProjectToAdd({});
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+    }
+  };
+
+  const editProjects = async () => {
+    const res = await httpService.put(
+      `/project/${projectToEdit._id}`,
+      projectToEdit
+    );
+    if (res.status < 400) {
+      fetchData();
+      setProjectToEdit({});
+      document.querySelectorAll('.close')?.forEach((e) => e.click());
+    }
+  };
+
+  const deleteProject = async () => {
+    const res = await httpService.delete(`/project/${projectToEdit._id}`);
+    if (res.status < 400) {
+      fetchData();
+      setProjectToEdit({});
+      document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+    }
+  };
 
   const onImageUpload = (fileList) => {
     const reader = new FileReader();
@@ -56,17 +83,20 @@ const ProjectList = () => {
     };
     reader.readAsDataURL(fileList[0]);
   };
-  const  CapitalizeFirst=(string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
+  const CapitalizeFirst = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
 
-
-  const convertDate=(date)=>{
+  const convertDate = (date) => {
     var newDate = new Date(date);
-    var dateString = newDate.getDate() + "/" + (newDate.getMonth() + 1) + "/" + newDate.getFullYear();
+    var dateString =
+      newDate.getDate() +
+      '/' +
+      (newDate.getMonth() + 1) +
+      '/' +
+      newDate.getFullYear();
     return dateString;
-  }
-
+  };
 
   return (
     <div className="page-wrapper">
@@ -97,20 +127,6 @@ const ProjectList = () => {
               >
                 <i className="fa fa-plus" /> Create Project
               </a>
-              <div className="view-icons">
-                <Link
-                  to="/app/projects/project_dashboard"
-                  className="grid-view btn btn-link"
-                >
-                  <i className="fa fa-th" />
-                </Link>
-                <Link
-                  to="/app/projects/projects-list"
-                  className="list-view btn btn-link active"
-                >
-                  <i className="fa fa-bars" />
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -165,118 +181,89 @@ const ProjectList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  { projectList && projectList.map((project) => (
-                    <tr key={project._id}>
-                    <td>
-                      <Link to={`/app/projects/projects-view/${project._id}`}>
-                        {project.name}
-                      </Link>
-                    </td>
-                    <td>{project && project.type}</td>
-                    <td>
-                    <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          
-                          {project.members.length} Member 's
-                        </a>
-                        {project.leads.length>0 && 
-                        <div className="dropdown-menu ">
-                          {project.members.map((member,i) => (
-                            <a className="dropdown-item" href="#" key={i}>
-                              {member.userName}
-                            </a>  
-                          ))}
-                        </div>}
-                      </div>
-                      
-                    </td>
-                   
-                    <td>{convertDate(project.endDate)} </td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded "
-                          aria-expanded="false"
-                        >
-                          <i className={`fa fa-dot-circle-o  ${project.priority==='HIGH' && 'text-danger' || project.priority==='MEDIUM' && 'text-warning' || project.priority==='LOW'&& 'text-success'} `}/> {CapitalizeFirst(project.priority)}{' '}
-                        </a>
-                        
-                      </div>
-                    </td>
-                    <td >
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          
-                          {project.leads.length} Leads
-                        </a>
-                        {project.leads.length>0 && 
-                        <div className="dropdown-menu ">
-                          {project.leads.map((lead,i) => (
-                            <a className="dropdown-item" href="#" key={i}>
-                              {lead.name}
+                  {projectList &&
+                    projectList.map((project) => (
+                      <tr key={project._id}>
+                        <td>
+                          <Link
+                            to={`/app/projects/projects-view/${project._id}`}
+                          >
+                            {project.name}
+                          </Link>
+                        </td>
+                        <td>{project && project.type}</td>
+                        <td>
+                          <div className="action-label">
+                            {project.members.length} Members
+                          </div>
+                        </td>
+
+                        <td>{convertDate(project.endDate)} </td>
+                        <td>
+                          <div className="dropdown action-label">
+                            <a
+                              href
+                              className="btn btn-white btn-sm btn-rounded "
+                              aria-expanded="false"
+                            >
+                              <i
+                                className={`fa fa-dot-circle-o  ${
+                                  (project.priority === 'HIGH' &&
+                                    'text-danger') ||
+                                  (project.priority === 'MEDIUM' &&
+                                    'text-warning') ||
+                                  (project.priority === 'LOW' && 'text-success')
+                                } `}
+                              />{' '}
+                              {CapitalizeFirst(project.priority)}{' '}
                             </a>
-                          ))}
-                        </div>}
-
-                        {/* <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Active
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            Inactive
-                          </a>
-                        </div> */}
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_project"
-                            onClick={() => setProjectToEdit(project)}
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_project"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-
-                  ))}
-                  
-                  
+                          </div>
+                        </td>
+                        <td>
+                          <div className="action-label">
+                            {
+                              project.leads?.filter(
+                                (lead) =>
+                                  lead.status !== 'Lead Won' ||
+                                  lead.status !== 'Lead Lost'
+                              ).length
+                            }{' '}
+                            Leads
+                          </div>
+                        </td>
+                        <td className="text-right">
+                          <div className="dropdown dropdown-action">
+                            <a
+                              href="#"
+                              className="action-icon dropdown-toggle"
+                              data-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i className="material-icons">more_vert</i>
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                data-toggle="modal"
+                                data-target="#edit_project"
+                                onClick={() => setProjectToEdit(project)}
+                              >
+                                <i className="fa fa-pencil m-r-5" /> Edit
+                              </a>
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                data-toggle="modal"
+                                data-target="#delete_project"
+                              >
+                                <i className="fa fa-trash-o m-r-5" /> Delete
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -307,20 +294,44 @@ const ProjectList = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  addProjects();
+                }}
+              >
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label>Project Name</label>
-                      <input className="form-control" type="text" />
+                      <input
+                        onChange={(e) => {
+                          setProjectToAdd((d) => ({
+                            ...d,
+                            name: e.target.value,
+                          }));
+                        }}
+                        className="form-control"
+                        type="text"
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Client</label>
-                      <select className="select">
-                        <option>Sunteck Realty Ltd</option>
-                        <option>Godrej Properties Ltd</option>
+                      <label>Priority</label>
+                      <select
+                        onChange={(e) => {
+                          setProjectToAdd((d) => ({
+                            ...d,
+                            priority: e.target.value,
+                          }));
+                        }}
+                        className="custom-select"
+                      >
+                        <option value={''}>Select priority</option>
+                        <option value={'HIGH'}>High</option>
+                        <option value={'MEDIUM'}>Medium</option>
+                        <option value={'LOW'}>Low</option>
                       </select>
                     </div>
                   </div>
@@ -331,7 +342,13 @@ const ProjectList = () => {
                       <label>Start Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          className="form-control"
+                          onChange={(e) => {
+                            setProjectToAdd((d) => ({
+                              ...d,
+                              startDate: e.target.value,
+                            }));
+                          }}
                           type="date"
                         />
                       </div>
@@ -342,7 +359,13 @@ const ProjectList = () => {
                       <label>End Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          onChange={(e) => {
+                            setProjectToAdd((d) => ({
+                              ...d,
+                              endDate: e.target.value,
+                            }));
+                          }}
+                          className="form-control"
                           type="date"
                         />
                       </div>
@@ -350,133 +373,39 @@ const ProjectList = () => {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-sm-3">
+                  <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Rate</label>
-                      <input
-                        placeholder="$50"
-                        className="form-control"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-3">
-                    <div className="form-group">
-                      <label>&nbsp;</label>
-                      <select className="select">
-                        <option>Hourly</option>
-                        <option>Fixed</option>
+                      <label>Type</label>
+                      <select
+                        onChange={(e) => {
+                          setProjectToAdd((d) => ({
+                            ...d,
+                            type: e.target.value,
+                          }));
+                        }}
+                        className="custom-select"
+                      >
+                        <option value={''}>Select type</option>
+                        <option value={'Land'}>Land Sale</option>
+                        <option value={'Plot'}>Real Estate</option>
                       </select>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Priority</label>
-                      <select className="select">
-                        <option>High</option>
-                        <option>Medium</option>
-                        <option>Low</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Add Project Leader</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Team Leader</label>
-                      <div className="project-members">
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Sushmita Singh"
-                          className="avatar"
-                        >
-                          <img src={Avatar_16} alt="" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Add Team</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Team Members</label>
-                      <div className="project-members">
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Prateek Tiwari"
-                          className="avatar"
-                        >
-                          <img src={Avatar_16} alt="" />
-                        </a>
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Shital Agarwal"
-                          className="avatar"
-                        >
-                          <img src={Avatar_09} alt="" />
-                        </a>
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Harvinder"
-                          className="avatar"
-                        >
-                          <img src={Avatar_10} alt="" />
-                        </a>
-                        <a
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Shreya Singh"
-                          className="avatar"
-                        >
-                          <img src={Avatar_05} alt="" />
-                        </a>
-                        <span className="all-team">+2</span>
-                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Description</label>
-                  <ReactSummernote
-                    value="Default value"
-                    options={{
-                      lang: 'ru-RU',
-                      height: 350,
-                      dialogsInBody: true,
-                      toolbar: [
-                        ['style', ['style']],
-                        ['font', ['bold', 'underline', 'clear']],
-                        ['fontname', ['fontname']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['table', ['table']],
-                        ['insert', ['link', 'picture', 'video']],
-                        ['view', ['fullscreen', 'codeview']],
-                      ],
+                  <textarea
+                    rows={4}
+                    className="form-control"
+                    placeholder="Description"
+                    defaultValue={''}
+                    onChange={(e) => {
+                      setProjectToAdd((d) => ({
+                        ...d,
+                        description: e.target.value,
+                      }));
                     }}
-                    // onChange={this.onChange}
-                    onImageUpload={onImageUpload}
                   />
-                  {/* <textarea rows={4} className="form-control summernote" placeholder="Enter your message here" defaultValue={""} /> */}
-                </div>
-                <div className="form-group">
-                  <label>Upload Files</label>
-                  <input className="form-control" type="file" />
                 </div>
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Submit</button>
@@ -506,28 +435,46 @@ const ProjectList = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  editProjects();
+                }}
+              >
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label>Project Name</label>
                       <input
+                        defaultValue={projectToEdit.name}
+                        onChange={(e) => {
+                          setProjectToEdit((d) => ({
+                            ...d,
+                            name: e.target.value,
+                          }));
+                        }}
                         className="form-control"
                         type="text"
-                        value={projectToEdit&& projectToEdit.name}
                       />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Members</label>
-                      <select className="select">
-                        {
-                          projectToEdit && projectToEdit.members.map(member => (
-                            <option key={member._id}>{member.userName}</option>
-                          ))
-                        }
-                     
+                      <label>Priority</label>
+                      <select
+                        value={projectToEdit.priority}
+                        onChange={(e) => {
+                          setProjectToEdit((d) => ({
+                            ...d,
+                            priority: e.target.value,
+                          }));
+                        }}
+                        className="custom-select"
+                      >
+                        <option value={''}>Select priority</option>
+                        <option value={'HIGH'}>High</option>
+                        <option value={'MEDIUM'}>Medium</option>
+                        <option value={'LOW'}>Low</option>
                       </select>
                     </div>
                   </div>
@@ -535,12 +482,18 @@ const ProjectList = () => {
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label> Start Date</label>
+                      <label>Start Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          className="form-control"
+                          defaultValue={projectToEdit.startDate}
+                          onChange={(e) => {
+                            setProjectToEdit((d) => ({
+                              ...d,
+                              startDate: e.target.value,
+                            }));
+                          }}
                           type="date"
-                          value={projectToEdit && new Date(projectToEdit.startDate).toISOString().substring(0, 10)}
                         />
                       </div>
                     </div>
@@ -550,9 +503,15 @@ const ProjectList = () => {
                       <label>End Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          defaultValue={projectToEdit.endDate}
+                          onChange={(e) => {
+                            setProjectToEdit((d) => ({
+                              ...d,
+                              endDate: e.target.value,
+                            }));
+                          }}
+                          className="form-control"
                           type="date"
-                          value={projectToEdit && new Date(projectToEdit.endDate).toISOString().substring(0, 10)}
                         />
                       </div>
                     </div>
@@ -561,37 +520,41 @@ const ProjectList = () => {
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Project Priority</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        value={projectToEdit&& projectToEdit.priority}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Leads</label>
-                      <select className="select">
-                        {
-                          projectToEdit && projectToEdit.leads.map(lead => (
-                            <option key={lead._id}>{lead.name}</option>
-                          ))
-                        }
-                     
+                      <label>Type</label>
+                      <select
+                        value={projectToEdit.type}
+                        onChange={(e) => {
+                          setProjectToEdit((d) => ({
+                            ...d,
+                            type: e.target.value,
+                          }));
+                        }}
+                        className="custom-select"
+                      >
+                        <option value={''}>Select type</option>
+                        <option value={'Land'}>Land Sale</option>
+                        <option value={'Plot'}>Real Estate</option>
                       </select>
                     </div>
                   </div>
                 </div>
-               
-              
-               
                 <div className="form-group">
-                  <label>Upload Files</label>
-                  <input className="form-control" type="file" />
+                  <label>Description</label>
+                  <textarea
+                    rows={4}
+                    className="form-control"
+                    placeholder="Description"
+                    defaultValue={projectToEdit.description}
+                    onChange={(e) => {
+                      setProjectToEdit((d) => ({
+                        ...d,
+                        description: e.target.value,
+                      }));
+                    }}
+                  />
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn">Submit</button>
                 </div>
               </form>
             </div>
@@ -615,7 +578,14 @@ const ProjectList = () => {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      href=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteProject();
+                      }}
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>

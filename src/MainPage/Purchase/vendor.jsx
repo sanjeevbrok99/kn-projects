@@ -7,20 +7,13 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
+import httpService from '../../lib/httpService';
 
 function Vendor() {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      image: Avatar_07,
-      name: 'Name',
-      client_id: 'CLT-0001',
-      contactperson: 'New Customer',
-      email: 'new.customer@example.com',
-      mobile: '9876543210',
-      status: 'Active',
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [vendorToAdd, setVendorToAdd] = useState({});
+  const [vendorToEdit, setVendorToEdit] = useState({});
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -28,7 +21,35 @@ function Vendor() {
         width: '100%',
       });
     }
+    fetchVendors();
   }, []);
+
+  const fetchVendors = async () => {
+    const vendors = await httpService.get('/vendor');
+    setData(vendors.data);
+  };
+
+  const addVendor = async () => {
+    await httpService.post('/vendor', {
+      ...vendorToAdd,
+    });
+    fetchVendors();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const editVendor = async () => {
+    await httpService.put(`/vendor/${vendorToEdit._id}`, {
+      ...vendorToEdit,
+    });
+    fetchVendors();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const deleteVendor = async () => {
+    await httpService.delete(`/vendor/${vendorToEdit._id}`);
+    fetchVendors();
+    document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+  };
 
   const columns = [
     {
@@ -44,12 +65,6 @@ function Vendor() {
       ),
       sorter: (a, b) => a.name.length - b.name.length,
     },
-
-    {
-      title: 'Contact Person',
-      dataIndex: 'contactperson',
-      sorter: (a, b) => a.contactperson.length - b.contactperson.length,
-    },
     {
       title: 'Email',
       dataIndex: 'email',
@@ -58,39 +73,8 @@ function Vendor() {
 
     {
       title: 'Mobile',
-      dataIndex: 'mobile',
+      dataIndex: 'phone',
       sorter: (a, b) => a.mobile.length - b.mobile.length,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      render: (text, record) => (
-        <div className="dropdown">
-          <a
-            href="#"
-            className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i
-              className={
-                text === 'Active'
-                  ? 'fa fa-dot-circle-o text-success'
-                  : 'fa fa-dot-circle-o text-danger'
-              }
-            />{' '}
-            {text}{' '}
-          </a>
-          <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-success" /> Active
-            </a>
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-danger" /> Inactive
-            </a>
-          </div>
-        </div>
-      ),
     },
     {
       title: 'Action',
@@ -110,6 +94,9 @@ function Vendor() {
               href="#"
               data-toggle="modal"
               data-target="#edit_client"
+              onClick={(e) => {
+                setCustomerToEdit(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -118,6 +105,9 @@ function Vendor() {
               href="#"
               data-toggle="modal"
               data-target="#delete_client"
+              onClick={(e) => {
+                setCustomerToEdit(record);
+              }}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -152,24 +142,10 @@ function Vendor() {
                 href="#"
                 className="btn add-btn"
                 data-toggle="modal"
-                data-target="#add_client"
+                data-target="#add_vendor"
               >
-                <i className="fa fa-plus" /> Add Client
+                <i className="fa fa-plus" /> Add Vendor
               </a>
-              <div className="view-icons">
-                <Link
-                  to="/app/employees/clients"
-                  className="grid-view btn btn-link"
-                >
-                  <i className="fa fa-th" />
-                </Link>
-                <Link
-                  to="/app/employees/clients-list"
-                  className="list-view btn btn-link active"
-                >
-                  <i className="fa fa-bars" />
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -231,14 +207,14 @@ function Vendor() {
       </div>
       {/* /Page Content */}
       {/* Add Client Modal */}
-      <div id="add_client" className="modal custom-modal fade" role="dialog">
+      <div id="add_vendor" className="modal custom-modal fade" role="dialog">
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
           role="document"
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add Client</h5>
+              <h5 className="modal-title">Add Customer</h5>
               <button
                 type="button"
                 className="close"
@@ -249,28 +225,44 @@ function Vendor() {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  await addVendor();
+                  e.target.reset();
+                }}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        First Name <span className="text-danger">*</span>
+                        Name <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="text" />
+                      <input
+                        onChange={(e) => {
+                          setVendorToAdd({
+                            ...vendorToAdd,
+                            name: e.target.value,
+                          });
+                        }}
+                        className="form-control"
+                        type="text"
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label className="col-form-label">Last Name</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Username <span className="text-danger">*</span>
-                      </label>
-                      <input className="form-control" type="text" />
+                      <label className="col-form-label">Phone </label>
+                      <input
+                        onChange={(e) => {
+                          setVendorToAdd({
+                            ...vendorToAdd,
+                            phone: e.target.value,
+                          });
+                        }}
+                        className="form-control"
+                        type="text"
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -278,178 +270,49 @@ function Vendor() {
                       <label className="col-form-label">
                         Email <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control floating" type="email" />
+                      <input
+                        onChange={(e) => {
+                          setVendorToAdd({
+                            ...vendorToAdd,
+                            email: e.target.value,
+                          });
+                        }}
+                        className="form-control floating"
+                        type="email"
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label className="col-form-label">Password</label>
-                      <input className="form-control" type="password" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Confirm Password</label>
-                      <input className="form-control" type="password" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Client ID <span className="text-danger">*</span>
-                      </label>
-                      <input className="form-control floating" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Phone </label>
-                      <input className="form-control" type="text" />
+                      <label className="col-form-label">Comapny</label>
+                      <input
+                        onChange={(e) => {
+                          setVendorToAdd({
+                            ...vendorToAdd,
+                            company: e.target.value,
+                          });
+                        }}
+                        className="form-control"
+                        type="text"
+                      />
                     </div>
                   </div>
                 </div>
-                <div className="table-responsive m-t-15">
-                  <table className="table table-striped custom-table">
-                    <thead>
-                      <tr>
-                        <th>Module Permission</th>
-                        <th className="text-center">Read</th>
-                        <th className="text-center">Write</th>
-                        <th className="text-center">Create</th>
-                        <th className="text-center">Delete</th>
-                        <th className="text-center">Import</th>
-                        <th className="text-center">Export</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Projects</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Tasks</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Chat</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Estimates</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Invoices</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Timing Sheets</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div>
+                  <div className="form-group">
+                    <label>Address</label>
+                    <textarea
+                      onChange={(e) => {
+                        setVendorToAdd({
+                          ...vendorToAdd,
+                          address: e.target.value,
+                        });
+                      }}
+                      className="form-control"
+                      rows={3}
+                      defaultValue={''}
+                    />
+                  </div>
                 </div>
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Submit</button>
@@ -461,14 +324,14 @@ function Vendor() {
       </div>
       {/* /Add Client Modal */}
       {/* Edit Client Modal */}
-      <div id="edit_client" className="modal custom-modal fade" role="dialog">
+      <div id="edit_vendor" className="modal custom-modal fade" role="dialog">
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
           role="document"
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Edit Client</h5>
+              <h5 className="modal-title">Edit Customer</h5>
               <button
                 type="button"
                 className="close"
@@ -479,38 +342,43 @@ function Vendor() {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  editVendor();
+                }}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        First Name <span className="text-danger">*</span>
+                        Name <span className="text-danger">*</span>
                       </label>
                       <input
+                        defaultValue={vendorToEdit.name}
+                        onChange={(e) => {
+                          setVendorToEdit({
+                            ...customerToEdit,
+                            name: e.target.value,
+                          });
+                        }}
                         className="form-control"
-                        defaultValue="Barry"
                         type="text"
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label className="col-form-label">Last Name</label>
+                      <label className="col-form-label">Phone </label>
                       <input
+                        defaultValue={vendorToEdit.phone}
+                        onChange={(e) => {
+                          setVendorToEdit({
+                            ...customerToEdit,
+                            phone: e.target.value,
+                          });
+                        }}
                         className="form-control"
-                        defaultValue="Cuda"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Username <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        defaultValue="barrycuda"
                         type="text"
                       />
                     </div>
@@ -521,210 +389,53 @@ function Vendor() {
                         Email <span className="text-danger">*</span>
                       </label>
                       <input
+                        defaultValue={vendorToEdit.email}
+                        onChange={(e) => {
+                          setVendorToEdit({
+                            ...customerToEdit,
+                            email: e.target.value,
+                          });
+                        }}
                         className="form-control floating"
-                        defaultValue="barrycuda@example.com"
                         type="email"
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label className="col-form-label">Password</label>
+                      <label className="col-form-label">Comapny</label>
                       <input
-                        className="form-control"
-                        defaultValue="barrycuda"
-                        type="password"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Confirm Password</label>
-                      <input
-                        className="form-control"
-                        defaultValue="barrycuda"
-                        type="password"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Client ID <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control floating"
-                        defaultValue="CLT-0001"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Phone </label>
-                      <input
-                        className="form-control"
-                        defaultValue={9876543210}
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Company Name</label>
-                      <input
+                        defaultValue={vendorToEdit.company}
+                        onChange={(e) => {
+                          setVendorToEdit({
+                            ...customerToEdit,
+                            company: e.target.value,
+                          });
+                        }}
                         className="form-control"
                         type="text"
-                        defaultValue="Sunteck Realty Ltd"
                       />
                     </div>
                   </div>
                 </div>
-                <div className="table-responsive m-t-15">
-                  <table className="table table-striped custom-table">
-                    <thead>
-                      <tr>
-                        <th>Module Permission</th>
-                        <th className="text-center">Read</th>
-                        <th className="text-center">Write</th>
-                        <th className="text-center">Create</th>
-                        <th className="text-center">Delete</th>
-                        <th className="text-center">Import</th>
-                        <th className="text-center">Export</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Projects</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Tasks</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Chat</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Estimates</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Invoices</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Timing Sheets</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div>
+                  <div className="form-group">
+                    <label>Address</label>
+                    <textarea
+                      defaultValue={vendorToEdit.address}
+                      onChange={(e) => {
+                        setVendorToEdit({
+                          ...customerToEdit,
+                          address: e.target.value,
+                        });
+                      }}
+                      className="form-control"
+                      rows={4}
+                    />
+                  </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn">Submit</button>
                 </div>
               </form>
             </div>
@@ -738,19 +449,25 @@ function Vendor() {
           <div className="modal-content">
             <div className="modal-body">
               <div className="form-header">
-                <h3>Delete Client</h3>
+                <h3>Delete Vendor</h3>
                 <p>Are you sure want to delete?</p>
               </div>
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      href=""
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteVendor();
+                      }}
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>
                   <div className="col-6">
                     <a
-                      href=""
                       data-dismiss="modal"
                       className="btn btn-primary cancel-btn"
                     >

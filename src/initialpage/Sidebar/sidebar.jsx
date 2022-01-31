@@ -3,8 +3,6 @@ import { useSelector } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-console.log('Test');
-
 const bar = [
   {
     name: 'Main',
@@ -127,7 +125,7 @@ const bar = [
           },
           {
             name: 'Projects',
-            link: '/sales/projects',
+            link: '/projects/projects-list',
           },
 
           {
