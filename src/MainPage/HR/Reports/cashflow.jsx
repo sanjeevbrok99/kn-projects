@@ -98,9 +98,9 @@ const CashFlow = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a className="dropdown-item" href="#">
+            {/* <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Edit
-            </a>
+            </a> */}
 
             <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Download
@@ -116,7 +116,7 @@ const CashFlow = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Invoices </title>
+        <title>Cash Flow </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
@@ -207,7 +207,7 @@ const CashFlow = () => {
               <div className="modal-body">
                 <form>
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <div className="form-group">
                         <label>Total Amount Cash</label>
                         <input className="form-control" type="text" />
@@ -246,13 +246,27 @@ const CashFlow = () => {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div className="form-group">
-                        <label>Rate </label>
+                        <label>Amount </label>
                         <input
                           className="form-control l datetimepicker"
                           type="text"
                         />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Status</label>
+                        <select className="select">
+                          <option>-</option>
+                          <option>Paid</option>
+                          <option>Not Paid</option>
+                          <option>Partially paid</option>
+                          {/* <option>Accounts Management</option>
+                          <option>Support Management</option>
+                          <option>Marketing</option> */}
+                        </select>
                       </div>
                     </div>
                   </div>
