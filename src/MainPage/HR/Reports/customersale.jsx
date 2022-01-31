@@ -98,7 +98,12 @@ const CustomerSale = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <a className="dropdown-item" href="#">
+            <a
+              className="dropdown-item"
+              href="#"
+              data-toggle="modal"
+              data-target="#edit_job"
+            >
               <i className="fa fa-file-pdf-o m-r-5" /> Edit
             </a>
             <a className="dropdown-item" href="#">
@@ -115,7 +120,7 @@ const CustomerSale = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Invoices </title>
+        <title>Sale by Customer </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
@@ -236,19 +241,19 @@ const CustomerSale = () => {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Quantity</label>
+                        <label>Rate</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
                   </div>
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Rate </label>
+                        <label>Amount</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="row">
                     <div className="col-md-6">
@@ -297,12 +302,9 @@ const CustomerSale = () => {
             className="modal-dialog modal-dialog-centered modal-lg"
             role="document"
           >
-            <button type="button" className="close" data-dismiss="modal">
-              ×
-            </button>
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Edit Job</h5>
+                <h5 className="modal-title">Edit Sales By Customer</h5>
                 <button
                   type="button"
                   className="close"
@@ -315,17 +317,13 @@ const CustomerSale = () => {
               <div className="modal-body">
                 <form>
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>Job Title</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          defaultValue="Product Manager"
-                        />
+                        <label>Customer Name</label>
+                        <input className="form-control" type="text" />
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                       <div className="form-group">
                         <label>Department</label>
                         <select className="select">
@@ -338,107 +336,38 @@ const CustomerSale = () => {
                           <option>Marketing</option>
                         </select>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Job Location</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          defaultValue="California"
-                        />
+                        <label>Sale Item</label>
+                        <input className="form-control" type="text" />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>No of Vacancies</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          defaultValue={5}
-                        />
+                        <label>Rate</label>
+                        <input className="form-control" type="text" />
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-6">
+                  {/* <div className="row">
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>Experience</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          defaultValue="2 Years"
-                        />
+                        <label>Amount</label>
+                        <input className="form-control" type="text" />
                       </div>
                     </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Age</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          defaultValue="-"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Salary From</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="32k"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Salary To</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          defaultValue="38k"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Job Type</label>
-                        <select className="select">
-                          <option>Full Time</option>
-                          <option>Part Time</option>
-                          <option>Internship</option>
-                          <option>Temporary</option>
-                          <option>Remote</option>
-                          <option>Others</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Status</label>
-                        <select className="select">
-                          <option>Open</option>
-                          <option>Closed</option>
-                          <option>Cancelled</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
+                  </div> */}
+
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
                         <label>Start Date</label>
                         <input
-                          type="text"
+                          type="date"
                           className="form-control datetimepicker"
-                          defaultValue="3 Mar 2021"
                         />
                       </div>
                     </div>
@@ -446,9 +375,8 @@ const CustomerSale = () => {
                       <div className="form-group">
                         <label>Expired Date</label>
                         <input
-                          type="text"
+                          type="date"
                           className="form-control datetimepicker"
-                          defaultValue="31 May 2021"
                         />
                       </div>
                     </div>
@@ -462,7 +390,12 @@ const CustomerSale = () => {
                     </div>
                   </div>
                   <div className="submit-section">
-                    <button className="btn btn-primary submit-btn">Save</button>
+                    <button
+                      className="btn btn-primary submit-btn"
+                      type="submit"
+                    >
+                      Submit
+                    </button>
                   </div>
                 </form>
               </div>
