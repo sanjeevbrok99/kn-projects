@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
-
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
@@ -41,10 +40,10 @@ const CreditNotes = () => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const {data} = await httpService.get('/credit-note');
+      const { data } = await httpService.get('/credit-note');
       console.log(data);
-      };
-      fetchData();
+    };
+    fetchData();
   }, []);
 
   const columns = [
@@ -163,12 +162,20 @@ const CreditNotes = () => {
         {/* /Page Header */}
         {/* Search Filter */}
         <div className="row filter-row">
-          <div className="col-sm-6 col-md-6">
+          <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
               <div>
                 <input className="form-control floating " type="text" />
               </div>
               <label className="focus-label">Item Name</label>
+            </div>
+          </div>
+          <div className="col-sm-6 col-md-3">
+            <div className="form-group form-focus select-focus">
+              <div>
+                <input className="form-control floating " type="text" />
+              </div>
+              <label className="focus-label">Item Number</label>
             </div>
           </div>
 

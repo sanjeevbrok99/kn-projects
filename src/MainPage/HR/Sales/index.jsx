@@ -25,6 +25,8 @@ import RecurringBillCreate from './recurringbillcreate';
 import RecurringBillEdit from './recurringbilledit';
 // import RecurringInvoiceEdit from './recurringinvoiceedit';
 import CreditNotes from '../../Sales/CreditNotes';
+import ExpenseCreate from './expensecreate';
+import ExpenseEdit from './expenseedit';
 
 const SalesRoute = ({ match }) => (
   <Switch>
@@ -36,6 +38,8 @@ const SalesRoute = ({ match }) => (
     <Route path={`${match.url}/createestimates`} component={Createestimate} />
     <Route path={`${match.url}/editestimates`} component={Editestimate} />
     <Route path={`${match.url}/expenses`} component={Expense} />
+    <Route path={`${match.url}/expenses-create`} component={ExpenseCreate} />
+    <Route path={`${match.url}/expenses-edit`} component={ExpenseEdit} />
 
     <Route path={`${match.url}/invoices`} component={Invoice} />
     <Route
