@@ -322,3 +322,77 @@ export async function fetchProject(data) {
   });
   return fetchCandidateResponse;
 }
+
+export async function fetchVendor() {
+  const fetchVendorResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/vendor')
+      .then((response) => {
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchVendorResponse;
+}
+
+export async function fetchExpense() {
+  const fetchExpenseResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/expense')
+      .then((response) => {
+        console.log(response);
+        console.log('the');
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchExpenseResponse.data;
+}
+
+export async function fetchTicket() {
+  const fetchTicketResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/ticket')
+      .then((response) => {
+        console.log(response);
+        console.log('the');
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchTicketResponse.data;
+}
+
+export async function fetchBill() {
+  const fetchBillResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/bill')
+      .then((response) => {
+        console.log(response);
+        console.log('the');
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchBillResponse.data;
+}

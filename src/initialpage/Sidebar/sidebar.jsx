@@ -141,7 +141,7 @@ const bar = [
         children: [
           {
             name: 'Vendors',
-            link: '/employees/clients-list',
+            link: '/purchase/vendors',
           },
           {
             name: 'Expenses',
