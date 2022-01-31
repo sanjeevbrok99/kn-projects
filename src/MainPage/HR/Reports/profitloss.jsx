@@ -122,7 +122,7 @@ const ProfitLoss = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Invoices </title>
+        <title>Profit & Loss </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
@@ -131,12 +131,12 @@ const ProfitLoss = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Credit Notes</h3>
+              <h3 className="page-title">Profit & Loss</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item active">Credit notes</li>
+                <li className="breadcrumb-item active">Profit & Loss</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
@@ -146,7 +146,7 @@ const ProfitLoss = () => {
                 data-toggle="modal"
                 data-target="#add_job"
               >
-                <i className="fa fa-plus" /> Add Credit Notes
+                <i className="fa fa-plus" /> Add Profit & Loss
               </a>
             </div>
           </div>
@@ -200,7 +200,7 @@ const ProfitLoss = () => {
           >
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Add Credit</h5>
+                <h5 className="modal-title">Add Profit & Loss</h5>
                 <button
                   type="button"
                   className="close"
@@ -213,9 +213,15 @@ const ProfitLoss = () => {
               <div className="modal-body">
                 <form>
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div className="form-group">
                         <label>Item Name</label>
+                        <input className="form-control" type="text" />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Item Number</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
@@ -235,9 +241,15 @@ const ProfitLoss = () => {
                     </div> */}
                   </div>
                   <div className="row">
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                       <div className="form-group">
                         <label>Description</label>
+                        <input className="form-control" type="text" />
+                      </div>
+                    </div> */}
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Rate </label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
@@ -251,27 +263,35 @@ const ProfitLoss = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
-                        <label>Rate </label>
+                        <label>Amount </label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>Address 1 </label>
-                        <input type="text" className="form-control" />
+                        <label>Status</label>
+                        <select className="select">
+                          <option>-</option>
+                          <option>Paid</option>
+                          <option>Processing</option>
+                          <option>Not Paid</option>
+                          {/* <option>Accounts Management</option>
+                          <option>Support Management</option>
+                          <option>Marketing</option> */}
+                        </select>
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                       <div className="form-group">
                         <label>Address 2</label>
                         <input type="text" className="form-control" />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
                         <label>Start Date</label>
@@ -298,7 +318,7 @@ const ProfitLoss = () => {
                         <textarea className="form-control" defaultValue={''} />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="submit-section">
                     <button
                       className="btn btn-primary submit-btn"

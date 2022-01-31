@@ -17,7 +17,6 @@ const BalanceSheet = () => {
       createddate: '5',
       duedate: '500',
       amount: '2099',
-      status: 'Paid',
     },
     {
       id: 2,
@@ -26,7 +25,6 @@ const BalanceSheet = () => {
       createddate: '1',
       duedate: '500',
       amount: '2099',
-      status: 'Sent',
     },
   ]);
   useEffect(() => {
@@ -74,22 +72,22 @@ const BalanceSheet = () => {
       render: (text, record) => <span>₹ {text}</span>,
       sorter: (a, b) => a.amount.length - b.amount.length,
     },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      render: (text, record) => (
-        <span
-          className={
-            text === 'Paid'
-              ? 'badge bg-inverse-success'
-              : 'badge bg-inverse-info'
-          }
-        >
-          {text}
-        </span>
-      ),
-      sorter: (a, b) => a.status.length - b.status.length,
-    },
+    // {
+    //   title: 'Status',
+    //   dataIndex: 'status',
+    //   render: (text, record) => (
+    //     <span
+    //       className={
+    //         text === 'Paid'
+    //           ? 'badge bg-inverse-success'
+    //           : 'badge bg-inverse-info'
+    //       }
+    //     >
+    //       {text}
+    //     </span>
+    //   ),
+    //   sorter: (a, b) => a.status.length - b.status.length,
+    // },
     {
       title: 'Action',
       render: (text, record) => (
@@ -125,7 +123,7 @@ const BalanceSheet = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Invoices </title>
+        <title>Balance Sheets </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
@@ -176,7 +174,7 @@ const BalanceSheet = () => {
               <label className="focus-label"></label>
             </div> */}
 
-          <div className="col-sm-6 col-md-3">
+          {/* <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
               <select className="select floating">
                 <option>Select Status</option>
@@ -186,7 +184,7 @@ const BalanceSheet = () => {
               </select>
               <label className="focus-label">Status</label>
             </div>
-          </div>
+          </div> */}
           <div className="col-sm-6 col-md-3">
             <a href="#" className="btn btn-success btn-block">
               {' '}
@@ -216,9 +214,15 @@ const BalanceSheet = () => {
               <div className="modal-body">
                 <form>
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div className="form-group">
                         <label>Asset Name</label>
+                        <input className="form-control" type="text" />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Liabilitie Name</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
@@ -240,19 +244,11 @@ const BalanceSheet = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Liabilitie Name</label>
-                        <input className="form-control" type="text" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
                         <label>Asset total Amount</label>
                         <input className="form-control" type="text" />
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div className="form-group">
                         <label>Liabiltie total Amount</label>
                         <input className="form-control" type="text" />
@@ -260,33 +256,9 @@ const BalanceSheet = () => {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                       <div className="form-group">
-                        <label>Asset Total Amount</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>DHDHDH</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Start Date</label>
-                        <input
-                          type="date"
-                          className="form-control datetimepicker"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Expired Date</label>
+                        <label>Date</label>
                         <input
                           type="date"
                           className="form-control datetimepicker"
@@ -321,9 +293,9 @@ const BalanceSheet = () => {
             className="modal-dialog modal-dialog-centered modal-lg"
             role="document"
           >
-            <button type="button" className="close" data-dismiss="modal">
+            {/* <button type="button" className="close" data-dismiss="modal">
               ×
-            </button>
+            </button> */}
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Edit Balance Sheet</h5>
@@ -339,7 +311,7 @@ const BalanceSheet = () => {
               <div className="modal-body">
                 <form>
                   <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <div className="form-group">
                         <label>Asset Name</label>
                         <input
@@ -349,8 +321,6 @@ const BalanceSheet = () => {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
                         <label>Liabiltie Name</label>
@@ -361,6 +331,8 @@ const BalanceSheet = () => {
                         />
                       </div>
                     </div>
+                  </div>
+                  <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
                         <label>Total Amount of Liabiltie</label>
@@ -371,8 +343,6 @@ const BalanceSheet = () => {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
                         <label>Total Amount of Assets</label>
@@ -383,18 +353,7 @@ const BalanceSheet = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label>Description</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          defaultValue="-"
-                        />
-                      </div>
-                    </div>
                   </div>
-
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
