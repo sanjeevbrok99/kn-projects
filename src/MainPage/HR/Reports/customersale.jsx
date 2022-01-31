@@ -115,7 +115,7 @@ const CustomerSale = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Invoices </title>
+        <title>Sale by Customer </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
