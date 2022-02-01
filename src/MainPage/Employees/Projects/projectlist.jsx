@@ -21,7 +21,7 @@ import httpService from '../../../lib/httpService';
 
 const ProjectList = () => {
   const [projectList, setProjectList] = React.useState([]);
-  const [projectToEdit,setProjectToEdit]=React.useState(null);
+  const [projectToEdit, setProjectToEdit] = React.useState(null);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -36,18 +36,14 @@ const ProjectList = () => {
     fetchData();
   }, []);
 
-
   const fetchData = async () => {
     try {
       const result = await httpService.get('/project');
       setProjectList(result.data);
-      
     } catch (error) {
       console.log(error);
     }
-      
-    };
-
+  };
 
   const onImageUpload = (fileList) => {
     const reader = new FileReader();
@@ -56,17 +52,20 @@ const ProjectList = () => {
     };
     reader.readAsDataURL(fileList[0]);
   };
-  const  CapitalizeFirst=(string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
+  const CapitalizeFirst = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
 
-
-  const convertDate=(date)=>{
+  const convertDate = (date) => {
     var newDate = new Date(date);
-    var dateString = newDate.getDate() + "/" + (newDate.getMonth() + 1) + "/" + newDate.getFullYear();
+    var dateString =
+      newDate.getDate() +
+      '/' +
+      (newDate.getMonth() + 1) +
+      '/' +
+      newDate.getFullYear();
     return dateString;
-  }
-
+  };
 
   return (
     <div className="page-wrapper">
@@ -165,118 +164,67 @@ const ProjectList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  { projectList && projectList.map((project) => (
-                    <tr key={project._id}>
-                    <td>
-                      <Link to={`/app/projects/projects-view/${project._id}`}>
-                        {project.name}
-                      </Link>
-                    </td>
-                    <td>{project && project.type}</td>
-                    <td>
-                    <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          
-                          {project.members.length} Member 's
-                        </a>
-                        {project.leads.length>0 && 
-                        <div className="dropdown-menu ">
-                          {project.members.map((member,i) => (
-                            <a className="dropdown-item" href="#" key={i}>
-                              {member.userName}
-                            </a>  
-                          ))}
-                        </div>}
-                      </div>
-                      
-                    </td>
-                   
-                    <td>{convertDate(project.endDate)} </td>
-                    <td>
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded "
-                          aria-expanded="false"
-                        >
-                          <i className={`fa fa-dot-circle-o  ${project.priority==='HIGH' && 'text-danger' || project.priority==='MEDIUM' && 'text-warning' || project.priority==='LOW'&& 'text-success'} `}/> {CapitalizeFirst(project.priority)}{' '}
-                        </a>
-                        
-                      </div>
-                    </td>
-                    <td >
-                      <div className="dropdown action-label">
-                        <a
-                          href
-                          className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          
-                          {project.leads.length} Leads
-                        </a>
-                        {project.leads.length>0 && 
-                        <div className="dropdown-menu ">
-                          {project.leads.map((lead,i) => (
-                            <a className="dropdown-item" href="#" key={i}>
-                              {lead.name}
+                  {projectList &&
+                    projectList.map((project) => (
+                      <tr key={project._id}>
+                        <td>
+                          <Link
+                            to={`/app/projects/projects-view/${project._id}`}
+                          >
+                            {project.name}
+                          </Link>
+                        </td>
+                        <td>{project && project.type}</td>
+                        <td>
+                          <div className="dropdown action-label">
+                            {project.members.length} Members
+                          </div>
+                        </td>
+
+                        <td>{convertDate(project.endDate)} </td>
+                        <td>
+                          <div className="dropdown action-label">
+                            {CapitalizeFirst(project.priority)}{' '}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="dropdown action-label">
+                            {project.leads.length} Leads
+                          </div>
+                        </td>
+                        <td className="text-right">
+                          <div className="dropdown dropdown-action">
+                            <a
+                              href="#"
+                              className="action-icon dropdown-toggle"
+                              data-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i className="material-icons">more_vert</i>
                             </a>
-                          ))}
-                        </div>}
-
-                        {/* <div className="dropdown-menu">
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-success" />{' '}
-                            Active
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            <i className="fa fa-dot-circle-o text-danger" />{' '}
-                            Inactive
-                          </a>
-                        </div> */}
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <div className="dropdown dropdown-action">
-                        <a
-                          href="#"
-                          className="action-icon dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="material-icons">more_vert</i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right">
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#edit_project"
-                            onClick={() => setProjectToEdit(project)}
-                          >
-                            <i className="fa fa-pencil m-r-5" /> Edit
-                          </a>
-                          <a
-                            className="dropdown-item"
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#delete_project"
-                          >
-                            <i className="fa fa-trash-o m-r-5" /> Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-
-                  ))}
-                  
-                  
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                data-toggle="modal"
+                                data-target="#edit_project"
+                                onClick={() => setProjectToEdit(project)}
+                              >
+                                <i className="fa fa-pencil m-r-5" /> Edit
+                              </a>
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                data-toggle="modal"
+                                data-target="#delete_project"
+                              >
+                                <i className="fa fa-trash-o m-r-5" /> Delete
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -514,7 +462,7 @@ const ProjectList = () => {
                       <input
                         className="form-control"
                         type="text"
-                        value={projectToEdit&& projectToEdit.name}
+                        value={projectToEdit && projectToEdit.name}
                       />
                     </div>
                   </div>
@@ -522,12 +470,10 @@ const ProjectList = () => {
                     <div className="form-group">
                       <label>Members</label>
                       <select className="select">
-                        {
-                          projectToEdit && projectToEdit.members.map(member => (
+                        {projectToEdit &&
+                          projectToEdit.members.map((member) => (
                             <option key={member._id}>{member.userName}</option>
-                          ))
-                        }
-                     
+                          ))}
                       </select>
                     </div>
                   </div>
@@ -540,7 +486,12 @@ const ProjectList = () => {
                         <input
                           className="form-control datetimepicker"
                           type="date"
-                          value={projectToEdit && new Date(projectToEdit.startDate).toISOString().substring(0, 10)}
+                          value={
+                            projectToEdit &&
+                            new Date(projectToEdit.startDate)
+                              .toISOString()
+                              .substring(0, 10)
+                          }
                         />
                       </div>
                     </div>
@@ -552,7 +503,12 @@ const ProjectList = () => {
                         <input
                           className="form-control datetimepicker"
                           type="date"
-                          value={projectToEdit && new Date(projectToEdit.endDate).toISOString().substring(0, 10)}
+                          value={
+                            projectToEdit &&
+                            new Date(projectToEdit.endDate)
+                              .toISOString()
+                              .substring(0, 10)
+                          }
                         />
                       </div>
                     </div>
@@ -565,7 +521,7 @@ const ProjectList = () => {
                       <input
                         className="form-control"
                         type="text"
-                        value={projectToEdit&& projectToEdit.priority}
+                        value={projectToEdit && projectToEdit.priority}
                       />
                     </div>
                   </div>
@@ -573,19 +529,15 @@ const ProjectList = () => {
                     <div className="form-group">
                       <label>Leads</label>
                       <select className="select">
-                        {
-                          projectToEdit && projectToEdit.leads.map(lead => (
+                        {projectToEdit &&
+                          projectToEdit.leads.map((lead) => (
                             <option key={lead._id}>{lead.name}</option>
-                          ))
-                        }
-                     
+                          ))}
                       </select>
                     </div>
                   </div>
                 </div>
-               
-              
-               
+
                 <div className="form-group">
                   <label>Upload Files</label>
                   <input className="form-control" type="file" />

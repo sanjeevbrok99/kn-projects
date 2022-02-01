@@ -381,8 +381,6 @@ export async function fetchBill() {
     httpService
       .get('/bill')
       .then((response) => {
-        console.log(response);
-        console.log('the');
         return resolve(response.data);
       })
       .catch((err) => {
@@ -392,5 +390,5 @@ export async function fetchBill() {
         });
       });
   });
-  return fetchBillResponse.data;
+  return fetchBillResponse;
 }
