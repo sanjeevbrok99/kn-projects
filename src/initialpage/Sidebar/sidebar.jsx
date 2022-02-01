@@ -147,14 +147,6 @@ const bar = [
             name: 'Expenses',
             link: '/purchase/expenses',
           },
-          // {
-          //   name: 'Recurring Expenses',
-          //   link: '/purchase/recurring-expenses',
-          // },
-          // {
-          //   name: 'Bills',
-          //   link: '/purchase/bills',
-          // },
           {
             name: 'Payment Made',
             link: '/purchase/payment-made',
