@@ -5,7 +5,6 @@ import httpService from '../../../lib/httpService';
 
 const ExpenseCreate = () => {
   const [customers, setCustomers] = useState([]);
-  const [projects, setProjects] = useState([]);
   const [invoiceType, setInvoiceType] = useState('');
   const [itemsToAdd, setItemsToAdd] = useState([
     {
@@ -27,23 +26,16 @@ const ExpenseCreate = () => {
       });
     }
     fetchCustomers();
-    fetchProject();
   }, []);
 
   const fetchCustomers = async () => {
-    const customers = await httpService.get('/customer');
+    const customers = await httpService.get('/vendor');
     setCustomers(customers.data);
-  };
-
-  const fetchProject = async () => {
-    const projects = await httpService.get('/project');
-    console.log(projects);
-    setProjects(projects.data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await httpService.post('/sale-invoice', {
+    await httpService.post('/expense', {
       ...invoiceToAdd,
       type: invoiceType,
       items: itemsToAdd,
@@ -88,7 +80,7 @@ const ExpenseCreate = () => {
                       onChange={(e) => {
                         setInvoiceToAdd({
                           ...invoiceToAdd,
-                          customer: e.target.value,
+                          vendor: e.target.value,
                         });
                       }}
                       className="custom-select"
@@ -105,29 +97,6 @@ const ExpenseCreate = () => {
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group">
                     <label>
-                      Project <span className="text-danger">*</span>
-                    </label>
-                    <select
-                      onChange={(e) => {
-                        setInvoiceToAdd({
-                          ...invoiceToAdd,
-                          project: e.target.value,
-                        });
-                      }}
-                      className="custom-select"
-                    >
-                      <option selected>Select Project</option>
-                      {projects.map((project) => (
-                        <option key={project._id} value={project._id}>
-                          {project.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group">
-                    <label>
                       Expense date <span className="text-danger">*</span>
                     </label>
                     <div>
@@ -135,7 +104,7 @@ const ExpenseCreate = () => {
                         onChange={(e) => {
                           setInvoiceToAdd({
                             ...invoiceToAdd,
-                            invoiceDate: e.target.value,
+                            expenseDate: e.target.value,
                           });
                         }}
                         className="form-control"

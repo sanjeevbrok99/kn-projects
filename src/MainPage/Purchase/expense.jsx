@@ -27,9 +27,24 @@ const Expense = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchExpense();
-      console.log('expense');
-      setData(res.map((v, i) => ({ ...v, id: i + 1 })));
-      console.log(res);
+      console.log('expense', res);
+      setData(
+        res?.map((expense, index) => ({
+          ...expense,
+          id: index + 1,
+          expensenumber: 'EXP-' + expense._id.toString().padStart(4, '0'),
+          createddate: new Date(expense.createdAt)
+            .toGMTString()
+            .substring(4, 16),
+          duedate: new Date(expense.expenseDate).toGMTString().substring(4, 16),
+          client: expense.vendor.name,
+          amount: expense.total,
+          status:
+            expense.type === 'RECURRING'
+              ? 'Monthly ' + expense.status
+              : expense.status,
+        }))
+      );
     })();
   }, []);
 
@@ -55,27 +70,27 @@ const Expense = () => {
       sorter: (a, b) => a.id.length - b.id.length,
     },
     {
-      title: 'Item Number',
-      dataIndex: 'itemnumber',
+      title: 'Invoice Number',
+      dataIndex: 'expensenumber',
       render: (text, record) => (
         <Link to="/app/sales/invoices-view">#{text}</Link>
       ),
       sorter: (a, b) => a.invoicenumber.length - b.invoicenumber.length,
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
+      title: 'Client',
+      dataIndex: 'client',
       sorter: (a, b) => a.client.length - b.client.length,
     },
 
     {
-      title: 'Unit Cost',
-      dataIndex: 'unitCost',
+      title: 'Created Date',
+      dataIndex: 'createddate',
       sorter: (a, b) => a.createddate.length - b.createddate.length,
     },
     {
-      title: 'Quantity',
-      dataIndex: 'quantity',
+      title: 'Due Date',
+      dataIndex: 'duedate',
       sorter: (a, b) => a.duedate.length - b.duedate.length,
     },
     {
@@ -90,7 +105,7 @@ const Expense = () => {
       render: (text, record) => (
         <span
           className={
-            text === 'Paid'
+            text.includes('Paid')
               ? 'badge bg-inverse-success'
               : 'badge bg-inverse-info'
           }
@@ -113,17 +128,38 @@ const Expense = () => {
             <i className="material-icons">more_vert</i>
           </a>
           <div className="dropdown-menu dropdown-menu-right">
-            <Link className="dropdown-item" to="/app/sales/expenses-edit">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                console.log(record.status);
+                if (record.status === 'Paid') {
+                  Swal.fire('Invoice Paid already', '', 'success');
+                  return;
+                }
+                handleMarkAsPaid(record);
+              }}
+              className="dropdown-item"
+              href="#"
+            >
+              <i className="fa fa-file-pdf-o m-r-5" /> Mark Paid
+            </a>
+            <Link className="dropdown-item" to="/app/sales/invoices-edit">
               <i className="fa fa-pencil m-r-5" /> Edit
+            </Link>
+            <Link className="dropdown-item" to="/app/sales/invoices-view">
+              <i className="fa fa-eye m-r-5" /> View
             </Link>
             <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Download
             </a>
             <a
-              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                // console.log(record);
+                handleDelete(record._id);
+              }}
               className="dropdown-item"
-              data-toggle="modal"
-              data-target="#delete_expense"
+              href="#"
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -132,6 +168,7 @@ const Expense = () => {
       ),
     },
   ];
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -266,18 +303,6 @@ const Expense = () => {
                     </div>
                   </div>
                   <div className="col-md-6">
-                    {/* <div className="form-group">
-                      <label>Department</label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
-                      </select>
-                    </div> */}
                     <div className="form-group">
                       <label>Unit Cost</label>
                       <input
@@ -309,12 +334,6 @@ const Expense = () => {
                       />
                     </div>
                   </div>
-                  {/* <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div> */}
                 </div>
                 <div className="row">
                   <div className="col-md-12">
@@ -367,18 +386,6 @@ const Expense = () => {
                     </div>
                   </div>
                   <div className="col-md-6">
-                    {/* <div className="form-group">
-                      <label>Department</label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
-                      </select>
-                    </div> */}
                     <div className="form-group">
                       <label>Client</label>
                       <input className="form-control" type="text" />
@@ -392,12 +399,6 @@ const Expense = () => {
                       <input className="form-control" type="text" />
                     </div>
                   </div>
-                  {/* <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div> */}
                 </div>
                 <div className="row">
                   <div className="col-md-6">

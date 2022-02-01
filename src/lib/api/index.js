@@ -345,8 +345,6 @@ export async function fetchExpense() {
     httpService
       .get('/expense')
       .then((response) => {
-        console.log(response);
-        console.log('the');
         return resolve(response.data);
       })
       .catch((err) => {
@@ -356,7 +354,7 @@ export async function fetchExpense() {
         });
       });
   });
-  return fetchExpenseResponse.data;
+  return fetchExpenseResponse;
 }
 
 export async function fetchTicket() {

@@ -16,12 +16,21 @@ function Vendor() {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [address, setAddress] = useState('');
+
+  const [vendorToEdit, setVendorToEdit] = useState({});
+
   useEffect(() => {
     fetchVendors();
   }, []);
   const fetchVendors = async () => {
     const res = await fetchVendor();
-    setData(res);
+    console.log(res);
+    setData(
+      res.map((item) => ({
+        ...item,
+        date: item.createdAt.split('T')[0],
+      }))
+    );
   };
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -42,11 +51,21 @@ function Vendor() {
       address: address,
     };
     const res = await httpService.post('/vendor', data);
-
     console.log(res);
-
     fetchVendors();
     document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleEditVendor = async () => {
+    await httpService.put(`/vendor/${vendorToEdit._id}`, vendorToEdit);
+    fetchVendors();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleDeletVendor = async () => {
+    await httpService.delete(`/vendor/${vendorToEdit._id}`);
+    fetchVendors();
+    document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
   };
 
   const columns = [
@@ -71,7 +90,7 @@ function Vendor() {
 
     {
       title: 'Created At',
-      dataIndex: 'createdAt',
+      dataIndex: 'date',
       // sorter: (a, b) => a.contactperson.length - b.contactperson.length,
     },
     {
@@ -88,42 +107,11 @@ function Vendor() {
       //sorter: (a, b) => a.mobile.length - b.mobile.length,
     },
     {
-      title: 'Vendor Credits',
-      dataIndex: 'phone',
+      title: 'Address',
+      dataIndex: 'address',
       //
 
       //sorter: (a, b) => a.mobile.length - b.mobile.length,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      render: (text, record) => (
-        <div className="dropdown">
-          <a
-            href="#"
-            className="btn btn-white btn-sm btn-rounded dropdown-toggle"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i
-              className={
-                text === 'Active'
-                  ? 'fa fa-dot-circle-o text-success'
-                  : 'fa fa-dot-circle-o text-danger'
-              }
-            />{' '}
-            {text}{' '}
-          </a>
-          <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-success" /> Active
-            </a>
-            <a className="dropdown-item" href="#">
-              <i className="fa fa-dot-circle-o text-danger" /> Inactive
-            </a>
-          </div>
-        </div>
-      ),
     },
     {
       title: 'Action',
@@ -143,6 +131,9 @@ function Vendor() {
               href="#"
               data-toggle="modal"
               data-target="#edit_client"
+              onClick={() => {
+                setVendorToEdit(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -151,6 +142,9 @@ function Vendor() {
               href="#"
               data-toggle="modal"
               data-target="#delete_client"
+              onClick={() => {
+                setVendorToEdit(record);
+              }}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -187,22 +181,8 @@ function Vendor() {
                 data-toggle="modal"
                 data-target="#add_client"
               >
-                <i className="fa fa-plus" /> Add Vendor Credit
+                <i className="fa fa-plus" /> Add Vendor
               </a>
-              <div className="view-icons">
-                {/* <Link
-                  to="/app/employees/clients"
-                  className="grid-view btn btn-link"
-                >
-                  <i className="fa fa-th" />
-                </Link> */}
-                <Link
-                  to="/app/purchase/vendors"
-                  className="list-view btn btn-link active"
-                >
-                  <i className="fa fa-bars" />
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -271,7 +251,7 @@ function Vendor() {
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add Vendor Credit</h5>
+              <h5 className="modal-title">Add Vendor</h5>
               <button
                 type="button"
                 className="close"
@@ -336,10 +316,10 @@ function Vendor() {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-12">
                     <div className="form-group">
                       <label className="col-form-label">Address</label>
-                      <input
+                      <textarea
                         className="form-control"
                         type="text"
                         onChange={(event) => setAddress(event.target.value)}
@@ -367,7 +347,7 @@ function Vendor() {
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Edit Client</h5>
+              <h5 className="modal-title">Edit Vendor</h5>
               <button
                 type="button"
                 className="close"
@@ -378,39 +358,62 @@ function Vendor() {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleEditVendor();
+                }}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        First Name <span className="text-danger">*</span>
+                        Name <span className="text-danger">*</span>
                       </label>
                       <input
                         className="form-control"
-                        defaultValue="Barry"
                         type="text"
+                        value={vendorToEdit.name}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            name: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label className="col-form-label">Vendor Credit</label>
+                      <label className="col-form-label">Company Name</label>
                       <input
                         className="form-control"
-                        defaultValue="Cuda"
                         type="text"
+                        value={vendorToEdit.company}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            company: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        Username <span className="text-danger">*</span>
+                        Mobile <span className="text-danger">*</span>
                       </label>
                       <input
                         className="form-control"
-                        defaultValue="barrycuda"
                         type="text"
+                        value={vendorToEdit.phone}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            phone: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -421,209 +424,39 @@ function Vendor() {
                       </label>
                       <input
                         className="form-control floating"
-                        defaultValue="barrycuda@example.com"
                         type="email"
+                        value={vendorToEdit.email}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            email: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-12">
                     <div className="form-group">
-                      <label className="col-form-label">Password</label>
-                      <input
-                        className="form-control"
-                        defaultValue="barrycuda"
-                        type="password"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Confirm Password</label>
-                      <input
-                        className="form-control"
-                        defaultValue="barrycuda"
-                        type="password"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Client ID <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control floating"
-                        defaultValue="CLT-0001"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Phone </label>
-                      <input
-                        className="form-control"
-                        defaultValue={9876543210}
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Company Name</label>
-                      <input
+                      <label className="col-form-label">Address</label>
+                      <textarea
                         className="form-control"
                         type="text"
-                        defaultValue="Sunteck Realty Ltd"
+                        value={vendorToEdit.address}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            address: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
                 </div>
-                <div className="table-responsive m-t-15">
-                  <table className="table table-striped custom-table">
-                    <thead>
-                      <tr>
-                        <th>Module Permission</th>
-                        <th className="text-center">Read</th>
-                        <th className="text-center">Write</th>
-                        <th className="text-center">Create</th>
-                        <th className="text-center">Delete</th>
-                        <th className="text-center">Import</th>
-                        <th className="text-center">Export</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Projects</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Tasks</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Chat</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Estimates</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Invoices</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Timing Sheets</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -643,7 +476,14 @@ function Vendor() {
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
-                    <a href="" className="btn btn-primary continue-btn">
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDeletVendor();
+                      }}
+                      href=""
+                      className="btn btn-primary continue-btn"
+                    >
                       Delete
                     </a>
                   </div>
