@@ -8,6 +8,7 @@ import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
 import { fetchExpense } from '../../lib/api';
 import httpService from '../../lib/httpService';
+import Swal from 'sweetalert2';
 
 const Expense = () => {
   const [data, setData] = useState([]);
@@ -47,6 +48,36 @@ const Expense = () => {
       );
     })();
   }, []);
+
+  const handleMarkAsPaid = async (invoice) => {
+    Swal.fire({
+      title: 'Mark as Paid',
+      text: 'Are you sure you want to mark this invoice as paid?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Proceed',
+      preConfirm: () => {
+        return httpService.post(`/bill`, {
+          invoice: invoice._id,
+          vendor: invoice.vendor._id,
+          amount: invoice.total,
+          paymentMode: 'Manual Record',
+          paymentDate: new Date(),
+        });
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetchInvoice();
+        Swal.fire(
+          'Invoice Marked as Paid',
+          'Invoice has been marked as paid successfully',
+          'success'
+        );
+      }
+    });
+  };
 
   const handleExpense = async () => {
     const data = {
@@ -133,7 +164,7 @@ const Expense = () => {
                 e.preventDefault();
                 console.log(record.status);
                 if (record.status === 'Paid') {
-                  Swal.fire('Invoice Paid already', '', 'success');
+                  Swal.fire('Expense Paid already', '', 'success');
                   return;
                 }
                 handleMarkAsPaid(record);

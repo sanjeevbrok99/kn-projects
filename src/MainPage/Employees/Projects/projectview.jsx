@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import {
   Avatar_16,
   Avatar_02,
@@ -11,8 +11,12 @@ import {
   Avatar_01,
   PlaceHolder,
 } from '../../../Entryfile/imagepath';
+import httpService from '../../../lib/httpService';
 
 const ProjectView = () => {
+  const { id } = useParams();
+  const history = useHistory();
+  console.log(id);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -20,7 +24,17 @@ const ProjectView = () => {
         width: '100%',
       });
     }
-  });
+    fetchProjectDetails();
+  }, []);
+
+  const fetchProjectDetails = async () => {
+    if (!id) {
+      history.goBack();
+    }
+    const res = await httpService.get(`/project/${id}`);
+    console.log(res.data);
+  };
+
   return (
     <div className="page-wrapper">
       <Helmet>

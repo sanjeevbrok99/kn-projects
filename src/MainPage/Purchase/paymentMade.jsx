@@ -11,9 +11,14 @@ const PaymentMade = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchBill();
-
-      setData(res.data);
-      console.log('bill');
+      setData(
+        res.map((bill) => ({
+          ...bill,
+          vendorName: bill.vendor.name,
+          PaymentDate: new Date(bill.paymentDate).toLocaleDateString(),
+          billnumber: 'BILL-' + bill._id.toString().padStart(4, '0'),
+        }))
+      );
     })();
   }, []);
 
@@ -22,7 +27,7 @@ const PaymentMade = () => {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'billnumber',
       render: (text, record) => (
         <Link to="/app/sales/invoices-view">#{text}</Link>
       ),
@@ -30,14 +35,8 @@ const PaymentMade = () => {
     },
     {
       title: 'Vendor',
-      dataIndex: 'vendor',
+      dataIndex: 'vendorName',
       sorter: (a, b) => a.client.length - b.client.length,
-    },
-
-    {
-      title: 'Expense',
-      dataIndex: 'expense',
-      sorter: (a, b) => a.paymenttype.length - b.paymenttype.length,
     },
     {
       title: 'Paid Date',
