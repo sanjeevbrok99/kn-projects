@@ -3595,6 +3595,13 @@ table.dataTable thead > tr > td.sorting {
   margin-bottom: 0;
   padding: 0;
 }
+
+@media screen and (max-width: 575px) {
+  .personal-info li .title {
+    text-align: center;
+  }
+}
+
 .profile-view {
   position: relative;
 }

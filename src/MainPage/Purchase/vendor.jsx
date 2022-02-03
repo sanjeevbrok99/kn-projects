@@ -7,16 +7,11 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
-import { fetchVendor } from '../../lib/api';
 import httpService from '../../lib/httpService';
 
 function Vendor() {
-  const [name, setName] = useState('');
-  const [company, setCompany] = useState('');
-  const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [address, setAddress] = useState('');
-
+  const [data, setData] = useState([]);
+  const [vendorToAdd, setVendorToAdd] = useState({});
   const [vendorToEdit, setVendorToEdit] = useState({});
 
   useEffect(() => {
@@ -32,7 +27,6 @@ function Vendor() {
       }))
     );
   };
-  const [data, setData] = useState([]);
   useEffect(() => {
     if ($('.select')?.length > 0) {
       $('.select').select2({
@@ -40,29 +34,26 @@ function Vendor() {
         width: '100%',
       });
     }
+    fetchVendors();
   }, []);
 
-  const handleVendor = async () => {
-    const data = {
-      name: name,
-      email: email,
-      company: company,
-      phone: mobile,
-      address: address,
-    };
-    const res = await httpService.post('/vendor', data);
-    console.log(res);
+  const addVendor = async () => {
+    await httpService.post('/vendor', {
+      ...vendorToAdd,
+    });
     fetchVendors();
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
-  const handleEditVendor = async () => {
-    await httpService.put(`/vendor/${vendorToEdit._id}`, vendorToEdit);
+  const editVendor = async () => {
+    await httpService.put(`/vendor/${vendorToEdit._id}`, {
+      ...vendorToEdit,
+    });
     fetchVendors();
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
-  const handleDeletVendor = async () => {
+  const deleteVendor = async () => {
     await httpService.delete(`/vendor/${vendorToEdit._id}`);
     fetchVendors();
     document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
@@ -87,12 +78,6 @@ function Vendor() {
       dataIndex: 'company',
       // sorter: (a, b) => a.contactperson.length - b.contactperson.length,
     },
-
-    {
-      title: 'Created At',
-      dataIndex: 'date',
-      // sorter: (a, b) => a.contactperson.length - b.contactperson.length,
-    },
     {
       title: 'Email',
       dataIndex: 'email',
@@ -102,16 +87,7 @@ function Vendor() {
     {
       title: 'Mobile',
       dataIndex: 'phone',
-      //
-
-      //sorter: (a, b) => a.mobile.length - b.mobile.length,
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      //
-
-      //sorter: (a, b) => a.mobile.length - b.mobile.length,
+      sorter: (a, b) => a.mobile.length - b.mobile.length,
     },
     {
       title: 'Action',
@@ -131,7 +107,7 @@ function Vendor() {
               href="#"
               data-toggle="modal"
               data-target="#edit_client"
-              onClick={() => {
+              onClick={(e) => {
                 setVendorToEdit(record);
               }}
             >
@@ -179,7 +155,7 @@ function Vendor() {
                 href="#"
                 className="btn add-btn"
                 data-toggle="modal"
-                data-target="#add_client"
+                data-target="#add_vendor"
               >
                 <i className="fa fa-plus" /> Add Vendor
               </a>
@@ -244,7 +220,7 @@ function Vendor() {
       </div>
       {/* /Page Content */}
       {/* Add Client Modal */}
-      <div id="add_client" className="modal custom-modal fade" role="dialog">
+      <div id="add_vendor" className="modal custom-modal fade" role="dialog">
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
           role="document"
@@ -263,10 +239,10 @@ function Vendor() {
             </div>
             <div className="modal-body">
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  console.log('hy');
-                  handleVendor();
+                  await addVendor();
+                  e.target.reset();
                 }}
               >
                 <div className="row">
@@ -276,31 +252,29 @@ function Vendor() {
                         Name <span className="text-danger">*</span>
                       </label>
                       <input
+                        onChange={(e) => {
+                          setVendorToAdd({
+                            ...vendorToAdd,
+                            name: e.target.value,
+                          });
+                        }}
                         className="form-control"
                         type="text"
-                        onChange={(event) => setName(event.target.value)}
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label className="col-form-label">Company Name</label>
+                      <label className="col-form-label">Phone </label>
                       <input
+                        onChange={(e) => {
+                          setVendorToAdd({
+                            ...vendorToAdd,
+                            phone: e.target.value,
+                          });
+                        }}
                         className="form-control"
                         type="text"
-                        onChange={(event) => setCompany(event.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Mobile <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        onChange={(event) => setMobile(event.target.value)}
                       />
                     </div>
                   </div>
@@ -310,24 +284,49 @@ function Vendor() {
                         Email <span className="text-danger">*</span>
                       </label>
                       <input
+                        onChange={(e) => {
+                          setVendorToAdd({
+                            ...vendorToAdd,
+                            email: e.target.value,
+                          });
+                        }}
                         className="form-control floating"
                         type="email"
-                        onChange={(event) => setEmail(event.target.value)}
                       />
                     </div>
                   </div>
                   <div className="col-12">
                     <div className="form-group">
-                      <label className="col-form-label">Address</label>
-                      <textarea
+                      <label className="col-form-label">Comapny</label>
+                      <input
+                        onChange={(e) => {
+                          setVendorToAdd({
+                            ...vendorToAdd,
+                            company: e.target.value,
+                          });
+                        }}
                         className="form-control"
                         type="text"
-                        onChange={(event) => setAddress(event.target.value)}
                       />
                     </div>
                   </div>
                 </div>
-
+                <div>
+                  <div className="form-group">
+                    <label>Address</label>
+                    <textarea
+                      onChange={(e) => {
+                        setVendorToAdd({
+                          ...vendorToAdd,
+                          address: e.target.value,
+                        });
+                      }}
+                      className="form-control"
+                      rows={3}
+                      defaultValue={''}
+                    />
+                  </div>
+                </div>
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn" type="submit">
                     Submit
@@ -340,14 +339,14 @@ function Vendor() {
       </div>
       {/* /Add Client Modal */}
       {/* Edit Client Modal */}
-      <div id="edit_client" className="modal custom-modal fade" role="dialog">
+      <div id="edit_vendor" className="modal custom-modal fade" role="dialog">
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
           role="document"
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Edit Vendor</h5>
+              <h5 className="modal-title">Edit Customer</h5>
               <button
                 type="button"
                 className="close"
@@ -361,7 +360,7 @@ function Vendor() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleEditVendor();
+                  editVendor();
                 }}
               >
                 <div className="row">
@@ -371,22 +370,7 @@ function Vendor() {
                         Name <span className="text-danger">*</span>
                       </label>
                       <input
-                        className="form-control"
-                        type="text"
-                        value={vendorToEdit.name}
-                        onChange={(event) =>
-                          setVendorToEdit({
-                            ...vendorToEdit,
-                            name: event.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Company Name</label>
-                      <input
+                        defaultValue={vendorToEdit.name}
                         className="form-control"
                         type="text"
                         value={vendorToEdit.company}
@@ -401,10 +385,9 @@ function Vendor() {
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label className="col-form-label">
-                        Mobile <span className="text-danger">*</span>
-                      </label>
+                      <label className="col-form-label">Phone </label>
                       <input
+                        defaultValue={vendorToEdit.phone}
                         className="form-control"
                         type="text"
                         value={vendorToEdit.phone}
@@ -423,6 +406,7 @@ function Vendor() {
                         Email <span className="text-danger">*</span>
                       </label>
                       <input
+                        defaultValue={vendorToEdit.email}
                         className="form-control floating"
                         type="email"
                         value={vendorToEdit.email}
@@ -435,10 +419,11 @@ function Vendor() {
                       />
                     </div>
                   </div>
-                  <div className="col-12">
+                  <div className="col-md-6">
                     <div className="form-group">
-                      <label className="col-form-label">Address</label>
-                      <textarea
+                      <label className="col-form-label">Comapny</label>
+                      <input
+                        defaultValue={vendorToEdit.company}
                         className="form-control"
                         type="text"
                         value={vendorToEdit.address}
@@ -452,11 +437,25 @@ function Vendor() {
                     </div>
                   </div>
                 </div>
+                <div>
+                  <div className="form-group">
+                    <label>Address</label>
+                    <textarea
+                      defaultValue={vendorToEdit.address}
+                      onChange={(e) => {
+                        setVendorToEdit({
+                          ...customerToEdit,
+                          address: e.target.value,
+                        });
+                      }}
+                      className="form-control"
+                      rows={4}
+                    />
+                  </div>
+                </div>
 
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn" type="submit">
-                    Submit
-                  </button>
+                  <button className="btn btn-primary submit-btn">Submit</button>
                 </div>
               </form>
             </div>
@@ -470,18 +469,18 @@ function Vendor() {
           <div className="modal-content">
             <div className="modal-body">
               <div className="form-header">
-                <h3>Delete Client</h3>
+                <h3>Delete Vendor</h3>
                 <p>Are you sure want to delete?</p>
               </div>
               <div className="modal-btn delete-action">
                 <div className="row">
                   <div className="col-6">
                     <a
+                      href=""
                       onClick={(e) => {
                         e.preventDefault();
-                        handleDeletVendor();
+                        deleteVendor();
                       }}
-                      href=""
                       className="btn btn-primary continue-btn"
                     >
                       Delete
@@ -489,7 +488,6 @@ function Vendor() {
                   </div>
                   <div className="col-6">
                     <a
-                      href=""
                       data-dismiss="modal"
                       className="btn btn-primary cancel-btn"
                     >

@@ -7,28 +7,10 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
+import httpService from '../../../lib/httpService';
 
 const DailyReport = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      image: Avatar_03,
-      name: 'Prateek Tiwari',
-      number: '#0001',
-      date: '20 Dec 2020',
-      department: 'Design',
-      status: 'Week off',
-    },
-    {
-      id: 2,
-      image: Avatar_04,
-      name: 'Shital Agarwal',
-      number: '#0002',
-      date: '20 Dec 2020',
-      department: 'Product Manager',
-      status: 'Absent',
-    },
-  ]);
+  const [data, setData] = useState([]);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -36,7 +18,19 @@ const DailyReport = () => {
         width: '100%',
       });
     }
-  });
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = async () => {
+    const employees = await httpService.get('/employee');
+    setData(
+      employees.data.map((employee) => ({
+        ...employee,
+        key: employee._id,
+        name: employee.firstName + ' ' + employee.lastName,
+      }))
+    );
+  };
 
   const columns = [
     {
@@ -47,7 +41,7 @@ const DailyReport = () => {
           <Link to="/app/profile/employee-profile" className="avatar">
             <img alt="" src={record.image} />
           </Link>
-          <Link to="/app/profile/employee-profile">
+          <Link to={`/app/administrator/activities/${record._id}`}>
             {text} <span>{record.number}</span>
           </Link>
         </h2>
@@ -55,30 +49,19 @@ const DailyReport = () => {
       sorter: (a, b) => a.name.length - b.name.length,
     },
     {
-      title: 'Date',
-      dataIndex: 'date',
+      title: 'ID',
+      dataIndex: '_id',
       sorter: (a, b) => a.date.length - b.date.length,
     },
 
     {
-      title: 'Department',
-      dataIndex: 'department',
+      title: 'Email',
+      dataIndex: 'email',
       sorter: (a, b) => a.department.length - b.department.length,
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      render: (text, record) => (
-        <div className="dropdown dropdown-action">
-          <button
-            className={`btn btn-outline-${
-              text === 'Absent' ? 'danger' : 'info'
-            } btn-sm`}
-          >
-            {text}
-          </button>
-        </div>
-      ),
+      title: 'Mobile',
+      dataIndex: 'mobileNo',
     },
   ];
   return (
@@ -117,7 +100,7 @@ const DailyReport = () => {
               <div className="card">
                 <div className="card-body text-center">
                   <h3>
-                    <b>101</b>
+                    <b>{data.length}</b>
                   </h3>
                   <p>Total Employees</p>
                 </div>
@@ -127,7 +110,7 @@ const DailyReport = () => {
               <div className="card">
                 <div className="card-body text-center">
                   <h3 className="text-success">
-                    <b>84</b>
+                    <b>{data.length}</b>
                   </h3>
                   <p>Today Present</p>
                 </div>
@@ -137,7 +120,7 @@ const DailyReport = () => {
               <div className="card">
                 <div className="card-body text-center">
                   <h3 className="text-danger">
-                    <b>12</b>
+                    <b>0</b>
                   </h3>
                   <p>Today Absent</p>
                 </div>
@@ -147,7 +130,7 @@ const DailyReport = () => {
               <div className="card">
                 <div className="card-body text-center">
                   <h3>
-                    <b>5</b>
+                    <b>0</b>
                   </h3>
                   <p>Today Left</p>
                 </div>
@@ -164,23 +147,8 @@ const DailyReport = () => {
             </div>
             <div className="col-sm-6 col-md-3">
               <div className="form-group form-focus select-focus">
-                <select className="select floating">
-                  <option>Select Department</option>
-                  <option>Designing</option>
-                  <option>Development</option>
-                  <option>Finance</option>
-                  <option>Hr &amp; Finance</option>
-                </select>
-                <label className="focus-label">Department</label>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-3">
-              <div className="form-group form-focus select-focus">
                 <div>
-                  <input
-                    className="form-control floating datetimepicker"
-                    type="date"
-                  />
+                  <input className="form-control floating" type="date" />
                 </div>
                 <label className="focus-label">From</label>
               </div>
@@ -188,10 +156,7 @@ const DailyReport = () => {
             <div className="col-sm-6 col-md-3">
               <div className="form-group form-focus select-focus">
                 <div>
-                  <input
-                    className="form-control floating datetimepicker"
-                    type="date"
-                  />
+                  <input className="form-control floating" type="date" />
                 </div>
                 <label className="focus-label">To</label>
               </div>

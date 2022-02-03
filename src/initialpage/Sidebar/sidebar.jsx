@@ -43,7 +43,7 @@ const bar = [
             link: '/administrator/onboarding',
           },
           {
-            name: 'Daily Activity',
+            name: 'Employee Activities',
             link: '/administrator/daily-activity',
           },
           {
@@ -67,7 +67,7 @@ const bar = [
         icon: 'la la-users',
         children: [
           {
-            name: 'Active Leads',
+            name: 'All Leads',
             link: '/employees/leads',
           },
           {
