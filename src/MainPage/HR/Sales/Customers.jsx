@@ -156,29 +156,19 @@ function Customer() {
         {/* /Page Header */}
         {/* Search Filter */}
         <div className="row filter-row">
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-4">
             <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
-              <label className="focus-label">Client ID</label>
+              <label className="focus-label">Customer Name</label>
             </div>
           </div>
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-4">
             <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
-              <label className="focus-label">Client Name</label>
+              <label className="focus-label">Customer Email</label>
             </div>
           </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option>Select Company</option>
-                <option>Sunteck Realty Ltd</option>
-                <option>Godrej Properties Ltd</option>
-              </select>
-              <label className="focus-label">Company</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-4">
             <a href="#" className="btn btn-success btn-block">
               {' '}
               Search{' '}

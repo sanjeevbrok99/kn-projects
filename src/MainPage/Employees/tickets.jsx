@@ -14,6 +14,7 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
+import { fetchTicket } from '../../lib/api';
 
 const Tickets = () => {
   const [data, setData] = useState([
@@ -38,6 +39,15 @@ const Tickets = () => {
     }
   });
 
+  useEffect(() => {
+    (async () => {
+      const res = await fetchTicket();
+      console.log('expense');
+      setData(res.map((v, i) => ({ ...v, id: i + 1 })));
+      console.log(res);
+    })();
+  }, []);
+
   const columns = [
     {
       title: '#',
@@ -46,20 +56,20 @@ const Tickets = () => {
     },
     {
       title: 'Ticket Id',
-      dataIndex: 'ticketid',
+      dataIndex: '_id',
       render: (text, record) => (
         <Link
           onClick={() => localStorage.setItem('minheight', 'true')}
           to="/app/employees/ticket-view"
         >
-          #TKT-0001
+          {text}
         </Link>
       ),
       sorter: (a, b) => a.ticketid.length - b.ticketid.length,
     },
     {
       title: 'Assigned Staff',
-      dataIndex: 'name',
+      dataIndex: 'assignee',
       render: (text, record) => (
         <h2 className="table-avatar">
           <Link to="/app/profile/employee-profile" className="avatar">
@@ -71,8 +81,8 @@ const Tickets = () => {
       sorter: (a, b) => a.name.length - b.name.length,
     },
     {
-      title: 'Created Date',
-      dataIndex: 'createddate',
+      title: 'Department',
+      dataIndex: 'department',
       sorter: (a, b) => a.createddate.length - b.createddate.length,
     },
 

@@ -11,7 +11,7 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
-import { fetchLoan } from '../../../lib/api';
+import { fetchExpense, fetchLoan } from '../../../lib/api';
 const Expenses = () => {
   const [data, setData] = useState([
     {
@@ -40,10 +40,9 @@ const Expenses = () => {
 
   useEffect(() => {
     (async () => {
-      // const res = await fetchLoan();
-      // console.log('loan');
-      // setData(res.map((v, i) => ({ ...v, id: i + 1 })));
-      // console.log(res);
+      const res = await fetchExpense();
+      setData(res.map((v, i) => ({ ...v, id: i + 1 })));
+      console.log(res);
     })();
   }, []);
 

@@ -6,28 +6,17 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
+import { fetchExpense } from '../../lib/api';
+import httpService from '../../lib/httpService';
+import Swal from 'sweetalert2';
 
 const Expense = () => {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      invoicenumber: 'INV-0001',
-      client: '	Sunteck Realty Ltd',
-      createddate: '11 Mar 2021',
-      duedate: '11 Mar 2021',
-      amount: '2099',
-      status: 'Paid',
-    },
-    {
-      id: 2,
-      invoicenumber: 'INV-0002',
-      client: 'Godrej Properties Ltd',
-      createddate: '11 Mar 2021',
-      duedate: '11 Mar 2021',
-      amount: '2099',
-      status: 'Partially Paid',
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [item, setItem] = useState('');
+  const [description, setDescription] = useState('');
+  const [unitCost, setUnitCost] = useState('');
+  const [amount, setAmount] = useState('');
+  const [qty, setQty] = useState('');
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -36,6 +25,74 @@ const Expense = () => {
       });
     }
   });
+  useEffect(() => {
+    (async () => {
+      const res = await fetchExpense();
+      console.log('expense', res);
+      setData(
+        res?.map((expense, index) => ({
+          ...expense,
+          id: index + 1,
+          expensenumber: 'EXP-' + expense._id.toString().padStart(4, '0'),
+          createddate: new Date(expense.createdAt)
+            .toGMTString()
+            .substring(4, 16),
+          duedate: new Date(expense.expenseDate).toGMTString().substring(4, 16),
+          client: expense.vendor.name,
+          amount: expense.total,
+          status:
+            expense.type === 'RECURRING'
+              ? 'Monthly ' + expense.status
+              : expense.status,
+        }))
+      );
+    })();
+  }, []);
+
+  const handleMarkAsPaid = async (invoice) => {
+    Swal.fire({
+      title: 'Mark as Paid',
+      text: 'Are you sure you want to mark this invoice as paid?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Proceed',
+      preConfirm: () => {
+        return httpService.post(`/bill`, {
+          invoice: invoice._id,
+          vendor: invoice.vendor._id,
+          amount: invoice.total,
+          paymentMode: 'Manual Record',
+          paymentDate: new Date(),
+        });
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetchInvoice();
+        Swal.fire(
+          'Invoice Marked as Paid',
+          'Invoice has been marked as paid successfully',
+          'success'
+        );
+      }
+    });
+  };
+
+  const handleExpense = async () => {
+    const data = {
+      item: item,
+      description: description,
+      unitCost: unitCost,
+      amount: amount,
+    };
+    const res = await httpService.post('/expense', data);
+
+    console.log(res);
+
+    fetchExpense();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
 
   const columns = [
     {
@@ -45,7 +102,7 @@ const Expense = () => {
     },
     {
       title: 'Invoice Number',
-      dataIndex: 'invoicenumber',
+      dataIndex: 'expensenumber',
       render: (text, record) => (
         <Link to="/app/sales/invoices-view">#{text}</Link>
       ),
@@ -79,7 +136,7 @@ const Expense = () => {
       render: (text, record) => (
         <span
           className={
-            text === 'Paid'
+            text.includes('Paid')
               ? 'badge bg-inverse-success'
               : 'badge bg-inverse-info'
           }
@@ -103,21 +160,37 @@ const Expense = () => {
           </a>
           <div className="dropdown-menu dropdown-menu-right">
             <a
-              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log(record.status);
+                if (record.status === 'Paid') {
+                  Swal.fire('Expense Paid already', '', 'success');
+                  return;
+                }
+                handleMarkAsPaid(record);
+              }}
               className="dropdown-item"
-              data-toggle="modal"
-              data-target="#edit_expense"
+              href="#"
             >
-              <i className="fa fa-pencil m-r-5" /> Edit
+              <i className="fa fa-file-pdf-o m-r-5" /> Mark Paid
             </a>
+            <Link className="dropdown-item" to="/app/sales/invoices-edit">
+              <i className="fa fa-pencil m-r-5" /> Edit
+            </Link>
+            <Link className="dropdown-item" to="/app/sales/invoices-view">
+              <i className="fa fa-eye m-r-5" /> View
+            </Link>
             <a className="dropdown-item" href="#">
               <i className="fa fa-file-pdf-o m-r-5" /> Download
             </a>
             <a
-              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                // console.log(record);
+                handleDelete(record._id);
+              }}
               className="dropdown-item"
-              data-toggle="modal"
-              data-target="#delete_expense"
+              href="#"
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -126,6 +199,7 @@ const Expense = () => {
       ),
     },
   ];
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -147,14 +221,9 @@ const Expense = () => {
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_expense"
-              >
+              <Link to="/app/sales/expenses-create" className="btn add-btn">
                 <i className="fa fa-plus" /> Add Expense
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -246,102 +315,53 @@ const Expense = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log('hy');
+                  handleExpense();
+                }}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Invoice Number</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    {/* <div className="form-group">
-                      <label>Department</label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
-                      </select>
-                    </div> */}
-                    <div className="form-group">
-                      <label>Client</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label>Amount Sent</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  {/* <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div> */}
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Sent From</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Sent To</label>
-                      <input type="text" className="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Payment Mode</label>
-                      <select className="select">
-                        <option>Online</option>
-                        <option>Net Banking</option>
-                        <option>Cash</option>
-                        <option>Cheque</option>
-                        <option>Demand Draft</option>
-                        <option>Others</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Status</label>
-                      <select className="select">
-                        <option>Partially Paid</option>
-                        <option>Paid</option>
-                        <option>Pending</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Payment Start Date</label>
+                      <label>Item</label>
                       <input
+                        className="form-control"
                         type="text"
-                        className="form-control datetimepicker"
+                        onChange={(event) => setItem(event.target.value)}
                       />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Payment Processed Date</label>
+                      <label>Unit Cost</label>
                       <input
+                        className="form-control"
                         type="text"
-                        className="form-control datetimepicker"
+                        onChange={(event) => setUnitCost(event.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Quantity</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setQty(event.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Amount</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        onChange={(event) => setAmount(event.target.value)}
                       />
                     </div>
                   </div>
@@ -350,7 +370,11 @@ const Expense = () => {
                   <div className="col-md-12">
                     <div className="form-group">
                       <label>Description</label>
-                      <textarea className="form-control" defaultValue={''} />
+                      <textarea
+                        className="form-control"
+                        defaultValue={''}
+                        onChange={(event) => setDescription(event.target.value)}
+                      />
                     </div>
                   </div>
                 </div>
@@ -393,18 +417,6 @@ const Expense = () => {
                     </div>
                   </div>
                   <div className="col-md-6">
-                    {/* <div className="form-group">
-                      <label>Department</label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
-                      </select>
-                    </div> */}
                     <div className="form-group">
                       <label>Client</label>
                       <input className="form-control" type="text" />
@@ -418,12 +430,6 @@ const Expense = () => {
                       <input className="form-control" type="text" />
                     </div>
                   </div>
-                  {/* <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div> */}
                 </div>
                 <div className="row">
                   <div className="col-md-6">

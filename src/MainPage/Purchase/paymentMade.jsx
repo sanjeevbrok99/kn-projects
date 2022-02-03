@@ -5,14 +5,20 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
-import { fetchPayment } from '../../lib/api';
+import { fetchBill, fetchPayment } from '../../lib/api';
 
 const PaymentMade = () => {
   useEffect(() => {
     (async () => {
-      const res = await fetchPayment();
-
-      setData(res);
+      const res = await fetchBill();
+      setData(
+        res.map((bill) => ({
+          ...bill,
+          vendorName: bill.vendor.name,
+          PaymentDate: new Date(bill.paymentDate).toLocaleDateString(),
+          billnumber: 'BILL-' + bill._id.toString().padStart(4, '0'),
+        }))
+      );
     })();
   }, []);
 
@@ -20,23 +26,17 @@ const PaymentMade = () => {
 
   const columns = [
     {
-      title: 'Invoice ID',
-      dataIndex: 'invoicenumber',
+      title: 'ID',
+      dataIndex: 'billnumber',
       render: (text, record) => (
         <Link to="/app/sales/invoices-view">#{text}</Link>
       ),
       sorter: (a, b) => a.invoicenumber.length - b.invoicenumber.length,
     },
     {
-      title: 'Client',
-      dataIndex: 'lead',
+      title: 'Vendor',
+      dataIndex: 'vendorName',
       sorter: (a, b) => a.client.length - b.client.length,
-    },
-
-    {
-      title: 'Payment Type',
-      dataIndex: 'paymentMode',
-      sorter: (a, b) => a.paymenttype.length - b.paymenttype.length,
     },
     {
       title: 'Paid Date',
@@ -46,6 +46,12 @@ const PaymentMade = () => {
     {
       title: 'Paid Amount',
       dataIndex: 'amount',
+      render: (text, record) => <span>₹ {text}</span>,
+      sorter: (a, b) => a.amount.length - b.amount.length,
+    },
+    {
+      title: 'Paid Mode',
+      dataIndex: 'paymentMode',
       render: (text, record) => <span>₹ {text}</span>,
       sorter: (a, b) => a.amount.length - b.amount.length,
     },

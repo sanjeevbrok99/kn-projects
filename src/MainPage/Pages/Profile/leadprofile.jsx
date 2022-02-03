@@ -57,7 +57,7 @@ const EmployeeProfile = () => {
   };
 
   const addNote = async () => {
-    const response = await httpService.put(`/lead/${id}`, {
+    await httpService.put(`/lead/${id}`, {
       notes: profile.notes.concat({
         ...noteToAdd,
         dateTime: new Date(),

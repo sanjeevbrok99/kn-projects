@@ -122,7 +122,7 @@ const RecurringInvoices = () => {
   return (
     <div className="page-wrapper">
       <Helmet>
-        <title>Invoices </title>
+        <title>Recurring Invoices </title>
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
@@ -131,12 +131,12 @@ const RecurringInvoices = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Invoices</h3>
+              <h3 className="page-title">Recurring Invoices</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
                 </li>
-                <li className="breadcrumb-item active">Invoices</li>
+                <li className="breadcrumb-item active">Recurring Invoices</li>
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">

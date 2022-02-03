@@ -15,7 +15,20 @@ function Vendor() {
   const [vendorToEdit, setVendorToEdit] = useState({});
 
   useEffect(() => {
-    if ($('.select').length > 0) {
+    fetchVendors();
+  }, []);
+  const fetchVendors = async () => {
+    const res = await fetchVendor();
+    console.log(res);
+    setData(
+      res.map((item) => ({
+        ...item,
+        date: item.createdAt.split('T')[0],
+      }))
+    );
+  };
+  useEffect(() => {
+    if ($('.select')?.length > 0) {
       $('.select').select2({
         minimumResultsForSearch: -1,
         width: '100%',
@@ -23,11 +36,6 @@ function Vendor() {
     }
     fetchVendors();
   }, []);
-
-  const fetchVendors = async () => {
-    const vendors = await httpService.get('/vendor');
-    setData(vendors.data);
-  };
 
   const addVendor = async () => {
     await httpService.post('/vendor', {
@@ -63,12 +71,17 @@ function Vendor() {
           <Link to="/app/profile/employee-profile">{text}</Link>
         </h2>
       ),
-      sorter: (a, b) => a.name.length - b.name.length,
+      // sorter: (a, b) => a.name.length - b.name.length,
+    },
+    {
+      title: 'Company',
+      dataIndex: 'company',
+      // sorter: (a, b) => a.contactperson.length - b.contactperson.length,
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      sorter: (a, b) => a.email.length - b.email.length,
+      // sorter: (a, b) => a.email.length - b.email.length,
     },
 
     {
@@ -95,7 +108,7 @@ function Vendor() {
               data-toggle="modal"
               data-target="#edit_client"
               onClick={(e) => {
-                setCustomerToEdit(record);
+                setVendorToEdit(record);
               }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
@@ -105,8 +118,8 @@ function Vendor() {
               href="#"
               data-toggle="modal"
               data-target="#delete_client"
-              onClick={(e) => {
-                setCustomerToEdit(record);
+              onClick={() => {
+                setVendorToEdit(record);
               }}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
@@ -155,13 +168,13 @@ function Vendor() {
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
-              <label className="focus-label">Client ID</label>
+              <label className="focus-label">Vendor ID</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
-              <label className="focus-label">Client Name</label>
+              <label className="focus-label">Vendor Name</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
@@ -188,7 +201,7 @@ function Vendor() {
               <Table
                 className="table-striped"
                 pagination={{
-                  total: data.length,
+                  total: data?.length,
                   showTotal: (total, range) =>
                     `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                   showSizeChanger: true,
@@ -214,7 +227,7 @@ function Vendor() {
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add Customer</h5>
+              <h5 className="modal-title">Add Vendor</h5>
               <button
                 type="button"
                 className="close"
@@ -282,7 +295,7 @@ function Vendor() {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-12">
                     <div className="form-group">
                       <label className="col-form-label">Comapny</label>
                       <input
@@ -315,7 +328,9 @@ function Vendor() {
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -356,14 +371,15 @@ function Vendor() {
                       </label>
                       <input
                         defaultValue={vendorToEdit.name}
-                        onChange={(e) => {
-                          setVendorToEdit({
-                            ...customerToEdit,
-                            name: e.target.value,
-                          });
-                        }}
                         className="form-control"
                         type="text"
+                        value={vendorToEdit.company}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            company: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -372,14 +388,15 @@ function Vendor() {
                       <label className="col-form-label">Phone </label>
                       <input
                         defaultValue={vendorToEdit.phone}
-                        onChange={(e) => {
-                          setVendorToEdit({
-                            ...customerToEdit,
-                            phone: e.target.value,
-                          });
-                        }}
                         className="form-control"
                         type="text"
+                        value={vendorToEdit.phone}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            phone: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -390,14 +407,15 @@ function Vendor() {
                       </label>
                       <input
                         defaultValue={vendorToEdit.email}
-                        onChange={(e) => {
-                          setVendorToEdit({
-                            ...customerToEdit,
-                            email: e.target.value,
-                          });
-                        }}
                         className="form-control floating"
                         type="email"
+                        value={vendorToEdit.email}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            email: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -406,14 +424,15 @@ function Vendor() {
                       <label className="col-form-label">Comapny</label>
                       <input
                         defaultValue={vendorToEdit.company}
-                        onChange={(e) => {
-                          setVendorToEdit({
-                            ...customerToEdit,
-                            company: e.target.value,
-                          });
-                        }}
                         className="form-control"
                         type="text"
+                        value={vendorToEdit.address}
+                        onChange={(event) =>
+                          setVendorToEdit({
+                            ...vendorToEdit,
+                            address: event.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -434,6 +453,7 @@ function Vendor() {
                     />
                   </div>
                 </div>
+
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Submit</button>
                 </div>

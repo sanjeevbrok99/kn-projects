@@ -176,12 +176,20 @@ const CreditNotes = () => {
         {/* /Page Header */}
         {/* Search Filter */}
         <div className="row filter-row">
-          <div className="col-sm-6 col-md-6">
+          <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
               <div>
                 <input className="form-control floating " type="text" />
               </div>
               <label className="focus-label">Item Name</label>
+            </div>
+          </div>
+          <div className="col-sm-6 col-md-3">
+            <div className="form-group form-focus select-focus">
+              <div>
+                <input className="form-control floating " type="text" />
+              </div>
+              <label className="focus-label">Item Number</label>
             </div>
           </div>
 
