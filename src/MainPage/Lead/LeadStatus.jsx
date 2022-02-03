@@ -49,9 +49,12 @@ function LeadStatus() {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Proceed',
         preConfirm: () => {
-          return httpService.put(`/lead/${removed._id}`, {
-            status: destination.droppableId,
-          });
+          return httpService.put(
+            `http://localhost:3000/api/v1/lead/${removed._id}`,
+            {
+              status: destination.droppableId,
+            }
+          );
         },
       }).then(async (result) => {
         if (result.isConfirmed) {

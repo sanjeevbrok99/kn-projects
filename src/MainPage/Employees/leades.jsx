@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
-import {
-  Avatar_11,
-  Avatar_09,
-  Avatar_02,
-  Avatar_10,
-  Avatar_05,
-  Avatar_12,
-  Avatar_01,
-  Avatar_13,
-  Avatar_16,
-} from '../../Entryfile/imagepath';
+import { Link, useLocation } from 'react-router-dom';
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
 import httpService from '../../lib/httpService';
 
+function useQuery() {
+  const { search } = useLocation();
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 const Leads = () => {
   const [data, setData] = useState([]);
   const [leadToAdd, setLeadToAdd] = useState({});
   const [projects, setProjects] = useState([]);
+  let query = useQuery();
+  const [projectId, setProjectId] = useState(query.get('projectId'));
 
   useEffect(() => {
     fetchLeads();
@@ -29,20 +25,21 @@ const Leads = () => {
   }, []);
 
   const fetchLeads = async () => {
-    const leads = await httpService.get(
-      'https://kn-multiprojects-tldi7.ondigitalocean.app/api/v1/lead'
-    );
-    setData(
-      leads.data.map((lead, i) => ({
-        ...lead,
-        id: i + 1,
-        projectName: lead.project.name,
-        assignedstaff:
-          lead.assignedTo.firstName + ' ' + lead.assignedTo.lastName,
-        status: lead.status,
-        created: new Date(lead.createdAt).toGMTString().substring(4, 16),
-      }))
-    );
+    if (!data.length) {
+      const leads = await httpService.get('/lead');
+      console.log(query.get('projectId'));
+      setData(
+        leads.data.map((lead, i) => ({
+          ...lead,
+          id: i + 1,
+          projectName: lead.project.name,
+          assignedstaff:
+            lead.assignedTo.firstName + ' ' + lead.assignedTo.lastName,
+          status: lead.status,
+          created: new Date(lead.createdAt).toGMTString().substring(4, 16),
+        }))
+      );
+    }
   };
 
   const fetchProjects = async () => {
@@ -67,8 +64,26 @@ const Leads = () => {
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to="/app/profile/lead-profile" className="avatar">
-            <img alt="" src={record.image} />
+          <Link
+            to={`/app/profile/lead-profile/${record._id}`}
+            className="avatar"
+          >
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                background: '#5AB9AA',
+                borderRadius: '50%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '1.2rem',
+                color: '#fff',
+              }}
+            >
+              {record.name.split(' ')[0].charAt(0) +
+                (record.name.split(' ')[1]?.charAt(0) || '')}
+            </div>
           </Link>
           <Link to={`/app/profile/lead-profile/${record._id}`}>{text}</Link>
         </h2>
@@ -91,7 +106,9 @@ const Leads = () => {
       title: 'Project',
       dataIndex: 'projectName',
       render: (text, record) => (
-        <Link to="/app/projects/projects-view">{text}</Link>
+        <Link to={`/app/projects/projects-view/${record.project?._id}`}>
+          {text}
+        </Link>
       ),
       sorter: (a, b) => a.project.length - b.project.length,
     },
@@ -114,11 +131,6 @@ const Leads = () => {
           {text}
         </span>
       ),
-    },
-    {
-      title: 'Created',
-      dataIndex: 'created',
-      sorter: (a, b) => a.created.length - b.created.length,
     },
     {
       title: 'Action',
@@ -150,6 +162,7 @@ const Leads = () => {
         <title>Leads </title>
         <meta name="description" content="Login page" />
       </Helmet>
+
       {/* Page Content */}
       <div className="content container-fluid">
         {/* Page Header */}
@@ -178,6 +191,26 @@ const Leads = () => {
             </div>
           </div>
         </div>
+        <div className="row filter-row">
+          <div className="col-12">
+            <div className="form-group form-focus focused">
+              <select
+                value={projectId ? projectId : 'All Projects'}
+                className="form-control"
+                onChange={(e) => {
+                  setProjectId(e.target.value);
+                }}
+              >
+                <option value={'All Projects'}>All Projects</option>
+                {projects.map((project) => (
+                  <option key={project._id} value={project._id}>
+                    {project.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
         {/* /Page Header */}
         <div className="row">
           <div className="col-md-12">
@@ -195,7 +228,11 @@ const Leads = () => {
                 style={{ overflowX: 'auto' }}
                 columns={columns}
                 // bordered
-                dataSource={data}
+                dataSource={
+                  !projectId
+                    ? data
+                    : data.filter((lead) => lead.project?._id === projectId)
+                }
                 rowKey={(record) => record.id}
                 onChange={console.log('change value')}
               />

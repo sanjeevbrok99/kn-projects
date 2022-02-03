@@ -43,7 +43,7 @@ const Uiinterfaceroute = ({ match }) => {
       <Redirect exact from={`${match.url}/`} to={`${match.url}/users`} />
       <Route path={`${match.url}/leave-request`} component={LeaveRequest} />
       <Route path={`${match.url}/users`} component={Users} />
-      <Route path={`${match.url}/activities`} component={Activities} />
+      <Route path={`${match.url}/activities/:id`} component={Activities} />
       <Route path={`${match.url}/assets`} component={Assets} />
       <Route path={`${match.url}/locations`} component={Locations} />
       <Route path={`${match.url}/knowledgebase`} component={knowledgebase} />

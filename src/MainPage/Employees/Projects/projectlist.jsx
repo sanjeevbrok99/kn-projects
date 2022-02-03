@@ -1,18 +1,6 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import {
-  Avatar_16,
-  Avatar_02,
-  Avatar_05,
-  Avatar_09,
-  Avatar_10,
-  Avatar_11,
-  Avatar_12,
-  Avatar_13,
-  Avatar_01,
-} from '../../../Entryfile/imagepath';
-
 import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css'; // import styles
 
@@ -31,7 +19,7 @@ const ProjectList = () => {
         width: '100%',
       });
     }
-  });
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -133,28 +121,10 @@ const ProjectList = () => {
         {/* /Page Header */}
         {/* Search Filter */}
         <div className="row filter-row">
-          <div className="col-sm-6 col-md-3">
+          <div className="col-9">
             <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
               <label className="focus-label">Project Name</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
-              <label className="focus-label">Employee Name</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option>Select Roll</option>
-                <option>Product Manager</option>
-                <option>CIO</option>
-                <option>Product Manager</option>
-                <option>Marketing Head</option>
-              </select>
-              <label className="focus-label">Role</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
@@ -175,7 +145,6 @@ const ProjectList = () => {
                     <th>Project Type</th>
                     <th>Members</th>
                     <th>Deadline</th>
-                    <th>Priority</th>
                     <th>Leads</th>
                     <th className="text-right">Action</th>
                   </tr>
@@ -199,36 +168,21 @@ const ProjectList = () => {
                         </td>
 
                         <td>{convertDate(project.endDate)} </td>
-                        <td>
-                          <div className="dropdown action-label">
-                            <a
-                              href
-                              className="btn btn-white btn-sm btn-rounded "
-                              aria-expanded="false"
-                            >
-                              <i
-                                className={`fa fa-dot-circle-o  ${
-                                  (project.priority === 'HIGH' &&
-                                    'text-danger') ||
-                                  (project.priority === 'MEDIUM' &&
-                                    'text-warning') ||
-                                  (project.priority === 'LOW' && 'text-success')
-                                } `}
-                              />{' '}
-                              {CapitalizeFirst(project.priority)}{' '}
-                            </a>
-                          </div>
-                        </td>
+
                         <td>
                           <div className="action-label">
-                            {
-                              project.leads?.filter(
-                                (lead) =>
-                                  lead.status !== 'Lead Won' ||
-                                  lead.status !== 'Lead Lost'
-                              ).length
-                            }{' '}
-                            Leads
+                            <Link
+                              to={`/app/employees/leads?projectId=${project._id}`}
+                            >
+                              {
+                                project.leads?.filter(
+                                  (lead) =>
+                                    lead.status !== 'Lead Won' &&
+                                    lead.status !== 'Lead Lost'
+                                ).length
+                              }{' '}
+                              Leads
+                            </Link>
                           </div>
                         </td>
                         <td className="text-right">
@@ -318,21 +272,17 @@ const ProjectList = () => {
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Priority</label>
-                      <select
+                      <label>Cost</label>
+                      <input
                         onChange={(e) => {
                           setProjectToAdd((d) => ({
                             ...d,
-                            priority: e.target.value,
+                            estimatedCost: e.target.value,
                           }));
                         }}
-                        className="custom-select"
-                      >
-                        <option value={''}>Select priority</option>
-                        <option value={'HIGH'}>High</option>
-                        <option value={'MEDIUM'}>Medium</option>
-                        <option value={'LOW'}>Low</option>
-                      </select>
+                        className="form-control"
+                        type="text"
+                      />
                     </div>
                   </div>
                 </div>
@@ -386,8 +336,11 @@ const ProjectList = () => {
                         className="custom-select"
                       >
                         <option value={''}>Select type</option>
-                        <option value={'Land'}>Land Sale</option>
-                        <option value={'Plot'}>Real Estate</option>
+                        <option value={'Plot'}>Plot for sale</option>
+                        <option value={'Flat'}>Flat for sale</option>
+                        <option value={'Simplex'}>Simplex for sale</option>
+                        <option value={'Duplex'}>Duplex for sale</option>
+                        <option value={'Triplex'}>Triplex for sale</option>
                       </select>
                     </div>
                   </div>
@@ -460,22 +413,19 @@ const ProjectList = () => {
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Priority</label>
-                      <select
-                        value={projectToEdit.priority}
-                        onChange={(e) => {
-                          setProjectToEdit((d) => ({
-                            ...d,
-                            priority: e.target.value,
-                          }));
-                        }}
-                        className="custom-select"
-                      >
-                        <option value={''}>Select priority</option>
-                        <option value={'HIGH'}>High</option>
-                        <option value={'MEDIUM'}>Medium</option>
-                        <option value={'LOW'}>Low</option>
-                      </select>
+                      <div className="form-group">
+                        <label>Cost</label>
+                        <input
+                          onChange={(e) => {
+                            setProjectToAdd((d) => ({
+                              ...d,
+                              estimatedCost: e.target.value,
+                            }));
+                          }}
+                          className="form-control"
+                          type="text"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -532,8 +482,11 @@ const ProjectList = () => {
                         className="custom-select"
                       >
                         <option value={''}>Select type</option>
-                        <option value={'Land'}>Land Sale</option>
-                        <option value={'Plot'}>Real Estate</option>
+                        <option value={'Plot'}>Plot for sale</option>
+                        <option value={'Flat'}>Flat for sale</option>
+                        <option value={'Simplex'}>Simplex for sale</option>
+                        <option value={'Duplex'}>Duplex for sale</option>
+                        <option value={'Triplex'}>Triplex for sale</option>
                       </select>
                     </div>
                   </div>

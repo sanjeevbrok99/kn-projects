@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import {
@@ -9,13 +9,16 @@ import {
   Avatar_10,
   Avatar_11,
   Avatar_01,
-  PlaceHolder,
 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ProjectView = () => {
   const { id } = useParams();
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(true);
+  const [projectDetails, setProjectDetails] = useState({});
+
   console.log(id);
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -32,7 +35,8 @@ const ProjectView = () => {
       history.goBack();
     }
     const res = await httpService.get(`/project/${id}`);
-    console.log(res.data);
+    setIsLoading(false);
+    setProjectDetails(res.data);
   };
 
   return (
@@ -42,679 +46,479 @@ const ProjectView = () => {
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
-      <div className="content container-fluid">
-        {/* Page Header */}
-        <div className="page-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h3 className="page-title">Hospital Admin</h3>
-              <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Project</li>
-              </ul>
-            </div>
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#edit_project"
-              >
-                <i className="fa fa-plus" /> Edit Project
-              </a>
-              <Link
-                to="/app/projects/task-board"
-                className="btn btn-white float-right m-r-10"
-                data-toggle="tooltip"
-                title="Task Board"
-              >
-                <i className="fa fa-bars" />
-              </Link>
-            </div>
-          </div>
+      {isLoading && (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
         </div>
-        {/* /Page Header */}
-        <div className="row">
-          <div className="col-lg-8 col-xl-9">
-            <div className="card">
-              <div className="card-body">
-                <div className="project-title">
-                  <h5 className="card-title">TariniVihar-II</h5>
-                  <small className="block text-ellipsis m-b-15">
-                    <span className="text-xs">2</span>{' '}
-                    <span className="text-muted">open tasks, </span>
-                    <span className="text-xs">5</span>{' '}
-                    <span className="text-muted">tasks completed</span>
-                  </small>
-                </div>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                  vel elit neque. Class aptent taciti sociosqu ad litora
-                  torquent per conubia nostra, per inceptos himenaeos.
-                  Vestibulum sollicitudin libero vitae est consectetur, a
-                  molestie tortor consectetur. Aenean tincidunt interdum ipsum,
-                  id pellentesque diam suscipit ut. Vivamus massa mi, fermentum
-                  eget neque eget, imperdiet tristique lectus. Proin at purus ut
-                  sem pellentesque tempor sit amet ut lectus. Sed orci augue,
-                  placerat et pretium ac, hendrerit in felis. Integer
-                  scelerisque libero non metus commodo, et hendrerit diam
-                  aliquet. Proin tincidunt porttitor ligula, a tincidunt orci
-                  pellentesque nec. Ut ultricies maximus nulla id consequat.
-                  Fusce eu consequat mi, eu euismod ligula. Aliquam porttitor
-                  neque id massa porttitor, a pretium velit vehicula. Morbi
-                  volutpat tincidunt urna, vel ullamcorper ligula fermentum at.{' '}
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                  vel elit neque. Class aptent taciti sociosqu ad litora
-                  torquent per conubia nostra, per inceptos himenaeos.
-                  Vestibulum sollicitudin libero vitae est consectetur, a
-                  molestie tortor consectetur. Aenean tincidunt interdum ipsum,
-                  id pellentesque diam suscipit ut. Vivamus massa mi, fermentum
-                  eget neque eget, imperdiet tristique lectus. Proin at purus ut
-                  sem pellentesque tempor sit amet ut lectus. Sed orci augue,
-                  placerat et pretium ac, hendrerit in felis. Integer
-                  scelerisque libero non metus commodo, et hendrerit diam
-                  aliquet. Proin tincidunt porttitor ligula, a tincidunt orci
-                  pellentesque nec. Ut ultricies maximus nulla id consequat.
-                  Fusce eu consequat mi, eu euismod ligula. Aliquam porttitor
-                  neque id massa porttitor, a pretium velit vehicula. Morbi
-                  volutpat tincidunt urna, vel ullamcorper ligula fermentum at.{' '}
-                </p>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title m-b-20">Uploaded image files</h5>
-                <div className="row">
-                  <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                    <div className="uploaded-box">
-                      <div className="uploaded-img">
-                        <img src={PlaceHolder} className="img-fluid" alt="" />
-                      </div>
-                      <div className="uploaded-img-name">demo.png</div>
-                    </div>
-                  </div>
-                  <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                    <div className="uploaded-box">
-                      <div className="uploaded-img">
-                        <img src={PlaceHolder} className="img-fluid" alt="" />
-                      </div>
-                      <div className="uploaded-img-name">demo.png</div>
-                    </div>
-                  </div>
-                  <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                    <div className="uploaded-box">
-                      <div className="uploaded-img">
-                        <img src={PlaceHolder} className="img-fluid" alt="" />
-                      </div>
-                      <div className="uploaded-img-name">demo.png</div>
-                    </div>
-                  </div>
-                  <div className="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                    <div className="uploaded-box">
-                      <div className="uploaded-img">
-                        <img src={PlaceHolder} className="img-fluid" alt="" />
-                      </div>
-                      <div className="uploaded-img-name">demo.png</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title m-b-20">Uploaded files</h5>
-                <ul className="files-list">
-                  <li>
-                    <div className="files-cont">
-                      <div className="file-type">
-                        <span className="files-icon">
-                          <i className="fa fa-file-pdf-o" />
-                        </span>
-                      </div>
-                      <div className="files-info">
-                        <span className="file-name text-ellipsis">
-                          <a href="#">
-                            AHA Selfcare Mobile Application Test-Cases.xls
-                          </a>
-                        </span>
-                        <span className="file-author">
-                          <a href="#">Prateek Tiwari</a>
-                        </span>{' '}
-                        <span className="file-date">May 31st at 6:53 PM</span>
-                        <div className="file-size">Size: 14.8Mb</div>
-                      </div>
-                      <ul className="files-action">
-                        <li className="dropdown dropdown-action">
-                          <a
-                            href=""
-                            className="dropdown-toggle btn btn-link"
-                            data-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <i className="material-icons">more_horiz</i>
-                          </a>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <a className="dropdown-item" href="">
-                              Download
-                            </a>
-                            <a
-                              className="dropdown-item"
-                              href="#"
-                              data-toggle="modal"
-                              data-target="#share_files"
-                            >
-                              Share
-                            </a>
-                            <a className="dropdown-item" href="">
-                              Delete
-                            </a>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
+      )}
+      {!isLoading && (
+        <div className="content container-fluid">
+          {/* Page Header */}
+          <div className="page-header">
+            <div className="row align-items-center">
+              <div className="col">
+                <h3 className="page-title">{projectDetails?.name}</h3>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/app/main/dashboard">Dashboard</Link>
                   </li>
-                  <li>
-                    <div className="files-cont">
-                      <div className="file-type">
-                        <span className="files-icon">
-                          <i className="fa fa-file-pdf-o" />
-                        </span>
-                      </div>
-                      <div className="files-info">
-                        <span className="file-name text-ellipsis">
-                          <a href="#">
-                            AHA Selfcare Mobile Application Test-Cases.xls
-                          </a>
-                        </span>
-                        <span className="file-author">
-                          <a href="#">Shital Agarwal</a>
-                        </span>{' '}
-                        <span className="file-date">May 31st at 6:53 PM</span>
-                        <div className="file-size">Size: 14.8Mb</div>
-                      </div>
-                      <ul className="files-action">
-                        <li className="dropdown dropdown-action">
-                          <a
-                            href=""
-                            className="dropdown-toggle btn btn-link"
-                            data-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <i className="material-icons">more_horiz</i>
-                          </a>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <a className="dropdown-item" href="">
-                              Download
-                            </a>
-                            <a
-                              className="dropdown-item"
-                              href="#"
-                              data-toggle="modal"
-                              data-target="#share_files"
-                            >
-                              Share
-                            </a>
-                            <a className="dropdown-item" href="">
-                              Delete
-                            </a>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
+                  <li className="breadcrumb-item active">Project</li>
                 </ul>
               </div>
+              <div className="col-auto float-right ml-auto">
+                <a
+                  href="#"
+                  className="btn add-btn"
+                  data-toggle="modal"
+                  data-target="#edit_project"
+                >
+                  <i className="fa fa-plus" /> Edit Project
+                </a>
+              </div>
             </div>
-            <div className="project-task">
-              <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
-                <li className="nav-item">
-                  <a
-                    className="nav-link active"
-                    href="#all_tasks"
-                    data-toggle="tab"
-                    aria-expanded="true"
-                  >
-                    All Tasks
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="#pending_tasks"
-                    data-toggle="tab"
-                    aria-expanded="false"
-                  >
-                    Pending Tasks
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="#completed_tasks"
-                    data-toggle="tab"
-                    aria-expanded="false"
-                  >
-                    Completed Tasks
-                  </a>
-                </li>
-              </ul>
-              <div className="tab-content">
-                <div className="tab-pane show active" id="all_tasks">
-                  <div className="task-wrapper">
-                    <div className="task-list-container">
-                      <div className="task-list-body">
-                        <ul id="task-list">
-                          <li className="task">
-                            <div className="task-container">
-                              <span className="task-action-btn task-check">
-                                <span
-                                  className="action-circle large complete-btn"
-                                  title="Mark Complete"
-                                >
-                                  <i className="material-icons">check</i>
-                                </span>
-                              </span>
-                              <span
-                                className="task-label"
-                                contentEditable="true"
-                                suppressContentEditableWarning={true}
-                              >
-                                Patient appointment booking
-                              </span>
-                              <span className="task-action-btn task-btn-right">
-                                <span
-                                  className="action-circle large"
-                                  title="Assign"
-                                >
-                                  <i className="material-icons">person_add</i>
+          </div>
+          {/* /Page Header */}
+          <div className="row">
+            <div className="col-lg-8 col-xl-9">
+              <div className="card">
+                <div className="card-body">
+                  <div className="project-title"></div>
+                  <p>{projectDetails?.description}</p>
+                </div>
+              </div>
+              {/* <div className="project-task">
+                <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      href="#all_tasks"
+                      data-toggle="tab"
+                      aria-expanded="true"
+                    >
+                      All Tasks
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#pending_tasks"
+                      data-toggle="tab"
+                      aria-expanded="false"
+                    >
+                      Pending Tasks
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#completed_tasks"
+                      data-toggle="tab"
+                      aria-expanded="false"
+                    >
+                      Completed Tasks
+                    </a>
+                  </li>
+                </ul>
+                <div className="tab-content">
+                  <div className="tab-pane show active" id="all_tasks">
+                    <div className="task-wrapper">
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            <li className="task">
+                              <div className="task-container">
+                                <span className="task-action-btn task-check">
+                                  <span
+                                    className="action-circle large complete-btn"
+                                    title="Mark Complete"
+                                  >
+                                    <i className="material-icons">check</i>
+                                  </span>
                                 </span>
                                 <span
-                                  className="action-circle large delete-btn"
-                                  title="Delete Task"
+                                  className="task-label"
+                                  contentEditable="true"
+                                  suppressContentEditableWarning={true}
                                 >
-                                  <i className="material-icons">delete</i>
+                                  Patient appointment booking
                                 </span>
-                              </span>
-                            </div>
-                          </li>
-                          <li className="task">
-                            <div className="task-container">
-                              <span className="task-action-btn task-check">
-                                <span
-                                  className="action-circle large complete-btn"
-                                  title="Mark Complete"
-                                >
-                                  <i className="material-icons">check</i>
+                                <span className="task-action-btn task-btn-right">
+                                  <span
+                                    className="action-circle large"
+                                    title="Assign"
+                                  >
+                                    <i className="material-icons">person_add</i>
+                                  </span>
+                                  <span
+                                    className="action-circle large delete-btn"
+                                    title="Delete Task"
+                                  >
+                                    <i className="material-icons">delete</i>
+                                  </span>
                                 </span>
-                              </span>
-                              <span
-                                className="task-label"
-                                contentEditable="true"
-                                suppressContentEditableWarning={true}
-                              >
-                                Appointment booking with payment gateway
-                              </span>
-                              <span className="task-action-btn task-btn-right">
-                                <span
-                                  className="action-circle large"
-                                  title="Assign"
-                                >
-                                  <i className="material-icons">person_add</i>
-                                </span>
-                                <span
-                                  className="action-circle large delete-btn"
-                                  title="Delete Task"
-                                >
-                                  <i className="material-icons">delete</i>
-                                </span>
-                              </span>
-                            </div>
-                          </li>
-                          <li className="completed task">
-                            <div className="task-container">
-                              <span className="task-action-btn task-check">
-                                <span
-                                  className="action-circle large complete-btn"
-                                  title="Mark Complete"
-                                >
-                                  <i className="material-icons">check</i>
-                                </span>
-                              </span>
-                              <span className="task-label">
-                                Doctor available module
-                              </span>
-                              <span className="task-action-btn task-btn-right">
-                                <span
-                                  className="action-circle large"
-                                  title="Assign"
-                                >
-                                  <i className="material-icons">person_add</i>
+                              </div>
+                            </li>
+                            <li className="task">
+                              <div className="task-container">
+                                <span className="task-action-btn task-check">
+                                  <span
+                                    className="action-circle large complete-btn"
+                                    title="Mark Complete"
+                                  >
+                                    <i className="material-icons">check</i>
+                                  </span>
                                 </span>
                                 <span
-                                  className="action-circle large delete-btn"
-                                  title="Delete Task"
+                                  className="task-label"
+                                  contentEditable="true"
+                                  suppressContentEditableWarning={true}
                                 >
-                                  <i className="material-icons">delete</i>
+                                  Appointment booking with payment gateway
                                 </span>
-                              </span>
-                            </div>
-                          </li>
-                          <li className="task">
-                            <div className="task-container">
-                              <span className="task-action-btn task-check">
-                                <span
-                                  className="action-circle large complete-btn"
-                                  title="Mark Complete"
-                                >
-                                  <i className="material-icons">check</i>
+                                <span className="task-action-btn task-btn-right">
+                                  <span
+                                    className="action-circle large"
+                                    title="Assign"
+                                  >
+                                    <i className="material-icons">person_add</i>
+                                  </span>
+                                  <span
+                                    className="action-circle large delete-btn"
+                                    title="Delete Task"
+                                  >
+                                    <i className="material-icons">delete</i>
+                                  </span>
                                 </span>
-                              </span>
-                              <span
-                                className="task-label"
-                                contentEditable="true"
-                                suppressContentEditableWarning={true}
-                              >
-                                Patient and Doctor video conferencing
-                              </span>
-                              <span className="task-action-btn task-btn-right">
-                                <span
-                                  className="action-circle large"
-                                  title="Assign"
-                                >
-                                  <i className="material-icons">person_add</i>
+                              </div>
+                            </li>
+                            <li className="completed task">
+                              <div className="task-container">
+                                <span className="task-action-btn task-check">
+                                  <span
+                                    className="action-circle large complete-btn"
+                                    title="Mark Complete"
+                                  >
+                                    <i className="material-icons">check</i>
+                                  </span>
                                 </span>
-                                <span
-                                  className="action-circle large delete-btn"
-                                  title="Delete Task"
-                                >
-                                  <i className="material-icons">delete</i>
+                                <span className="task-label">
+                                  Doctor available module
                                 </span>
-                              </span>
-                            </div>
-                          </li>
-                          <li className="task">
-                            <div className="task-container">
-                              <span className="task-action-btn task-check">
-                                <span
-                                  className="action-circle large complete-btn"
-                                  title="Mark Complete"
-                                >
-                                  <i className="material-icons">check</i>
+                                <span className="task-action-btn task-btn-right">
+                                  <span
+                                    className="action-circle large"
+                                    title="Assign"
+                                  >
+                                    <i className="material-icons">person_add</i>
+                                  </span>
+                                  <span
+                                    className="action-circle large delete-btn"
+                                    title="Delete Task"
+                                  >
+                                    <i className="material-icons">delete</i>
+                                  </span>
                                 </span>
-                              </span>
-                              <span
-                                className="task-label"
-                                contentEditable="true"
-                                suppressContentEditableWarning={true}
-                              >
-                                Private chat module
-                              </span>
-                              <span className="task-action-btn task-btn-right">
-                                <span
-                                  className="action-circle large"
-                                  title="Assign"
-                                >
-                                  <i className="material-icons">person_add</i>
+                              </div>
+                            </li>
+                            <li className="task">
+                              <div className="task-container">
+                                <span className="task-action-btn task-check">
+                                  <span
+                                    className="action-circle large complete-btn"
+                                    title="Mark Complete"
+                                  >
+                                    <i className="material-icons">check</i>
+                                  </span>
                                 </span>
                                 <span
-                                  className="action-circle large delete-btn"
-                                  title="Delete Task"
+                                  className="task-label"
+                                  contentEditable="true"
+                                  suppressContentEditableWarning={true}
                                 >
-                                  <i className="material-icons">delete</i>
+                                  Patient and Doctor video conferencing
                                 </span>
-                              </span>
-                            </div>
-                          </li>
-                          <li className="task">
-                            <div className="task-container">
-                              <span className="task-action-btn task-check">
+                                <span className="task-action-btn task-btn-right">
+                                  <span
+                                    className="action-circle large"
+                                    title="Assign"
+                                  >
+                                    <i className="material-icons">person_add</i>
+                                  </span>
+                                  <span
+                                    className="action-circle large delete-btn"
+                                    title="Delete Task"
+                                  >
+                                    <i className="material-icons">delete</i>
+                                  </span>
+                                </span>
+                              </div>
+                            </li>
+                            <li className="task">
+                              <div className="task-container">
+                                <span className="task-action-btn task-check">
+                                  <span
+                                    className="action-circle large complete-btn"
+                                    title="Mark Complete"
+                                  >
+                                    <i className="material-icons">check</i>
+                                  </span>
+                                </span>
                                 <span
-                                  className="action-circle large complete-btn"
-                                  title="Mark Complete"
+                                  className="task-label"
+                                  contentEditable="true"
+                                  suppressContentEditableWarning={true}
                                 >
-                                  <i className="material-icons">check</i>
+                                  Private chat module
                                 </span>
-                              </span>
-                              <span
-                                className="task-label"
-                                contentEditable="true"
-                                suppressContentEditableWarning={true}
-                              >
-                                Patient Profile add
-                              </span>
-                              <span className="task-action-btn task-btn-right">
+                                <span className="task-action-btn task-btn-right">
+                                  <span
+                                    className="action-circle large"
+                                    title="Assign"
+                                  >
+                                    <i className="material-icons">person_add</i>
+                                  </span>
+                                  <span
+                                    className="action-circle large delete-btn"
+                                    title="Delete Task"
+                                  >
+                                    <i className="material-icons">delete</i>
+                                  </span>
+                                </span>
+                              </div>
+                            </li>
+                            <li className="task">
+                              <div className="task-container">
+                                <span className="task-action-btn task-check">
+                                  <span
+                                    className="action-circle large complete-btn"
+                                    title="Mark Complete"
+                                  >
+                                    <i className="material-icons">check</i>
+                                  </span>
+                                </span>
                                 <span
-                                  className="action-circle large"
-                                  title="Assign"
+                                  className="task-label"
+                                  contentEditable="true"
+                                  suppressContentEditableWarning={true}
                                 >
-                                  <i className="material-icons">person_add</i>
+                                  Patient Profile add
                                 </span>
-                                <span
-                                  className="action-circle large delete-btn"
-                                  title="Delete Task"
-                                >
-                                  <i className="material-icons">delete</i>
+                                <span className="task-action-btn task-btn-right">
+                                  <span
+                                    className="action-circle large"
+                                    title="Assign"
+                                  >
+                                    <i className="material-icons">person_add</i>
+                                  </span>
+                                  <span
+                                    className="action-circle large delete-btn"
+                                    title="Delete Task"
+                                  >
+                                    <i className="material-icons">delete</i>
+                                  </span>
                                 </span>
-                              </span>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="task-list-footer">
-                        <div className="new-task-wrapper">
-                          <textarea
-                            id="new-task"
-                            placeholder="Enter new task here. . ."
-                            defaultValue={''}
-                          />
-                          <span className="error-message hidden">
-                            You need to enter a task first
-                          </span>
-                          <span className="add-new-task-btn btn" id="add-task">
-                            Add Task
-                          </span>
-                          <span className="btn" id="close-task-panel">
-                            Close
-                          </span>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="task-list-footer">
+                          <div className="new-task-wrapper">
+                            <textarea
+                              id="new-task"
+                              placeholder="Enter new task here. . ."
+                              defaultValue={''}
+                            />
+                            <span className="error-message hidden">
+                              You need to enter a task first
+                            </span>
+                            <span
+                              className="add-new-task-btn btn"
+                              id="add-task"
+                            >
+                              Add Task
+                            </span>
+                            <span className="btn" id="close-task-panel">
+                              Close
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div className="tab-pane" id="pending_tasks" />
+                  <div className="tab-pane" id="completed_tasks" />
                 </div>
-                <div className="tab-pane" id="pending_tasks" />
-                <div className="tab-pane" id="completed_tasks" />
-              </div>
+              </div> */}
             </div>
-          </div>
-          <div className="col-lg-4 col-xl-3">
-            <div className="card">
-              <div className="card-body">
-                <h6 className="card-title m-b-15">Project details</h6>
-                <table className="table table-striped table-border">
-                  <tbody>
-                    <tr>
-                      <td>Cost:</td>
-                      <td className="text-right">₹1200</td>
-                    </tr>
-                    <tr>
-                      <td>Total Hours:</td>
-                      <td className="text-right">100 Hours</td>
-                    </tr>
-                    <tr>
-                      <td>Created:</td>
-                      <td className="text-right">25 Feb, 2021</td>
-                    </tr>
-                    <tr>
-                      <td>Deadline:</td>
-                      <td className="text-right">12 Jun, 2021</td>
-                    </tr>
-                    <tr>
-                      <td>Priority:</td>
-                      <td className="text-right">
-                        <div className="btn-group">
-                          <a
-                            href="#"
-                            className="badge badge-danger dropdown-toggle"
-                            data-toggle="dropdown"
-                          >
-                            Highest{' '}
-                          </a>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <a className="dropdown-item" href="#">
-                              <i className="fa fa-dot-circle-o text-danger" />{' '}
-                              Highest priority
-                            </a>
-                            <a className="dropdown-item" href="#">
-                              <i className="fa fa-dot-circle-o text-info" />{' '}
-                              High priority
-                            </a>
-                            <a className="dropdown-item" href="#">
-                              <i className="fa fa-dot-circle-o text-primary" />{' '}
-                              Normal priority
-                            </a>
-                            <a className="dropdown-item" href="#">
-                              <i className="fa fa-dot-circle-o text-success" />{' '}
-                              Low priority
-                            </a>
+            <div className="col-lg-4 col-xl-3">
+              <div className="card">
+                <div className="card-body">
+                  <h6 className="card-title m-b-15">Project details</h6>
+                  <table className="table table-striped table-border">
+                    <tbody>
+                      <tr>
+                        <td>Cost:</td>
+                        <td className="text-right">
+                          ₹{projectDetails.estimatedCost}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Created:</td>
+                        <td className="text-right">
+                          {new Date(
+                            projectDetails?.startDate
+                          ).toLocaleDateString()}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Deadline:</td>
+                        <td className="text-right">
+                          {new Date(
+                            projectDetails?.endDate
+                          ).toLocaleDateString()}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Created by:</td>
+                        <td className="text-right">
+                          <Link to="/app/profile/employee-profile">
+                            {projectDetails?.createdBy || 'Admin'}
+                          </Link>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Status:</td>
+                        <td className="text-right">Working</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p className="m-b-5">
+                    Progress
+                    <span className="text-success float-right">40%</span>
+                  </p>
+                  <div className="progress progress-xs mb-0">
+                    <div
+                      className="progress-bar bg-success"
+                      role="progressbar"
+                      data-toggle="tooltip"
+                      title="40%"
+                      style={{ width: '40%' }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="card project-user">
+                <div className="card-body">
+                  <h6 className="card-title m-b-20">Members</h6>
+                  <ul className="list-box">
+                    {projectDetails?.members?.map((member) => (
+                      <li>
+                        <Link
+                          to={`/app/profile/employee-profile/${member._id}`}
+                        >
+                          <div className="list-item">
+                            <div className="list-left">
+                              <span className="avatar">
+                                <div
+                                  style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    background: '#5AB9AA',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    fontSize: '1rem',
+                                    color: '#fff',
+                                  }}
+                                >
+                                  {member.firstName.charAt(0) +
+                                    (member.lastName.charAt(0) || '')}
+                                </div>
+                              </span>
+                            </div>
+                            <div className="list-body">
+                              <span className="message-author">
+                                {member.firstName} {member.lastName}
+                              </span>
+                              <div className="clearfix" />
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Created by:</td>
-                      <td className="text-right">
-                        <Link to="/app/profile/employee-profile">
-                          Barry Cuda
                         </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Status:</td>
-                      <td className="text-right">Working</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p className="m-b-5">
-                  Progress <span className="text-success float-right">40%</span>
-                </p>
-                <div className="progress progress-xs mb-0">
-                  <div
-                    className="progress-bar bg-success"
-                    role="progressbar"
-                    data-toggle="tooltip"
-                    title="40%"
-                    style={{ width: '40%' }}
-                  />
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-            </div>
-            <div className="card project-user">
-              <div className="card-body">
-                <h6 className="card-title m-b-20">
-                  Assigned Leader{' '}
-                  <button
-                    type="button"
-                    className="float-right btn btn-primary btn-sm"
-                    data-toggle="modal"
-                    data-target="#assign_leader"
-                  >
-                    <i className="fa fa-plus" /> Add
-                  </button>
-                </h6>
-                <ul className="list-box">
-                  <li>
-                    <Link to="/app/profile/employee-profile">
-                      <div className="list-item">
-                        <div className="list-left">
-                          <span className="avatar">
-                            <img alt="" src={Avatar_11} />
-                          </span>
-                        </div>
-                        <div className="list-body">
-                          <span className="message-author">Wilmer Deluna</span>
-                          <div className="clearfix" />
-                          <span className="message-content">Team Leader</span>
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/app/profile/employee-profile">
-                      <div className="list-item">
-                        <div className="list-left">
-                          <span className="avatar">
-                            <img alt="" src={Avatar_01} />
-                          </span>
-                        </div>
-                        <div className="list-body">
-                          <span className="message-author">Lesley Grauer</span>
-                          <div className="clearfix" />
-                          <span className="message-content">Team Leader</span>
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="card project-user">
-              <div className="card-body">
-                <h6 className="card-title m-b-20">
-                  Assigned users
-                  <button
-                    type="button"
-                    className="float-right btn btn-primary btn-sm"
-                    data-toggle="modal"
-                    data-target="#assign_user"
-                  >
-                    <i className="fa fa-plus" /> Add
-                  </button>
-                </h6>
-                <ul className="list-box">
-                  <li>
-                    <Link to="/app/profile/employee-profile">
-                      <div className="list-item">
-                        <div className="list-left">
-                          <span className="avatar">
-                            <img alt="" src={Avatar_02} />
-                          </span>
-                        </div>
-                        <div className="list-body">
-                          <span className="message-author">Prateek Tiwari</span>
-                          <div className="clearfix" />
-                          <span className="message-content">CIO</span>
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/app/profile/employee-profile">
-                      <div className="list-item">
-                        <div className="list-left">
-                          <span className="avatar">
-                            <img alt="" src={Avatar_09} />
-                          </span>
-                        </div>
-                        <div className="list-body">
-                          <span className="message-author">Shital Agarwal</span>
-                          <div className="clearfix" />
-                          <span className="message-content">
-                            Product Manager
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                </ul>
+              <div className="card project-user">
+                <div className="card-body">
+                  <h6 className="card-title m-b-20">Leads</h6>
+                  <ul className="list-box">
+                    {projectDetails?.leads
+                      ?.reverse()
+                      .slice(0, 4)
+                      .map((lead) => (
+                        <li>
+                          <Link to="/app/profile/employee-profile">
+                            <div className="list-item">
+                              <div className="list-left">
+                                <span className="avatar">
+                                  <div
+                                    style={{
+                                      width: '100%',
+                                      height: '100%',
+                                      background: '#5AB9AA',
+                                      borderRadius: '50%',
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      fontSize: '1.2rem',
+                                      color: '#fff',
+                                    }}
+                                  >
+                                    {lead.name.split(' ')[0].charAt(0) +
+                                      (lead.name.split(' ')[1]?.charAt(0) ||
+                                        '')}
+                                  </div>
+                                </span>
+                              </div>
+                              <div className="list-body">
+                                <span className="message-author">
+                                  {lead.name}
+                                </span>
+                                <div className="clearfix" />
+                                <span className="message-content">
+                                  {lead.status}
+                                </span>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                      ))}
+                    <span className="message-content">
+                      <Link
+                        to={`/app/employees/leads?projectId=${projectDetails._id}`}
+                      >
+                        {projectDetails.leads?.length > 4 && (
+                          <>+ {projectDetails?.leads?.length - 4} more leads</>
+                        )}
+                      </Link>
+                    </span>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       {/* /Page Content */}
       {/* Assign Leader Modal */}
       <div id="assign_leader" className="modal custom-modal fade" role="dialog">
