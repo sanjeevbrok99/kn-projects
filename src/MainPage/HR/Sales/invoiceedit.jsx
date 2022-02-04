@@ -1,8 +1,15 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import httpService from '../../../lib/httpService';
 
 const Invoiceedit = () => {
+  const {id} = useParams()
+  const {isLoading, setIsLoading} = useState(true)
+  const {invoice, setInvoice} = useState({})
+  const history = useHistory();
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -10,7 +17,19 @@ const Invoiceedit = () => {
         width: '100%',
       });
     }
-  });
+  }, []);
+
+  const fetchInvoice = async () => {
+    const invoice = await httpService.get(`/sale-invoice/${id}`)
+    setInvoice(invoice.data)
+    console.log(invoice.data)
+  };
+
+  const editInvoice = async () => {
+    await httpService.put(`/sale-invoice/${id}`, invoice)
+    toast.success('Invoice Updated Successfully');
+    history.goBack();
+  }
 
   return (
     <div className="page-wrapper">
@@ -44,11 +63,17 @@ const Invoiceedit = () => {
                     <label>
                       Client <span className="text-danger">*</span>
                     </label>
-                    <select className="select">
+                    {/* <select className="select">
                       <option>Please Select</option>
                       <option selected>Barry Cuda</option>
                       <option>Tressa Wexler</option>
-                    </select>
+                    </select> */}
+                    <input onChange = {(e) =>{
+                      setInvoice({...invoice,
+                      name: e.target.value,
+                    })
+                  }}
+                    value={invoice?.customer?.name}/>
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-3">

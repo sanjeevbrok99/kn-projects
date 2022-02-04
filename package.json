@@ -4,7 +4,7 @@
   "homepage": "",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode development --inline --progress",
+    "start": "react-scripts start",
     "build": "webpack --mode production",
     "dev": "webpack-dev-server",
     "production": "webpack --mode production"
