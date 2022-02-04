@@ -14,24 +14,28 @@ import { Input, Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
-import { fetchTicket, addTicket, fetchdepartment, updateTicket, deleteTicket, fetchSingleTicket } from '../../lib/api';
-
-
+import {
+  fetchTicket,
+  addTicket,
+  fetchdepartment,
+  updateTicket,
+  deleteTicket,
+  fetchSingleTicket,
+} from '../../lib/api';
 
 const AddTicket = (props) => {
-
   const form = useRef();
   const btn = useRef();
 
   const resetForm = () => {
     form.current.reset();
-    btn.current.innerHTML = "Submit";
-  }
+    btn.current.innerHTML = 'Submit';
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newTicket = {};
-    btn.current.innerHTML = "Submitting...";
+    btn.current.innerHTML = 'Submitting...';
     newTicket.title = e.target.subject.value;
     newTicket.id = e.target.ticketId.value;
     newTicket.staffAssigned = e.target.staffAssigned.value;
@@ -41,206 +45,223 @@ const AddTicket = (props) => {
     newTicket.description = e.target.description.value;
     newTicket.assign = e.target.assign.value;
     newTicket.followers = e.target.followers.value;
-    newTicket.status = "active"
+    newTicket.status = 'active';
     newTicket.assignee = 1;
-    newTicket.department = "61fd4680741b1b5504df7d0d";
-    
+    newTicket.department = '61fd4680741b1b5504df7d0d';
+
     //File Upload not working
     newTicket.file = e.target.file.value;
     let res;
     try {
       res = await addTicket(newTicket);
-    } catch (err) { 
+    } catch (err) {
       console.log(err);
     }
-    btn.current.innerHTML = "Submitted!";
+    btn.current.innerHTML = 'Submitted!';
     console.log(res);
     resetForm();
-  }
+  };
 
   return (
-      <div id="add_ticket" className="modal custom-modal fade" role="dialog">
-          <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-          >
-              <div className="modal-content">
-                  <div className="modal-header">
-                      <h5 className="modal-title">Add Ticket</h5>
-                      <button
-                          type="button"
-                          className="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                      >
-                          <span aria-hidden="true">×</span>
-                      </button>
-                  </div>
-                  <div className="modal-body">
-                      <form ref={form} onSubmit={handleSubmit}>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Ticket Subject</label>
-                                      <input className="form-control" type="text" name="subject"/>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Ticket Id</label>
-                                      <input className="form-control" type="text" name="ticketId"/>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Assign Staff</label>
-                                      <select className="select" name="staffAssigned">
-                                          <option>-</option>
-                                          <option>Shreya Singh</option>
-                                          <option>Harvinder</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Client</label>
-                                      <select className="select" name="client">
-                                          <option>-</option>
-                                          <option>Godrej Properties Ltd</option>
-                                          <option>International Software Inc</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Priority</label>
-                                      <select className="select" name="priority">
-                                          <option>High</option>
-                                          <option>Medium</option>
-                                          <option>Low</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>CC</label>
-                                      <input className="form-control" type="text" name="cc"/>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Assign</label>
-                                      <input type="text" className="form-control" name="assign"/>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Ticket Assignee</label>
-                                      <div className="project-members">
-                                          <a
-                                              title="Harvinder"
-                                              data-placement="top"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_02} alt="admin" />
-                                          </a>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Add Followers</label>
-                                      <input type="text" className="form-control" name="followers"/>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Ticket Followers</label>
-                                      <div className="project-members">
-                                          <a
-                                              title="Shital Agarwal"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_09} alt="" />
-                                          </a>
-                                          <a
-                                              title="Harvinder"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_10} alt="" />
-                                          </a>
-                                          <a
-                                              title="Shreya Singh"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_05} alt="" />
-                                          </a>
-                                          <a
-                                              title="Wilmer Deluna"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_11} alt="" />
-                                          </a>
-                                          <span className="all-team">+2</span>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-12">
-                                  <div className="form-group">
-                                      <label>Description</label>
-                                      <textarea className="form-control" defaultValue={''} name="description" />
-                                  </div>
-                                  <div className="form-group">
-                                      <label>Upload Files</label>
-                                      <input className="form-control" type="file" name='file'/>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="submit-section">
-                <button className="btn btn-primary submit-btn" ref={btn}>Submit</button>
-                          </div>
-                      </form>
-                  </div>
-              </div>
+    <div id="add_ticket" className="modal custom-modal fade" role="dialog">
+      <div
+        className="modal-dialog modal-dialog-centered modal-lg"
+        role="document"
+      >
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Add Ticket</h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
           </div>
+          <div className="modal-body">
+            <form ref={form} onSubmit={handleSubmit}>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Ticket Subject</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="subject"
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Ticket Id</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="ticketId"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Assign Staff</label>
+                    <select className="select" name="staffAssigned">
+                      <option>-</option>
+                      <option>Shreya Singh</option>
+                      <option>Harvinder</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Client</label>
+                    <select className="select" name="client">
+                      <option>-</option>
+                      <option>Godrej Properties Ltd</option>
+                      <option>International Software Inc</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Priority</label>
+                    <select className="select" name="priority">
+                      <option>High</option>
+                      <option>Medium</option>
+                      <option>Low</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>CC</label>
+                    <input className="form-control" type="text" name="cc" />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Assign</label>
+                    <input type="text" className="form-control" name="assign" />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Ticket Assignee</label>
+                    <div className="project-members">
+                      <a
+                        title="Harvinder"
+                        data-placement="top"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_02} alt="admin" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Add Followers</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="followers"
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Ticket Followers</label>
+                    <div className="project-members">
+                      <a
+                        title="Shital Agarwal"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_09} alt="" />
+                      </a>
+                      <a
+                        title="Harvinder"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_10} alt="" />
+                      </a>
+                      <a
+                        title="Shreya Singh"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_05} alt="" />
+                      </a>
+                      <a
+                        title="Wilmer Deluna"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_11} alt="" />
+                      </a>
+                      <span className="all-team">+2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <div className="form-group">
+                    <label>Description</label>
+                    <textarea
+                      className="form-control"
+                      defaultValue={''}
+                      name="description"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Upload Files</label>
+                    <input className="form-control" type="file" name="file" />
+                  </div>
+                </div>
+              </div>
+              <div className="submit-section">
+                <button className="btn btn-primary submit-btn" ref={btn}>
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
+    </div>
   );
 };
 
-const EditTicket = ({selectedTicketData,department}) => {
-
+const EditTicket = ({ selectedTicketData, department }) => {
   const form = useRef();
   const btn = useRef();
 
   const resetForm = () => {
     form.current.reset();
-    btn.current.innerHTML = "Submit";
-  }
+    btn.current.innerHTML = 'Submit';
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newTicket = {};
-    btn.current.innerHTML = "Submitting...";
+    btn.current.innerHTML = 'Submitting...';
     newTicket.title = e.target.subject.value;
     newTicket.staffAssigned = e.target.staffAssigned.value;
     newTicket.client = e.target.client.value;
@@ -249,194 +270,227 @@ const EditTicket = ({selectedTicketData,department}) => {
     newTicket.description = e.target.description.value;
     newTicket.assign = e.target.assign.value;
     newTicket.followers = e.target.followers.value;
-    newTicket.status = "active"
+    newTicket.status = 'active';
     newTicket.assignee = 1;
-    newTicket.department =department;
-    
+    newTicket.department = department;
+
     //File Upload not working
     newTicket.file = e.target.file.value;
     let res;
     try {
       res = await updateTicket(selectedTicketData._id, newTicket);
-    } catch (err) { 
+    } catch (err) {
       console.log(err);
     }
-    btn.current.innerHTML = "Submitted!";
+    btn.current.innerHTML = 'Submitted!';
     console.log(res);
     resetForm();
-  }
+  };
 
   return (
-      <div id="edit_ticket" className="modal custom-modal fade" role="dialog">
-          <div
-              className="modal-dialog modal-dialog-centered modal-lg"
-              role="document"
-          >
-              <div className="modal-content">
-                  <div className="modal-header">
-                      <h5 className="modal-title">Edit Ticket</h5>
-                      <button
-                          type="button"
-                          className="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                      >
-                          <span aria-hidden="true">×</span>
-                      </button>
-                  </div>
-                  <div className="modal-body">
-                      <form ref={form} onSubmit={handleSubmit}>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Ticket Subject</label>
-                                      <input className="form-control" type="text" name="subject" defaultValue={selectedTicketData.title?selectedTicketData.title:""}/>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Ticket Id</label>
-                                      <input className="form-control" type="text" name="ticketId" defaultValue={selectedTicketData._id?selectedTicketData._id:""}/>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Assign Staff</label>
-                                      <select className="select" name="staffAssigned">
-                                          <option>-</option>
-                                          <option>Shreya Singh</option>
-                                          <option>Harvinder</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Client</label>
-                                      <select className="select" name="client">
-                                          <option>-</option>
-                                          <option>Godrej Properties Ltd</option>
-                                          <option>International Software Inc</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Priority</label>
-                    <input className="form-control" type="text" name="priority"
-                      defaultValue={selectedTicketData.priority ? selectedTicketData.priority : ""} />
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>CC</label>
-                                      <input className="form-control" type="text" name="cc"/>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Assign</label>
-                                      <input type="text" className="form-control" name="assign"/>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Ticket Assignee</label>
-                                      <div className="project-members">
-                                          <a
-                                              title="Harvinder"
-                                              data-placement="top"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_02} alt="admin" />
-                                          </a>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Add Followers</label>
-                                      <input type="text" className="form-control" name="followers"/>
-                                  </div>
-                              </div>
-                              <div className="col-sm-6">
-                                  <div className="form-group">
-                                      <label>Ticket Followers</label>
-                                      <div className="project-members">
-                                          <a
-                                              title="Shital Agarwal"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_09} alt="" />
-                                          </a>
-                                          <a
-                                              title="Harvinder"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_10} alt="" />
-                                          </a>
-                                          <a
-                                              title="Shreya Singh"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_05} alt="" />
-                                          </a>
-                                          <a
-                                              title="Wilmer Deluna"
-                                              data-toggle="tooltip"
-                                              href="#"
-                                              className="avatar"
-                                          >
-                                              <img src={Avatar_11} alt="" />
-                                          </a>
-                                          <span className="all-team">+2</span>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-sm-12">
-                                  <div className="form-group">
-                                      <label>Description</label>
-                                      <textarea className="form-control" defaultValue={''} name="description" />
-                                  </div>
-                                  <div className="form-group">
-                                      <label>Upload Files</label>
-                                      <input className="form-control" type="file" name='file'/>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="submit-section">
-                <button className="btn btn-primary submit-btn" ref={btn}>Submit</button>
-                          </div>
-                      </form>
-                  </div>
-              </div>
+    <div id="edit_ticket" className="modal custom-modal fade" role="dialog">
+      <div
+        className="modal-dialog modal-dialog-centered modal-lg"
+        role="document"
+      >
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Edit Ticket</h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
           </div>
+          <div className="modal-body">
+            <form ref={form} onSubmit={handleSubmit}>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Ticket Subject</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="subject"
+                      defaultValue={
+                        selectedTicketData?.title
+                          ? selectedTicketData.title
+                          : ''
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Ticket Id</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="ticketId"
+                      defaultValue={
+                        selectedTicketData?._id ? selectedTicketData._id : ''
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Assign Staff</label>
+                    <select className="select" name="staffAssigned">
+                      <option>-</option>
+                      <option>Shreya Singh</option>
+                      <option>Harvinder</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Client</label>
+                    <select className="select" name="client">
+                      <option>-</option>
+                      <option>Godrej Properties Ltd</option>
+                      <option>International Software Inc</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Priority</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="priority"
+                      defaultValue={
+                        selectedTicketData?.priority
+                          ? selectedTicketData.priority
+                          : ''
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>CC</label>
+                    <input className="form-control" type="text" name="cc" />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Assign</label>
+                    <input type="text" className="form-control" name="assign" />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Ticket Assignee</label>
+                    <div className="project-members">
+                      <a
+                        title="Harvinder"
+                        data-placement="top"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_02} alt="admin" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Add Followers</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="followers"
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Ticket Followers</label>
+                    <div className="project-members">
+                      <a
+                        title="Shital Agarwal"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_09} alt="" />
+                      </a>
+                      <a
+                        title="Harvinder"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_10} alt="" />
+                      </a>
+                      <a
+                        title="Shreya Singh"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_05} alt="" />
+                      </a>
+                      <a
+                        title="Wilmer Deluna"
+                        data-toggle="tooltip"
+                        href="#"
+                        className="avatar"
+                      >
+                        <img src={Avatar_11} alt="" />
+                      </a>
+                      <span className="all-team">+2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <div className="form-group">
+                    <label>Description</label>
+                    <textarea
+                      className="form-control"
+                      defaultValue={''}
+                      name="description"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Upload Files</label>
+                    <input className="form-control" type="file" name="file" />
+                  </div>
+                </div>
+              </div>
+              <div className="submit-section">
+                <button className="btn btn-primary submit-btn" ref={btn}>
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
+    </div>
   );
 };
 
 const DeleteTicket = (props) => {
   const handleDelete = async () => {
     const res = await deleteTicket(props.id);
-
-  }
+  };
   return (
     <div className="modal custom-modal fade" id="delete_ticket" role="dialog">
       <div className="modal-dialog modal-dialog-centered">
@@ -449,7 +503,10 @@ const DeleteTicket = (props) => {
             <div className="modal-btn delete-action">
               <div className="row">
                 <div className="col-6">
-                  <a className="btn btn-primary continue-btn" onClick={handleDelete}>
+                  <a
+                    className="btn btn-primary continue-btn"
+                    onClick={handleDelete}
+                  >
                     Delete
                   </a>
                 </div>
@@ -469,9 +526,9 @@ const DeleteTicket = (props) => {
       </div>
     </div>
   );
-}
+};
 
-const SearchTicket = () => { 
+const SearchTicket = () => {
   return (
     <div className="row filter-row">
       <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
@@ -531,9 +588,9 @@ const SearchTicket = () => {
       </div>
     </div>
   );
-}
+};
 
-const TicketHeader = () => { 
+const TicketHeader = () => {
   return (
     <div className="page-header">
       <div className="row align-items-center">
@@ -559,9 +616,9 @@ const TicketHeader = () => {
       </div>
     </div>
   );
-}
+};
 
-const TicketTracker = () => { 
+const TicketTracker = () => {
   return (
     <div className="row">
       <div className="col-md-12">
@@ -662,7 +719,7 @@ const TicketTracker = () => {
       </div>
     </div>
   );
-}
+};
 
 const Tickets = () => {
   const [data, setData] = useState([]);
@@ -679,25 +736,27 @@ const Tickets = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchTicket();
-      setData(res.data);
-      console.log("------All Tickets------");
+      setData(
+        res.data.map((d) => ({
+          ...d,
+          assigneeName: d.assignee.firstName + d.assignee.lastName,
+          departmentName: d.department.name,
+        }))
+      );
+      console.log('------All Tickets------');
       console.log(data);
-      console.log("-----------------------");
+      console.log('-----------------------');
     })();
   }, []);
-  
-  const [selectedTicketData, setSelectedTicketData] = useState({
-    _id: ""
-  });
+
+  const [selectedTicketData, setSelectedTicketData] = useState({});
 
   const columns = [
     {
       title: 'Title',
       dataIndex: 'title',
       //sorter: (a, b) => a.id.length - b.id.length,
-      render: (text, record) => (
-        <p>{text}</p>
-      )
+      render: (text, record) => <p>{text}</p>,
     },
     {
       title: 'Ticket Id',
@@ -714,7 +773,7 @@ const Tickets = () => {
     },
     {
       title: 'Assigned Staff',
-      dataIndex: 'assignee',
+      dataIndex: 'assigneeName',
       render: (text, record) => (
         <h2 className="table-avatar">
           <Link to="/app/profile/employee-profile" className="avatar">
@@ -723,14 +782,11 @@ const Tickets = () => {
           <Link to="/app/profile/employee-profile">{text}</Link>
         </h2>
       ),
-      //sorter: (a, b) => a.name.length - b.name.length,
     },
     {
       title: 'Department',
-      dataIndex: 'department',
-      render: (text, record) => {
-        <p>{text}</p>
-      },
+      dataIndex: 'departmentName',
+      render: (text, record) => <p>{text}</p>,
       sorter: (a, b) => a.createddate.length - b.createddate.length,
     },
     {
@@ -741,16 +797,12 @@ const Tickets = () => {
     {
       title: 'Priority',
       dataIndex: 'priority',
-      render: (text, record) => (
-        <p>{text.toLowerCase()}</p>
-      ),
+      render: (text, record) => <p>{text.toLowerCase()}</p>,
     },
     {
       title: 'Status',
       dataIndex: 'status',
-      render: (text, record) => (
-        <p>{text}</p>
-      ),
+      render: (text, record) => <p>{text}</p>,
     },
     {
       title: 'Action',
@@ -770,17 +822,10 @@ const Tickets = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_ticket"
-              onClick={
-                async () => {
-                  if (record._id) {
-                    const res = await fetchSingleTicket(record._id);
-                    console.log('====================================');
-                    console.log(res.data);
-                    console.log('====================================');
-                    setSelectedTicketData(res.data);
-                  }
-                }
-              }
+              onClick={(e) => {
+                console.log(record);
+                setSelectedTicketData(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
@@ -805,11 +850,12 @@ const Tickets = () => {
 
   const paginationControl = {
     total: data.length,
-    showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+    showTotal: (total, range) =>
+      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
     showSizeChanger: true,
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
-  }
+  };
 
   return (
     <div className="page-wrapper">
@@ -820,24 +866,23 @@ const Tickets = () => {
 
       {/* Page Content */}
       <div className="content container-fluid">
-      
         <TicketHeader />
 
         <TicketTracker />
-        
+
         <SearchTicket />
 
         <div className="row">
           <div className="col-md-12">
             <div className="table-responsive">
               <Table
-              className="table-striped"
-              pagination={paginationControl}
-              style={{ overflowX: 'auto' }}
-              columns={columns}
-              dataSource={data}
-              rowKey={(record) => record.id}
-              onChange={console.log('change')}
+                className="table-striped"
+                pagination={paginationControl}
+                style={{ overflowX: 'auto' }}
+                columns={columns}
+                dataSource={data}
+                rowKey={(record) => record.id}
+                onChange={console.log('change')}
               />
             </div>
           </div>
@@ -845,11 +890,11 @@ const Tickets = () => {
       </div>
       {/* /Page Content */}
 
-      <AddTicket />  
-      
-      <EditTicket data={selectedTicketData} />
-      
-      <DeleteTicket id={selectedTicketData._id}/>
+      <AddTicket />
+
+      <EditTicket selectedTicketData={selectedTicketData} />
+
+      <DeleteTicket id={selectedTicketData?._id} />
     </div>
   );
 };
