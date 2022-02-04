@@ -82,10 +82,12 @@ const Invoiceedit = () => {
                     </label>
                     <br />
                     <input
+                      className="form-control"
+                      defaultValue={invoice.customer.name}
                       onChange={(e) => {
-                        setInvoice({
-                          ...invoice,
-                          name: e.target.value,
+                        setInvoice((prevState) => {
+                          const temp = prevState;
+                          temp.customer.name = e.target.value;
                         });
                       }}
                       className="custom-input"
@@ -99,10 +101,11 @@ const Invoiceedit = () => {
                     </label>
                     <br />
                     <input
+                      className="form-control"
                       onChange={(e) => {
-                        setInvoiceToAdd({
-                          ...invoiceToAdd,
-                          project: e.target.value,
+                        setInvoice((prevState) => {
+                          const temp = prevState;
+                          temp.project = e.target.value;
                         });
                       }}
                       className="custom"
