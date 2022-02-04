@@ -37,6 +37,7 @@ const Invoiceedit = () => {
   }, []);
 
   const fetchInvoice = async () => {
+    console.log(id);
     const invoice = await httpService.get(`/sale-invoice/${id}`);
     setInvoice(invoice.data);
   };

@@ -176,7 +176,10 @@ const Invoices = () => {
             >
               <i className="fa fa-file-pdf-o m-r-5" /> Mark Paid
             </a>
-            <Link className="dropdown-item" to="/app/sales/invoices-edit">
+            <Link
+              className="dropdown-item"
+              to={`/app/sales/invoices-edit/${record._id}`}
+            >
               <i className="fa fa-pencil m-r-5" /> Edit
             </Link>
             <Link className="dropdown-item" to="/app/sales/invoices-view">

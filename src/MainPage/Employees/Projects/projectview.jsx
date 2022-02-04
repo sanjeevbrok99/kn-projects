@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import {
-  Avatar_16,
-  Avatar_02,
-  Avatar_05,
-  Avatar_09,
-  Avatar_10,
-  Avatar_11,
-  Avatar_01,
-} from '../../../Entryfile/imagepath';
+import { Avatar_16, Avatar_09, Avatar_10 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
 import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
 
 const ProjectView = () => {
   const { id } = useParams();
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [projectDetails, setProjectDetails] = useState({});
+  const [projectToEdit, setProjectToEdit] = useState({});
+  const svgRef = useRef();
 
   console.log(id);
   useEffect(() => {
@@ -30,13 +25,30 @@ const ProjectView = () => {
     fetchProjectDetails();
   }, []);
 
+  useEffect(() => {
+    if (svgRef.current) {
+      document.querySelectorAll('g *').forEach((element) => {
+        element.addEventListener('click', (e) => {
+          console.log(e.target.id);
+        });
+      });
+    }
+  }, [svgRef.current]);
+
   const fetchProjectDetails = async () => {
     if (!id) {
       history.goBack();
     }
     const res = await httpService.get(`/project/${id}`);
-    setIsLoading(false);
     setProjectDetails(res.data);
+    setProjectToEdit(res.data);
+    setIsLoading(false);
+  };
+
+  const editProject = async () => {
+    await httpService.put(`/project/${projectToEdit._id}`, projectToEdit);
+    fetchProjectDetails();
+    document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
   return (
@@ -94,269 +106,143 @@ const ProjectView = () => {
                   <p>{projectDetails?.description}</p>
                 </div>
               </div>
-              {/* <div className="project-task">
-                <ul className="nav nav-tabs nav-tabs-top nav-justified mb-0">
-                  <li className="nav-item">
-                    <a
-                      className="nav-link active"
-                      href="#all_tasks"
-                      data-toggle="tab"
-                      aria-expanded="true"
+              <div className="card">
+                <div className="card-body">
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <h5 className="card-title m-b-20">Uploaded files</h5>
+                    <input
+                      type="file"
+                      style={{
+                        display: 'none',
+                      }}
+                      onChange={(e) => {
+                        const form = new FormData();
+                        form.append('attachments', e.target.files[0]);
+                        toast
+                          .promise(
+                            httpService.post(
+                              `/project/${projectDetails._id}/attachment`,
+                              form
+                            ),
+                            {
+                              pending: 'Uploading File',
+                              success: 'File Uploaded',
+                              error: 'File Upload Failed',
+                            }
+                          )
+                          .then(() => {
+                            fetchProjectDetails();
+                          });
+                      }}
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.target.previousSibling.click();
+                      }}
+                      className="btn add-btn"
                     >
-                      All Tasks
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      href="#pending_tasks"
-                      data-toggle="tab"
-                      aria-expanded="false"
-                    >
-                      Pending Tasks
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link"
-                      href="#completed_tasks"
-                      data-toggle="tab"
-                      aria-expanded="false"
-                    >
-                      Completed Tasks
-                    </a>
-                  </li>
-                </ul>
-                <div className="tab-content">
-                  <div className="tab-pane show active" id="all_tasks">
-                    <div className="task-wrapper">
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            <li className="task">
-                              <div className="task-container">
-                                <span className="task-action-btn task-check">
-                                  <span
-                                    className="action-circle large complete-btn"
-                                    title="Mark Complete"
-                                  >
-                                    <i className="material-icons">check</i>
-                                  </span>
-                                </span>
-                                <span
-                                  className="task-label"
-                                  contentEditable="true"
-                                  suppressContentEditableWarning={true}
-                                >
-                                  Patient appointment booking
-                                </span>
-                                <span className="task-action-btn task-btn-right">
-                                  <span
-                                    className="action-circle large"
-                                    title="Assign"
-                                  >
-                                    <i className="material-icons">person_add</i>
-                                  </span>
-                                  <span
-                                    className="action-circle large delete-btn"
-                                    title="Delete Task"
-                                  >
-                                    <i className="material-icons">delete</i>
-                                  </span>
-                                </span>
-                              </div>
-                            </li>
-                            <li className="task">
-                              <div className="task-container">
-                                <span className="task-action-btn task-check">
-                                  <span
-                                    className="action-circle large complete-btn"
-                                    title="Mark Complete"
-                                  >
-                                    <i className="material-icons">check</i>
-                                  </span>
-                                </span>
-                                <span
-                                  className="task-label"
-                                  contentEditable="true"
-                                  suppressContentEditableWarning={true}
-                                >
-                                  Appointment booking with payment gateway
-                                </span>
-                                <span className="task-action-btn task-btn-right">
-                                  <span
-                                    className="action-circle large"
-                                    title="Assign"
-                                  >
-                                    <i className="material-icons">person_add</i>
-                                  </span>
-                                  <span
-                                    className="action-circle large delete-btn"
-                                    title="Delete Task"
-                                  >
-                                    <i className="material-icons">delete</i>
-                                  </span>
-                                </span>
-                              </div>
-                            </li>
-                            <li className="completed task">
-                              <div className="task-container">
-                                <span className="task-action-btn task-check">
-                                  <span
-                                    className="action-circle large complete-btn"
-                                    title="Mark Complete"
-                                  >
-                                    <i className="material-icons">check</i>
-                                  </span>
-                                </span>
-                                <span className="task-label">
-                                  Doctor available module
-                                </span>
-                                <span className="task-action-btn task-btn-right">
-                                  <span
-                                    className="action-circle large"
-                                    title="Assign"
-                                  >
-                                    <i className="material-icons">person_add</i>
-                                  </span>
-                                  <span
-                                    className="action-circle large delete-btn"
-                                    title="Delete Task"
-                                  >
-                                    <i className="material-icons">delete</i>
-                                  </span>
-                                </span>
-                              </div>
-                            </li>
-                            <li className="task">
-                              <div className="task-container">
-                                <span className="task-action-btn task-check">
-                                  <span
-                                    className="action-circle large complete-btn"
-                                    title="Mark Complete"
-                                  >
-                                    <i className="material-icons">check</i>
-                                  </span>
-                                </span>
-                                <span
-                                  className="task-label"
-                                  contentEditable="true"
-                                  suppressContentEditableWarning={true}
-                                >
-                                  Patient and Doctor video conferencing
-                                </span>
-                                <span className="task-action-btn task-btn-right">
-                                  <span
-                                    className="action-circle large"
-                                    title="Assign"
-                                  >
-                                    <i className="material-icons">person_add</i>
-                                  </span>
-                                  <span
-                                    className="action-circle large delete-btn"
-                                    title="Delete Task"
-                                  >
-                                    <i className="material-icons">delete</i>
-                                  </span>
-                                </span>
-                              </div>
-                            </li>
-                            <li className="task">
-                              <div className="task-container">
-                                <span className="task-action-btn task-check">
-                                  <span
-                                    className="action-circle large complete-btn"
-                                    title="Mark Complete"
-                                  >
-                                    <i className="material-icons">check</i>
-                                  </span>
-                                </span>
-                                <span
-                                  className="task-label"
-                                  contentEditable="true"
-                                  suppressContentEditableWarning={true}
-                                >
-                                  Private chat module
-                                </span>
-                                <span className="task-action-btn task-btn-right">
-                                  <span
-                                    className="action-circle large"
-                                    title="Assign"
-                                  >
-                                    <i className="material-icons">person_add</i>
-                                  </span>
-                                  <span
-                                    className="action-circle large delete-btn"
-                                    title="Delete Task"
-                                  >
-                                    <i className="material-icons">delete</i>
-                                  </span>
-                                </span>
-                              </div>
-                            </li>
-                            <li className="task">
-                              <div className="task-container">
-                                <span className="task-action-btn task-check">
-                                  <span
-                                    className="action-circle large complete-btn"
-                                    title="Mark Complete"
-                                  >
-                                    <i className="material-icons">check</i>
-                                  </span>
-                                </span>
-                                <span
-                                  className="task-label"
-                                  contentEditable="true"
-                                  suppressContentEditableWarning={true}
-                                >
-                                  Patient Profile add
-                                </span>
-                                <span className="task-action-btn task-btn-right">
-                                  <span
-                                    className="action-circle large"
-                                    title="Assign"
-                                  >
-                                    <i className="material-icons">person_add</i>
-                                  </span>
-                                  <span
-                                    className="action-circle large delete-btn"
-                                    title="Delete Task"
-                                  >
-                                    <i className="material-icons">delete</i>
-                                  </span>
-                                </span>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="task-list-footer">
-                          <div className="new-task-wrapper">
-                            <textarea
-                              id="new-task"
-                              placeholder="Enter new task here. . ."
-                              defaultValue={''}
-                            />
-                            <span className="error-message hidden">
-                              You need to enter a task first
+                      <i className="fa fa-plus" /> Add File
+                    </button>
+                  </div>
+                  <ul className="files-list">
+                    {projectDetails.attachments?.map((attachment) => (
+                      <li>
+                        <div className="files-cont">
+                          <div className="file-type">
+                            <span className="files-icon">
+                              <i className="fa fa-file-pdf-o" />
                             </span>
-                            <span
-                              className="add-new-task-btn btn"
-                              id="add-task"
-                            >
-                              Add Task
+                          </div>
+                          <div className="files-info">
+                            <span className="file-name text-ellipsis">
+                              <a target={'_blank'} href={attachment.url}>
+                                {attachment.name}
+                              </a>
                             </span>
-                            <span className="btn" id="close-task-panel">
-                              Close
+                            <span className="file-date">
+                              {new Date(
+                                attachment.uploadedAt
+                              ).toLocaleDateString() +
+                                ' at ' +
+                                new Date(
+                                  attachment.uploadedAt
+                                ).toLocaleTimeString()}
                             </span>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="tab-pane" id="pending_tasks" />
-                  <div className="tab-pane" id="completed_tasks" />
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div> */}
+              </div>
+              <div className="card">
+                <div className="card-body">
+                  <h3
+                    style={{
+                      textAlign: 'center',
+                    }}
+                  >
+                    Property Layout
+                  </h3>
+                  <svg
+                    ref={svgRef}
+                    width="1500"
+                    height="600"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g>
+                      <rect
+                        fill="#000000"
+                        stroke="#000"
+                        x="243.5"
+                        y="210"
+                        width="202"
+                        height="146"
+                        id="svg_1"
+                      >
+                        <title>Rectangle</title>
+                      </rect>
+                      <path
+                        fill="#000000"
+                        stroke="#000"
+                        opacity="undefined"
+                        d="m445.5,63l202,0l0,146l-202,0l0,-146z"
+                        id="svg_2"
+                      />
+                      <rect
+                        fill="#000000"
+                        stroke="#000"
+                        x="242.5"
+                        y="63"
+                        width="202"
+                        height="146"
+                        id="svg_3"
+                      />
+                      <rect
+                        fill="#000000"
+                        stroke="#000"
+                        x="446.5"
+                        y="210"
+                        width="202"
+                        height="146"
+                        id="svg_4"
+                      />
+                      <path
+                        id="svg_5"
+                        d="m240.5,65c-126,53 -174,80 -174.5,80c0.5,0 15.5,33 15,33c0.5,0 160.5,30 160,30l-0.5,-143z"
+                        opacity="NaN"
+                        stroke="#000"
+                        fill="#000000"
+                      />
+                    </g>
+                  </svg>
+                </div>
+              </div>
             </div>
             <div className="col-lg-4 col-xl-3">
               <div className="card">
@@ -390,7 +276,7 @@ const ProjectView = () => {
                         <td>Created by:</td>
                         <td className="text-right">
                           <Link to="/app/profile/employee-profile">
-                            {projectDetails?.createdBy || 'Admin'}
+                            {projectDetails?.createdBy?.firstName || 'Admin'}
                           </Link>
                         </td>
                       </tr>
@@ -693,25 +579,45 @@ const ProjectView = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  editProject();
+                }}
+              >
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label>Project Name</label>
                       <input
+                        defaultValue={projectToEdit.name}
+                        onChange={(e) => {
+                          setProjectToEdit((d) => ({
+                            ...d,
+                            name: e.target.value,
+                          }));
+                        }}
                         className="form-control"
-                        defaultValue="Project Management"
                         type="text"
                       />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label>Client</label>
-                      <select className="select">
-                        <option>Sunteck Realty Ltd</option>
-                        <option>Godrej Properties Ltd</option>
-                      </select>
+                      <div className="form-group">
+                        <label>Cost</label>
+                        <input
+                          value={projectToEdit.estimatedCost}
+                          onChange={(e) => {
+                            setProjectToAdd((d) => ({
+                              ...d,
+                              estimatedCost: e.target.value,
+                            }));
+                          }}
+                          className="form-control"
+                          type="text"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -721,7 +627,20 @@ const ProjectView = () => {
                       <label>Start Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          className="form-control"
+                          value={
+                            projectToEdit.startDate
+                              ? new Date(projectToEdit.startDate)
+                                  .toISOString()
+                                  .split('T')[0]
+                              : ''
+                          }
+                          onChange={(e) => {
+                            setProjectToEdit((d) => ({
+                              ...d,
+                              startDate: e.target.value,
+                            }));
+                          }}
                           type="date"
                         />
                       </div>
@@ -732,112 +651,22 @@ const ProjectView = () => {
                       <label>End Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          value={
+                            projectToEdit.startDate
+                              ? new Date(projectToEdit.endDate)
+                                  .toISOString()
+                                  .split('T')[0]
+                              : ''
+                          }
+                          onChange={(e) => {
+                            setProjectToEdit((d) => ({
+                              ...d,
+                              endDate: e.target.value,
+                            }));
+                          }}
+                          className="form-control"
                           type="date"
                         />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-3">
-                    <div className="form-group">
-                      <label>Rate</label>
-                      <input
-                        placeholder="$50"
-                        className="form-control"
-                        defaultValue="$5000"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-3">
-                    <div className="form-group">
-                      <label>&nbsp;</label>
-                      <select className="select">
-                        <option>Hourly</option>
-                        <option>Fixed</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Priority</label>
-                      <select className="select">
-                        <option>High</option>
-                        <option>Medium</option>
-                        <option>Low</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Add Project Leader</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Team Leader</label>
-                      <div className="project-members">
-                        <a
-                          className="avatar"
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Sushmita Singh"
-                        >
-                          <img alt="" src={Avatar_16} />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Add Team</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Team Members</label>
-                      <div className="project-members">
-                        <a
-                          className="avatar"
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Prateek Tiwari"
-                        >
-                          <img alt="" src={Avatar_02} />
-                        </a>
-                        <a
-                          className="avatar"
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Shital Agarwal"
-                        >
-                          <img alt="" src={Avatar_09} />
-                        </a>
-                        <a
-                          className="avatar"
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Harvinder"
-                        >
-                          <img alt="" src={Avatar_10} />
-                        </a>
-                        <a
-                          className="avatar"
-                          href="#"
-                          data-toggle="tooltip"
-                          title="Shreya Singh"
-                        >
-                          <img alt="" src={Avatar_05} />
-                        </a>
-                        <span className="all-team">+2</span>
                       </div>
                     </div>
                   </div>
@@ -847,16 +676,18 @@ const ProjectView = () => {
                   <textarea
                     rows={4}
                     className="form-control"
-                    placeholder="Enter your message here"
-                    defaultValue={''}
+                    placeholder="Description"
+                    defaultValue={projectToEdit.description}
+                    onChange={(e) => {
+                      setProjectToEdit((d) => ({
+                        ...d,
+                        description: e.target.value,
+                      }));
+                    }}
                   />
                 </div>
-                <div className="form-group">
-                  <label>Upload Files</label>
-                  <input className="form-control" type="file" />
-                </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn">Submit</button>
                 </div>
               </form>
             </div>

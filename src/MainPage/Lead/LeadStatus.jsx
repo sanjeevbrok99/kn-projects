@@ -11,14 +11,20 @@ function LeadStatus() {
     ['New Lead']: {
       name: 'New Lead',
       items: [],
+      background: '#fff',
+      color: '#000',
     },
     ['Cold Lead']: {
       name: 'Cold Lead',
       items: [],
+      background: '#EC453A',
+      color: '#fff',
     },
     ['Negotiations']: {
       name: 'Negotiations',
       items: [],
+      background: '#1DC5CF',
+      color: '#fff',
     },
     ['Lead Won']: {
       name: 'Lead Won',
@@ -49,12 +55,9 @@ function LeadStatus() {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Proceed',
         preConfirm: () => {
-          return httpService.put(
-            `http://localhost:3000/api/v1/lead/${removed._id}`,
-            {
-              status: destination.droppableId,
-            }
-          );
+          return httpService.put(`/lead/${removed._id}`, {
+            status: destination.droppableId,
+          });
         },
       }).then(async (result) => {
         if (result.isConfirmed) {
@@ -234,13 +237,17 @@ function LeadStatus() {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                         style={{
+                                          borderRadius: '8px',
                                           userSelect: 'none',
                                           padding: 16,
                                           margin: '0 0 8px 0',
                                           minHeight: '50px',
+                                          color: snapshot.isDragging
+                                            ? '#000'
+                                            : column.color,
                                           backgroundColor: snapshot.isDragging
                                             ? '#f2f2f2'
-                                            : '#ffffff',
+                                            : column.background,
                                           ...provided.draggableProps.style,
                                         }}
                                       >
