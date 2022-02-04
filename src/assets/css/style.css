@@ -8889,3 +8889,10 @@ ul.comment-list li ul.children {
 * {
   scrollbar-width: thin;
 }
+
+g * {
+  cursor: pointer;
+  stroke: #ffffff;
+  stroke-width: 1.5px;
+  fill: #f0f0f0;
+}

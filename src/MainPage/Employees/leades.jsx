@@ -6,6 +6,7 @@ import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
 import httpService from '../../lib/httpService';
+import { toast } from 'react-toastify';
 
 function useQuery() {
   const { search } = useLocation();
@@ -25,21 +26,19 @@ const Leads = () => {
   }, []);
 
   const fetchLeads = async () => {
-    if (!data.length) {
-      const leads = await httpService.get('/lead');
-      console.log(query.get('projectId'));
-      setData(
-        leads.data.map((lead, i) => ({
-          ...lead,
-          id: i + 1,
-          projectName: lead.project.name,
-          assignedstaff:
-            lead.assignedTo.firstName + ' ' + lead.assignedTo.lastName,
-          status: lead.status,
-          created: new Date(lead.createdAt).toGMTString().substring(4, 16),
-        }))
-      );
-    }
+    const leads = await httpService.get('/lead');
+    console.log(query.get('projectId'));
+    setData(
+      leads.data.map((lead, i) => ({
+        ...lead,
+        id: i + 1,
+        projectName: lead.project.name,
+        assignedstaff:
+          lead.assignedTo.firstName + ' ' + lead.assignedTo.lastName,
+        status: lead.status,
+        created: new Date(lead.createdAt).toGMTString().substring(4, 16),
+      }))
+    );
   };
 
   const fetchProjects = async () => {
@@ -50,6 +49,7 @@ const Leads = () => {
   const handleAddLead = async () => {
     await httpService.post('/lead', leadToAdd);
     fetchLeads();
+    toast.success('Lead Added Successfully');
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
@@ -123,9 +123,9 @@ const Leads = () => {
       render: (text, record) => (
         <span
           className={
-            text === 'Working'
+            text === 'Negotiations' || text === 'New Lead'
               ? 'badge bg-inverse-success'
-              : 'badge bg-inverse-info'
+              : 'badge bg-inverse-danger'
           }
         >
           {text}
@@ -245,7 +245,7 @@ const Leads = () => {
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add Employee</h5>
+              <h5 className="modal-title">Add Lead</h5>
               <button
                 type="button"
                 className="close"
@@ -257,9 +257,10 @@ const Leads = () => {
             </div>
             <div className="modal-body">
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  handleAddLead();
+                  await handleAddLead();
+                  e.target.reset();
                 }}
               >
                 <div className="row">
