@@ -39,6 +39,7 @@ const Invoiceedit = () => {
   const fetchInvoice = async () => {
     console.log(id);
     const invoice = await httpService.get(`/sale-invoice/${id}`);
+    console.log(invoice.data);
     setInvoice(invoice.data);
   };
 
@@ -83,11 +84,12 @@ const Invoiceedit = () => {
                     <br />
                     <input
                       className="form-control"
-                      defaultValue={invoice.customer.name}
+                      defaultValue={invoice?.customer?.name}
                       onChange={(e) => {
                         setInvoice((prevState) => {
                           const temp = prevState;
                           temp.customer.name = e.target.value;
+                          return temp;
                         });
                       }}
                       className="custom-input"
