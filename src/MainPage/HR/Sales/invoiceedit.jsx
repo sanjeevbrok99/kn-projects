@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import httpService from '../../../lib/httpService';
 
@@ -17,19 +18,22 @@ const Invoiceedit = () => {
         width: '100%',
       });
     }
+    fetchInvoice();
+    
   }, []);
 
   const fetchInvoice = async () => {
     const invoice = await httpService.get(`/sale-invoice/${id}`)
     setInvoice(invoice.data)
-    console.log(invoice.data)
   };
 
-  const editInvoice = async () => {
-    await httpService.put(`/sale-invoice/${id}`, invoice)
-    toast.success('Invoice Updated Successfully');
-    history.goBack();
-  }
+ const onSubmit = async (e,invoice) =>
+ {
+   e.preventDefault();
+   await httpService.put(`/sale-invoice/${id}`, invoice)
+   history.goBack();
+ }
+  
 
   return (
     <div className="page-wrapper">
@@ -56,7 +60,7 @@ const Invoiceedit = () => {
         {/* /Page Header */}
         <div className="row">
           <div className="col-md-12">
-            <form>
+            <form onSubmit = {onSubmit.bind(this,invoice)}>
               <div className="row">
                 <div className="col-sm-6 col-md-3">
                   <div className="form-group">
