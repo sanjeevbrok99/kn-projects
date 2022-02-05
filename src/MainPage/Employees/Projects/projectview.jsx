@@ -5,6 +5,7 @@ import { Avatar_16, Avatar_09, Avatar_10 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const ProjectView = () => {
   const { id } = useParams();
@@ -12,9 +13,9 @@ const ProjectView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [projectDetails, setProjectDetails] = useState({});
   const [projectToEdit, setProjectToEdit] = useState({});
-  const svgRef = useRef();
+  const svgRef = useRef(null);
+  const [fillCanChange, setFillCanChange] = useState(true);
 
-  console.log(id);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -26,14 +27,70 @@ const ProjectView = () => {
   }, []);
 
   useEffect(() => {
-    if (svgRef.current) {
-      document.querySelectorAll('g *').forEach((element) => {
-        element.addEventListener('click', (e) => {
-          console.log(e.target.id);
+    if (svgRef.current && !isLoading) {
+      document.querySelectorAll('g *').forEach((e) => {
+        const title = document.createElement('title');
+        title.innerText = e.id;
+        e.appendChild(title);
+        e.classList.remove('selected');
+        if (projectDetails.landDivisions?.some((x) => x.name === e.id)) {
+          e.classList.add('selected');
+        }
+        setFillCanChange(false);
+        e.addEventListener('click', (e) => {
+          Swal.fire({
+            title: 'Attach lead',
+            html: `<select id="length" class="swal2-select" placeholder="Length">
+            <option value="">Select Lead</option>
+            ${projectDetails?.leads
+              ?.filter(
+                (lead) =>
+                  lead.status !== 'Lead Won' && lead.status !== 'Lead Lost'
+              )
+              .map(
+                (lead) => `<option value="${lead._id}">${lead.name}</option>`
+              )}            
+            </seclect>
+            `,
+            confirmButtonText: 'Confirm',
+            focusConfirm: false,
+            preConfirm: () => {
+              const lead = Swal.getPopup().querySelector('#length').value;
+              if (!lead) {
+                Swal.showValidationMessage('Please select lead');
+                return;
+              }
+              return httpService.put(`/project/${id}`, {
+                ...projectDetails,
+                landDivisions: [
+                  ...projectDetails.landDivisions,
+                  { name: e.target.id, lead: lead },
+                ],
+              });
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              fetchProjectDetails();
+              e.target.classList.add('selected');
+            }
+          });
         });
       });
     }
-  }, [svgRef.current]);
+  }, [svgRef.current, isLoading]);
+
+  // useEffect(() => {
+  //   document.querySelectorAll('g *').forEach((e) => {
+  //     const title = document.createElement('title');
+  //     title.innerText = e.id;
+  //     e.appendChild(title);
+  //     e.classList.remove('selected');
+  //     if (projectDetails.landDivisions?.some((x) => x.name === e.id)) {
+  //       e.classList.add('selected');
+  //     }
+  //     setFillCanChange(false);
+  //   });
+  // }, [fillCanChange]);
 
   const fetchProjectDetails = async () => {
     if (!id) {
@@ -102,7 +159,8 @@ const ProjectView = () => {
             <div className="col-lg-8 col-xl-9">
               <div className="card">
                 <div className="card-body">
-                  <div className="project-title"></div>
+                  <div className="project-title">Project Description</div>
+                  <hr />
                   <p>{projectDetails?.description}</p>
                 </div>
               </div>
@@ -122,7 +180,7 @@ const ProjectView = () => {
                       }}
                       onChange={(e) => {
                         const form = new FormData();
-                        form.append('attachments', e.target.files[0]);
+                        form.append('attachment', e.target.files[0]);
                         toast
                           .promise(
                             httpService.post(
@@ -180,69 +238,169 @@ const ProjectView = () => {
                   </ul>
                 </div>
               </div>
-              <div className="card">
-                <div className="card-body">
-                  <h3
-                    style={{
-                      textAlign: 'center',
-                    }}
-                  >
-                    Property Layout
-                  </h3>
-                  <svg
-                    ref={svgRef}
-                    width="1500"
-                    height="600"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g>
-                      <rect
-                        fill="#000000"
-                        stroke="#000"
-                        x="243.5"
-                        y="210"
-                        width="202"
-                        height="146"
-                        id="svg_1"
+              {!projectDetails?.layout && (
+                <div className="card">
+                  <div className="card-body">
+                    <h3>Project Layout</h3>
+                    <h3
+                      style={{
+                        textAlign: 'center',
+                        color: '#C0C0C0',
+                        marginTop: '40px',
+                        marginBottom: '30px',
+                      }}
+                    >
+                      <input
+                        type={'file'}
+                        onChange={(e) => {}}
+                        style={{
+                          display: 'none',
+                        }}
+                      />
+                      <button
+                        className="btn add-btn"
+                        style={{
+                          float: 'none',
+                        }}
+                        onClick={(e) => {
+                          // e.target.previousSibling.click();
+                          Swal.fire({
+                            title: 'Add Layout',
+                            input: 'textarea',
+                            confirmButtonColor: '#E23E3B',
+                            confirmButtonText: 'Confirm',
+                            showCancelButton: true,
+                            preConfirm: (value) => {
+                              return httpService.put(
+                                `/project/${projectDetails._id}/`,
+                                {
+                                  ...projectDetails,
+                                  layout: value,
+                                }
+                              );
+                            },
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              fetchProjectDetails();
+                            }
+                          });
+                        }}
                       >
-                        <title>Rectangle</title>
-                      </rect>
-                      <path
-                        fill="#000000"
-                        stroke="#000"
-                        opacity="undefined"
-                        d="m445.5,63l202,0l0,146l-202,0l0,-146z"
-                        id="svg_2"
-                      />
-                      <rect
-                        fill="#000000"
-                        stroke="#000"
-                        x="242.5"
-                        y="63"
-                        width="202"
-                        height="146"
-                        id="svg_3"
-                      />
-                      <rect
-                        fill="#000000"
-                        stroke="#000"
-                        x="446.5"
-                        y="210"
-                        width="202"
-                        height="146"
-                        id="svg_4"
-                      />
-                      <path
-                        id="svg_5"
-                        d="m240.5,65c-126,53 -174,80 -174.5,80c0.5,0 15.5,33 15,33c0.5,0 160.5,30 160,30l-0.5,-143z"
-                        opacity="NaN"
-                        stroke="#000"
-                        fill="#000000"
-                      />
-                    </g>
-                  </svg>
+                        Add Layout
+                      </button>
+                    </h3>
+                  </div>
                 </div>
-              </div>
+              )}
+              {projectDetails?.layout && (
+                <div className="card">
+                  <div className="card-body">
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <h3>Project Layout</h3>
+                      <button
+                        style={{
+                          marginLeft: 'auto',
+                        }}
+                        className="btn add-btn"
+                      >
+                        Edit Layout
+                      </button>
+                    </div>
+                    <div
+                      ref={svgRef}
+                      dangerouslySetInnerHTML={{
+                        __html: projectDetails?.layout,
+                      }}
+                    ></div>
+                    <div>
+                      Legend:{' '}
+                      <div
+                        style={{
+                          display: 'inline-block',
+                          backgroundColor: 'green',
+                          width: '10px',
+                          height: '10px',
+                        }}
+                      ></div>{' '}
+                      - Lead Associated
+                    </div>
+                    <br />
+                    <br />
+                    <h4>Lead Interests</h4>
+                    <div
+                      className="task-wrapper"
+                      style={{
+                        padding: '0',
+                      }}
+                    >
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            {projectDetails.landDivisions?.map(
+                              (landDivision, i) => (
+                                <li className="task" key={i}>
+                                  <div className="task-container">
+                                    <span
+                                      className="task-label"
+                                      contentEditable="true"
+                                      suppressContentEditableWarning={true}
+                                    >
+                                      {landDivision.lead?.name} has shown
+                                      interest in Land area {landDivision.name}
+                                    </span>
+                                    <span
+                                      onClick={(e) => {
+                                        Swal.fire({
+                                          title: 'Are you sure?',
+                                          icon: 'warning',
+                                          showCancelButton: true,
+                                          confirmButtonColor: '#3085d6',
+                                          preConfirm: () => {
+                                            return httpService.put(
+                                              `/project/${projectDetails._id}`,
+                                              {
+                                                ...projectDetails,
+                                                landDivisions:
+                                                  projectDetails.landDivisions.filter(
+                                                    (_, index) => index !== i
+                                                  ),
+                                              }
+                                            );
+                                          },
+                                        }).then(() => {
+                                          fetchProjectDetails();
+                                          document
+                                            .querySelector(
+                                              `svg #${landDivision.name}`
+                                            )
+                                            .classList.remove('selected');
+                                        });
+                                      }}
+                                      className="task-action-btn task-btn-right"
+                                    >
+                                      <span
+                                        className="action-circle large delete-btn"
+                                        title="Delete Record"
+                                      >
+                                        <i className="material-icons">delete</i>
+                                      </span>
+                                    </span>
+                                  </div>
+                                </li>
+                              )
+                            )}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="col-lg-4 col-xl-3">
               <div className="card">

@@ -362,9 +362,7 @@ export async function fetchTicket() {
     httpService
       .get('/ticket')
       .then((response) => {
-        console.log(response);
-        console.log('the');
-        return resolve(response.data);
+        return resolve(response);
       })
       .catch((err) => {
         return resolve({
@@ -373,8 +371,78 @@ export async function fetchTicket() {
         });
       });
   });
-  return fetchTicketResponse.data;
+  return fetchTicketResponse;
 }
+
+export async function fetchSingleTicket(id) {
+  const fetchTicketResponse = new Promise(async (resolve) => {
+    httpService
+      .get(`/ticket/${id}`)
+      .then((response) => {
+        return resolve(response);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchTicketResponse;
+}
+
+export async function updateTicket(id,data) {
+  const fetchTicketResponse = new Promise(async (resolve) => {
+    httpService
+      .patch(`/ticket/${id}`,data)
+      .then((response) => {
+        return resolve(response);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchTicketResponse;
+}
+
+export async function deleteTicket(id) {
+  const fetchTicketResponse = new Promise(async (resolve) => {
+    httpService
+      .delete(`/ticket/${id}`)
+      .then((response) => {
+        return resolve(response);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchTicketResponse;
+}
+
+
+export async function addTicket(data) {
+  const fetchTicketResponse = new Promise(async (resolve) => {
+    httpService
+      .post('/ticket', data)
+      .then((response) => {
+        return resolve(response);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchTicketResponse;
+}
+
 
 export async function fetchBill() {
   const fetchBillResponse = new Promise(async (resolve) => {

@@ -38,9 +38,8 @@ const Invoiceedit = () => {
 
   const fetchInvoice = async () => {
     console.log(id);
-    const invoice = await httpService.get(`/sale-invoice/${id}`);
-    console.log(invoice.data);
-    setInvoice(invoice.data);
+    const res = await httpService.get(`/sale-invoice/${id}`);
+    setInvoice(res.data);
   };
 
   const handleSubmit = async (e) => {
