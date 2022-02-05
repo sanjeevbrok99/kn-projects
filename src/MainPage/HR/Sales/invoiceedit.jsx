@@ -9,7 +9,7 @@ import httpService from '../../../lib/httpService';
 const Invoiceedit = () => {
   const { id } = useParams();
   // const {isLoading, setIsLoading} = useState(true)
-  const { invoice, setInvoice } = useState({});
+  const [invoice, setInvoice] = useState({});
   // const history = useHistory();
   const [customers, setCustomers] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -38,9 +38,8 @@ const Invoiceedit = () => {
 
   const fetchInvoice = async () => {
     console.log(id);
-    const invoice = await httpService.get(`/sale-invoice/${id}`);
-    console.log(invoice.data);
-    setInvoice(invoice.data);
+    const res = await httpService.get(`/sale-invoice/${id}`);
+    setInvoice(res.data);
   };
 
   const handleSubmit = async (e) => {
@@ -92,7 +91,6 @@ const Invoiceedit = () => {
                           return temp;
                         });
                       }}
-                      className="custom-input"
                     />
                   </div>
                 </div>
@@ -110,7 +108,6 @@ const Invoiceedit = () => {
                           temp.project = e.target.value;
                         });
                       }}
-                      className="custom"
                     />
                   </div>
                 </div>

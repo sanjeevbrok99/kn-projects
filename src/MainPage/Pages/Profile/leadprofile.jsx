@@ -17,6 +17,7 @@ import {
   TimelineDot,
 } from '@material-ui/lab';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+import Swal from 'sweetalert2';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,6 +40,7 @@ const EmployeeProfile = () => {
   const [noteToAdd, setNoteToAdd] = useState({});
   const [activityToAdd, setActivityToAdd] = useState({});
   const [profileFetched, setProfileFetched] = useState(false);
+  const [projects, setProjects] = useState({});
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -48,12 +50,23 @@ const EmployeeProfile = () => {
       });
     }
     fetchLeadProfile();
+    fetchProjects();
   }, []);
 
   const fetchLeadProfile = async () => {
     const response = await httpService.get(`/lead/${id}`);
     setProfile(response.data);
     setProfileFetched(true);
+  };
+
+  const fetchProjects = async () => {
+    const res = await httpService.get('/project');
+    res.data.forEach((project) => {
+      setProjects((projects) => ({
+        ...projects,
+        [project._id]: project.name,
+      }));
+    });
   };
 
   const addNote = async () => {
@@ -202,17 +215,6 @@ const EmployeeProfile = () => {
                                 <div className="text">{profile.address}</div>
                               </li>
                               <li>
-                                <div className="title">Project</div>
-
-                                <div className="text">
-                                  <Link
-                                    to={`/projects/projects-view/${profile.project?._id}`}
-                                  >
-                                    {profile.project?.name}
-                                  </Link>
-                                </div>
-                              </li>
-                              <li>
                                 <div className="title">Assigned Employee</div>
                                 <div className="text">
                                   <Link to="/app/profile/employee-profile">
@@ -275,6 +277,11 @@ const EmployeeProfile = () => {
                       Activities
                       {/* Bank &amp; Statutory{' '}
                      <small className="text-danger">(Admin Only)</small> */}
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="#projects" data-toggle="tab" className="nav-link">
+                      Projects
                     </a>
                   </li>
                 </ul>
@@ -666,6 +673,123 @@ const EmployeeProfile = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+            <div id="projects" className="tab-pane fade">
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <h3>Projects</h3>
+                <button
+                  onClick={(e) => {
+                    Swal.fire({
+                      title: 'Select Project',
+                      input: 'select',
+                      confirmButtonColor: '#E33F3C',
+                      confirmButtonText: 'Add',
+                      inputOptions: projects,
+                      inputValidator: (value) => {
+                        if (!value) {
+                          return 'You need to select a project';
+                        }
+                      },
+                      preConfirm: async (value) => {
+                        await httpService.put(`/project/${value}`, {});
+                        return httpService.put(`/lead/${profile._id}`, {
+                          ...profile,
+                          project: [
+                            ...profile.project.map((p) => p._id),
+                            value,
+                          ],
+                        });
+                      },
+                    }).then((result) => {
+                      console.log(result);
+                      if (result.isConfirmed) {
+                        fetchLeadProfile();
+                        Swal.fire({
+                          title: 'Project Added',
+                          icon: 'success',
+                        });
+                      }
+                    });
+                  }}
+                  className="btn btn-primary"
+                >
+                  Add Project
+                </button>
+              </div>
+              <div
+                className="task-wrapper"
+                style={{
+                  padding: '0',
+                  marginTop: '20px',
+                }}
+              >
+                <div className="task-list-container">
+                  <div className="task-list-body">
+                    <ul id="task-list">
+                      {profile.project?.map((project, i) => (
+                        <li className="task" key={i}>
+                          <div className="task-container">
+                            <span
+                              className="task-label"
+                              contentEditable="true"
+                              suppressContentEditableWarning={true}
+                            >
+                              <Link
+                                to={`/app/projects/projects-view/${project._id}`}
+                              >
+                                {project.name}
+                              </Link>
+                            </span>
+                            <span
+                              onClick={(e) => {
+                                Swal.fire({
+                                  title: 'Are you sure?',
+                                  icon: 'warning',
+                                  showCancelButton: true,
+                                  confirmButtonColor: '#E33F3C',
+                                  cancelButtonColor: '#6C757D',
+                                  preConfirm: () => {
+                                    return httpService.put(
+                                      `/lead/${profile._id}`,
+                                      {
+                                        ...profile,
+                                        project: profile.project
+                                          .filter((p) => p._id !== project._id)
+                                          .map((p) => p._id),
+                                      }
+                                    );
+                                  },
+                                }).then((result) => {
+                                  if (result.isConfirmed) {
+                                    fetchLeadProfile();
+                                    Swal.fire({
+                                      title: 'Deleted!',
+                                      icon: 'success',
+                                    });
+                                  }
+                                });
+                              }}
+                              className="task-action-btn task-btn-right"
+                            >
+                              <span
+                                className="action-circle large delete-btn"
+                                title="Delete Record"
+                              >
+                                <i className="material-icons">delete</i>
+                              </span>
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
