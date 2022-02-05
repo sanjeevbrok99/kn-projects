@@ -30,6 +30,10 @@ const AddTicket = (props) => {
   const resetForm = () => {
     form.current.reset();
     btn.current.innerHTML = 'Submit';
+    //--------close modal---------//
+
+    //--------close modal---------//
+    props.setRerender(!props.rerender);
   };
 
   const handleSubmit = async (e) => {
@@ -46,11 +50,9 @@ const AddTicket = (props) => {
     newTicket.assign = e.target.assign.value;
     newTicket.followers = e.target.followers.value;
     newTicket.status = 'active';
-    newTicket.assignee = 1;
-    newTicket.department = '61fd4680741b1b5504df7d0d';
 
-    //File Upload not working
-    newTicket.file = e.target.file.value;
+    console.log('In submit!');
+
     let res;
     try {
       res = await addTicket(newTicket);
@@ -237,7 +239,12 @@ const AddTicket = (props) => {
                 </div>
               </div>
               <div className="submit-section">
-                <button className="btn btn-primary submit-btn" ref={btn}>
+                <button
+                  className="btn btn-primary"
+                  ref={btn}
+                  aria-label="Close"
+                  type="submit"
+                >
                   Submit
                 </button>
               </div>
@@ -249,7 +256,7 @@ const AddTicket = (props) => {
   );
 };
 
-const EditTicket = ({ selectedTicketData, department }) => {
+const EditTicket = ({ selectedTicketData, rerender, setRerender }) => {
   const form = useRef();
   const btn = useRef();
 
@@ -271,14 +278,17 @@ const EditTicket = ({ selectedTicketData, department }) => {
     newTicket.assign = e.target.assign.value;
     newTicket.followers = e.target.followers.value;
     newTicket.status = 'active';
-    newTicket.assignee = 1;
-    newTicket.department = department;
-
-    //File Upload not working
+    //-----------------------------------------------//
+    newTicket.assignee = selectedTicketData.assignee;
+    newTicket.department = '61fd4680741b1b5504df7d0d';
     newTicket.file = e.target.file.value;
+    //-----------------------------------------------//
+
     let res;
     try {
       res = await updateTicket(selectedTicketData._id, newTicket);
+      console.log(res);
+      setRerender(!rerender);
     } catch (err) {
       console.log(err);
     }
@@ -378,7 +388,14 @@ const EditTicket = ({ selectedTicketData, department }) => {
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>CC</label>
-                    <input className="form-control" type="text" name="cc" />
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="cc"
+                      defaultValue={
+                        selectedTicketData?.cc ? selectedTicketData.cc : ''
+                      }
+                    />
                   </div>
                 </div>
               </div>
@@ -733,21 +750,16 @@ const Tickets = () => {
     }
   });
 
+  const [rerender, setRerender] = useState(false);
   useEffect(() => {
     (async () => {
       const res = await fetchTicket();
-      setData(
-        res.data.map((d) => ({
-          ...d,
-          assigneeName: d.assignee.firstName + d.assignee.lastName,
-          departmentName: d.department.name,
-        }))
-      );
+      setData(res.data);
       console.log('------All Tickets------');
-      console.log(data);
+      console.log(res.data);
       console.log('-----------------------');
     })();
-  }, []);
+  }, [rerender]);
 
   const [selectedTicketData, setSelectedTicketData] = useState({});
 
@@ -755,7 +767,7 @@ const Tickets = () => {
     {
       title: 'Title',
       dataIndex: 'title',
-      //sorter: (a, b) => a.id.length - b.id.length,
+      sorter: (a, b) => a.title < b.title,
       render: (text, record) => <p>{text}</p>,
     },
     {
@@ -769,30 +781,30 @@ const Tickets = () => {
           {text}
         </Link>
       ),
-      //sorter: (a, b) => a.ticketid.length - b.ticketid.length,
     },
     {
       title: 'Assigned Staff',
       dataIndex: 'assigneeName',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to="/app/profile/employee-profile" className="avatar">
-            <img alt="" src={record.image} />
-          </Link>
-          <Link to="/app/profile/employee-profile">{text}</Link>
+          <Link to="/app/profile/employee-profile">{`${text.firstName} ${text.lastName}`}</Link>
         </h2>
       ),
+      sorter: (a, b) => a.assignee.firstName < b.assignee.firstName,
     },
     {
       title: 'Department',
-      dataIndex: 'departmentName',
+      dataIndex: 'department',
       render: (text, record) => <p>{text}</p>,
-      sorter: (a, b) => a.createddate.length - b.createddate.length,
+      sorter: (a, b) => a.department < b.department,
     },
     {
       title: 'Last Reply',
-      dataIndex: 'lastreply',
-      //sorter: (a, b) => a.lastreply.length - b.lastreply.length,
+      dataIndex: 'updatedAt',
+      render: (text, record) => <p>{text}</p>,
+      sorter: (a, b) => {
+        return a.updatedAt < b.updatedAt;
+      },
     },
     {
       title: 'Priority',
@@ -822,8 +834,8 @@ const Tickets = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_ticket"
-              onClick={(e) => {
-                console.log(record);
+              onClick={() => {
+                console.log('setSelectedTicketData()');
                 setSelectedTicketData(record);
               }}
             >
@@ -831,13 +843,14 @@ const Tickets = () => {
             </a>
             <a
               className="dropdown-item"
-              href="#"
-              data-toggle="modal"
-              data-target="#delete_ticket"
+              // href="#"
+              // data-toggle="modal"
+              // data-target="#delete_ticket"
               onClick={async () => {
-                if (record._id) {
-                  await deleteTicket(record._id);
-                }
+                console.log('setSelectedTicketData()');
+                setSelectedTicketData(record);
+                await deleteTicket(record._id);
+                setRerender(!rerender);
               }}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
@@ -890,9 +903,13 @@ const Tickets = () => {
       </div>
       {/* /Page Content */}
 
-      <AddTicket />
+      <AddTicket setRerender={setRerender} rerender={rerender} />
 
-      <EditTicket selectedTicketData={selectedTicketData} />
+      <EditTicket
+        selectedTicketData={selectedTicketData}
+        setRerender={setRerender}
+        rerender={rerender}
+      />
 
       <DeleteTicket id={selectedTicketData?._id} />
     </div>
