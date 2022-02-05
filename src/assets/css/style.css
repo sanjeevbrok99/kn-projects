@@ -8894,5 +8894,9 @@ g * {
   cursor: pointer;
   stroke: #ffffff;
   stroke-width: 1.5px;
-  fill: #f0f0f0;
+  fill: #d0d0d0;
+}
+
+.selected {
+  fill: green;
 }
