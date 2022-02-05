@@ -9,7 +9,7 @@ import httpService from '../../../lib/httpService';
 const Invoiceedit = () => {
   const { id } = useParams();
   // const {isLoading, setIsLoading} = useState(true)
-  const { invoice, setInvoice } = useState({});
+  const [invoice, setInvoice] = useState({});
   // const history = useHistory();
   const [customers, setCustomers] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -45,7 +45,12 @@ const Invoiceedit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await httpService.put(`/sale-invoice/${id}`, invoice);
+    await httpService.put(`/sale-invoice/${id}`, {
+      ...invoice,
+      type: invoiceType,
+      items: itemsToAdd,
+      total: itemsToAdd.reduce((acc, cur) => acc + cur.amount, 0),
+    });
     history.goBack();
   };
 
@@ -92,7 +97,6 @@ const Invoiceedit = () => {
                           return temp;
                         });
                       }}
-                      className="custom-input"
                     />
                   </div>
                 </div>
@@ -104,13 +108,14 @@ const Invoiceedit = () => {
                     <br />
                     <input
                       className="form-control"
+                      defaultValue={invoice?.project?.name}
                       onChange={(e) => {
                         setInvoice((prevState) => {
                           const temp = prevState;
-                          temp.project = e.target.value;
+                          temp.project.name = e.target.value;
+                          return temp;
                         });
                       }}
-                      className="custom"
                     />
                   </div>
                 </div>
@@ -121,10 +126,18 @@ const Invoiceedit = () => {
                     </label>
                     <div>
                       <input
+                        defaultValue={
+                          invoice.invoiceDate
+                            ? new Date(invoice.invoiceDate)
+                                .toISOString()
+                                .split('T')[0]
+                            : ''
+                        }
                         onChange={(e) => {
-                          setInvoice({
-                            ...invoice,
-                            invoiceDate: e.target.value,
+                          setInvoice((prevState) => {
+                            const temp = prevState;
+                            temp.invoiceDate = e.target.value;
+                            return temp;
                           });
                         }}
                         className="form-control"
@@ -158,11 +171,9 @@ const Invoiceedit = () => {
                       Invoice Type<span className="text-danger">*</span>
                     </label>
                     <div
+                      defaultValue={invoice?.type}
                       onChange={(e) => {
-                        setInvoice({
-                          ...invoice,
-                          type: e.target.value,
-                        });
+                        setInvoiceType(e.target.value);
                       }}
                     >
                       <input
@@ -204,6 +215,7 @@ const Invoiceedit = () => {
                             <td>{index + 1}</td>
                             <td>
                               <input
+                                defaultValue={invoice?.items?.item}
                                 onChange={(e) => {
                                   const items = itemsToAdd.map((item, i) => {
                                     if (index === i) {
