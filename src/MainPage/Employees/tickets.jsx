@@ -260,6 +260,7 @@ const EditTicket = ({selectedTicketData, rerender, setRerender}) => {
   const btn = useRef();
 
   const resetForm = () => {
+    form.current.reset();
     btn.current.innerHTML = 'Submit';
   };
 
