@@ -40,6 +40,7 @@ const Invoiceedit = () => {
     console.log(id);
     const res = await httpService.get(`/sale-invoice/${id}`);
     setInvoice(res.data);
+    setItemsToAdd(res.data.items);
   };
 
   const handleSubmit = async (e) => {
@@ -126,8 +127,8 @@ const Invoiceedit = () => {
                     <div>
                       <input
                         defaultValue={
-                          invoice.invoiceDate
-                            ? new Date(invoice.invoiceDate)
+                          invoice?.project?.startDate
+                            ? new Date(invoice?.project?.startDate)
                                 .toISOString()
                                 .split('T')[0]
                             : ''
@@ -154,6 +155,13 @@ const Invoiceedit = () => {
                       <input
                         className="form-control"
                         type="date"
+                        defaultValue={
+                          invoice?.project?.endDate
+                            ? new Date(invoice?.project?.endDate)
+                                .toISOString()
+                                .split('T')[0]
+                            : ''
+                        }
                         onChange={(e) => {
                           setInvoice({
                             ...invoice,
@@ -161,34 +169,6 @@ const Invoiceedit = () => {
                           });
                         }}
                       />
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group">
-                    <label>
-                      Invoice Type<span className="text-danger">*</span>
-                    </label>
-                    <div
-                      defaultValue={invoice?.type}
-                      onChange={(e) => {
-                        setInvoiceType(e.target.value);
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        name="type"
-                        id="ONE_TIME"
-                        value={'ONE_TIME'}
-                      />{' '}
-                      One Time{' '}
-                      <input
-                        type="radio"
-                        name="type"
-                        id="RECURRING"
-                        value={'RECURRING'}
-                      />{' '}
-                      Recurring
                     </div>
                   </div>
                 </div>
@@ -214,7 +194,7 @@ const Invoiceedit = () => {
                             <td>{index + 1}</td>
                             <td>
                               <input
-                                defaultValue={invoice?.items?.item}
+                                defaultValue={item.item}
                                 onChange={(e) => {
                                   const items = itemsToAdd.map((item, i) => {
                                     if (index === i) {
@@ -234,6 +214,7 @@ const Invoiceedit = () => {
                                 className="form-control"
                                 type="text"
                                 style={{ minWidth: '150px' }}
+                                defaultValue={item.description}
                                 onChange={(e) => {
                                   const items = itemsToAdd.map((item, i) => {
                                     if (index === i) {
@@ -247,6 +228,7 @@ const Invoiceedit = () => {
                             </td>
                             <td>
                               <input
+                                defaultValue={item.unitCost}
                                 className="form-control"
                                 style={{ width: '100px' }}
                                 type="text"
@@ -269,6 +251,7 @@ const Invoiceedit = () => {
                                 className="form-control"
                                 style={{ width: '80px' }}
                                 type="text"
+                                defaultValue={item.quantity}
                                 onChange={(e) => {
                                   const items = itemsToAdd.map((item, i) => {
                                     if (index === i) {
@@ -413,14 +396,15 @@ const Invoiceedit = () => {
                       <div className="form-group">
                         <label>Other Information</label>
                         <textarea
+                          defaultValue={invoice?.otherInformation}
                           onChange={(e) => {
-                            setInvoiceToAdd({
-                              ...invoiceToAdd,
-                              otherInformation: e.target.value,
+                            setInvoice((prevState) => {
+                              const temp = prevState;
+                              temp.otherInformation = e.target.value;
+                              return temp;
                             });
                           }}
                           className="form-control"
-                          defaultValue={''}
                         />
                       </div>
                     </div>
