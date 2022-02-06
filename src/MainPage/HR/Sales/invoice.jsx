@@ -106,7 +106,7 @@ const Invoices = () => {
       title: 'Invoice Number',
       dataIndex: 'invoicenumber',
       render: (text, record) => (
-        <Link to="/app/sales/invoices-view">#{text}</Link>
+        <Link to={`/app/sales/invoices-view/${record._id}`}>#{text}</Link>
       ),
       sorter: (a, b) => a.invoicenumber.length - b.invoicenumber.length,
     },

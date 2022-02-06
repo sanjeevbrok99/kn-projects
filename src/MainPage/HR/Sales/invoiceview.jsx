@@ -1,9 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Applogo } from '../../../Entryfile/imagepath';
+import httpService from '../../../lib/httpService';
 
 const Invoiceview = () => {
+  const [invoice, setInvoice] = useState({});
+  const { id } = useParams();
+  useEffect(() => {
+    if ($('.select').length > 0) {
+      $('.select').select2({
+        minimumResultsForSearch: -1,
+        width: '100%',
+      });
+    }
+    fetchInvoice();
+  }, []);
+
+  const fetchInvoice = async () => {
+    const res = await httpService.get(`/sale-invoice/${id}`);
+    setInvoice(res.data);
+  };
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -55,10 +72,10 @@ const Invoiceview = () => {
                       <h3 className="text-uppercase">Invoice #INV-0001</h3>
                       <ul className="list-unstyled">
                         <li>
-                          Date: <span>March 12, 2021</span>
+                          Date: <span>{invoice?.invoiceDate}</span>
                         </li>
                         <li>
-                          Due date: <span>April 25, 2021</span>
+                          Due date: <span>{invoice?.expiryDate}</span>
                         </li>
                       </ul>
                     </div>
@@ -70,7 +87,7 @@ const Invoiceview = () => {
                     <ul className="list-unstyled">
                       <li>
                         <h5>
-                          <strong>Barry Cuda</strong>
+                          <strong>bb</strong>
                         </h5>
                       </li>
                       <li>
