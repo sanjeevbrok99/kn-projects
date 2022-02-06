@@ -20,6 +20,7 @@ const Loginpage = () => {
     if (res.error) {
       toast.error(res.message);
     } else {
+      localStorage.setItem('auth', JSON.stringify(res));
       dispatch(setAuthticationStore(res));
       history.push('/app/dashboard');
     }

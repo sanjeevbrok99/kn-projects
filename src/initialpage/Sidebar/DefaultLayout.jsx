@@ -1,30 +1,34 @@
 /**
  * App Routes
  */
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Route, withRouter, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import routerService from '../../router_service';
 import httpService from '../../lib/httpService';
 
 import Header from './header.jsx';
 import SidebarContent from './sidebar';
-import Dashboard from '../../MainPage/Main/Dashboard';
+import { setAuthticationStore } from '../../features/authentication/authenticationSlice';
 
 const DefaultLayout = (props) => {
+  const dispatch = useDispatch();
   const { match } = props;
   const authentication = useSelector((state) => state.authentication.value);
   const userAuthorities = authentication.user?.userAuthorites;
   const history = useHistory();
   useEffect(() => {
-    const token = authentication?.token;
-    if (!token) {
+    if (authentication.token) {
+      httpService.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${authentication.token}`;
+    } else if (localStorage.getItem('auth')) {
+      dispatch(setAuthticationStore(JSON.parse(localStorage.getItem('auth'))));
+    } else {
       history.push('/');
-      return;
     }
-    httpService.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  }, []);
+  }, [authentication.token]);
   return (
     <>
       <Header />
