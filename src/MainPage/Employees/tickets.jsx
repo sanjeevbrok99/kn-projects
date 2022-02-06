@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,7 @@ import {
   Avatar_02,
   Avatar_10,
   Avatar_05,
+  Avatar_08,
 } from '../../Entryfile/imagepath';
 
 import { Input, Table } from 'antd';
@@ -20,28 +22,19 @@ import {
   updateTicket,
   deleteTicket,
   fetchSingleTicket,
-<<<<<<< HEAD
-  allemployee,
-  fetchJobs,
-=======
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
 } from '../../lib/api';
 
 const AddTicket = (props) => {
   const form = useRef();
   const btn = useRef();
-  
+
   const resetForm = () => {
     form.current.reset();
     btn.current.innerHTML = 'Submit';
-<<<<<<< HEAD
     //--------close modal---------//
 
-    
     //--------close modal---------//
     props.setRerender(!props.rerender);
-=======
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
   };
 
   const handleSubmit = async (e) => {
@@ -49,24 +42,18 @@ const AddTicket = (props) => {
     const newTicket = {};
     btn.current.innerHTML = 'Submitting...';
     newTicket.title = e.target.subject.value;
+    newTicket.id = e.target.ticketId.value;
     newTicket.staffAssigned = e.target.staffAssigned.value;
     newTicket.client = e.target.client.value;
     newTicket.priority = e.target.priority.value;
+    newTicket.cc = e.target.cc.value;
     newTicket.description = e.target.description.value;
     newTicket.assign = e.target.assign.value;
     newTicket.followers = e.target.followers.value;
     newTicket.status = 'active';
-<<<<<<< HEAD
 
-    console.log("In submit!");
-    
-=======
-    newTicket.assignee = 1;
-    newTicket.department = '61fd4680741b1b5504df7d0d';
+    console.log('In submit!');
 
-    //File Upload not working
-    newTicket.file = e.target.file.value;
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
     let res;
     try {
       res = await addTicket(newTicket);
@@ -96,10 +83,6 @@ const AddTicket = (props) => {
               <span aria-hidden="true">×</span>
             </button>
           </div>
-<<<<<<< HEAD
-          
-=======
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
           <div className="modal-body">
             <form ref={form} onSubmit={handleSubmit}>
               <div className="row">
@@ -115,25 +98,6 @@ const AddTicket = (props) => {
                 </div>
                 <div className="col-sm-6">
                   <div className="form-group">
-<<<<<<< HEAD
-                  <label>Assign To</label>
-                  <select className="select" name="assignTo">
-                    {props.employee.map((emp) => <option>{emp.userName}</option>)}
-                  </select>
-                  </div>
-                </div>
-
-              </div>
-              <div className="row">
-              <div className="col-sm-6">
-              <div className="form-group">
-              <label>Department</label>
-              <select className="select" name="assignTo">
-                    {/*props.departments.map((dep) => <option>{dep.name}</option>)*/}
-              </select>
-              </div>
-              </div>
-=======
                     <label>Ticket Id</label>
                     <input
                       className="form-control"
@@ -154,7 +118,6 @@ const AddTicket = (props) => {
                     </select>
                   </div>
                 </div>
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Client</label>
@@ -177,15 +140,12 @@ const AddTicket = (props) => {
                     </select>
                   </div>
                 </div>
-<<<<<<< HEAD
-=======
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>CC</label>
                     <input className="form-control" type="text" name="cc" />
                   </div>
                 </div>
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
               </div>
               <div className="row">
                 <div className="col-sm-6">
@@ -204,7 +164,6 @@ const AddTicket = (props) => {
                         data-toggle="tooltip"
                         href="#"
                         className="avatar"
-<<<<<<< HEAD
                       >
                         <img src={Avatar_02} alt="admin" />
                       </a>
@@ -249,52 +208,6 @@ const AddTicket = (props) => {
                         href="#"
                         className="avatar"
                       >
-=======
-                      >
-                        <img src={Avatar_02} alt="admin" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Add Followers</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="followers"
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Ticket Followers</label>
-                    <div className="project-members">
-                      <a
-                        title="Shital Agarwal"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_09} alt="" />
-                      </a>
-                      <a
-                        title="Harvinder"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_10} alt="" />
-                      </a>
-                      <a
-                        title="Shreya Singh"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
                         <img src={Avatar_05} alt="" />
                       </a>
                       <a
@@ -327,14 +240,12 @@ const AddTicket = (props) => {
                 </div>
               </div>
               <div className="submit-section">
-<<<<<<< HEAD
-                <button className="btn btn-primary" ref={btn}
+                <button
+                  className="btn btn-primary"
+                  ref={btn}
                   aria-label="Close"
-                  type='submit'
+                  type="submit"
                 >
-=======
-                <button className="btn btn-primary submit-btn" ref={btn}>
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
                   Submit
                 </button>
               </div>
@@ -346,33 +257,7 @@ const AddTicket = (props) => {
   );
 };
 
-<<<<<<< HEAD
-
-const SearchTicket = ({setData, data}) => {
-
-  const handleClick = (event) => {
-    event.preventDefault();
-    console.log(data);
-
-    const title = document.getElementById("empIdSearch").value.toLowerCase();
-    if (title != "") {
-      const result = data.filter((obj) => {
-        return obj.title.toLowerCase() == title;
-      });
-    }
-    
-    //const title = document.getElementById("searchStatue").value.toLowerCase();
-
-    // const result = data.filter((obj) => {
-    //   return obj.title.toLowerCase() == title;
-    // });
-
-    console.log("result");
-    setData(result);
-  }
-
-=======
-const EditTicket = ({ selectedTicketData, department }) => {
+const EditTicket = ({ selectedTicketData, rerender, setRerender }) => {
   const form = useRef();
   const btn = useRef();
 
@@ -394,14 +279,17 @@ const EditTicket = ({ selectedTicketData, department }) => {
     newTicket.assign = e.target.assign.value;
     newTicket.followers = e.target.followers.value;
     newTicket.status = 'active';
-    newTicket.assignee = 1;
-    newTicket.department = department;
-
-    //File Upload not working
+    //-----------------------------------------------//
+    newTicket.assignee = selectedTicketData.assignee;
+    newTicket.department = '61fd4680741b1b5504df7d0d';
     newTicket.file = e.target.file.value;
+    //-----------------------------------------------//
+
     let res;
     try {
       res = await updateTicket(selectedTicketData._id, newTicket);
+      console.log(res);
+      setRerender(!rerender);
     } catch (err) {
       console.log(err);
     }
@@ -501,7 +389,14 @@ const EditTicket = ({ selectedTicketData, department }) => {
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>CC</label>
-                    <input className="form-control" type="text" name="cc" />
+                    <input
+                      className="form-control"
+                      type="text"
+                      name="cc"
+                      defaultValue={
+                        selectedTicketData?.cc ? selectedTicketData.cc : ''
+                      }
+                    />
                   </div>
                 </div>
               </div>
@@ -652,18 +547,17 @@ const DeleteTicket = (props) => {
 };
 
 const SearchTicket = () => {
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
   return (
     <div className="row filter-row">
       <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
         <div className="form-group form-focus focused">
-          <input id="empIdSearch" type="text" defaultValue="" className="form-control floating" />
+          <input type="text" className="form-control floating" />
           <label className="focus-label">Employee Name</label>
         </div>
       </div>
       <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
         <div className="form-group form-focus select-focus">
-          <select className="select floating" id="searchStatue">
+          <select className="select floating">
             <option> -- Select -- </option>
             <option> Pending </option>
             <option> Approved </option>
@@ -706,60 +600,13 @@ const SearchTicket = () => {
         </div>
       </div>
       <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <a href="#" className="btn btn-success btn-block" onClick={handleClick}>
+        <a href="#" className="btn btn-success btn-block">
           Search
         </a>
       </div>
     </div>
   );
-<<<<<<< HEAD
- };
-
- 
-const DeleteTicket = (props) => {
-  const handleDelete = async () => {
-    const res = await deleteTicket(props.id);
-  };
-  return (
-    <div className="modal custom-modal fade" id="delete_ticket" role="dialog">
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-body">
-            <div className="form-header">
-              <h3>Delete Ticket</h3>
-              <p>Are you sure want to delete ticket with id {props.id}?</p>
-            </div>
-            <div className="modal-btn delete-action">
-              <div className="row">
-                <div className="col-6">
-                  <a
-                    className="btn btn-primary continue-btn"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </a>
-                </div>
-                <div className="col-6">
-                  <a
-                    href=""
-                    data-dismiss="modal"
-                    className="btn btn-primary cancel-btn"
-                  >
-                    Cancel
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 };
-
-=======
-};
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
 
 const TicketHeader = () => {
   return (
@@ -788,265 +635,8 @@ const TicketHeader = () => {
     </div>
   );
 };
-<<<<<<< HEAD
-
-const EditTicket = ({selectedTicketData, rerender, setRerender}) => {
-  const form = useRef();
-  const btn = useRef();
-
-  const resetForm = () => {
-    form.current.reset();
-    btn.current.innerHTML = 'Submit';
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newTicket = {};
-    btn.current.innerHTML = 'Submitting...';
-    newTicket.title = e.target.subject.value;
-    newTicket.staffAssigned = e.target.staffAssigned.value;
-    newTicket.client = e.target.client.value;
-    newTicket.priority = e.target.priority.value;
-    newTicket.cc = e.target.cc.value;
-    newTicket.description = e.target.description.value;
-    newTicket.assign = e.target.assign.value;
-    newTicket.followers = e.target.followers.value;
-    newTicket.status = 'active';
-    //-----------------------------------------------//
-       newTicket.assignee = selectedTicketData.assignee;
-       newTicket.department = '61fd4680741b1b5504df7d0d';
-       newTicket.file = e.target.file.value;
-    //-----------------------------------------------//
-   
-    let res;
-    try {
-      res = await updateTicket(selectedTicketData._id, newTicket);
-      console.log(res);
-      setRerender(!rerender);
-    } catch (err) {
-      console.log(err);
-    }
-    btn.current.innerHTML = 'Submitted!';
-    console.log(res);
-    resetForm();
-  };
-
-  return (
-    <div id="edit_ticket" className="modal custom-modal fade" role="dialog">
-      <div
-        className="modal-dialog modal-dialog-centered modal-lg"
-        role="document"
-      >
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Edit Ticket</h5>
-            <button
-              type="button"
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            <form ref={form} onSubmit={handleSubmit}>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Ticket Subject</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="subject"
-                      defaultValue={
-                        selectedTicketData?.title
-                          ? selectedTicketData.title
-                          : ''
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Ticket Id</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="ticketId"
-                      defaultValue={
-                        selectedTicketData?._id ? selectedTicketData._id : ''
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Assign Staff</label>
-                    <select className="select" name="staffAssigned">
-                      <option>-</option>
-                      <option>Shreya Singh</option>
-                      <option>Harvinder</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Client</label>
-                    <select className="select" name="client">
-                      <option>-</option>
-                      <option>Godrej Properties Ltd</option>
-                      <option>International Software Inc</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Priority</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="priority"
-                      defaultValue={
-                        selectedTicketData?.priority
-                          ? selectedTicketData.priority
-                          : ''
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>CC</label>
-                    <input className="form-control" type="text" name="cc"
-                    defaultValue={selectedTicketData?.cc
-                        ? selectedTicketData.cc
-                      : ''
-                    }
-                    />
-                    
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Assign</label>
-                    <input type="text" className="form-control" name="assign"
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Ticket Assignee</label>
-                    <div className="project-members">
-                      <a
-                        title="Harvinder"
-                        data-placement="top"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_02} alt="admin" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Add Followers</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="followers"
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Ticket Followers</label>
-                    <div className="project-members">
-                      <a
-                        title="Shital Agarwal"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_09} alt="" />
-                      </a>
-                      <a
-                        title="Harvinder"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_10} alt="" />
-                      </a>
-                      <a
-                        title="Shreya Singh"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_05} alt="" />
-                      </a>
-                      <a
-                        title="Wilmer Deluna"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_11} alt="" />
-                      </a>
-                      <span className="all-team">+2</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-12">
-                  <div className="form-group">
-                    <label>Description</label>
-                    <textarea
-                      className="form-control"
-                      defaultValue={''}
-                      name="description"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Upload Files</label>
-                    <input className="form-control" type="file" name="file" />
-                  </div>
-                </div>
-              </div>
-              <div className="submit-section">
-                <button className="btn btn-primary submit-btn" ref={btn}>
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
-const TicketTracker = ({data}) => {
-
-  
-
-=======
 
 const TicketTracker = () => {
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
   return (
     <div className="row">
       <div className="col-md-12">
@@ -1061,7 +651,7 @@ const TicketTracker = () => {
                   <span className="text-success">+10%</span>
                 </div>
               </div>
-              <h3 className="mb-3">{data[0]}</h3>
+              <h3 className="mb-3">112</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -1084,7 +674,7 @@ const TicketTracker = () => {
                   <span className="text-success">+12.5%</span>
                 </div>
               </div>
-              <h3 className="mb-3">{data[1]}</h3>
+              <h3 className="mb-3">70</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -1107,7 +697,7 @@ const TicketTracker = () => {
                   <span className="text-danger">-2.8%</span>
                 </div>
               </div>
-              <h3 className="mb-3">{data[2]}</h3>
+              <h3 className="mb-3">100</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -1130,7 +720,7 @@ const TicketTracker = () => {
                   <span className="text-danger">-75%</span>
                 </div>
               </div>
-              <h3 className="mb-3">{data[3]}</h3>
+              <h3 className="mb-3">125</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -1151,21 +741,6 @@ const TicketTracker = () => {
 
 const Tickets = () => {
   const [data, setData] = useState([]);
-  const [employee, setEmployee] = useState([]);
-  const [departments, setDepartments] = useState([]);
-
-  const [ticketStatus, setTicketStatus] = useState([0,0,0,0]);
-
-
-  const resolveTicket = (arr) => {
-    let pending = 0;
-    arr.forEach((obj) => {
-      if (obj.status.toLowerCase() == 'active') {
-        pending++;
-      }
-    });
-    return [0,0,0,pending];
-  }
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -1180,31 +755,12 @@ const Tickets = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchTicket();
-<<<<<<< HEAD
       setData(res.data);
-      setTicketStatus(resolveTicket(res.data));
-      const emp = await allemployee();
-      setEmployee(emp);
-      const dep = fetchdepartment();
-      setDepartments(dep);
-      console.log(dep.data);
-
-    })();
-  }, [rerender]);
-=======
-      setData(
-        res.data.map((d) => ({
-          ...d,
-          assigneeName: d.assignee.firstName + d.assignee.lastName,
-          departmentName: d.department.name,
-        }))
-      );
       console.log('------All Tickets------');
-      console.log(data);
+      console.log(res.data);
       console.log('-----------------------');
     })();
-  }, []);
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
+  }, [rerender]);
 
   const [selectedTicketData, setSelectedTicketData] = useState({});
 
@@ -1212,11 +768,7 @@ const Tickets = () => {
     {
       title: 'Title',
       dataIndex: 'title',
-<<<<<<< HEAD
-      sorter: (a, b) =>  a.title < b.title,
-=======
-      //sorter: (a, b) => a.id.length - b.id.length,
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
+      sorter: (a, b) => a.title < b.title,
       render: (text, record) => <p>{text}</p>,
     },
     {
@@ -1239,28 +791,21 @@ const Tickets = () => {
           <Link to="/app/profile/employee-profile">{`${text.firstName} ${text.lastName}`}</Link>
         </h2>
       ),
-<<<<<<< HEAD
-      sorter: (a, b) => a.assignee.firstName < b.assignee.firstName
+      sorter: (a, b) => a.assignee.firstName < b.assignee.firstName,
     },
     {
       title: 'Department',
       dataIndex: 'department',
       render: (text, record) => <p>{text}</p>,
-      sorter: (a, b) => a.department < b.department
-=======
-    },
-    {
-      title: 'Department',
-      dataIndex: 'departmentName',
-      render: (text, record) => <p>{text}</p>,
-      sorter: (a, b) => a.createddate.length - b.createddate.length,
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
+      sorter: (a, b) => a.department < b.department,
     },
     {
       title: 'Last Reply',
       dataIndex: 'updatedAt',
       render: (text, record) => <p>{text}</p>,
-      sorter: (a, b) => {return a.updatedAt < b.updatedAt}
+      sorter: (a, b) => {
+        return a.updatedAt < b.updatedAt;
+      },
     },
     {
       title: 'Priority',
@@ -1290,13 +835,8 @@ const Tickets = () => {
               href="#"
               data-toggle="modal"
               data-target="#edit_ticket"
-<<<<<<< HEAD
               onClick={() => {
-                console.log("setSelectedTicketData()");
-=======
-              onClick={(e) => {
-                console.log(record);
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
+                console.log('setSelectedTicketData()');
                 setSelectedTicketData(record);
               }}
             >
@@ -1308,12 +848,12 @@ const Tickets = () => {
               // data-toggle="modal"
               // data-target="#delete_ticket"
               onClick={async () => {
-                console.log("setSelectedTicketData()");
+                console.log('setSelectedTicketData()');
                 setSelectedTicketData(record);
                 await deleteTicket(record._id);
                 setRerender(!rerender);
               }}
-             >
+            >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
           </div>
@@ -1330,10 +870,6 @@ const Tickets = () => {
     onShowSizeChange: onShowSizeChange,
     itemRender: itemRender,
   };
-<<<<<<< HEAD
-
-=======
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
 
   return (
     <div className="page-wrapper">
@@ -1346,15 +882,9 @@ const Tickets = () => {
       <div className="content container-fluid">
         <TicketHeader />
 
-<<<<<<< HEAD
-        <TicketTracker data={ticketStatus} />
-
-        <SearchTicket data={data} setData={setData}/>
-=======
         <TicketTracker />
 
         <SearchTicket />
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
 
         <div className="row">
           <div className="col-md-12">
@@ -1374,15 +904,13 @@ const Tickets = () => {
       </div>
       {/* /Page Content */}
 
-<<<<<<< HEAD
-      <AddTicket setRerender={setRerender} rerender={rerender} employee={employee}/>
+      <AddTicket setRerender={setRerender} rerender={rerender} />
 
-      <EditTicket selectedTicketData={selectedTicketData} setRerender={setRerender} departments={departments} rerender={rerender}/>
-=======
-      <AddTicket />
-
-      <EditTicket selectedTicketData={selectedTicketData} />
->>>>>>> f0f52c57a1b3ee0f2387c66e4405668a8a2da156
+      <EditTicket
+        selectedTicketData={selectedTicketData}
+        setRerender={setRerender}
+        rerender={rerender}
+      />
 
       <DeleteTicket id={selectedTicketData?._id} />
     </div>
