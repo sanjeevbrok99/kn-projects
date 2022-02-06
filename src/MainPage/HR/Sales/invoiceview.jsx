@@ -118,9 +118,7 @@ const Invoiceview = () => {
                       <li>
                         <span>{invoice?.customer?.company}</span>
                       </li>
-                      <li>5754 Airport Rd</li>
-                      <li>Coosada, AL, 36020</li>
-                      <li>United States</li>
+                      <li>{invoice?.customer?.address}</li>
                       <li>{invoice?.customer?.phone}</li>
                       <li>
                         <a href="#">{invoice?.customer?.email}</a>
