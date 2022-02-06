@@ -479,3 +479,20 @@ export async function fetchBill() {
   });
   return fetchBillResponse;
 }
+
+export async function getACustomer(id) {
+  const fetchResponse = new Promise(async (resolve) => {
+    httpService
+      .get(`/customer/${id}`)
+      .then((response) => {
+        return resolve(response);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchResponse;
+}

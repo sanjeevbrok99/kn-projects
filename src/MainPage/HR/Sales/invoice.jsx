@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 
 const Invoices = () => {
   const [data, setData] = useState([]);
+  
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
