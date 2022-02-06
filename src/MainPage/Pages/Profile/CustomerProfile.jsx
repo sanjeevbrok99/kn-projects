@@ -3,7 +3,7 @@
  */
 import React, { useEffect ,useState} from 'react';
  import { Helmet } from 'react-helmet';
- import { Link } from 'react-router-dom';
+ import { Link,useParams } from 'react-router-dom';
 import { Avatar_19 } from '../../../Entryfile/imagepath';
 import {getACustomer} from './../../../lib/api/index'
 
@@ -239,10 +239,13 @@ const Invoices = (props) => {
 const CustomerProfile = () => {
   
   const [customer, setCustomer] = useState(null);
+  let { id } = useParams();
 
   useEffect(() => {
     async function fetchApi() {
       const res = await getACustomer("61ec2322bdfa05c4d117890f");
+      //const res = await getACustomer(id);
+
       setCustomer(res.data);
     }
     fetchApi();
