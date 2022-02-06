@@ -18,7 +18,7 @@ const subscriptionroute = ({ match }) => (
     />
     <Route path={`${match.url}/employee-profile`} component={EmployeeProfile} />
     <Route path={`${match.url}/client-profile`} component={ClientProfile} />
-    <Route path={`${match.url}/customer-profile`} component={CustomerProfile} />
+    <Route path={`${match.url}/customer-profile/:id`} component={CustomerProfile} />
     <Route path={`${match.url}/lead-profile/:id`} component={leadprofile} />
   </Switch>
 );

@@ -243,8 +243,8 @@ const CustomerProfile = () => {
 
   useEffect(() => {
     async function fetchApi() {
-      const res = await getACustomer("61ec2322bdfa05c4d117890f");
-      //const res = await getACustomer(id);
+      //const res = await getACustomer("61ec2322bdfa05c4d117890f");
+      const res = await getACustomer(id);
 
       setCustomer(res.data);
     }
@@ -296,16 +296,8 @@ const CustomerProfile = () => {
                            <h5 className="company-role m-t-0 mb-0">
                              {customer.email}
                            </h5>
-                           <small className="text-muted">{customer.company}</small> <br/>
+                           <small className="text-muted">{customer.company}</small>
                            <small className="text-muted">Gender:{customer.gender} Male</small>
-                           <div className="staff-msg">
-                             <Link
-                               to="/conversation/chat"
-                               className="btn btn-custom"
-                             >
-                               Send Message
-                             </Link>
-                           </div>
                          </div>
                        </div>
                        <div className="col-md-7">
