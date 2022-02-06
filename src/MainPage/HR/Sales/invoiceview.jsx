@@ -7,6 +7,15 @@ import httpService from '../../../lib/httpService';
 const Invoiceview = () => {
   const [invoice, setInvoice] = useState({});
   const { id } = useParams();
+  const [itemsToAdd, setItemsToAdd] = useState([
+    {
+      item: '',
+      description: '',
+      unitCost: 0,
+      quantity: 0,
+      amount: 0,
+    },
+  ]);
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -20,6 +29,7 @@ const Invoiceview = () => {
   const fetchInvoice = async () => {
     const res = await httpService.get(`/sale-invoice/${id}`);
     setInvoice(res.data);
+    setItemsToAdd(res.data.items);
   };
   return (
     <div className="page-wrapper">
@@ -72,10 +82,25 @@ const Invoiceview = () => {
                       <h3 className="text-uppercase">Invoice #INV-0001</h3>
                       <ul className="list-unstyled">
                         <li>
-                          Date: <span>{invoice?.invoiceDate}</span>
+                          Date:{' '}
+                          <span>
+                            {' '}
+                            {invoice?.project?.startDate
+                              ? new Date(invoice?.project?.startDate)
+                                  .toISOString()
+                                  .split('T')[0]
+                              : ''}
+                          </span>
                         </li>
                         <li>
-                          Due date: <span>{invoice?.expiryDate}</span>
+                          Due date:{' '}
+                          <span>
+                            {invoice?.project?.endDate
+                              ? new Date(invoice?.project?.endDate)
+                                  .toISOString()
+                                  .split('T')[0]
+                              : ''}
+                          </span>
                         </li>
                       </ul>
                     </div>
@@ -87,18 +112,18 @@ const Invoiceview = () => {
                     <ul className="list-unstyled">
                       <li>
                         <h5>
-                          <strong>bb</strong>
+                          <strong>{invoice?.customer?.name}</strong>
                         </h5>
                       </li>
                       <li>
-                        <span>Sunteck Realty Ltd</span>
+                        <span>{invoice?.customer?.company}</span>
                       </li>
                       <li>5754 Airport Rd</li>
                       <li>Coosada, AL, 36020</li>
                       <li>United States</li>
-                      <li>888-777-6655</li>
+                      <li>{invoice?.customer?.phone}</li>
                       <li>
-                        <a href="#">barrycuda@example.com</a>
+                        <a href="#">{invoice?.customer?.email}</a>
                       </li>
                     </ul>
                   </div>
@@ -107,26 +132,9 @@ const Invoiceview = () => {
                     <ul className="list-unstyled invoice-payment-details">
                       <li>
                         <h5>
-                          Total Due: <span className="text-right">₹8,750</span>
+                          Total Due:{' '}
+                          <span className="text-right">{invoice?.total}</span>
                         </h5>
-                      </li>
-                      <li>
-                        Bank name: <span>Profit Bank Europe</span>
-                      </li>
-                      <li>
-                        Country: <span>United Kingdom</span>
-                      </li>
-                      <li>
-                        City: <span>London E1 8BF</span>
-                      </li>
-                      <li>
-                        Address: <span>3 Goodman Street</span>
-                      </li>
-                      <li>
-                        IBAN: <span>KFH37784028476740</span>
-                      </li>
-                      <li>
-                        SWIFT code: <span>BPT4E</span>
                       </li>
                     </ul>
                   </div>
@@ -135,115 +143,167 @@ const Invoiceview = () => {
                   <table className="table table-striped table-hover">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>ITEM</th>
-                        <th className="d-none d-sm-table-cell">DESCRIPTION</th>
-                        <th>UNIT COST</th>
-                        <th>QUANTITY</th>
-                        <th className="text-right">TOTAL</th>
+                        <th style={{ width: '20px' }}>#</th>
+                        <th className="col-sm-2">Item</th>
+                        <th className="col-md-6">Description</th>
+                        <th style={{ width: '100px' }}>Unit Cost</th>
+                        <th style={{ width: '80px' }}>Qty</th>
+                        <th>Amount</th>
+                        <th> </th>
                       </tr>
                     </thead>
                     <tbody>
+                      {itemsToAdd.map((item, index) => (
+                        <tr>
+                          <td>{index + 1}</td>
+                          <td>
+                            <li
+                              className="form-control"
+                              type="text"
+                              style={{ minWidth: '150px' }}
+                            >
+                              {item.item}{' '}
+                            </li>
+                          </td>
+                          <td>
+                            <li
+                              className="form-control"
+                              type="text"
+                              style={{ minWidth: '150px' }}
+                            >
+                              {item.description}
+                            </li>
+                          </td>
+                          <td>
+                            <li
+                              className="form-control"
+                              style={{ width: '100px' }}
+                              type="text"
+                            >
+                              {' '}
+                              {item.unitCost}
+                            </li>
+                          </td>
+                          <td>
+                            <li
+                              className="form-control"
+                              style={{ width: '80px' }}
+                              type="text"
+                            >
+                              {' '}
+                              {item.quantity}
+                            </li>
+                          </td>
+                          <td>
+                            <li
+                              className="form-control"
+                              readOnly
+                              style={{ width: '120px' }}
+                              type="text"
+                            >
+                              {item.amount}
+                            </li>
+                          </td>
+                          <td>
+                            <a
+                              href="javascript:void(0)"
+                              className={`${
+                                index + 1 !== itemsToAdd.length
+                                  ? 'text-danger'
+                                  : 'text-success'
+                              } font-18`}
+                              title="Add"
+                            ></a>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="table-responsive">
+                  <table className="table table-hover table-white">
+                    <tbody>
                       <tr>
-                        <td>1</td>
-                        <td>Android Application</td>
-                        <td className="d-none d-sm-table-cell">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td className="text-right">Total</td>
+                        <td
+                          style={{
+                            textAlign: 'right',
+                            paddingRight: '30px',
+                            width: '230px',
+                          }}
+                        >
+                          {itemsToAdd.reduce((p, c) => p + c.amount, 0)}
                         </td>
-                        <td>₹1000</td>
-                        <td>2</td>
-                        <td className="text-right">₹2000</td>
                       </tr>
                       <tr>
-                        <td>2</td>
-                        <td>Marketing Application</td>
-                        <td className="d-none d-sm-table-cell">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit
+                        <td colSpan={5} className="text-right">
+                          Tax
                         </td>
-                        <td>₹1750</td>
-                        <td>1</td>
-                        <td className="text-right">₹1750</td>
+                        <td
+                          style={{
+                            textAlign: 'right',
+                            paddingRight: '30px',
+                            width: '230px',
+                          }}
+                        >
+                          <li
+                            className="form-control text-right"
+                            readOnly
+                            type="text"
+                          >
+                            {' '}
+                            {0}
+                          </li>
+                        </td>
                       </tr>
                       <tr>
-                        <td>3</td>
-                        <td>Codeigniter Project</td>
-                        <td className="d-none d-sm-table-cell">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit
+                        <td colSpan={5} className="text-right">
+                          Discount %
                         </td>
-                        <td>₹90</td>
-                        <td>3</td>
-                        <td className="text-right">₹270</td>
+                        <td
+                          style={{
+                            textAlign: 'right',
+                            paddingRight: '30px',
+                            width: '230px',
+                          }}
+                        >
+                          <li className="form-control text-right" type="text" />
+                        </td>
                       </tr>
                       <tr>
-                        <td>4</td>
-                        <td>Phonegap Project</td>
-                        <td className="d-none d-sm-table-cell">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit
+                        <td
+                          colSpan={5}
+                          style={{ textAlign: 'right', fontWeight: 'bold' }}
+                        >
+                          Grand Total
                         </td>
-                        <td>₹1200</td>
-                        <td>2</td>
-                        <td className="text-right">₹2400</td>
-                      </tr>
-                      <tr>
-                        <td>5</td>
-                        <td>Website Optimization</td>
-                        <td className="d-none d-sm-table-cell">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit
+                        <td
+                          style={{
+                            textAlign: 'right',
+                            paddingRight: '30px',
+                            fontWeight: 'bold',
+                            fontSize: '16px',
+                            width: '230px',
+                          }}
+                        >
+                          ₹ {itemsToAdd.reduce((p, c) => p + c.amount, 0)}
                         </td>
-                        <td>₹200</td>
-                        <td>2</td>
-                        <td className="text-right">₹400</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div>
-                  <div className="row invoice-payment">
-                    <div className="col-sm-7"></div>
-                    <div className="col-sm-5">
-                      <div className="m-b-20">
-                        <div className="table-responsive no-border">
-                          <table className="table mb-0">
-                            <tbody>
-                              <tr>
-                                <th>Subtotal:</th>
-                                <td className="text-right">₹7,000</td>
-                              </tr>
-                              <tr>
-                                <th>
-                                  Tax:{' '}
-                                  <span className="text-regular">(25%)</span>
-                                </th>
-                                <td className="text-right">₹1,750</td>
-                              </tr>
-                              <tr>
-                                <th>Total:</th>
-                                <td className="text-right text-primary">
-                                  <h5>₹8,750</h5>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label>Other Information</label>
+                      <li className="form-control">
+                        {invoice?.otherInformation}
+                      </li>
                     </div>
-                  </div>
-                  <div className="invoice-info">
-                    <h5>Other information</h5>
-                    <p className="text-muted">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Vivamus sed dictum ligula, cursus blandit risus. Maecenas
-                      eget metus non tellus dignissim aliquam ut a ex. Maecenas
-                      sed vehicula dui, ac suscipit lacus. Sed finibus leo vitae
-                      lorem interdum, eu scelerisque tellus fermentum. Curabitur
-                      sit amet lacinia lorem. Nullam finibus pellentesque
-                      libero, eu finibus sapien interdum vel
-                    </p>
                   </div>
                 </div>
               </div>
@@ -251,7 +311,6 @@ const Invoiceview = () => {
           </div>
         </div>
       </div>
-      {/* /Page Content */}
     </div>
   );
 };
