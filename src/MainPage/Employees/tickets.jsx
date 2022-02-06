@@ -7,7 +7,6 @@ import {
   Avatar_02,
   Avatar_10,
   Avatar_05,
-  Avatar_08,
 } from '../../Entryfile/imagepath';
 
 import { Input, Table } from 'antd';
@@ -21,12 +20,14 @@ import {
   updateTicket,
   deleteTicket,
   fetchSingleTicket,
+  allemployee,
+  fetchJobs,
 } from '../../lib/api';
 
 const AddTicket = (props) => {
   const form = useRef();
   const btn = useRef();
-
+  
   const resetForm = () => {
     form.current.reset();
     btn.current.innerHTML = 'Submit';
@@ -42,11 +43,9 @@ const AddTicket = (props) => {
     const newTicket = {};
     btn.current.innerHTML = 'Submitting...';
     newTicket.title = e.target.subject.value;
-    newTicket.id = e.target.ticketId.value;
     newTicket.staffAssigned = e.target.staffAssigned.value;
     newTicket.client = e.target.client.value;
     newTicket.priority = e.target.priority.value;
-    newTicket.cc = e.target.cc.value;
     newTicket.description = e.target.description.value;
     newTicket.assign = e.target.assign.value;
     newTicket.followers = e.target.followers.value;
@@ -83,6 +82,7 @@ const AddTicket = (props) => {
               <span aria-hidden="true">×</span>
             </button>
           </div>
+          
           <div className="modal-body">
             <form ref={form} onSubmit={handleSubmit}>
               <div className="row">
@@ -98,26 +98,23 @@ const AddTicket = (props) => {
                 </div>
                 <div className="col-sm-6">
                   <div className="form-group">
-                    <label>Ticket Id</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="ticketId"
-                    />
+                  <label>Assign To</label>
+                  <select className="select" name="assignTo">
+                    {props.employee.map((emp) => <option>{emp.userName}</option>)}
+                  </select>
                   </div>
                 </div>
+
               </div>
               <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Assign Staff</label>
-                    <select className="select" name="staffAssigned">
-                      <option>-</option>
-                      <option>Shreya Singh</option>
-                      <option>Harvinder</option>
-                    </select>
-                  </div>
-                </div>
+              <div className="col-sm-6">
+              <div className="form-group">
+              <label>Department</label>
+              <select className="select" name="assignTo">
+                    {/*props.departments.map((dep) => <option>{dep.name}</option>)*/}
+              </select>
+              </div>
+              </div>
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Client</label>
@@ -138,12 +135,6 @@ const AddTicket = (props) => {
                       <option>Medium</option>
                       <option>Low</option>
                     </select>
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>CC</label>
-                    <input className="form-control" type="text" name="cc" />
                   </div>
                 </div>
               </div>
@@ -249,6 +240,162 @@ const AddTicket = (props) => {
               </div>
             </form>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+const SearchTicket = ({setData, data}) => {
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    console.log(data);
+
+    const title = document.getElementById("empIdSearch").value.toLowerCase();
+    if (title != "") {
+      const result = data.filter((obj) => {
+        return obj.title.toLowerCase() == title;
+      });
+    }
+    
+    //const title = document.getElementById("searchStatue").value.toLowerCase();
+
+    // const result = data.filter((obj) => {
+    //   return obj.title.toLowerCase() == title;
+    // });
+
+    console.log("result");
+    setData(result);
+  }
+
+  return (
+    <div className="row filter-row">
+      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div className="form-group form-focus focused">
+          <input id="empIdSearch" type="text" defaultValue="" className="form-control floating" />
+          <label className="focus-label">Employee Name</label>
+        </div>
+      </div>
+      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div className="form-group form-focus select-focus">
+          <select className="select floating" id="searchStatue">
+            <option> -- Select -- </option>
+            <option> Pending </option>
+            <option> Approved </option>
+            <option> Returned </option>
+          </select>
+          <label className="focus-label">Status</label>
+        </div>
+      </div>
+      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div className="form-group form-focus select-focus">
+          <select className="select floating">
+            <option> -- Select -- </option>
+            <option> High </option>
+            <option> Low </option>
+            <option> Medium </option>
+          </select>
+          <label className="focus-label">Priority</label>
+        </div>
+      </div>
+      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div className="form-group form-focus select-focus">
+          <div>
+            <input
+              className="form-control floating datetimepicker"
+              type="date"
+            />
+          </div>
+          <label className="focus-label">From</label>
+        </div>
+      </div>
+      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div className="form-group form-focus select-focus">
+          <div>
+            <input
+              className="form-control floating datetimepicker"
+              type="date"
+            />
+          </div>
+          <label className="focus-label">To</label>
+        </div>
+      </div>
+      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <a href="#" className="btn btn-success btn-block" onClick={handleClick}>
+          Search
+        </a>
+      </div>
+    </div>
+  );
+ };
+
+ 
+const DeleteTicket = (props) => {
+  const handleDelete = async () => {
+    const res = await deleteTicket(props.id);
+  };
+  return (
+    <div className="modal custom-modal fade" id="delete_ticket" role="dialog">
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-body">
+            <div className="form-header">
+              <h3>Delete Ticket</h3>
+              <p>Are you sure want to delete ticket with id {props.id}?</p>
+            </div>
+            <div className="modal-btn delete-action">
+              <div className="row">
+                <div className="col-6">
+                  <a
+                    className="btn btn-primary continue-btn"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </a>
+                </div>
+                <div className="col-6">
+                  <a
+                    href=""
+                    data-dismiss="modal"
+                    className="btn btn-primary cancel-btn"
+                  >
+                    Cancel
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+const TicketHeader = () => {
+  return (
+    <div className="page-header">
+      <div className="row align-items-center">
+        <div className="col">
+          <h3 className="page-title">Tickets</h3>
+          <ul className="breadcrumb">
+            <li className="breadcrumb-item">
+              <Link to="/app/main/dashboard">Dashboard</Link>
+            </li>
+            <li className="breadcrumb-item active">Tickets</li>
+          </ul>
+        </div>
+        <div className="col-auto float-right ml-auto">
+          <a
+            href="#"
+            className="btn add-btn"
+            data-toggle="modal"
+            data-target="#add_ticket"
+          >
+            <i className="fa fa-plus" /> Add Ticket
+          </a>
         </div>
       </div>
     </div>
@@ -503,138 +650,11 @@ const EditTicket = ({selectedTicketData, rerender, setRerender}) => {
   );
 };
 
-const DeleteTicket = (props) => {
-  const handleDelete = async () => {
-    const res = await deleteTicket(props.id);
-  };
-  return (
-    <div className="modal custom-modal fade" id="delete_ticket" role="dialog">
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-body">
-            <div className="form-header">
-              <h3>Delete Ticket</h3>
-              <p>Are you sure want to delete ticket with id {props.id}?</p>
-            </div>
-            <div className="modal-btn delete-action">
-              <div className="row">
-                <div className="col-6">
-                  <a
-                    className="btn btn-primary continue-btn"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </a>
-                </div>
-                <div className="col-6">
-                  <a
-                    href=""
-                    data-dismiss="modal"
-                    className="btn btn-primary cancel-btn"
-                  >
-                    Cancel
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-const SearchTicket = () => {
-  return (
-    <div className="row filter-row">
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus focused">
-          <input type="text" className="form-control floating" />
-          <label className="focus-label">Employee Name</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus select-focus">
-          <select className="select floating">
-            <option> -- Select -- </option>
-            <option> Pending </option>
-            <option> Approved </option>
-            <option> Returned </option>
-          </select>
-          <label className="focus-label">Status</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus select-focus">
-          <select className="select floating">
-            <option> -- Select -- </option>
-            <option> High </option>
-            <option> Low </option>
-            <option> Medium </option>
-          </select>
-          <label className="focus-label">Priority</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus select-focus">
-          <div>
-            <input
-              className="form-control floating datetimepicker"
-              type="date"
-            />
-          </div>
-          <label className="focus-label">From</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus select-focus">
-          <div>
-            <input
-              className="form-control floating datetimepicker"
-              type="date"
-            />
-          </div>
-          <label className="focus-label">To</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <a href="#" className="btn btn-success btn-block">
-          Search
-        </a>
-      </div>
-    </div>
-  );
-};
+const TicketTracker = ({data}) => {
 
-const TicketHeader = () => {
-  return (
-    <div className="page-header">
-      <div className="row align-items-center">
-        <div className="col">
-          <h3 className="page-title">Tickets</h3>
-          <ul className="breadcrumb">
-            <li className="breadcrumb-item">
-              <Link to="/app/main/dashboard">Dashboard</Link>
-            </li>
-            <li className="breadcrumb-item active">Tickets</li>
-          </ul>
-        </div>
-        <div className="col-auto float-right ml-auto">
-          <a
-            href="#"
-            className="btn add-btn"
-            data-toggle="modal"
-            data-target="#add_ticket"
-          >
-            <i className="fa fa-plus" /> Add Ticket
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
+  
 
-const TicketTracker = () => {
   return (
     <div className="row">
       <div className="col-md-12">
@@ -649,7 +669,7 @@ const TicketTracker = () => {
                   <span className="text-success">+10%</span>
                 </div>
               </div>
-              <h3 className="mb-3">112</h3>
+              <h3 className="mb-3">{data[0]}</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -672,7 +692,7 @@ const TicketTracker = () => {
                   <span className="text-success">+12.5%</span>
                 </div>
               </div>
-              <h3 className="mb-3">70</h3>
+              <h3 className="mb-3">{data[1]}</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -695,7 +715,7 @@ const TicketTracker = () => {
                   <span className="text-danger">-2.8%</span>
                 </div>
               </div>
-              <h3 className="mb-3">100</h3>
+              <h3 className="mb-3">{data[2]}</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -718,7 +738,7 @@ const TicketTracker = () => {
                   <span className="text-danger">-75%</span>
                 </div>
               </div>
-              <h3 className="mb-3">125</h3>
+              <h3 className="mb-3">{data[3]}</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -739,6 +759,21 @@ const TicketTracker = () => {
 
 const Tickets = () => {
   const [data, setData] = useState([]);
+  const [employee, setEmployee] = useState([]);
+  const [departments, setDepartments] = useState([]);
+
+  const [ticketStatus, setTicketStatus] = useState([0,0,0,0]);
+
+
+  const resolveTicket = (arr) => {
+    let pending = 0;
+    arr.forEach((obj) => {
+      if (obj.status.toLowerCase() == 'active') {
+        pending++;
+      }
+    });
+    return [0,0,0,pending];
+  }
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -754,9 +789,13 @@ const Tickets = () => {
     (async () => {
       const res = await fetchTicket();
       setData(res.data);
-      console.log('------All Tickets------');
-      console.log(res.data);
-      console.log('-----------------------');
+      setTicketStatus(resolveTicket(res.data));
+      const emp = await allemployee();
+      setEmployee(emp);
+      const dep = fetchdepartment();
+      setDepartments(dep);
+      console.log(dep.data);
+
     })();
   }, [rerender]);
 
@@ -879,9 +918,9 @@ const Tickets = () => {
       <div className="content container-fluid">
         <TicketHeader />
 
-        <TicketTracker />
+        <TicketTracker data={ticketStatus} />
 
-        <SearchTicket />
+        <SearchTicket data={data} setData={setData}/>
 
         <div className="row">
           <div className="col-md-12">
@@ -901,9 +940,9 @@ const Tickets = () => {
       </div>
       {/* /Page Content */}
 
-      <AddTicket setRerender={setRerender} rerender={rerender}/>
+      <AddTicket setRerender={setRerender} rerender={rerender} employee={employee}/>
 
-      <EditTicket selectedTicketData={selectedTicketData} setRerender={setRerender} rerender={rerender}/>
+      <EditTicket selectedTicketData={selectedTicketData} setRerender={setRerender} departments={departments} rerender={rerender}/>
 
       <DeleteTicket id={selectedTicketData?._id} />
     </div>

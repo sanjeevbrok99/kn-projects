@@ -17,6 +17,24 @@ export async function Login(userName, password) {
   });
   return LoginResponse;
 }
+
+export async function getDashboard() {
+  const dashboard = new Promise(async (resolve) => {
+    httpService
+      .get('/dashboard')
+      .then((response) => {
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return dashboard;
+}
+
 export async function allemployee() {
   const employeeResponse = new Promise(async (resolve) => {
     httpService
@@ -394,7 +412,7 @@ export async function fetchSingleTicket(id) {
 export async function updateTicket(id,data) {
   const fetchTicketResponse = new Promise(async (resolve) => {
     httpService
-      .patch(`/ticket/${id}`,data)
+      .put(`/ticket/${id}`,data)
       .then((response) => {
         return resolve(response);
       })
