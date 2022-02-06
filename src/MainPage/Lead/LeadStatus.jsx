@@ -164,16 +164,6 @@ function LeadStatus() {
                 <li className="breadcrumb-item active">Lead Status</li>
               </ul>
             </div>
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#create_project"
-              >
-                <i className="fa fa-plus" /> Add new lead
-              </a>
-            </div>
           </div>
         </div>
         {/* /Page Header */}

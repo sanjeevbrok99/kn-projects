@@ -74,8 +74,8 @@ const AdminDashboard = () => {
           console.log("-------INTERNAL SERVER ERROR-------");
           return;
         }
-          console.log(res);
-          // setDashboard(res);
+        console.log(res);
+        //setDashboard(res);
       } catch (err) { 
         console.log(err);
       }

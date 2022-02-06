@@ -26,6 +26,7 @@ export async function getDashboard() {
         return resolve(response.data);
       })
       .catch((err) => {
+        console.log(err);
         return resolve({
           error: true,
           message: err.response.message || 'Internal Server Error',

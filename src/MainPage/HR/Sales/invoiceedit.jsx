@@ -9,7 +9,7 @@ import httpService from '../../../lib/httpService';
 const Invoiceedit = () => {
   const { id } = useParams();
   // const {isLoading, setIsLoading} = useState(true)
-  const { invoice, setInvoice } = useState({});
+  const [invoice, setInvoice] = useState({});
   // const history = useHistory();
   const [customers, setCustomers] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -38,13 +38,19 @@ const Invoiceedit = () => {
 
   const fetchInvoice = async () => {
     console.log(id);
-    const invoice = await httpService.get(`/sale-invoice/${id}`);
-    setInvoice(invoice.data);
+    const res = await httpService.get(`/sale-invoice/${id}`);
+    setInvoice(res.data);
+    setItemsToAdd(res.data.items);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await httpService.put(`/sale-invoice/${id}`, invoice);
+    await httpService.put(`/sale-invoice/${id}`, {
+      ...invoice,
+      type: invoiceType,
+      items: itemsToAdd,
+      total: itemsToAdd.reduce((acc, cur) => acc + cur.amount, 0),
+    });
     history.goBack();
   };
 
@@ -82,13 +88,15 @@ const Invoiceedit = () => {
                     </label>
                     <br />
                     <input
+                      className="form-control"
+                      defaultValue={invoice?.customer?.name}
                       onChange={(e) => {
-                        setInvoice({
-                          ...invoice,
-                          name: e.target.value,
+                        setInvoice((prevState) => {
+                          const temp = prevState;
+                          temp.customer.name = e.target.value;
+                          return temp;
                         });
                       }}
-                      className="custom-input"
                     />
                   </div>
                 </div>
@@ -99,13 +107,15 @@ const Invoiceedit = () => {
                     </label>
                     <br />
                     <input
+                      className="form-control"
+                      defaultValue={invoice?.project?.name}
                       onChange={(e) => {
-                        setInvoiceToAdd({
-                          ...invoiceToAdd,
-                          project: e.target.value,
+                        setInvoice((prevState) => {
+                          const temp = prevState;
+                          temp.project.name = e.target.value;
+                          return temp;
                         });
                       }}
-                      className="custom"
                     />
                   </div>
                 </div>
@@ -116,10 +126,18 @@ const Invoiceedit = () => {
                     </label>
                     <div>
                       <input
+                        defaultValue={
+                          invoice?.project?.startDate
+                            ? new Date(invoice?.project?.startDate)
+                                .toISOString()
+                                .split('T')[0]
+                            : ''
+                        }
                         onChange={(e) => {
-                          setInvoice({
-                            ...invoice,
-                            invoiceDate: e.target.value,
+                          setInvoice((prevState) => {
+                            const temp = prevState;
+                            temp.invoiceDate = e.target.value;
+                            return temp;
                           });
                         }}
                         className="form-control"
@@ -137,6 +155,13 @@ const Invoiceedit = () => {
                       <input
                         className="form-control"
                         type="date"
+                        defaultValue={
+                          invoice?.project?.endDate
+                            ? new Date(invoice?.project?.endDate)
+                                .toISOString()
+                                .split('T')[0]
+                            : ''
+                        }
                         onChange={(e) => {
                           setInvoice({
                             ...invoice,
@@ -144,36 +169,6 @@ const Invoiceedit = () => {
                           });
                         }}
                       />
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group">
-                    <label>
-                      Invoice Type<span className="text-danger">*</span>
-                    </label>
-                    <div
-                      onChange={(e) => {
-                        setInvoice({
-                          ...invoice,
-                          type: e.target.value,
-                        });
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        name="type"
-                        id="ONE_TIME"
-                        value={'ONE_TIME'}
-                      />{' '}
-                      One Time{' '}
-                      <input
-                        type="radio"
-                        name="type"
-                        id="RECURRING"
-                        value={'RECURRING'}
-                      />{' '}
-                      Recurring
                     </div>
                   </div>
                 </div>
@@ -199,6 +194,7 @@ const Invoiceedit = () => {
                             <td>{index + 1}</td>
                             <td>
                               <input
+                                defaultValue={item.item}
                                 onChange={(e) => {
                                   const items = itemsToAdd.map((item, i) => {
                                     if (index === i) {
@@ -218,6 +214,7 @@ const Invoiceedit = () => {
                                 className="form-control"
                                 type="text"
                                 style={{ minWidth: '150px' }}
+                                defaultValue={item.description}
                                 onChange={(e) => {
                                   const items = itemsToAdd.map((item, i) => {
                                     if (index === i) {
@@ -231,6 +228,7 @@ const Invoiceedit = () => {
                             </td>
                             <td>
                               <input
+                                defaultValue={item.unitCost}
                                 className="form-control"
                                 style={{ width: '100px' }}
                                 type="text"
@@ -253,6 +251,7 @@ const Invoiceedit = () => {
                                 className="form-control"
                                 style={{ width: '80px' }}
                                 type="text"
+                                defaultValue={item.quantity}
                                 onChange={(e) => {
                                   const items = itemsToAdd.map((item, i) => {
                                     if (index === i) {
@@ -397,14 +396,15 @@ const Invoiceedit = () => {
                       <div className="form-group">
                         <label>Other Information</label>
                         <textarea
+                          defaultValue={invoice?.otherInformation}
                           onChange={(e) => {
-                            setInvoiceToAdd({
-                              ...invoiceToAdd,
-                              otherInformation: e.target.value,
+                            setInvoice((prevState) => {
+                              const temp = prevState;
+                              temp.otherInformation = e.target.value;
+                              return temp;
                             });
                           }}
                           className="form-control"
-                          defaultValue={''}
                         />
                       </div>
                     </div>

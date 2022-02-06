@@ -18,7 +18,9 @@ const Leads = () => {
   const [leadToAdd, setLeadToAdd] = useState({});
   const [projects, setProjects] = useState([]);
   let query = useQuery();
-  const [projectId, setProjectId] = useState(query.get('projectId'));
+  const [projectId, setProjectId] = useState(
+    query.get('projectId') ? query.get('projectId') : ''
+  );
 
   useEffect(() => {
     fetchLeads();
@@ -32,7 +34,7 @@ const Leads = () => {
       leads.data.map((lead, i) => ({
         ...lead,
         id: i + 1,
-        projectName: lead.project.name,
+        noOfProjects: lead.project.length,
         assignedstaff:
           lead.assignedTo.firstName + ' ' + lead.assignedTo.lastName,
         status: lead.status,
@@ -103,13 +105,16 @@ const Leads = () => {
     },
 
     {
-      title: 'Project',
-      dataIndex: 'projectName',
-      render: (text, record) => (
-        <Link to={`/app/projects/projects-view/${record.project?._id}`}>
-          {text}
-        </Link>
-      ),
+      title: 'Projects',
+      dataIndex: 'noOfProjects',
+      render: (text, record) =>
+        text == 1 ? (
+          <Link to={`/app/projects/projects-view/${record.project[0]._id}`}>
+            {record.project[0].name}
+          </Link>
+        ) : (
+          <>{text} Projects</>
+        ),
       sorter: (a, b) => a.project.length - b.project.length,
     },
 
@@ -195,13 +200,13 @@ const Leads = () => {
           <div className="col-12">
             <div className="form-group form-focus focused">
               <select
-                value={projectId ? projectId : 'All Projects'}
+                value={projectId ? projectId : ''}
                 className="form-control"
                 onChange={(e) => {
                   setProjectId(e.target.value);
                 }}
               >
-                <option value={'All Projects'}>All Projects</option>
+                <option value={''}>All Projects</option>
                 {projects.map((project) => (
                   <option key={project._id} value={project._id}>
                     {project.name}
@@ -228,11 +233,13 @@ const Leads = () => {
                 style={{ overflowX: 'auto' }}
                 columns={columns}
                 // bordered
-                dataSource={
-                  !projectId
-                    ? data
-                    : data.filter((lead) => lead.project?._id === projectId)
-                }
+                dataSource={data.filter((lead) => {
+                  if (projectId) {
+                    console.log(projectId);
+                    return lead.project.some((p) => p._id.includes(projectId));
+                  }
+                  return lead;
+                })}
                 rowKey={(record) => record.id}
                 onChange={console.log('change value')}
               />
