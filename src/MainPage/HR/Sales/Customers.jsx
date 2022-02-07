@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { Avatar_07 } from '../../../Entryfile/imagepath';
-
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
@@ -61,7 +59,10 @@ function Customer() {
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to={`/app/profile/customer-profile/${record._id}`} className="avatar">
+          <Link
+            to={`/app/profile/customer-profile/${record._id}`}
+            className="avatar"
+          >
             <img alt="" src={record.image} />
           </Link>
           <Link to={`/app/profile/customer-profile/${record._id}`}>{text}</Link>

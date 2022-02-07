@@ -20,6 +20,7 @@ const ProjectView = () => {
   const [plotInfoBackdrop, setPlotInfoBackdrop] = useState(false);
   const [plotInfo, setPlotInfo] = useState({});
   const [activeInfoTab, setActiveInfoTab] = useState(1);
+  const [selectePlotId, setSelectedPlotId] = useState('');
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -30,6 +31,14 @@ const ProjectView = () => {
     }
     fetchProjectDetails();
   }, []);
+
+  useEffect(() => {
+    if (activeInfoTab === 1 && selectePlotId) {
+      document
+        .querySelector(`#plot-info #${selectePlotId}`)
+        ?.classList.add('selected');
+    }
+  }, [activeInfoTab, selectePlotId]);
 
   const updateProjectPaths = async () => {
     await toast.promise(
@@ -157,10 +166,11 @@ const ProjectView = () => {
                             );
                             if (path && land.leads.length > 0) {
                               path.style.fill = '#1DC5CF';
-                            } else if (path && land.sold) {
-                              path.style.fill = '#FFC107';
                             } else {
                               path.style.fill = '#FF5722';
+                            }
+                            if (path && land.sold) {
+                              path.style.fill = '#FFC107';
                             }
                           });
                         }, 0);
@@ -611,6 +621,7 @@ const ProjectView = () => {
                           )
                         );
                         setPlotInfoBackdrop(true);
+                        setSelectedPlotId(e.target.id);
                         setTimeout(() => {
                           document
                             .querySelector(`#plot-info #${e.target.id}`)
@@ -839,6 +850,9 @@ const ProjectView = () => {
         </div>
       </div>
       <Backdrop
+        style={{
+          zIndex: '9999',
+        }}
         open={plotInfoBackdrop}
         onClick={() => {
           setPlotInfoBackdrop(false);
@@ -859,7 +873,7 @@ const ProjectView = () => {
                 e.stopPropagation();
               }}
               style={{
-                width: '45%',
+                width: '80%',
                 minHeight: '70%',
                 maxHeight: '70%',
                 backgroundColor: 'white',
@@ -989,6 +1003,31 @@ const ProjectView = () => {
                       </div>
                     </div>
                   </div>
+                )}
+                {activeInfoTab === 3 && plotInfo.sold ? (
+                  <div id="lead" className="">
+                    <div
+                      className="task-wrapper"
+                      style={{
+                        padding: '0',
+                      }}
+                    >
+                      <h4>
+                        <b>Sold To</b>: {plotInfo.soldTo?.name}
+                      </h4>
+                      <h4>
+                        <b>Sold On</b>: {plotInfo.soldAt}
+                      </h4>
+                      <h4>
+                        <b>Sold Price</b>: {plotInfo.cost}
+                      </h4>
+                      <h4>
+                        <b>Sold By</b>: {plotInfo.soldBy?.firstName}
+                      </h4>
+                    </div>
+                  </div>
+                ) : (
+                  <></>
                 )}
               </div>
             </div>

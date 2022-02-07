@@ -31,6 +31,7 @@ import {
 import '../../index.css';
 
 import { getDashboard } from '../../../lib/api/index.js';
+import { useSelector } from 'react-redux';
 // import 'Assets/plugins/morris/morris.min.js';
 // import 'Assets/plugins/raphael/raphael.min.js';
 // import 'Assets/js/chart.js';
@@ -54,35 +55,32 @@ const linechartdata = [
   { y: '2012', 'Total Sales': 100, 'Total Revenue': 50 },
 ];
 const AdminDashboard = () => {
-
+  const user = useSelector((state) => state.authentication.value.user);
   const [dashboard, setDashboard] = useState({
     projectCount: 0,
     employeeCount: 0,
     customerCount: 0,
     leadCount: 0,
     invoices: [],
-    payments: []
+    payments: [],
   });
-  
-  
-  useEffect(() => {
 
-    async function fetchApi(){
+  useEffect(() => {
+    async function fetchApi() {
       try {
         const res = await getDashboard();
         if (res.error) {
-          console.log("-------INTERNAL SERVER ERROR-------");
+          console.log('-------INTERNAL SERVER ERROR-------');
           return;
         }
         console.log(res);
         //setDashboard(res);
-      } catch (err) { 
+      } catch (err) {
         console.log(err);
       }
     }
     fetchApi();
   }, []);
-  
 
   return (
     <div className="page-wrapper">
@@ -96,7 +94,7 @@ const AdminDashboard = () => {
         <div className="page-header">
           <div className="row">
             <div className="col-sm-12">
-              <h3 className="page-title">Welcome Admin!</h3>
+              <h3 className="page-title">Welcome {user.firstName}!</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item active">Dashboard</li>
               </ul>
@@ -429,29 +427,29 @@ const AdminDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {
-                        dashboard.invoices.map((inv) => {
-                        return(
+                      {dashboard.invoices.map((inv) => {
+                        return (
                           <tr>
-                              <td>
-                                <Link to="/app/sales/invoices-view">{inv._id}</Link>
-                              </td>
-                              <td>
-                                <h2>
-                                  <a href="#">{inv.customer}</a>
-                                </h2>
-                              </td>
-                              <td>{inv.invoiceDate}</td>
-                              <td>{inv.total}</td>
-                              <td>
-                                <span className="badge bg-inverse-warning">
-                                  {inv.status}
-                                </span>
-                              </td>
-                            </tr>
-                          );
-                        })
-                      }
+                            <td>
+                              <Link to="/app/sales/invoices-view">
+                                {inv._id}
+                              </Link>
+                            </td>
+                            <td>
+                              <h2>
+                                <a href="#">{inv.customer}</a>
+                              </h2>
+                            </td>
+                            <td>{inv.invoiceDate}</td>
+                            <td>{inv.total}</td>
+                            <td>
+                              <span className="badge bg-inverse-warning">
+                                {inv.status}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -479,25 +477,25 @@ const AdminDashboard = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      { 
-                        dashboard.payments.map((payment) => { 
-                          return (
-                            <tr>
-                              <td>
-                                <Link to="/app/sales/invoices-view">{payment._id}</Link>
-                              </td>
-                              <td>
-                                <h2>
-                                  <a href="#">{payment.customer}</a>
-                                </h2>
-                              </td>
-                              <td>{payment.paymentMode}</td>
-                              <td>{payment.paymentDate}</td>
-                              <td>{payment.amount}</td>
-                            </tr>
-                          );
-                        })
-                      }
+                      {dashboard.payments.map((payment) => {
+                        return (
+                          <tr>
+                            <td>
+                              <Link to="/app/sales/invoices-view">
+                                {payment._id}
+                              </Link>
+                            </td>
+                            <td>
+                              <h2>
+                                <a href="#">{payment.customer}</a>
+                              </h2>
+                            </td>
+                            <td>{payment.paymentMode}</td>
+                            <td>{payment.paymentDate}</td>
+                            <td>{payment.amount}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
