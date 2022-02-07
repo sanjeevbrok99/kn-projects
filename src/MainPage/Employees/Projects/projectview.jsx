@@ -21,6 +21,7 @@ const ProjectView = () => {
   const [plotInfo, setPlotInfo] = useState({});
   const [activeInfoTab, setActiveInfoTab] = useState(1);
   const [selectePlotId, setSelectedPlotId] = useState('');
+  const [selectedPath, setSelectedPath] = useState('');
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -53,6 +54,13 @@ const ProjectView = () => {
     );
     fetchProjectDetails();
   };
+
+  useEffect(() => {
+    if (selectedPath) {
+      document.querySelector(`.selected`)?.classList.remove('selected');
+      document.querySelector(`#${selectedPath}`)?.classList.add('selected');
+    }
+  }, [selectedPath]);
 
   const fetchProjectDetails = async () => {
     if (!id) {
@@ -545,7 +553,76 @@ const ProjectView = () => {
                         }}
                       ></div>
                       <div className="row">
-                        {paths.map((path, i) => (
+                        <div className="col-md-12 col-sm-12">
+                          <div className="table-responsive">
+                            <table className="table table-hover table-white">
+                              <thead>
+                                <tr>
+                                  <th className="col-sm-2">Item</th>
+                                  <th className="col-md-6">Size</th>
+                                  <th style={{ width: '100px' }}>Facing</th>
+                                  <th style={{ width: '80px' }}>Dimensions</th>
+                                  <th style={{ width: '100px' }}>
+                                    Calculated Price
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {paths.map((path, index) => (
+                                  <tr>
+                                    <td>
+                                      <input
+                                        className="form-control"
+                                        style={{ minWidth: '150px' }}
+                                        readOnly
+                                        value={path.name}
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        onFocus={() => {
+                                          setSelectedPath(path.name);
+                                        }}
+                                        className="form-control"
+                                        type="text"
+                                        style={{ minWidth: '150px' }}
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        onFocus={() => {
+                                          setSelectedPath(path.name);
+                                        }}
+                                        className="form-control"
+                                        style={{ width: '100px' }}
+                                        type="text"
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        onFocus={() => {
+                                          setSelectedPath(path.name);
+                                        }}
+                                        className="form-control"
+                                        style={{ width: '80px' }}
+                                        type="text"
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        className="form-control"
+                                        readOnly
+                                        style={{ width: '120px' }}
+                                        type="text"
+                                      />
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        {/* {paths.map((path, i) => (
                           <div
                             key={path.name}
                             className="col-md-4 col-sm-6 col-12 col-lg-5 col-xl-4"
@@ -604,7 +681,7 @@ const ProjectView = () => {
                               <br />
                             </div>
                           </div>
-                        ))}
+                        ))} */}
                       </div>
                       <br />
                       <br />

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -285,6 +285,7 @@ const Sidebar = (props) => {
     authentication?.user?.jobRole?.authorities.includes('EMPLOYEE');
   const isManager =
     authentication?.user?.jobRole.authorities.includes('MANAGER');
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
     var Sidemenu = function () {
@@ -292,7 +293,6 @@ const Sidebar = (props) => {
     };
 
     function init() {
-      var $this = Sidemenu;
       $('#sidebar-menu a').on('click', function (e) {
         if ($(this).parent().hasClass('submenu')) {
           e.preventDefault();
@@ -313,7 +313,12 @@ const Sidebar = (props) => {
         .addClass('active')
         .trigger('click');
     }
-    init();
+    if (firstLoad) {
+      setTimeout(() => {
+        init();
+        setFirstLoad(false);
+      }, 1000);
+    }
   }, []);
 
   return (

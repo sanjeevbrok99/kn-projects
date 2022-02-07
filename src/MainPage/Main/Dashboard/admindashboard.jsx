@@ -94,7 +94,7 @@ const AdminDashboard = () => {
         <div className="page-header">
           <div className="row">
             <div className="col-sm-12">
-              <h3 className="page-title">Welcome {user.firstName}!</h3>
+              <h3 className="page-title">Welcome {user?.firstName}!</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item active">Dashboard</li>
               </ul>

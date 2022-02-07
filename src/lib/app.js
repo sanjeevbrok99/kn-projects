@@ -1,6 +1,4 @@
 export default function App() {
-  console.log('App');
-
   // Variables declarations
 
   var $wrapper = $('.main-wrapper');
