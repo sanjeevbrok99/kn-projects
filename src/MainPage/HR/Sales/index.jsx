@@ -28,6 +28,8 @@ import CreditNotes from '../../Sales/CreditNotes';
 import ExpenseCreate from './expensecreate';
 import ExpenseEdit from './expenseedit';
 
+
+
 const SalesRoute = ({ match }) => (
   <Switch>
     <Redirect exact from={`${match.url}/`} to={`${match.url}/customers`} />
