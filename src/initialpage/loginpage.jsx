@@ -10,9 +10,16 @@ import { Login } from '../lib/api/index.js';
 
 const Loginpage = () => {
   const [username, setUsername] = React.useState('');
+  const [isLoding, setIsLoading] = React.useState(false);
   const [password, setPassword] = React.useState('');
   const dispatch = useDispatch();
   const history = useHistory();
+  useEffect(() => {
+    if (localStorage.getItem('auth')) {
+      history.push('/app/dashboard');
+    }
+    setIsLoading(false);
+  }, []);
 
   const handleLoginWithEmailAndPassword = async () => {
     const res = await Login(username, password);
@@ -25,7 +32,9 @@ const Loginpage = () => {
       history.push('/app/dashboard');
     }
   };
-  return (
+  return isLoding ? (
+    <></>
+  ) : (
     <>
       <Helmet>
         <title>Login</title>

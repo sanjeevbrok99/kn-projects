@@ -74,7 +74,7 @@ const Leads = () => {
               style={{
                 width: '100%',
                 height: '100%',
-                background: '#5AB9AA',
+                background: '#E33F3B',
                 borderRadius: '50%',
                 display: 'flex',
                 justifyContent: 'center',
@@ -83,8 +83,7 @@ const Leads = () => {
                 color: '#fff',
               }}
             >
-              {record.name.split(' ')[0].charAt(0) +
-                (record.name.split(' ')[1]?.charAt(0) || '')}
+              {record.name.split(' ')[0].charAt(0)}
             </div>
           </Link>
           <Link to={`/app/profile/lead-profile/${record._id}`}>{text}</Link>

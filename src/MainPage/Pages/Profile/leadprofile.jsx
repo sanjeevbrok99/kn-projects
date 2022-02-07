@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { Link, useParams } from 'react-router-dom';
 import httpService from '../../../lib/httpService';
 import CircularProgress from '@mui/material/CircularProgress';
-import { makeStyles, Paper } from '@material-ui/core';
+import { Backdrop, makeStyles, Paper } from '@material-ui/core';
 import {
   Timeline,
   TimelineItem,
@@ -18,6 +18,45 @@ import {
 } from '@material-ui/lab';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+
+// TODO: Better solution for this
+function dragElement(elmnt) {
+  var pos1 = 0,
+    pos2 = 0,
+    pos3 = 0,
+    pos4 = 0;
+  if (document.getElementById(elmnt.id + 'header')) {
+    document.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown;
+  } else {
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    elmnt.style.top = elmnt.offsetTop - pos2 + 'px';
+    elmnt.style.left = elmnt.offsetLeft - pos1 + 'px';
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,7 +79,10 @@ const EmployeeProfile = () => {
   const [noteToAdd, setNoteToAdd] = useState({});
   const [activityToAdd, setActivityToAdd] = useState({});
   const [profileFetched, setProfileFetched] = useState(false);
-  const [projects, setProjects] = useState({});
+  const [projects, setProjects] = useState([]);
+  const [addProject, setAddProject] = useState(false);
+  const [selectedProject, setSelectedProject] = useState({});
+  const [selectedPlot, setSelectedPlot] = useState({});
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -53,6 +95,11 @@ const EmployeeProfile = () => {
     fetchProjects();
   }, []);
 
+  useEffect(() => {
+    if (document.getElementById('selected-plot'))
+      dragElement(document.getElementById('selected-plot'));
+  }, [selectedPlot?.name]);
+
   const fetchLeadProfile = async () => {
     const response = await httpService.get(`/lead/${id}`);
     setProfile(response.data);
@@ -61,12 +108,7 @@ const EmployeeProfile = () => {
 
   const fetchProjects = async () => {
     const res = await httpService.get('/project');
-    res.data.forEach((project) => {
-      setProjects((projects) => ({
-        ...projects,
-        [project._id]: project.name,
-      }));
-    });
+    setProjects(res.data);
   };
 
   const addNote = async () => {
@@ -686,37 +728,8 @@ const EmployeeProfile = () => {
                 <h3>Projects</h3>
                 <button
                   onClick={(e) => {
-                    Swal.fire({
-                      title: 'Select Project',
-                      input: 'select',
-                      confirmButtonColor: '#E33F3C',
-                      confirmButtonText: 'Add',
-                      inputOptions: projects,
-                      inputValidator: (value) => {
-                        if (!value) {
-                          return 'You need to select a project';
-                        }
-                      },
-                      preConfirm: async (value) => {
-                        await httpService.put(`/project/${value}`, {});
-                        return httpService.put(`/lead/${profile._id}`, {
-                          ...profile,
-                          project: [
-                            ...profile.project.map((p) => p._id),
-                            value,
-                          ],
-                        });
-                      },
-                    }).then((result) => {
-                      console.log(result);
-                      if (result.isConfirmed) {
-                        fetchLeadProfile();
-                        Swal.fire({
-                          title: 'Project Added',
-                          icon: 'success',
-                        });
-                      }
-                    });
+                    e.preventDefault();
+                    setAddProject(true);
                   }}
                   className="btn btn-primary"
                 >
@@ -738,7 +751,6 @@ const EmployeeProfile = () => {
                           <div className="task-container">
                             <span
                               className="task-label"
-                              contentEditable="true"
                               suppressContentEditableWarning={true}
                             >
                               <Link
@@ -796,6 +808,194 @@ const EmployeeProfile = () => {
           </div>
         </div>
       )}
+      <Backdrop
+        open={addProject}
+        style={{ zIndex: '9999' }}
+        onClick={() => {
+          setAddProject(false);
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            style={{
+              width: '90%',
+              height: '90%',
+              backgroundColor: 'white',
+              borderRadius: '10px',
+              padding: '30px',
+              position: 'relative',
+            }}
+          >
+            <h4>Select Project</h4>
+            <select
+              onChange={(e) => {
+                setSelectedProject(
+                  projects.filter((p) => p._id === e.target.value)[0]
+                );
+              }}
+              className="custom-select"
+            >
+              <option hidden value=""></option>
+              {projects?.map((project) => (
+                <option value={project._id}>{project.name}</option>
+              ))}
+            </select>
+            <div
+              style={{
+                height: '77%',
+                marginTop: '20px',
+              }}
+            >
+              {!selectedProject?.name && (
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: '#DCDCE1',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <h2>
+                    <b>No Project Selected</b>
+                  </h2>
+                </div>
+              )}
+              {selectedProject?.name && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!e.target.id) return;
+                    console.log(selectedProject);
+                    document
+                      .querySelector(`.selected`)
+                      ?.classList.remove('selected');
+                    e.target.classList.add('selected');
+                    setSelectedPlot(
+                      selectedProject.landDivisions?.filter(
+                        (p) => p.name === e.target.id
+                      )[0]
+                    );
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: selectedProject?.layout || '',
+                  }}
+                ></div>
+              )}
+            </div>
+            {selectedPlot?.name && (
+              <div
+                id="selected-plot"
+                style={{
+                  position: 'absolute',
+                  top: '20%',
+                  right: '5%',
+                  width: '22%',
+                  cursor: 'move',
+                  zIndex: '9999',
+                  backgroundColor: 'white',
+                  padding: '30px',
+                  borderTop: '1px solid #E7E7E7',
+                  boxShadow:
+                    'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
+                }}
+              >
+                <h4
+                  style={{
+                    textAlign: 'center',
+                  }}
+                >
+                  <b>Plot Details</b>
+                </h4>
+                <h4>
+                  <br />
+                  <b>Plot Name:</b> {selectedPlot.name}
+                </h4>
+                <h4>
+                  <b>Plot Description:</b>{' '}
+                  {selectedPlot.description
+                    ? selectedPlot.description
+                    : 'No Description'}
+                </h4>
+                <h4>
+                  <b>Plot Size:</b> {selectedPlot.area} Sq Ft
+                </h4>
+                <h4>
+                  <b>Plot Price:</b> ₹ {selectedPlot.cost}
+                </h4>
+                <h4>
+                  <b>Interested leads:</b> {selectedPlot.leads?.length || 0}
+                </h4>
+              </div>
+            )}
+            <button
+              style={{
+                marginTop: '3%',
+              }}
+              onClick={async () => {
+                if (!selectedPlot.name || !selectedProject.name)
+                  return toast.error('Please select a project and plot');
+                if (selectedPlot.leads.some((l) => l === profile._id))
+                  return toast.error('Lead is already interested in this plot');
+                selectedPlot.leads = [...selectedPlot.leads, profile._id];
+                console.log(selectedPlot.leads, profile._id);
+                selectedProject.landDivisions[
+                  selectedProject.landDivisions.findIndex(
+                    (l) => l._id === selectedPlot._id
+                  )
+                ] = selectedPlot;
+                if (
+                  !selectedProject.leads.some(
+                    (lead) => lead._id === profile._id
+                  )
+                )
+                  selectedProject.leads = [
+                    ...selectedProject.leads,
+                    profile._id,
+                  ];
+                if (!profile.project.some((p) => p._id === selectedProject._id))
+                  profile.project = [...profile.projects, selectedProject].map(
+                    (p) => p._id
+                  );
+                toast.promise(
+                  Promise.all([
+                    httpService.put(`/lead/${profile._id}`, {
+                      ...profile,
+                    }),
+                    httpService.put(
+                      `/project/${selectedProject._id}`,
+                      selectedProject
+                    ),
+                  ]),
+                  {
+                    success: 'Lead added to project',
+                    error: 'Error adding lead to project',
+                    pending: 'Adding lead to project',
+                  }
+                );
+                setAddProject(false);
+                fetchLeadProfile();
+                fetchProjects();
+              }}
+              className="btn add-btn"
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </Backdrop>
     </div>
   );
 };

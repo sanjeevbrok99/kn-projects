@@ -11,6 +11,7 @@ const ProjectList = () => {
   const [projectList, setProjectList] = React.useState([]);
   const [projectToAdd, setProjectToAdd] = React.useState({});
   const [projectToEdit, setProjectToEdit] = React.useState({});
+  const [projectNameToSearch, setProjectNameToSearch] = React.useState('');
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -123,7 +124,13 @@ const ProjectList = () => {
         <div className="row filter-row">
           <div className="col-9">
             <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
+              <input
+                onChange={(e) => {
+                  setProjectNameToSearch(e.target.value);
+                }}
+                type="text"
+                className="form-control floating"
+              />
               <label className="focus-label">Project Name</label>
             </div>
           </div>
