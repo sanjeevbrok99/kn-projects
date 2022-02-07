@@ -759,7 +759,7 @@ const EmployeeProfile = () => {
                                 {project.name}
                               </Link>
                             </span>
-                            <span
+                            {/* <span
                               onClick={(e) => {
                                 Swal.fire({
                                   title: 'Are you sure?',
@@ -796,7 +796,7 @@ const EmployeeProfile = () => {
                               >
                                 <i className="material-icons">delete</i>
                               </span>
-                            </span>
+                            </span> */}
                           </div>
                         </li>
                       ))}
