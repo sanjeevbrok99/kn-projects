@@ -6,6 +6,7 @@ import httpService from '../../../lib/httpService';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import { Backdrop } from '@mui/material';
 
 const ProjectView = () => {
   const { id } = useParams();
@@ -14,7 +15,11 @@ const ProjectView = () => {
   const [projectDetails, setProjectDetails] = useState({});
   const [projectToEdit, setProjectToEdit] = useState({});
   const svgRef = useRef(null);
+  const [paths, setPaths] = useState([]);
   const [fillCanChange, setFillCanChange] = useState(true);
+  const [plotInfoBackdrop, setPlotInfoBackdrop] = useState(false);
+  const [plotInfo, setPlotInfo] = useState({});
+  const [activeInfoTab, setActiveInfoTab] = useState(1);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -26,71 +31,19 @@ const ProjectView = () => {
     fetchProjectDetails();
   }, []);
 
-  useEffect(() => {
-    if (svgRef.current && !isLoading) {
-      document.querySelectorAll('g *').forEach((e) => {
-        const title = document.createElement('title');
-        title.innerText = e.id;
-        e.appendChild(title);
-        e.classList.remove('selected');
-        if (projectDetails.landDivisions?.some((x) => x.name === e.id)) {
-          e.classList.add('selected');
-        }
-        setFillCanChange(false);
-        e.addEventListener('click', (e) => {
-          Swal.fire({
-            title: 'Attach lead',
-            html: `<select id="length" class="swal2-select" placeholder="Length">
-            <option value="">Select Lead</option>
-            ${projectDetails?.leads
-              ?.filter(
-                (lead) =>
-                  lead.status !== 'Lead Won' && lead.status !== 'Lead Lost'
-              )
-              .map(
-                (lead) => `<option value="${lead._id}">${lead.name}</option>`
-              )}            
-            </seclect>
-            `,
-            confirmButtonText: 'Confirm',
-            focusConfirm: false,
-            preConfirm: () => {
-              const lead = Swal.getPopup().querySelector('#length').value;
-              if (!lead) {
-                Swal.showValidationMessage('Please select lead');
-                return;
-              }
-              return httpService.put(`/project/${id}`, {
-                ...projectDetails,
-                landDivisions: [
-                  ...projectDetails.landDivisions,
-                  { name: e.target.id, lead: lead },
-                ],
-              });
-            },
-          }).then((result) => {
-            if (result.isConfirmed) {
-              fetchProjectDetails();
-              e.target.classList.add('selected');
-            }
-          });
-        });
-      });
-    }
-  }, [svgRef.current, isLoading]);
-
-  // useEffect(() => {
-  //   document.querySelectorAll('g *').forEach((e) => {
-  //     const title = document.createElement('title');
-  //     title.innerText = e.id;
-  //     e.appendChild(title);
-  //     e.classList.remove('selected');
-  //     if (projectDetails.landDivisions?.some((x) => x.name === e.id)) {
-  //       e.classList.add('selected');
-  //     }
-  //     setFillCanChange(false);
-  //   });
-  // }, [fillCanChange]);
+  const updateProjectPaths = async () => {
+    await toast.promise(
+      httpService.post(`/project/${projectDetails._id}/landDivision`, {
+        landDivisions: paths,
+      }),
+      {
+        error: 'Something went wrong',
+        success: 'Layout deatils updated successfully',
+        pending: 'Updating Layout Deatils',
+      }
+    );
+    fetchProjectDetails();
+  };
 
   const fetchProjectDetails = async () => {
     if (!id) {
@@ -99,6 +52,23 @@ const ProjectView = () => {
     const res = await httpService.get(`/project/${id}`);
     setProjectDetails(res.data);
     setProjectToEdit(res.data);
+    setPaths([]);
+    const div = document.createElement('div');
+    div.innerHTML = res.data.layout;
+    div.querySelectorAll('g *').forEach((e) => {
+      if (e.tagName !== 'title') {
+        setPaths((p) => [
+          ...p,
+          {
+            name: e.id,
+            component: e.outerHTML,
+            area: '',
+            cost: '',
+            description: '',
+          },
+        ]);
+      }
+    });
     setIsLoading(false);
   };
 
@@ -155,93 +125,330 @@ const ProjectView = () => {
             </div>
           </div>
           {/* /Page Header */}
-          <div className="row">
-            <div className="col-lg-8 col-xl-9">
-              <div className="card">
-                <div className="card-body">
-                  <div className="project-title">Project Description</div>
-                  <hr />
-                  <p>{projectDetails?.description}</p>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <h5 className="card-title m-b-20">Uploaded files</h5>
-                    <input
-                      type="file"
-                      style={{
-                        display: 'none',
-                      }}
-                      onChange={(e) => {
-                        const form = new FormData();
-                        form.append('attachment', e.target.files[0]);
-                        toast
-                          .promise(
-                            httpService.post(
-                              `/project/${projectDetails._id}/attachment`,
-                              form
-                            ),
-                            {
-                              pending: 'Uploading File',
-                              success: 'File Uploaded',
-                              error: 'File Upload Failed',
-                            }
-                          )
-                          .then(() => {
-                            fetchProjectDetails();
-                          });
-                      }}
-                    />
-                    <button
-                      onClick={(e) => {
-                        e.target.previousSibling.click();
-                      }}
-                      className="btn add-btn"
+          <div className="card tab-box">
+            <div className="row user-tabs">
+              <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                <ul className="nav nav-tabs nav-tabs-bottom">
+                  <li className="nav-item">
+                    <a
+                      href="#details"
+                      data-toggle="tab"
+                      className="nav-link active"
                     >
-                      <i className="fa fa-plus" /> Add File
-                    </button>
+                      Details
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      href="#attachments"
+                      data-toggle="tab"
+                      className="nav-link"
+                    >
+                      Attachments
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      onClick={() => {
+                        setTimeout(() => {
+                          projectDetails.landDivisions.forEach((land) => {
+                            const path = document.querySelector(
+                              `#${land.name}`
+                            );
+                            if (path && land.leads.length > 0) {
+                              path.style.fill = '#1DC5CF';
+                            } else if (path && land.sold) {
+                              path.style.fill = '#FFC107';
+                            } else {
+                              path.style.fill = '#FF5722';
+                            }
+                          });
+                        }, 0);
+                      }}
+                      href="#layout"
+                      data-toggle="tab"
+                      className="nav-link"
+                    >
+                      Layout
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="#leads" data-toggle="tab" className="nav-link">
+                      Leads
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="tab-content">
+            <div
+              id="details"
+              className="pro-overview show active tab-pane fade"
+            >
+              <div className="row">
+                <div className="col-lg-8 col-xl-9">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="project-title">Project Description</div>
+                      <hr />
+                      <p>{projectDetails?.description}</p>
+                    </div>
                   </div>
-                  <ul className="files-list">
-                    {projectDetails.attachments?.map((attachment) => (
-                      <li>
-                        <div className="files-cont">
-                          <div className="file-type">
-                            <span className="files-icon">
-                              <i className="fa fa-file-pdf-o" />
-                            </span>
-                          </div>
-                          <div className="files-info">
-                            <span className="file-name text-ellipsis">
-                              <a target={'_blank'} href={attachment.url}>
-                                {attachment.name}
-                              </a>
-                            </span>
-                            <span className="file-date">
+                </div>
+                <div className="col-lg-4 col-xl-3">
+                  <div className="card">
+                    <div className="card-body">
+                      <h6 className="card-title m-b-15">Project details</h6>
+                      <table className="table table-striped table-border">
+                        <tbody>
+                          <tr>
+                            <td>Cost:</td>
+                            <td className="text-right">
+                              ₹{projectDetails.estimatedCost}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Created:</td>
+                            <td className="text-right">
                               {new Date(
-                                attachment.uploadedAt
-                              ).toLocaleDateString() +
-                                ' at ' +
-                                new Date(
-                                  attachment.uploadedAt
-                                ).toLocaleTimeString()}
-                            </span>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                                projectDetails?.startDate
+                              ).toLocaleDateString()}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Deadline:</td>
+                            <td className="text-right">
+                              {new Date(
+                                projectDetails?.endDate
+                              ).toLocaleDateString()}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Created by:</td>
+                            <td className="text-right">
+                              <Link to="/app/profile/employee-profile">
+                                {projectDetails?.createdBy?.firstName ||
+                                  'Admin'}
+                              </Link>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Status:</td>
+                            <td className="text-right">Working</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p className="m-b-5">
+                        Progress
+                        <span className="text-success float-right">40%</span>
+                      </p>
+                      <div className="progress progress-xs mb-0">
+                        <div
+                          className="progress-bar bg-success"
+                          role="progressbar"
+                          data-toggle="tooltip"
+                          title="40%"
+                          style={{ width: '40%' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card project-user">
+                    <div className="card-body">
+                      <h6 className="card-title m-b-20">Members</h6>
+                      <ul className="list-box">
+                        {projectDetails?.members?.map((member) => (
+                          <li>
+                            <Link
+                              to={`/app/profile/employee-profile/${member._id}`}
+                            >
+                              <div className="list-item">
+                                <div className="list-left">
+                                  <span className="avatar">
+                                    <div
+                                      style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        background: '#5AB9AA',
+                                        borderRadius: '50%',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        fontSize: '1rem',
+                                        color: '#fff',
+                                      }}
+                                    >
+                                      {member.firstName.charAt(0) +
+                                        (member.lastName.charAt(0) || '')}
+                                    </div>
+                                  </span>
+                                </div>
+                                <div className="list-body">
+                                  <span className="message-author">
+                                    {member.firstName} {member.lastName}
+                                  </span>
+                                  <div className="clearfix" />
+                                </div>
+                              </div>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="card project-user">
+                    <div className="card-body">
+                      <h6 className="card-title m-b-20">Leads</h6>
+                      <ul className="list-box">
+                        {projectDetails?.leads
+                          ?.reverse()
+                          .slice(0, 4)
+                          .map((lead) => (
+                            <li>
+                              <Link to="/app/profile/employee-profile">
+                                <div className="list-item">
+                                  <div className="list-left">
+                                    <span className="avatar">
+                                      <div
+                                        style={{
+                                          width: '100%',
+                                          height: '100%',
+                                          background: '#5AB9AA',
+                                          borderRadius: '50%',
+                                          display: 'flex',
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                          fontSize: '1.2rem',
+                                          color: '#fff',
+                                        }}
+                                      >
+                                        {lead.name.split(' ')[0].charAt(0) +
+                                          (lead.name.split(' ')[1]?.charAt(0) ||
+                                            '')}
+                                      </div>
+                                    </span>
+                                  </div>
+                                  <div className="list-body">
+                                    <span className="message-author">
+                                      {lead.name}
+                                    </span>
+                                    <div className="clearfix" />
+                                    <span className="message-content">
+                                      {lead.status}
+                                    </span>
+                                  </div>
+                                </div>
+                              </Link>
+                            </li>
+                          ))}
+                        <span className="message-content">
+                          <Link
+                            to={`/app/employees/leads?projectId=${projectDetails._id}`}
+                          >
+                            {projectDetails.leads?.length > 4 && (
+                              <>
+                                + {projectDetails?.leads?.length - 4} more leads
+                              </>
+                            )}
+                          </Link>
+                        </span>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
-              {!projectDetails?.layout && (
-                <div className="card">
+            </div>
+            <div className="tab-pane fade" id="attachments">
+              <div className="row">
+                <div
+                  className="input-group mb-3 pl-3"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <h3>Attachments</h3>
+                  <input
+                    type="file"
+                    style={{
+                      display: 'none',
+                    }}
+                    onChange={(e) => {
+                      const form = new FormData();
+                      form.append('attachment', e.target.files[0]);
+                      toast
+                        .promise(
+                          httpService.post(
+                            `/project/${projectDetails._id}/attachment`,
+                            form
+                          ),
+                          {
+                            pending: 'Uploading File',
+                            success: 'File Uploaded',
+                            error: 'File Upload Failed',
+                          }
+                        )
+                        .then(() => {
+                          fetchProjectDetails();
+                        });
+                    }}
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.target.previousSibling.click();
+                    }}
+                    className="btn add-btn"
+                  >
+                    <i className="fa fa-plus" /> Add File
+                  </button>
+                </div>
+                <div
+                  className="card"
+                  style={{
+                    width: '100%',
+                  }}
+                >
                   <div className="card-body">
-                    <h3>Project Layout</h3>
+                    <ul className="files-list">
+                      {projectDetails.attachments?.map((attachment) => (
+                        <li>
+                          <div className="files-cont">
+                            <div className="file-type">
+                              <span className="files-icon">
+                                <i className="fa fa-file-pdf-o" />
+                              </span>
+                            </div>
+                            <div className="files-info">
+                              <span className="file-name text-ellipsis">
+                                <a target={'_blank'} href={attachment.url}>
+                                  {attachment.name}
+                                </a>
+                              </span>
+                              <span className="file-date">
+                                {new Date(
+                                  attachment.uploadedAt
+                                ).toLocaleDateString() +
+                                  ' at ' +
+                                  new Date(
+                                    attachment.uploadedAt
+                                  ).toLocaleTimeString()}
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="tab-pane fade" id="layout">
+              <h2 className="card-title mb-0 h-100 mt-2"> Builder Layout</h2>
+              <hr />
+              <div className="row">
+                {!projectDetails?.layout && (
+                  <div className="card-body">
                     <h3
                       style={{
                         textAlign: 'center',
@@ -252,7 +459,26 @@ const ProjectView = () => {
                     >
                       <input
                         type={'file'}
-                        onChange={(e) => {}}
+                        onChange={(e) => {
+                          console.log(e.target.files[0]);
+                          const form = new FormData();
+                          form.append('layout', e.target.files[0]);
+                          toast
+                            .promise(
+                              httpService.post(
+                                `/project/${projectDetails._id}/layout`,
+                                form
+                              ),
+                              {
+                                pending: 'Uploading File',
+                                success: 'File Uploaded',
+                                error: 'File Upload Failed',
+                              }
+                            )
+                            .then(() => {
+                              fetchProjectDetails();
+                            });
+                        }}
                         style={{
                           display: 'none',
                         }}
@@ -263,462 +489,222 @@ const ProjectView = () => {
                           float: 'none',
                         }}
                         onClick={(e) => {
-                          // e.target.previousSibling.click();
-                          Swal.fire({
-                            title: 'Add Layout',
-                            input: 'textarea',
-                            confirmButtonColor: '#E23E3B',
-                            confirmButtonText: 'Confirm',
-                            showCancelButton: true,
-                            preConfirm: (value) => {
-                              return httpService.put(
-                                `/project/${projectDetails._id}/`,
-                                {
-                                  ...projectDetails,
-                                  layout: value,
-                                }
-                              );
-                            },
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              fetchProjectDetails();
-                            }
-                          });
+                          e.target.previousSibling.click();
                         }}
                       >
                         Add Layout
                       </button>
                     </h3>
                   </div>
-                </div>
-              )}
-              {projectDetails?.layout && (
-                <div className="card">
-                  <div className="card-body">
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <h3>Project Layout</h3>
+                )}
+                {projectDetails?.layout &&
+                  !projectDetails?.landDivisions?.length > 0 && (
+                    <div className="card-body">
                       <button
+                        className="btn add-btn"
                         style={{
                           marginLeft: 'auto',
                         }}
-                        className="btn add-btn"
+                        onClick={() => {
+                          const invalidPaths = paths.filter(
+                            (path) => path.area === ''
+                          );
+                          if (invalidPaths.length > 0) {
+                            invalidPaths.forEach((path) => {
+                              toast.error(
+                                `Area for ${path.name} is not specified`
+                              );
+                            });
+                          } else {
+                            updateProjectPaths();
+                          }
+                        }}
                       >
-                        Edit Layout
+                        Save Layout
                       </button>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      ></div>
+                      <div
+                        ref={svgRef}
+                        dangerouslySetInnerHTML={{
+                          __html: projectDetails?.layout,
+                        }}
+                      ></div>
+                      <div className="row">
+                        {paths.map((path, i) => (
+                          <div
+                            key={path.name}
+                            className="col-md-4 col-sm-6 col-12 col-lg-5 col-xl-4"
+                          >
+                            <div
+                              className="card"
+                              style={{
+                                padding: '6px',
+                              }}
+                            >
+                              <h3
+                                style={{
+                                  textAlign: 'center',
+                                }}
+                              >
+                                {path.name}
+                              </h3>
+                              <input
+                                type={'number'}
+                                onChange={(e) => {
+                                  setPaths((p) => {
+                                    const newPaths = [...p];
+                                    newPaths[i].area = e.target.value;
+                                    newPaths[i].cost =
+                                      e.target.value *
+                                      projectDetails.estimatedCost;
+                                    return newPaths;
+                                  });
+                                }}
+                                onFocus={(e) => {
+                                  document
+                                    .querySelector(`svg #${path.name}`)
+                                    .classList.add('selected');
+                                }}
+                                onBlur={(e) => {
+                                  document
+                                    .querySelector(`svg #${path.name}`)
+                                    .classList.remove('selected');
+                                }}
+                                placeholder="Area"
+                                className="form-control"
+                              />
+                              <br />
+                              <textarea
+                                onChange={(e) => {
+                                  setPaths((p) => {
+                                    const newPaths = [...p];
+                                    newPaths[i].description = e.target.value;
+                                    return newPaths;
+                                  });
+                                }}
+                                className="form-control"
+                                rows={4}
+                                placeholder="Description"
+                              />
+                              <br />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <br />
+                      <br />
                     </div>
+                  )}
+                {projectDetails?.landDivisions?.length > 0 && (
+                  <div className="card-body">
                     <div
+                      onClick={(e) => {
+                        if (!e.target.id) return;
+                        setPlotInfo(
+                          projectDetails.landDivisions.find(
+                            (d) => d.name === e.target.id
+                          )
+                        );
+                        setPlotInfoBackdrop(true);
+                        setTimeout(() => {
+                          document
+                            .querySelector(`#plot-info #${e.target.id}`)
+                            .classList.add('selected');
+                        }, 0);
+                      }}
                       ref={svgRef}
                       dangerouslySetInnerHTML={{
                         __html: projectDetails?.layout,
                       }}
                     ></div>
+                    <h4>Legends</h4>
                     <div>
-                      Legend:{' '}
                       <div
                         style={{
+                          background: '#1DC5CF',
                           display: 'inline-block',
-                          backgroundColor: 'green',
                           width: '10px',
                           height: '10px',
                         }}
                       ></div>{' '}
-                      - Lead Associated
+                      Leads Attahced
                     </div>
-                    <br />
-                    <br />
-                    <h4>Lead Interests</h4>
-                    <div
-                      className="task-wrapper"
-                      style={{
-                        padding: '0',
-                      }}
-                    >
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {projectDetails.landDivisions?.map(
-                              (landDivision, i) => (
-                                <li className="task" key={i}>
-                                  <div className="task-container">
-                                    <span
-                                      className="task-label"
-                                      contentEditable="true"
-                                      suppressContentEditableWarning={true}
-                                    >
-                                      {landDivision.lead?.name} has shown
-                                      interest in Land area {landDivision.name}
-                                    </span>
-                                    <span
-                                      onClick={(e) => {
-                                        Swal.fire({
-                                          title: 'Are you sure?',
-                                          icon: 'warning',
-                                          showCancelButton: true,
-                                          confirmButtonColor: '#3085d6',
-                                          preConfirm: () => {
-                                            return httpService.put(
-                                              `/project/${projectDetails._id}`,
-                                              {
-                                                ...projectDetails,
-                                                landDivisions:
-                                                  projectDetails.landDivisions.filter(
-                                                    (_, index) => index !== i
-                                                  ),
-                                              }
-                                            );
-                                          },
-                                        }).then(() => {
-                                          fetchProjectDetails();
-                                          document
-                                            .querySelector(
-                                              `svg #${landDivision.name}`
-                                            )
-                                            .classList.remove('selected');
-                                        });
-                                      }}
-                                      className="task-action-btn task-btn-right"
-                                    >
-                                      <span
-                                        className="action-circle large delete-btn"
-                                        title="Delete Record"
-                                      >
-                                        <i className="material-icons">delete</i>
-                                      </span>
-                                    </span>
-                                  </div>
-                                </li>
-                              )
-                            )}
-                          </ul>
-                        </div>
-                      </div>
+                    <div>
+                      <div
+                        style={{
+                          background: '#FF5722',
+                          display: 'inline-block',
+                          width: '10px',
+                          height: '10px',
+                        }}
+                      ></div>{' '}
+                      Inactive plots
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          background: '#FFC107',
+                          display: 'inline-block',
+                          width: '10px',
+                          height: '10px',
+                        }}
+                      ></div>{' '}
+                      Sold Plots
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-            <div className="col-lg-4 col-xl-3">
-              <div className="card">
-                <div className="card-body">
-                  <h6 className="card-title m-b-15">Project details</h6>
-                  <table className="table table-striped table-border">
-                    <tbody>
-                      <tr>
-                        <td>Cost:</td>
-                        <td className="text-right">
-                          ₹{projectDetails.estimatedCost}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Created:</td>
-                        <td className="text-right">
-                          {new Date(
-                            projectDetails?.startDate
-                          ).toLocaleDateString()}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Deadline:</td>
-                        <td className="text-right">
-                          {new Date(
-                            projectDetails?.endDate
-                          ).toLocaleDateString()}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Created by:</td>
-                        <td className="text-right">
-                          <Link to="/app/profile/employee-profile">
-                            {projectDetails?.createdBy?.firstName || 'Admin'}
-                          </Link>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Status:</td>
-                        <td className="text-right">Working</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <p className="m-b-5">
-                    Progress
-                    <span className="text-success float-right">40%</span>
-                  </p>
-                  <div className="progress progress-xs mb-0">
-                    <div
-                      className="progress-bar bg-success"
-                      role="progressbar"
-                      data-toggle="tooltip"
-                      title="40%"
-                      style={{ width: '40%' }}
-                    />
-                  </div>
-                </div>
+            <div id="leads" className="tab-pane fade">
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <h3>Leads</h3>
               </div>
-              <div className="card project-user">
-                <div className="card-body">
-                  <h6 className="card-title m-b-20">Members</h6>
-                  <ul className="list-box">
-                    {projectDetails?.members?.map((member) => (
-                      <li>
+              <div
+                className="row"
+                style={{
+                  padding: '15px',
+                }}
+              >
+                {projectDetails?.leads.map((lead) => (
+                  <div
+                    key={lead._id}
+                    className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
+                  >
+                    <div className="profile-widget">
+                      <div className="profile-img">
                         <Link
-                          to={`/app/profile/employee-profile/${member._id}`}
+                          to={`/app/profile/lead-profile/${lead._id}`}
+                          className="avatar"
                         >
-                          <div className="list-item">
-                            <div className="list-left">
-                              <span className="avatar">
-                                <div
-                                  style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    background: '#5AB9AA',
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    fontSize: '1rem',
-                                    color: '#fff',
-                                  }}
-                                >
-                                  {member.firstName.charAt(0) +
-                                    (member.lastName.charAt(0) || '')}
-                                </div>
-                              </span>
-                            </div>
-                            <div className="list-body">
-                              <span className="message-author">
-                                {member.firstName} {member.lastName}
-                              </span>
-                              <div className="clearfix" />
-                            </div>
-                          </div>
+                          <img src={''} alt="" />
                         </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="card project-user">
-                <div className="card-body">
-                  <h6 className="card-title m-b-20">Leads</h6>
-                  <ul className="list-box">
-                    {projectDetails?.leads
-                      ?.reverse()
-                      .slice(0, 4)
-                      .map((lead) => (
-                        <li>
-                          <Link to="/app/profile/employee-profile">
-                            <div className="list-item">
-                              <div className="list-left">
-                                <span className="avatar">
-                                  <div
-                                    style={{
-                                      width: '100%',
-                                      height: '100%',
-                                      background: '#5AB9AA',
-                                      borderRadius: '50%',
-                                      display: 'flex',
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
-                                      fontSize: '1.2rem',
-                                      color: '#fff',
-                                    }}
-                                  >
-                                    {lead.name.split(' ')[0].charAt(0) +
-                                      (lead.name.split(' ')[1]?.charAt(0) ||
-                                        '')}
-                                  </div>
-                                </span>
-                              </div>
-                              <div className="list-body">
-                                <span className="message-author">
-                                  {lead.name}
-                                </span>
-                                <div className="clearfix" />
-                                <span className="message-content">
-                                  {lead.status}
-                                </span>
-                              </div>
-                            </div>
-                          </Link>
-                        </li>
-                      ))}
-                    <span className="message-content">
-                      <Link
-                        to={`/app/employees/leads?projectId=${projectDetails._id}`}
-                      >
-                        {projectDetails.leads?.length > 4 && (
-                          <>+ {projectDetails?.leads?.length - 4} more leads</>
-                        )}
-                      </Link>
-                    </span>
-                  </ul>
-                </div>
+                      </div>
+                      <h4 className="user-name m-t-10 mb-0 text-ellipsis">
+                        <Link to="/app/profile/employee-profile">
+                          {lead.name}
+                        </Link>
+                      </h4>
+                      <div className="small text-muted">{lead.phone}</div>
+                      <div className="small text-muted">{lead.email}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       )}
       {/* /Page Content */}
-      {/* Assign Leader Modal */}
-      <div id="assign_leader" className="modal custom-modal fade" role="dialog">
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Assign Leader to this project</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="input-group m-b-30">
-                <input
-                  placeholder="Search to add a leader"
-                  className="form-control search-input"
-                  type="text"
-                />
-                <span className="input-group-append">
-                  <button className="btn btn-primary">Search</button>
-                </span>
-              </div>
-              <div>
-                <ul className="chat-user-list">
-                  <li>
-                    <a href="#">
-                      <div className="media">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_09} />
-                        </span>
-                        <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Shital Agarwal</div>
-                          <span className="designation">Product Manager</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div className="media">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_10} />
-                        </span>
-                        <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Harvinder</div>
-                          <span className="designation">Product Manager</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div className="media">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_16} />
-                        </span>
-                        <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Sushmita Singh</div>
-                          <span className="designation">Team Leader</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="submit-section">
-                <button className="btn btn-primary submit-btn">Submit</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Assign Leader Modal */}
-      {/* Assign User Modal */}
-      <div id="assign_user" className="modal custom-modal fade" role="dialog">
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Assign the user to this project</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="input-group m-b-30">
-                <input
-                  placeholder="Search a user to assign"
-                  className="form-control search-input"
-                  type="text"
-                />
-                <span className="input-group-append">
-                  <button className="btn btn-primary">Search</button>
-                </span>
-              </div>
-              <div>
-                <ul className="chat-user-list">
-                  <li>
-                    <a href="#">
-                      <div className="media">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_09} />
-                        </span>
-                        <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Shital Agarwal</div>
-                          <span className="designation">Product Manager</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div className="media">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_10} />
-                        </span>
-                        <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Harvinder</div>
-                          <span className="designation">Product Manager</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div className="media">
-                        <span className="avatar">
-                          <img alt="" src={Avatar_16} />
-                        </span>
-                        <div className="media-body align-self-center text-nowrap">
-                          <div className="user-name">Sushmita Singh</div>
-                          <span className="designation">Team Leader</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="submit-section">
-                <button className="btn btn-primary submit-btn">Submit</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Assign User Modal */}
-      {/* Edit Project Modal */}
       <div id="edit_project" className="modal custom-modal fade" role="dialog">
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
@@ -852,6 +838,163 @@ const ProjectView = () => {
           </div>
         </div>
       </div>
+      <Backdrop
+        open={plotInfoBackdrop}
+        onClick={() => {
+          setPlotInfoBackdrop(false);
+        }}
+      >
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {plotInfoBackdrop && (
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              style={{
+                width: '45%',
+                minHeight: '70%',
+                maxHeight: '70%',
+                backgroundColor: 'white',
+                borderRadius: '10px',
+                padding: '30px',
+                overflow: 'auto',
+              }}
+            >
+              <div className="card tab-box">
+                <div className="row user-tabs">
+                  <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                    <ul className="nav nav-tabs nav-tabs-bottom">
+                      <li className="nav-item">
+                        <a
+                          href="#info"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setActiveInfoTab(1);
+                          }}
+                          className={`nav-link ${
+                            activeInfoTab === 1 ? 'active' : ''
+                          }`}
+                        >
+                          Plot Info
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          href="#lead"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setActiveInfoTab(2);
+                          }}
+                          className={`nav-link ${
+                            activeInfoTab === 2 ? 'active' : ''
+                          }`}
+                        >
+                          Leads
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          href="#leads"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setActiveInfoTab(3);
+                          }}
+                          className={`nav-link ${
+                            activeInfoTab === 3 ? 'active' : ''
+                          }`}
+                        >
+                          Sales
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-content">
+                {activeInfoTab === 1 && (
+                  <div id="info" className="">
+                    <div>
+                      <h4>
+                        <b>Plot Name</b>: <span>{plotInfo.name}</span>
+                      </h4>
+                      <h4>
+                        <b>Plot Size</b>: <span>{plotInfo.area} Sq Feet</span>
+                      </h4>
+                      <h4>
+                        <b>Plot Cost</b>: <span>{plotInfo.cost}</span>
+                      </h4>
+                      <h4>
+                        <b>Description</b>:{' '}
+                        <span>
+                          {plotInfo.description
+                            ? plotInfo.description
+                            : 'No Description Given'}
+                        </span>
+                      </h4>
+                      <h4>
+                        <b>Status</b>:{' '}
+                        <span>{plotInfo.sold ? 'Sold ' : 'Not Sold'}</span>
+                      </h4>
+                      <h4>
+                        <b>Plot Location</b>
+                      </h4>
+                      <div
+                        id="plot-info"
+                        dangerouslySetInnerHTML={{
+                          __html: projectDetails?.layout,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+                {activeInfoTab === 2 && (
+                  <div id="lead" className="">
+                    <h4>Interested leads</h4>
+                    <div
+                      className="task-wrapper"
+                      style={{
+                        padding: '0',
+                      }}
+                    >
+                      <div className="task-list-container">
+                        <div className="task-list-body">
+                          <ul id="task-list">
+                            {plotInfo.leads?.map((lead, i) => (
+                              <li className="task" key={i}>
+                                <div className="task-container">
+                                  <span
+                                    className="task-label"
+                                    suppressContentEditableWarning={true}
+                                  >
+                                    <Link
+                                      to={`/app/profile/lead-profile/${lead._id}`}
+                                    >
+                                      {lead.name}
+                                    </Link>
+                                  </span>
+                                  <span></span>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </Backdrop>
       {/* /Edit Project Modal */}
     </div>
   );

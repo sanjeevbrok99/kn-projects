@@ -62,7 +62,7 @@ const SalesRoute = ({ match }) => (
       path={`${match.url}/recurring-invoice-edit`}
       component={RecurringInvoiceEdit}
     /> */}
-    <Route path={`${match.url}/invoices-view`} component={Invoiceview} />
+    <Route path={`${match.url}/invoices-view/:id`} component={Invoiceview} />
 
     <Route path={`${match.url}/payment-received`} component={Payments} />
     <Route path={`${match.url}/provident-fund`} component={ProvidentFund} />

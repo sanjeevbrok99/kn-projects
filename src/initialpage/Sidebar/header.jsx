@@ -393,7 +393,13 @@ class Header extends Component {
               <Link className="dropdown-item" to="/settings/">
                 Settings
               </Link>
-              <Link className="dropdown-item" to="/login">
+              <Link
+                onClick={(e) => {
+                  localStorage.removeItem('auth');
+                }}
+                className="dropdown-item"
+                to="/login"
+              >
                 Logout
               </Link>
             </div>
@@ -417,7 +423,13 @@ class Header extends Component {
             <Link className="dropdown-item" to="/settings/companysetting">
               Settings
             </Link>
-            <Link className="dropdown-item" to="/login">
+            <Link
+              onClick={() => {
+                localStorage.removeItem('auth');
+              }}
+              className="dropdown-item"
+              to="/login"
+            >
               Logout
             </Link>
           </div>
