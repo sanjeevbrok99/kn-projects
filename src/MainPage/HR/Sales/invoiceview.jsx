@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import React, { Component, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useParams } from 'react-router-dom';
@@ -40,6 +41,19 @@ const Invoiceview = () => {
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
+      {!invoiceFetched && (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
+        </div>
+      )}
       {invoiceFetched && (
         <div className="content container-fluid">
           {/* Page Header */}
@@ -82,7 +96,9 @@ const Invoiceview = () => {
                     </div>
                     <div className="col-sm-6 m-b-20">
                       <div className="invoice-details">
-                        <h3 className="text-uppercase">Invoice #INV-0001</h3>
+                        <h3 className="text-uppercase">
+                          Invoice #INV-{invoice?._id.toString().padStart(4, 0)}
+                        </h3>
                         <ul className="list-unstyled">
                           <li>
                             Date:{' '}
