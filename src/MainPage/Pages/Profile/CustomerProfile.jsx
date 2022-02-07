@@ -1,11 +1,11 @@
 /**
  * TermsCondition Page
  */
-import React, { useEffect ,useState} from 'react';
- import { Helmet } from 'react-helmet';
- import { Link,useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { Link, useParams } from 'react-router-dom';
 import { Avatar_19 } from '../../../Entryfile/imagepath';
-import {getACustomer} from './../../../lib/api/index'
+import { getACustomer } from './../../../lib/api/index';
 
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
@@ -13,11 +13,10 @@ import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
 import httpService from '../../../lib/httpService';
 import Swal from 'sweetalert2';
- 
 
 const Invoices = (props) => {
   const [data, setData] = useState([]);
-  
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -84,8 +83,7 @@ const Invoices = (props) => {
   };
 
   const fetchInvoice = async () => {
-
-    console.log("========Inv Prop========");
+    console.log('========Inv Prop========');
     const invoices = props.invoice;
     console.log(invoices);
 
@@ -209,35 +207,31 @@ const Invoices = (props) => {
     },
   ];
   return (
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive">
-              <Table
-                className="table-striped"
-                pagination={{
-                  total: data.length,
-                  showTotal: (total, range) =>
-                    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                  showSizeChanger: true,
-                  onShowSizeChange: onShowSizeChange,
-                  itemRender: itemRender,
-                }}
-                style={{ overflowX: 'auto' }}
-                columns={columns}
-                dataSource={data}
-                rowKey={(record) => record.id}
-              />
-            </div>
-          </div>
+    <div className="row">
+      <div className="col-md-12">
+        <div className="table-responsive">
+          <Table
+            className="table-striped"
+            pagination={{
+              total: data.length,
+              showTotal: (total, range) =>
+                `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+              showSizeChanger: true,
+              onShowSizeChange: onShowSizeChange,
+              itemRender: itemRender,
+            }}
+            style={{ overflowX: 'auto' }}
+            columns={columns}
+            dataSource={data}
+            rowKey={(record) => record.id}
+          />
         </div>
+      </div>
+    </div>
   );
 };
 
-
-
-
 const CustomerProfile = () => {
-  
   const [customer, setCustomer] = useState(null);
   let { id } = useParams();
 
@@ -250,134 +244,124 @@ const CustomerProfile = () => {
     }
     fetchApi();
   }, []);
-  
-   return customer ? (
-     <div className="page-wrapper">
-       <Helmet>
-         <title>Client Profile </title>
-         <meta name="description" content="Reactify Blank Page" />
-       </Helmet>
-       {/* Page Content */}
-       <div className="content container-fluid">
-         {/* Page Header */}
-         <div className="page-header">
-           <div className="row">
-             <div className="col-sm-12">
-               <h3 className="page-title">Profile</h3>
-               <ul className="breadcrumb">
-                 <li className="breadcrumb-item">
-                   <Link to="/app/main/dashboard">Dashboard</Link>
-                 </li>
-                 <li className="breadcrumb-item active">Profile</li>
-               </ul>
-             </div>
-           </div>
-         </div>
-         {/* /Page Header */}
-         <div className="card mb-0">
-           <div className="card-body">
-             <div className="row">
-               <div className="col-md-12">
-                 <div className="profile-view">
-                   <div className="profile-img-wrap">
-                     <div className="profile-img">
-                       <a href="">
-                         <img src={Avatar_19} alt="" />
-                       </a>
-                     </div>
-                   </div>
-                   <div className="profile-basic">
-                     <div className="row">
-                       <div className="col-md-5">
-                         <div className="profile-info-left">
-                           <h3 className="user-name m-t-0">
-                             {customer.name}
-                           </h3>
-                           <h5 className="company-role m-t-0 mb-0">
-                             {customer.email}
-                           </h5>
-                           <small className="text-muted">{customer.company}</small>
-                           <small className="text-muted">Gender:{customer.gender} Male</small>
-                         </div>
-                       </div>
-                       <div className="col-md-7">
-                         <ul className="personal-info">
-                           <li>
-                             <span className="title">Phone:</span>
-                             <span className="text">
-                               <a href="">{customer.phone}</a>
-                             </span>
-                           </li>
-                           <li>
-                             <span className="title">Email:</span>
-                             <span className="text">
-                               <a href="">{customer.email}</a>
-                             </span>
-                           </li>
-                           <li>
-                             <span className="title">Birthday:</span>
-                             <span className="text">DOB</span>
-                           </li>
-                           <li>
-                             <span className="title">Address:</span>
-                             <span className="text">
-                               {customer.address}
-                             </span>
-                           </li>
-                         </ul>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-         <div className="card tab-box">
-           <div className="row user-tabs">
-             <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
-               <ul className="nav nav-tabs nav-tabs-bottom">
-                 <li className="nav-item col-sm-3">
-                   <a
-                     className="nav-link active"
-                     data-toggle="tab"
-                     href="#myinvoice"
-                   >
-                     Invoices
-                   </a>
-                 </li>
-                 <li className="nav-item col-sm-3">
-                   <a className="nav-link" data-toggle="tab" href="#tasks">
-                     Others
-                   </a>
-                 </li>
-               </ul>
-             </div>
-           </div>
-         </div>
-         <div className="row">
-           <div className="col-lg-12">
-             <div className="tab-content profile-tab-content">
- 
-               {/* Projects Tab */}
-               <div id="myinvoice" className="tab-pane fade show active">
-                 <Invoices invoice={customer.invoices}/>
-               </div>
-               {/* /Projects Tab */}
 
+  return customer ? (
+    <div className="page-wrapper">
+      <Helmet>
+        <title>Client Profile </title>
+        <meta name="description" content="Reactify Blank Page" />
+      </Helmet>
+      {/* Page Content */}
+      <div className="content container-fluid">
+        {/* Page Header */}
+        <button className="btn add-btn">Add Invoice</button>
 
-               {/* Task Tab */}
-               <div id="tasks" className="tab-pane fade">
-               </div>
-               {/* /Task Tab */}
-
-             </div>
-           </div>
-         </div>
-       </div>
-       {/* /Page Content */}
-     </div>
-   ):<h1>Loading customer...</h1>;
- };
- export default CustomerProfile;
- 
+        <div className="page-header">
+          <div className="row">
+            <div className="col-sm-12">
+              <h3 className="page-title">Profile</h3>
+              <ul className="breadcrumb">
+                <li className="breadcrumb-item">
+                  <Link to="/app/main/dashboard">Dashboard</Link>
+                </li>
+                <li className="breadcrumb-item active">Profile</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        {/* /Page Header */}
+        <div className="card mb-0">
+          <div className="card-body">
+            <div className="row">
+              <div className="col-md-12">
+                <div
+                  className="profile-view"
+                  style={{
+                    minWidth: '120px',
+                    minHeight: '120px',
+                  }}
+                >
+                  <div className="profile-img-wrap">
+                    <div className="profile-img">
+                      <a href="">
+                        <img src={Avatar_19} alt="" />
+                      </a>
+                    </div>
+                  </div>
+                  <div className="profile-basic">
+                    <div className="row">
+                      <div className="col-md-5">
+                        <div
+                          className="profile-info-left"
+                          style={{
+                            border: 'none',
+                          }}
+                        >
+                          <h3 className="user-name m-t-0">{customer.name}</h3>
+                          <h5 className="company-role m-t-2 mb-1 text-muted">
+                            {customer.email}
+                          </h5>
+                          <h5 className="company-role m-t-0 mb-1 text-muted">
+                            {customer.phone}
+                          </h5>
+                          <h5 className="company-role m-t-0 mb-1 text-muted">
+                            {customer.company}
+                          </h5>
+                          <h5 className="company-role m-t-0 mb-1 text-muted">
+                            {customer.address}
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="card tab-box">
+          <div className="row user-tabs">
+            <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
+              <ul className="nav nav-tabs nav-tabs-bottom">
+                {/* <li className="nav-item ">
+                  <a
+                    className="nav-link active"
+                    data-toggle="tab"
+                    href="#purchase"
+                  >
+                    Purchases
+                  </a>
+                </li> */}
+                <li className="nav-item ">
+                  <a
+                    className="nav-link active"
+                    data-toggle="tab"
+                    href="#myinvoice"
+                  >
+                    Invoices
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="tab-content profile-tab-content">
+              {/* Projects Tab */}
+              {/* <div id="purchase" className="tab-pane fade active"></div> */}
+              <div id="myinvoice" className="tab-pane fade show active">
+                <div className="clearfix mb-3"></div>
+                <Invoices invoice={customer.invoices} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* /Page Content */}
+    </div>
+  ) : (
+    <h1>Loading customer...</h1>
+  );
+};
+export default CustomerProfile;
