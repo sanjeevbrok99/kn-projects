@@ -4,6 +4,7 @@
 
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
 import {
   Avatar_02,
   Avatar_04,
@@ -14,6 +15,8 @@ import {
 } from '../../../Entryfile/imagepath.jsx';
 
 const EmployeeDashboard = () => {
+  const user = useSelector((state) => state.authentication.value.user);
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -29,7 +32,7 @@ const EmployeeDashboard = () => {
                 <img alt="" src={Avatar_02} />
               </div>
               <div className="welcome-det">
-                <h3>Welcome, Meher</h3>
+                <h3>Welcome, {user?.firstName}</h3>
                 <p>Monday, 20 May 2021</p>
               </div>
             </div>
