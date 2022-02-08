@@ -873,27 +873,45 @@ const EmployeeProfile = () => {
                   </h2>
                 </div>
               )}
-              {selectedProject?.name && (
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!e.target.id) return;
-                    console.log(selectedProject);
-                    document
-                      .querySelector(`.selected`)
-                      ?.classList.remove('selected');
-                    e.target.classList.add('selected');
-                    setSelectedPlot(
-                      selectedProject.landDivisions?.filter(
-                        (p) => p.name === e.target.id
-                      )[0]
-                    );
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: selectedProject?.layout || '',
-                  }}
-                ></div>
-              )}
+              {selectedProject?.name &&
+                selectedProject.landDivisions.length === 0 && (
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: '#DCDCE1',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <h2>
+                      <b>No Layout for this project</b>
+                    </h2>
+                  </div>
+                )}
+              {selectedProject?.name &&
+                selectedProject?.landDivisions.length > 0 && (
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!e.target.id) return;
+                      console.log(selectedProject);
+                      document
+                        .querySelector(`.selected`)
+                        ?.classList.remove('selected');
+                      e.target.classList.add('selected');
+                      setSelectedPlot(
+                        selectedProject.landDivisions?.filter(
+                          (p) => p.name === e.target.id
+                        )[0]
+                      );
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: selectedProject?.layout || '',
+                    }}
+                  ></div>
+                )}
             </div>
             {selectedPlot?.name && (
               <div
