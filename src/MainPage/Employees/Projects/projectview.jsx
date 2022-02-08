@@ -22,6 +22,7 @@ const ProjectView = () => {
   const [activeInfoTab, setActiveInfoTab] = useState(1);
   const [selectePlotId, setSelectedPlotId] = useState('');
   const [selectedPath, setSelectedPath] = useState('');
+  const [customerPurchases, setCustomerPurchases] = useState([]);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -86,6 +87,18 @@ const ProjectView = () => {
         ]);
       }
     });
+    res?.data?.landDivisions
+      .filter((l) => l.sold)
+      .map((land) => land.soldTo)
+      .forEach((c) => {
+        setCustomerPurchases((p) => {
+          const temp = p;
+          if (!temp.some((p) => p._id === c._id)) {
+            temp.push(c);
+          }
+          return temp;
+        });
+      });
     setIsLoading(false);
   };
 
@@ -195,6 +208,11 @@ const ProjectView = () => {
                       Leads
                     </a>
                   </li>
+                  <li className="nav-item">
+                    <a href="#customers" data-toggle="tab" className="nav-link">
+                      Customers
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -254,6 +272,28 @@ const ProjectView = () => {
                           <tr>
                             <td>Status:</td>
                             <td className="text-right">Working</td>
+                          </tr>
+                          <tr>
+                            <td>Total subplots:</td>
+                            <td className="text-right">
+                              {projectDetails?.landDivisions?.length}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Subplots sold:</td>
+                            <td className="text-right">
+                              {projectDetails?.landDivisions?.length}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Subplots under discussion:</td>
+                            <td className="text-right">
+                              {
+                                projectDetails?.landDivisions?.filter(
+                                  (l) => l.leads?.length
+                                ).length
+                              }
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -547,6 +587,12 @@ const ProjectView = () => {
                         }}
                       ></div>
                       <div
+                        style={{
+                          position: 'sticky',
+                          top: '65px',
+                          zIndex: 9999,
+                          background: '#fff',
+                        }}
                         ref={svgRef}
                         dangerouslySetInnerHTML={{
                           __html: projectDetails?.layout,
@@ -559,9 +605,9 @@ const ProjectView = () => {
                               <thead>
                                 <tr>
                                   <th className="col-sm-2">Item</th>
-                                  <th className="col-md-6">Size</th>
-                                  <th style={{ width: '100px' }}>Facing</th>
-                                  <th style={{ width: '80px' }}>Dimensions</th>
+                                  <th className="col-md-3">Size</th>
+                                  <th style={{ width: '180px' }}>Facing</th>
+                                  <th className="col-md-3">Dimensions</th>
                                   <th style={{ width: '100px' }}>
                                     Calculated Price
                                   </th>
@@ -583,8 +629,13 @@ const ProjectView = () => {
                                         onFocus={() => {
                                           setSelectedPath(path.name);
                                         }}
+                                        onChange={(e) => {
+                                          const newPaths = [...paths];
+                                          newPaths[index].area = e.target.value;
+                                          setPaths(newPaths);
+                                        }}
                                         className="form-control"
-                                        type="text"
+                                        type="number"
                                         style={{ minWidth: '150px' }}
                                       />
                                     </td>
@@ -594,7 +645,13 @@ const ProjectView = () => {
                                           setSelectedPath(path.name);
                                         }}
                                         className="form-control"
-                                        style={{ width: '100px' }}
+                                        style={{ minWidth: '150px' }}
+                                        onChange={(e) => {
+                                          const newPaths = [...paths];
+                                          newPaths[index].facing =
+                                            e.target.value;
+                                          setPaths(newPaths);
+                                        }}
                                         type="text"
                                       />
                                     </td>
@@ -603,8 +660,14 @@ const ProjectView = () => {
                                         onFocus={() => {
                                           setSelectedPath(path.name);
                                         }}
+                                        onChange={(e) => {
+                                          const newPaths = [...paths];
+                                          newPaths[index].dimensions =
+                                            e.target.value;
+                                          setPaths(newPaths);
+                                        }}
                                         className="form-control"
-                                        style={{ width: '80px' }}
+                                        style={{ minWidth: '150px' }}
                                         type="text"
                                       />
                                     </td>
@@ -612,6 +675,10 @@ const ProjectView = () => {
                                       <input
                                         className="form-control"
                                         readOnly
+                                        value={
+                                          projectDetails?.estimatedCost *
+                                          path.area
+                                        }
                                         style={{ width: '120px' }}
                                         type="text"
                                       />
@@ -622,66 +689,6 @@ const ProjectView = () => {
                             </table>
                           </div>
                         </div>
-                        {/* {paths.map((path, i) => (
-                          <div
-                            key={path.name}
-                            className="col-md-4 col-sm-6 col-12 col-lg-5 col-xl-4"
-                          >
-                            <div
-                              className="card"
-                              style={{
-                                padding: '6px',
-                              }}
-                            >
-                              <h3
-                                style={{
-                                  textAlign: 'center',
-                                }}
-                              >
-                                {path.name}
-                              </h3>
-                              <input
-                                type={'number'}
-                                onChange={(e) => {
-                                  setPaths((p) => {
-                                    const newPaths = [...p];
-                                    newPaths[i].area = e.target.value;
-                                    newPaths[i].cost =
-                                      e.target.value *
-                                      projectDetails.estimatedCost;
-                                    return newPaths;
-                                  });
-                                }}
-                                onFocus={(e) => {
-                                  document
-                                    .querySelector(`svg #${path.name}`)
-                                    .classList.add('selected');
-                                }}
-                                onBlur={(e) => {
-                                  document
-                                    .querySelector(`svg #${path.name}`)
-                                    .classList.remove('selected');
-                                }}
-                                placeholder="Area"
-                                className="form-control"
-                              />
-                              <br />
-                              <textarea
-                                onChange={(e) => {
-                                  setPaths((p) => {
-                                    const newPaths = [...p];
-                                    newPaths[i].description = e.target.value;
-                                    return newPaths;
-                                  });
-                                }}
-                                className="form-control"
-                                rows={4}
-                                placeholder="Description"
-                              />
-                              <br />
-                            </div>
-                          </div>
-                        ))} */}
                       </div>
                       <br />
                       <br />
@@ -720,7 +727,7 @@ const ProjectView = () => {
                           height: '10px',
                         }}
                       ></div>{' '}
-                      Leads Attahced
+                      Leads in discussion
                     </div>
                     <div>
                       <div
@@ -763,15 +770,60 @@ const ProjectView = () => {
                   padding: '15px',
                 }}
               >
-                {projectDetails?.leads.map((lead) => (
+                {projectDetails?.leads
+                  .filter(
+                    (l) => l.status !== 'Lead Won' && l.status !== 'Lead Lost'
+                  )
+                  .map((lead) => (
+                    <div
+                      key={lead._id}
+                      className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
+                    >
+                      <div className="profile-widget">
+                        <div className="profile-img">
+                          <Link
+                            to={`/app/profile/lead-profile/${lead._id}`}
+                            className="avatar"
+                          >
+                            <img src={''} alt="" />
+                          </Link>
+                        </div>
+                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
+                          <Link to="/app/profile/employee-profile">
+                            {lead.name}
+                          </Link>
+                        </h4>
+                        <div className="small text-muted">{lead.phone}</div>
+                        <div className="small text-muted">{lead.email}</div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+            <div id="customers" className="tab-pane fade">
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <h3>Customers</h3>
+              </div>
+              <div
+                className="row"
+                style={{
+                  padding: '15px',
+                }}
+              >
+                {customerPurchases.map((customer) => (
                   <div
-                    key={lead._id}
+                    key={customer._id}
                     className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
                   >
                     <div className="profile-widget">
                       <div className="profile-img">
                         <Link
-                          to={`/app/profile/lead-profile/${lead._id}`}
+                          to={`/app/profile/lead-profile/${customer._id}`}
                           className="avatar"
                         >
                           <img src={''} alt="" />
@@ -779,11 +831,11 @@ const ProjectView = () => {
                       </div>
                       <h4 className="user-name m-t-10 mb-0 text-ellipsis">
                         <Link to="/app/profile/employee-profile">
-                          {lead.name}
+                          {customer.name}
                         </Link>
                       </h4>
-                      <div className="small text-muted">{lead.phone}</div>
-                      <div className="small text-muted">{lead.email}</div>
+                      <div className="small text-muted">{customer.phone}</div>
+                      <div className="small text-muted">{customer.email}</div>
                     </div>
                   </div>
                 ))}
