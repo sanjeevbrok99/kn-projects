@@ -74,7 +74,7 @@ const AdminDashboard = () => {
           return;
         }
         console.log(res);
-        //setDashboard(res);
+        setDashboard(res);
       } catch (err) {
         console.log(err);
       }
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
                 </span>
                 <div className="dash-widget-info">
                   <h3>{dashboard.leadCount}</h3>
-                  <span>Tasks</span>
+                  <span>Leads</span>
                 </div>
               </div>
             </div>
@@ -420,7 +420,7 @@ const AdminDashboard = () => {
                     <thead>
                       <tr>
                         <th>Invoice ID</th>
-                        <th>Client</th>
+                        <th>Customer</th>
                         <th>Due Date</th>
                         <th>Total</th>
                         <th>Status</th>
@@ -437,7 +437,7 @@ const AdminDashboard = () => {
                             </td>
                             <td>
                               <h2>
-                                <a href="#">{inv.customer}</a>
+                                <a href="#">{inv.customer?.name}</a>
                               </h2>
                             </td>
                             <td>{inv.invoiceDate}</td>
@@ -470,7 +470,7 @@ const AdminDashboard = () => {
                     <thead>
                       <tr>
                         <th>Invoice ID</th>
-                        <th>Client</th>
+                        <th>Customer</th>
                         <th>Payment Type</th>
                         <th>Paid Date</th>
                         <th>Paid Amount</th>

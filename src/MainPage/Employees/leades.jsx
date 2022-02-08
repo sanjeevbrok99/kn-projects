@@ -323,29 +323,6 @@ const Leads = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Project <span className="text-danger">*</span>
-                      </label>
-                      <select
-                        onChange={(e) => {
-                          setLeadToAdd({
-                            ...leadToAdd,
-                            project: e.target.value,
-                          });
-                        }}
-                        className="form-control custom-select"
-                      >
-                        <option value={''}>Select Project</option>
-                        {projects.map((project, index) => (
-                          <option key={index} value={project._id}>
-                            {project.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
                   <div className="col">
                     <div className="form-group">
                       <label>Address</label>

@@ -186,12 +186,11 @@ const ProjectView = () => {
                               `#${land.name}`
                             );
                             if (path && land.leads.length > 0) {
-                              path.style.fill = '#1DC5CF';
+                              path.style.fill = '#FFC107';
                             } else {
-                              path.style.fill = '#FF5722';
                             }
                             if (path && land.sold) {
-                              path.style.fill = '#FFC107';
+                              path.style.fill = '#7FFF00';
                             }
                           });
                         }, 0);
@@ -360,6 +359,11 @@ const ProjectView = () => {
                       <h6 className="card-title m-b-20">Leads</h6>
                       <ul className="list-box">
                         {projectDetails?.leads
+                          .filter(
+                            (lead) =>
+                              lead.status !== 'Lead Won' &&
+                              lead.status !== 'Lead Lost'
+                          )
                           ?.reverse()
                           .slice(0, 4)
                           .map((lead) => (
@@ -719,28 +723,17 @@ const ProjectView = () => {
                     ></div>
                     <h4>Legends</h4>
                     <div>
-                      <div
-                        style={{
-                          background: '#1DC5CF',
-                          display: 'inline-block',
-                          width: '10px',
-                          height: '10px',
-                        }}
-                      ></div>{' '}
-                      Leads in discussion
-                    </div>
-                    <div>
-                      <div
-                        style={{
-                          background: '#FF5722',
-                          display: 'inline-block',
-                          width: '10px',
-                          height: '10px',
-                        }}
-                      ></div>{' '}
-                      Inactive plots
-                    </div>
-                    <div>
+                      <div>
+                        <div
+                          style={{
+                            background: '#D0D0D0',
+                            display: 'inline-block',
+                            width: '10px',
+                            height: '10px',
+                          }}
+                        ></div>{' '}
+                        Inactive plots
+                      </div>
                       <div
                         style={{
                           background: '#FFC107',
@@ -749,7 +742,72 @@ const ProjectView = () => {
                           height: '10px',
                         }}
                       ></div>{' '}
+                      In Discussion
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          background: '#7FFF00',
+                          display: 'inline-block',
+                          width: '10px',
+                          height: '10px',
+                        }}
+                      ></div>{' '}
                       Sold Plots
+                    </div>
+                    <br />
+                    <div className="table-responsive">
+                      <table className="table table-striped table-hover">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Plot Name</th>
+                            <th className="d-none d-sm-table-cell">Leads</th>
+                            <th>COST</th>
+                            <th>Facing</th>
+                            <th>Dimensions</th>
+                            <th>Area</th>
+                            <th>Sale Information</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {projectDetails?.landDivisions.map(
+                            (landDivision, index) => (
+                              <tr>
+                                <td>{index + 1}</td>
+                                <td>{landDivision.name}</td>
+                                <td>
+                                  {!landDivision.leads.length && (
+                                    <h5>No Leads</h5>
+                                  )}
+                                  {landDivision.leads.map((lead, i) => (
+                                    <Link
+                                      to={`app/profile/lead-profile/${lead._id}`}
+                                    >
+                                      {lead.name}
+                                      {landDivision.leads[i + 1] ? ', ' : ''}
+                                    </Link>
+                                  ))}
+                                </td>
+                                <td>₹ {landDivision.cost}</td>
+                                <td>
+                                  {landDivision.facing ||
+                                    'No facing information'}
+                                </td>
+                                <td>
+                                  {landDivision.dimension ||
+                                    'No dimensions information'}
+                                </td>
+                                <td>
+                                  {landDivision.area || 'No area information'}{' '}
+                                  Sq ft
+                                </td>
+                                <td>None</td>
+                              </tr>
+                            )
+                          )}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 )}
