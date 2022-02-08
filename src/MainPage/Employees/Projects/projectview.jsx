@@ -562,28 +562,6 @@ const ProjectView = () => {
                 {projectDetails?.layout &&
                   !projectDetails?.landDivisions?.length > 0 && (
                     <div className="card-body">
-                      <button
-                        className="btn add-btn"
-                        style={{
-                          marginLeft: 'auto',
-                        }}
-                        onClick={() => {
-                          const invalidPaths = paths.filter(
-                            (path) => path.area === ''
-                          );
-                          if (invalidPaths.length > 0) {
-                            invalidPaths.forEach((path) => {
-                              toast.error(
-                                `Area for ${path.name} is not specified`
-                              );
-                            });
-                          } else {
-                            updateProjectPaths();
-                          }
-                        }}
-                      >
-                        Save Layout
-                      </button>
                       <div
                         style={{
                           display: 'flex',
@@ -694,6 +672,28 @@ const ProjectView = () => {
                           </div>
                         </div>
                       </div>
+                      <button
+                        className="btn add-btn"
+                        style={{
+                          marginLeft: 'auto',
+                        }}
+                        onClick={() => {
+                          const invalidPaths = paths.filter(
+                            (path) => path.area === ''
+                          );
+                          if (invalidPaths.length > 0) {
+                            invalidPaths.forEach((path) => {
+                              toast.error(
+                                `Area for ${path.name} is not specified`
+                              );
+                            });
+                          } else {
+                            updateProjectPaths();
+                          }
+                        }}
+                      >
+                        Save Layout
+                      </button>
                       <br />
                       <br />
                     </div>
@@ -789,7 +789,12 @@ const ProjectView = () => {
                                     </Link>
                                   ))}
                                 </td>
-                                <td>₹ {landDivision.cost}</td>
+                                <td>
+                                  ₹{' '}
+                                  {landDivision.cost ||
+                                    landDivision.area *
+                                      projectDetails.estimatedCost}
+                                </td>
                                 <td>
                                   {landDivision.facing ||
                                     'No facing information'}

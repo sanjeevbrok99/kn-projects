@@ -951,7 +951,9 @@ const EmployeeProfile = () => {
                   <b>Plot Size:</b> {selectedPlot.area} Sq Ft
                 </h4>
                 <h4>
-                  <b>Plot Price:</b> ₹ {selectedPlot.cost}
+                  <b>Plot Price:</b> ₹{' '}
+                  {selectedPlot.cost ||
+                    selectedPlot.area * selectedProject.estimatedCost}
                 </h4>
                 <h4>
                   <b>Interested leads:</b> {selectedPlot.leads?.length || 0}
@@ -984,7 +986,7 @@ const EmployeeProfile = () => {
                     profile._id,
                   ];
                 if (!profile.project.some((p) => p._id === selectedProject._id))
-                  profile.project = [...profile.projects, selectedProject].map(
+                  profile.project = [...profile.project, selectedProject].map(
                     (p) => p._id
                   );
                 toast.promise(
