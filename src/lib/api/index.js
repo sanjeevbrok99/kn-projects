@@ -113,7 +113,23 @@ export async function fetchdepartment() {
     httpService
       .get('/department')
       .then((response) => {
-        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return departmentResponse;
+}
+
+export async function fetchClient() {
+  const departmentResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/client')
+      .then((response) => {
         return resolve(response.data);
       })
       .catch((err) => {
