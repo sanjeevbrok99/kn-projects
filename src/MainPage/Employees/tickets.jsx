@@ -32,6 +32,7 @@ const Tickets = () => {
   const [department, setDepartment] = useState([]);
   const [client, setClient] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [ticketStats, setTicketStats] = useState([0, 0, 0]);
 
 
   useEffect(() => {
@@ -43,6 +44,18 @@ const Tickets = () => {
     }
   });
 
+  const updateTracker = (data) => {
+    console.log(data);
+    let a=0, b=0, c=0;
+    data.forEach((ticket) => {
+      console.log(ticket.status.toLowerCase());
+      if (ticket.status.toLowerCase() == 'active') c++;
+      else b++;
+    });
+    console.log(a,b,c);
+    setTicketStats([a,b,c]);
+  }
+
   const [rerender, setRerender] = useState(false);
 
   useEffect(() => {
@@ -51,6 +64,7 @@ const Tickets = () => {
         
         const res = await fetchTicket();
         setData(res.data);
+        updateTracker(res.data);
         
         const res_d = await fetchdepartment();
         setDepartment(res_d);
@@ -180,7 +194,7 @@ const Tickets = () => {
       <div className="content container-fluid">
         <TicketHeader />
 
-        <TicketTracker />
+        <TicketTracker ticketStats={ticketStats} />
 
         <SearchTicket />
 
@@ -549,7 +563,7 @@ const TicketHeader = () => {
   );
 };
 
-const TicketTracker = () => {
+const TicketTracker = ({ticketStats}) => {
   return (
     <div className="row">
       <div className="col-md-12">
@@ -560,11 +574,8 @@ const TicketTracker = () => {
                 <div>
                   <span className="d-block">New Tickets</span>
                 </div>
-                <div>
-                  <span className="text-success">+10%</span>
-                </div>
               </div>
-              <h3 className="mb-3">112</h3>
+              <h3 className="mb-3">{ticketStats[0]}</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -583,11 +594,8 @@ const TicketTracker = () => {
                 <div>
                   <span className="d-block">Solved Tickets</span>
                 </div>
-                <div>
-                  <span className="text-success">+12.5%</span>
-                </div>
               </div>
-              <h3 className="mb-3">70</h3>
+              <h3 className="mb-3">{ticketStats[1]}</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
@@ -606,11 +614,8 @@ const TicketTracker = () => {
                 <div>
                   <span className="d-block">Pending Tickets</span>
                 </div>
-                <div>
-                  <span className="text-danger">-75%</span>
-                </div>
               </div>
-              <h3 className="mb-3">125</h3>
+              <h3 className="mb-3">{ticketStats[2]}</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
