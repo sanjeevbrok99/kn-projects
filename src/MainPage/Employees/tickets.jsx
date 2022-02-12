@@ -605,6 +605,29 @@ const TicketTracker = () => {
             <div className="card-body">
               <div className="d-flex justify-content-between mb-3">
                 <div>
+                  <span className="d-block">Open Tickets</span>
+                </div>
+                <div>
+                  <span className="text-danger">-2.8%</span>
+                </div>
+              </div>
+              <h3 className="mb-3">100</h3>
+              <div className="progress mb-2" style={{ height: '5px' }}>
+                <div
+                  className="progress-bar bg-primary"
+                  role="progressbar"
+                  style={{ width: '70%' }}
+                  aria-valuenow={40}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-body">
+              <div className="d-flex justify-content-between mb-3">
+                <div>
                   <span className="d-block">Pending Tickets</span>
                 </div>
                 <div>
