@@ -88,10 +88,10 @@ const Tickets = () => {
     },
     {
       title: 'Assigned Staff',
-      dataIndex: 'assigneeName',
+      dataIndex: 'assignee',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to="/app/profile/employee-profile">{``}</Link>
+          <Link to="/app/profile/employee-profile"><p>{text.firstName}</p></Link>
         </h2>
       ),
       sorter: (a, b) => a.assignee.firstName < b.assignee.firstName,
@@ -99,7 +99,7 @@ const Tickets = () => {
     {
       title: 'Department',
       dataIndex: 'department',
-      render: (text, record) => <p>{text}</p>,
+      render: (text, record) => <p>{text?.name}</p>,
       sorter: (a, b) => a.department < b.department,
     },
     {
@@ -241,18 +241,17 @@ const AddTicket = (props) => {
     newTicket.priority = e.target.priority.value;
     newTicket.description = e.target.description.value;
     newTicket.department = e.target.department.value;
-    newTicket.assignee = e.target.assignee.value;
-    newTicket.followers = e.target.followers.value;
     newTicket.client = e.target.client.value;
+    newTicket.followers = e.target.followers.value;
+    newTicket.assignee = e.target.assignee.value;
 
-    console.log(newTicket);
     try {
-      //res = await addTicket(newTicket);
+      await addTicket(newTicket);
     } catch (err) {
       console.log(err);
     }
     btn.current.innerHTML = 'Submitted!';
-    //resetForm();
+    resetForm();
   };
 
   return (
@@ -323,7 +322,7 @@ const AddTicket = (props) => {
                       {
                         props.client.map((client) => {
                           return (
-                            <option data-id={client._id}>{`${client.firstName} ${client.lastName}`}</option>
+                            <option value={client._id}>{`${client.firstName} ${client.lastName}`}</option>
                           )
                         })
                       }
@@ -353,7 +352,7 @@ const AddTicket = (props) => {
                       {
                         props.employees.map((emp) => {
                           return (
-                            <option selected>{`${emp.firstName} ${emp.lastName}`}</option>
+                            <option value={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
                           )
                         })
                       }
@@ -368,7 +367,7 @@ const AddTicket = (props) => {
                       {
                         props.department.map((dep) => {
                           return (
-                            <option selected>{dep.name}</option>
+                            <option value={dep._id}>{dep.name}</option>
                           )
                         })
                       }
@@ -386,7 +385,7 @@ const AddTicket = (props) => {
                       {
                         props.employees.map((emp) => {
                           return (
-                            <option id={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
+                            <option value={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
                           )
                         })
                       }
@@ -589,29 +588,6 @@ const TicketTracker = () => {
                 </div>
               </div>
               <h3 className="mb-3">70</h3>
-              <div className="progress mb-2" style={{ height: '5px' }}>
-                <div
-                  className="progress-bar bg-primary"
-                  role="progressbar"
-                  style={{ width: '70%' }}
-                  aria-valuenow={40}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-body">
-              <div className="d-flex justify-content-between mb-3">
-                <div>
-                  <span className="d-block">Open Tickets</span>
-                </div>
-                <div>
-                  <span className="text-danger">-2.8%</span>
-                </div>
-              </div>
-              <h3 className="mb-3">100</h3>
               <div className="progress mb-2" style={{ height: '5px' }}>
                 <div
                   className="progress-bar bg-primary"
