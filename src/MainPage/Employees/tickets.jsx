@@ -32,6 +32,7 @@ const Tickets = () => {
   const [client, setClient] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [ticketStats, setTicketStats] = useState([0, 0, 0]);
+  const [selectedTicketData, setSelectedTicketData] = useState({});
 
 
   useEffect(() => {
@@ -87,9 +88,6 @@ const Tickets = () => {
       }
     )();
   }, [rerender]);
-
-  const [selectedTicketData, setSelectedTicketData] = useState({});
-
   const columns = [
     {
       title: 'Title',
@@ -241,6 +239,9 @@ const Tickets = () => {
         selectedTicketData={selectedTicketData}
         setRerender={setRerender}
         rerender={rerender}
+        department={department}
+        client={client}
+        employees={employees}
       />
 
       <DeleteTicket id={selectedTicketData?._id} />
@@ -258,6 +259,7 @@ const AddTicket = (props) => {
     form.current.reset();
     btn.current.innerHTML = 'Submit';
     props.setRerender(!props.rerender);
+    $('#add_ticket').modal('hide')
   };
 
   const handleSubmit = async (e) => {
@@ -322,12 +324,9 @@ const AddTicket = (props) => {
                       <option >active</option>
                   </div>
                 </div>
-
               </div>
 
-
               <div className="row">
-                
                 <div className="col-sm-12">
                   <div className="form-group">
                     <label>Description</label>
@@ -337,12 +336,10 @@ const AddTicket = (props) => {
                       name="description"
                     />
                   </div>
-
                 </div>
               </div>
 
               <div className="row">
-                
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Client</label>
@@ -487,7 +484,7 @@ const DeleteTicket = (props) => {
   );
 };
 
-const SearchTicket = ({setRerender,rerender,data,setData}) => {
+const SearchTicket = ({setData}) => {
 
   const handleSearch = async () => { 
     const { data } = await fetchTicket();
@@ -525,7 +522,6 @@ const SearchTicket = ({setRerender,rerender,data,setData}) => {
         return ticket.priority == priority;
       });
     }
-
     setData(result);
   }
 
@@ -673,43 +669,32 @@ const TicketTracker = ({ticketStats}) => {
   );
 };
 
-const EditTicket = ({ selectedTicketData, rerender, setRerender }) => {
+const EditTicket = ({ selectedTicketData, rerender, setRerender, client, department, employees}) => {
   const form = useRef();
   const btn = useRef();
-
-  const resetForm = () => {
-    form.current.reset();
-    btn.current.innerHTML = 'Submit';
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newTicket = {};
     btn.current.innerHTML = 'Submitting...';
-    newTicket.title = e.target.subject.value;
-    newTicket.staffAssigned = e.target.staffAssigned.value;
-    newTicket.client = e.target.client.value;
+    newTicket.title = e.target.title.value;
+    newTicket.status = e.target.status.value;
     newTicket.priority = e.target.priority.value;
-    newTicket.cc = e.target.cc.value;
     newTicket.description = e.target.description.value;
-    newTicket.assign = e.target.assign.value;
+    newTicket.department = e.target.department.value;
+    newTicket.client = e.target.client.value;
     newTicket.followers = e.target.followers.value;
-    newTicket.status = 'active';
-    //-----------------------------------------------//
-    newTicket.assignee = selectedTicketData.assignee;
-    newTicket.department = '61fd4680741b1b5504df7d0d';
-    newTicket.file = e.target.file.value;
-    //-----------------------------------------------//
-
-    let res;
+    newTicket.assignee = Number(e.target.assignee.value);
     try {
-      res = await updateTicket(selectedTicketData._id, newTicket);
-      setRerender(!rerender);
+      let res = await updateTicket(selectedTicketData._id, newTicket);
+      console.clear();
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
-    btn.current.innerHTML = 'Submitted!';
-    resetForm();
+    btn.current.innerHTML = 'Submit';
+    setRerender(!rerender);
+    $('#edit_ticket').modal('hide')
   };
 
   return (
@@ -720,7 +705,7 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender }) => {
       >
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Edit Ticket</h5>
+            <h5 className="modal-title">Add Ticket</h5>
             <button
               type="button"
               className="close"
@@ -732,185 +717,148 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender }) => {
           </div>
           <div className="modal-body">
             <form ref={form} onSubmit={handleSubmit}>
+
               <div className="row">
+                
                 <div className="col-sm-6">
                   <div className="form-group">
-                    <label>Ticket Subject</label>
+                    <label>Ticket Title</label>
                     <input
                       className="form-control"
                       type="text"
-                      name="subject"
-                      defaultValue={
-                        selectedTicketData?.title
-                          ? selectedTicketData.title
-                          : ''
-                      }
+                      name="title"
+                      defaultValue={selectedTicketData.title}
                     />
                   </div>
                 </div>
+
                 <div className="col-sm-6">
                   <div className="form-group">
-                    <label>Ticket Id</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="ticketId"
-                      defaultValue={
-                        selectedTicketData?._id ? selectedTicketData._id : ''
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Assign Staff</label>
-                    <select className="select" name="staffAssigned">
-                      <option>-</option>
-                      <option>Shreya Singh</option>
-                      <option>Harvinder</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Client</label>
-                    <select className="select" name="client">
-                      <option>-</option>
-                      <option>Godrej Properties Ltd</option>
-                      <option>International Software Inc</option>
+                    <label>Status</label>
+                    <select className="select" name="status"
+                      value={selectedTicketData.status}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Returned">Returned</option>
                     </select>
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Priority</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="priority"
-                      defaultValue={
-                        selectedTicketData?.priority
-                          ? selectedTicketData.priority
-                          : ''
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>CC</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="cc"
-                      defaultValue={
-                        selectedTicketData?.cc ? selectedTicketData.cc : ''
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Assign</label>
-                    <input type="text" className="form-control" name="assign" />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Ticket Assignee</label>
-                    <div className="project-members">
-                      <a
-                        title="Harvinder"
-                        data-placement="top"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_02} alt="admin" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Add Followers</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="followers"
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label>Ticket Followers</label>
-                    <div className="project-members">
-                      <a
-                        title="Shital Agarwal"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_09} alt="" />
-                      </a>
-                      <a
-                        title="Harvinder"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_10} alt="" />
-                      </a>
-                      <a
-                        title="Shreya Singh"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_05} alt="" />
-                      </a>
-                      <a
-                        title="Wilmer Deluna"
-                        data-toggle="tooltip"
-                        href="#"
-                        className="avatar"
-                      >
-                        <img src={Avatar_11} alt="" />
-                      </a>
-                      <span className="all-team">+2</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+
               <div className="row">
                 <div className="col-sm-12">
                   <div className="form-group">
                     <label>Description</label>
                     <textarea
                       className="form-control"
-                      defaultValue={''}
+                      defaultValue={selectedTicketData.description}
                       name="description"
                     />
                   </div>
+
+                </div>
+              </div>
+
+              <div className="row">
+                
+                <div className="col-sm-6">
                   <div className="form-group">
-                    <label>Upload Files</label>
-                    <input className="form-control" type="file" name="file" />
+                    <label>Client</label>
+                    <select className="select" name="client"
+                      defaultValue={selectedTicketData.client?._id}>
+                      {
+                        client.map((client) => {
+                          return (
+                            <option value={client._id}>{`${client.firstName} ${client.lastName}`}</option>
+                          )
+                        })
+                      }
+                    </select>
+                  </div>
+                </div>
+
+              
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Priority</label>
+                    <select className="select" name="priority" value={selectedTicketData.priority}>
+                      <option value="High">High</option>
+                      <option Value="Medium">Medium</option>
+                      <option value="Low">Low</option>
+                    </select>
                   </div>
                 </div>
               </div>
+
+              <div className="row">
+                
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Assign Staff</label>
+                    <select className="select" name="assignee" value={selectedTicketData.assignee?._id}>
+                      {
+                        employees.map((emp) => {
+                          return (
+                            <option value={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
+                          )
+                        })
+                      }
+                    </select>
+                  </div>
+                </div>
+
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Department</label>
+                    <select className="select" name="department" value={selectedTicketData.department?._id}>
+                      {
+                        department.map((dep) => {
+                          return (
+                            <option value={dep._id}>{dep.name}</option>
+                          )
+                        })
+                      }
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="row">
+                
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label>Add Followers</label>
+                    <select className="select" name="followers"  value={selectedTicketData.followers?._id}>
+                      {
+                        employees.map((emp) => {
+                          return (
+                            <option value={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
+                          )
+                        })
+                      }
+                    </select>
+                  </div>
+                </div>
+                <div className="form-group">
+                <label>Upload Files</label>
+                <input className="form-control" type="file" name="file" />
+              </div>
+              </div>
+          
+           
               <div className="submit-section">
-                <button className="btn btn-primary submit-btn" ref={btn}>
+                <button
+                  className="btn btn-primary"
+                  ref={btn}
+                  aria-label="Close"
+                  type="submit"
+                >
                   Submit
                 </button>
               </div>
+              
             </form>
           </div>
         </div>
