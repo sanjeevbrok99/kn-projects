@@ -65,17 +65,6 @@ const ProjectList = () => {
     }
   };
 
-  const onImageUpload = (fileList) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      ReactSummernote.insertImage(reader.result);
-    };
-    reader.readAsDataURL(fileList[0]);
-  };
-  const CapitalizeFirst = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-  };
-
   const convertDate = (date) => {
     var newDate = new Date(date);
     var dateString =
@@ -148,11 +137,34 @@ const ProjectList = () => {
               <table className="table table-striped custom-table datatable">
                 <thead>
                   <tr>
-                    <th>Project</th>
-                    <th>Project Type</th>
-                    <th>Members</th>
-                    <th>Deadline</th>
-                    <th>Leads</th>
+                    <th
+                      style={{
+                        width: '25%',
+                      }}
+                    >
+                      Project
+                    </th>
+                    <th
+                      style={{
+                        width: '25%',
+                      }}
+                    >
+                      Project Type
+                    </th>
+                    <th
+                      style={{
+                        width: '25%',
+                      }}
+                    >
+                      Deadline
+                    </th>
+                    <th
+                      style={{
+                        width: '25%',
+                      }}
+                    >
+                      Leads
+                    </th>
                     <th className="text-right">Action</th>
                   </tr>
                 </thead>
@@ -168,11 +180,6 @@ const ProjectList = () => {
                           </Link>
                         </td>
                         <td>{project && project.type}</td>
-                        <td>
-                          <div className="action-label">
-                            {project.members.length} Members
-                          </div>
-                        </td>
 
                         <td>{convertDate(project.endDate)} </td>
 

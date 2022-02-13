@@ -1,7 +1,7 @@
 /**
  * TermsCondition Page
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useParams } from 'react-router-dom';
 import httpService from '../../../lib/httpService';
@@ -17,8 +17,24 @@ import {
   TimelineDot,
 } from '@material-ui/lab';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import Swal from 'sweetalert2';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
 import { toast } from 'react-toastify';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
+const InactiveTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 250,
+  },
+});
 
 // TODO: Better solution for this
 function dragElement(elmnt) {
@@ -83,6 +99,10 @@ const EmployeeProfile = () => {
   const [addProject, setAddProject] = useState(false);
   const [selectedProject, setSelectedProject] = useState({});
   const [selectedPlot, setSelectedPlot] = useState({});
+  const layoutMapRef = useRef(null);
+  const [projectModal, setProjectModal] = useState(false);
+  const [interstedPlotsInProject, setInterstedPlotsInProject] = useState([]);
+  const [modifiedProject, setModifiedProject] = useState({});
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -94,6 +114,17 @@ const EmployeeProfile = () => {
     fetchLeadProfile();
     fetchProjects();
   }, []);
+
+  useEffect(() => {
+    if (projectModal) {
+      setInterstedPlotsInProject(
+        projectModal.subPlots.filter(
+          (plot) =>
+            !plot.sold && plot.leadsInfo.some((l) => l.lead === profile._id)
+        )
+      );
+    }
+  }, [projectModal]);
 
   useEffect(() => {
     if (document.getElementById('selected-plot'))
@@ -317,8 +348,6 @@ const EmployeeProfile = () => {
                       className="nav-link"
                     >
                       Activities
-                      {/* Bank &amp; Statutory{' '}
-                     <small className="text-danger">(Admin Only)</small> */}
                     </a>
                   </li>
                   <li className="nav-item">
@@ -331,7 +360,6 @@ const EmployeeProfile = () => {
             </div>
           </div>
           <div className="tab-content">
-            {/* Timeline Info Tab */}
             <div
               id="emp_profile"
               className="pro-overview tab-pane fade show active"
@@ -759,44 +787,16 @@ const EmployeeProfile = () => {
                                 {project.name}
                               </Link>
                             </span>
-                            {/* <span
-                              onClick={(e) => {
-                                Swal.fire({
-                                  title: 'Are you sure?',
-                                  icon: 'warning',
-                                  showCancelButton: true,
-                                  confirmButtonColor: '#E33F3C',
-                                  cancelButtonColor: '#6C757D',
-                                  preConfirm: () => {
-                                    return httpService.put(
-                                      `/lead/${profile._id}`,
-                                      {
-                                        ...profile,
-                                        project: profile.project
-                                          .filter((p) => p._id !== project._id)
-                                          .map((p) => p._id),
-                                      }
-                                    );
-                                  },
-                                }).then((result) => {
-                                  if (result.isConfirmed) {
-                                    fetchLeadProfile();
-                                    Swal.fire({
-                                      title: 'Deleted!',
-                                      icon: 'success',
-                                    });
-                                  }
-                                });
-                              }}
-                              className="task-action-btn task-btn-right"
-                            >
-                              <span
-                                className="action-circle large delete-btn"
-                                title="Delete Record"
-                              >
-                                <i className="material-icons">delete</i>
-                              </span>
-                            </span> */}
+                            <span className="task-action-btn task-btn-right">
+                              <VisibilityIcon
+                                onClick={() => {
+                                  setProjectModal(project);
+                                }}
+                                style={{
+                                  cursor: 'pointer',
+                                }}
+                              />
+                            </span>
                           </div>
                         </li>
                       ))}
@@ -829,8 +829,8 @@ const EmployeeProfile = () => {
               e.stopPropagation();
             }}
             style={{
-              width: '90%',
-              height: '90%',
+              width: '75%',
+              height: '75%',
               backgroundColor: 'white',
               borderRadius: '10px',
               padding: '30px',
@@ -843,6 +843,7 @@ const EmployeeProfile = () => {
                 setSelectedProject(
                   projects.filter((p) => p._id === e.target.value)[0]
                 );
+                setSelectedPlot(null);
               }}
               className="custom-select"
             >
@@ -851,10 +852,40 @@ const EmployeeProfile = () => {
                 <option value={project._id}>{project.name}</option>
               ))}
             </select>
+            <br />
+            <h4
+              style={{
+                marginTop: '20px',
+              }}
+            >
+              Select Plot
+            </h4>
+            <select
+              value={selectedPlot?._id || ''}
+              onChange={(e) => {
+                console.log(
+                  selectedProject?.subPlots?.filter(
+                    (p) => p._id === e.target.value
+                  )[0]
+                );
+                setSelectedPlot(
+                  selectedProject?.subPlots?.filter(
+                    (p) => p._id === e.target.value
+                  )[0]
+                );
+              }}
+              className="custom-select"
+            >
+              <option hidden value=""></option>
+              {selectedProject?.subPlots?.map((plot) => (
+                <option value={plot._id}>{plot.name}</option>
+              ))}
+            </select>
             <div
               style={{
-                height: '77%',
+                height: '65%',
                 marginTop: '20px',
+                overflowY: 'scroll',
               }}
             >
               {!selectedProject?.name && (
@@ -873,93 +904,91 @@ const EmployeeProfile = () => {
                   </h2>
                 </div>
               )}
-              {selectedProject?.name &&
-                selectedProject.landDivisions.length === 0 && (
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      backgroundColor: '#DCDCE1',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <h2>
-                      <b>No Layout for this project</b>
-                    </h2>
-                  </div>
-                )}
-              {selectedProject?.name &&
-                selectedProject?.landDivisions.length > 0 && (
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (!e.target.id) return;
-                      console.log(selectedProject);
-                      document
-                        .querySelector(`.selected`)
-                        ?.classList.remove('selected');
-                      e.target.classList.add('selected');
-                      setSelectedPlot(
-                        selectedProject.landDivisions?.filter(
-                          (p) => p.name === e.target.id
-                        )[0]
-                      );
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: selectedProject?.layout || '',
-                    }}
-                  ></div>
-                )}
-            </div>
-            {selectedPlot?.name && (
-              <div
-                id="selected-plot"
-                style={{
-                  position: 'absolute',
-                  top: '20%',
-                  right: '5%',
-                  width: '22%',
-                  cursor: 'move',
-                  zIndex: '9999',
-                  backgroundColor: 'white',
-                  padding: '30px',
-                  borderTop: '1px solid #E7E7E7',
-                  boxShadow:
-                    'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
-                }}
-              >
-                <h4
+              {selectedProject?.name && selectedProject.subPlots.length === 0 && (
+                <div
                   style={{
-                    textAlign: 'center',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: '#DCDCE1',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  <b>Plot Details</b>
-                </h4>
-                <h4>
-                  <br />
-                  <b>Plot Name:</b> {selectedPlot.name}
-                </h4>
-                <h4>
-                  <b>Plot Description:</b>{' '}
-                  {selectedPlot.description
-                    ? selectedPlot.description
-                    : 'No Description'}
-                </h4>
-                <h4>
-                  <b>Plot Size:</b> {selectedPlot.area} Sq Ft
-                </h4>
-                <h4>
-                  <b>Plot Price:</b> ₹{' '}
-                  {selectedPlot.cost ||
-                    selectedPlot.area * selectedProject.estimatedCost}
-                </h4>
-                <h4>
-                  <b>Interested leads:</b> {selectedPlot.leads?.length || 0}
-                </h4>
+                  <h2>
+                    <b>No Layout for this project</b>
+                  </h2>
+                </div>
+              )}
+              <div
+                style={{
+                  position: 'relative',
+                }}
+              >
+                <img ref={layoutMapRef} src={selectedProject?.layout} />
+                {selectedPlot?.name && selectedPlot?.component && (
+                  <InactiveTooltip title={selectedPlot.name}>
+                    <div
+                      className="pin"
+                      style={{
+                        position: 'absolute',
+                        top: JSON.parse(selectedPlot.component)?.y,
+                        left: JSON.parse(selectedPlot.component)?.x + 12,
+                        background: '#EF473A',
+                      }}
+                    ></div>
+                  </InactiveTooltip>
+                )}
+                {selectedPlot?.name && selectedPlot?.component && (
+                  <div
+                    id="selected-plot"
+                    style={{
+                      position: 'absolute',
+                      top: JSON.parse(selectedPlot.component).y + 6,
+                      left: JSON.parse(selectedPlot.component).x + 10,
+                      width: '22%',
+                      cursor: 'move',
+                      zIndex: '9999',
+                      backgroundColor: 'white',
+                      padding: '30px',
+                      borderTop: '1px solid #E7E7E7',
+                      boxShadow:
+                        'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
+                    }}
+                  >
+                    <h4
+                      style={{
+                        textAlign: 'center',
+                      }}
+                    >
+                      <b>Plot Details</b>
+                    </h4>
+                    <h4>
+                      <br />
+                      <b>Plot Name:</b> {selectedPlot.name}
+                    </h4>
+                    <h4>
+                      <b>Plot Description:</b>{' '}
+                      {selectedPlot.description
+                        ? selectedPlot.description
+                        : 'No Description'}
+                    </h4>
+                    <h4>
+                      <b>Plot Size:</b> {selectedPlot.area} Sq Ft
+                    </h4>
+                    <h4>
+                      <b>Plot Price:</b> ₹{' '}
+                      {selectedPlot.cost ||
+                        selectedPlot.area * selectedProject.estimatedCost}
+                    </h4>
+                    <h4>
+                      <b>Interested leads:</b>{' '}
+                      {selectedPlot.leadsInfo?.length || 0}
+                    </h4>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
             <button
               style={{
                 marginTop: '3%',
@@ -967,12 +996,15 @@ const EmployeeProfile = () => {
               onClick={async () => {
                 if (!selectedPlot.name || !selectedProject.name)
                   return toast.error('Please select a project and plot');
-                if (selectedPlot.leads.some((l) => l === profile._id))
+                if (selectedPlot.leadsInfo.some((l) => l.lead === profile._id))
                   return toast.error('Lead is already interested in this plot');
-                selectedPlot.leads = [...selectedPlot.leads, profile._id];
-                console.log(selectedPlot.leads, profile._id);
-                selectedProject.landDivisions[
-                  selectedProject.landDivisions.findIndex(
+                selectedPlot.leadsInfo = [
+                  ...selectedPlot.leadsInfo,
+                  { lead: profile._id, status: 'New Lead' },
+                ];
+                console.log(selectedPlot.leadsInfo, profile._id);
+                selectedProject.subPlots[
+                  selectedProject.subPlots.findIndex(
                     (l) => l._id === selectedPlot._id
                   )
                 ] = selectedPlot;
@@ -989,27 +1021,167 @@ const EmployeeProfile = () => {
                   profile.project = [...profile.project, selectedProject].map(
                     (p) => p._id
                   );
-                toast.promise(
-                  Promise.all([
-                    httpService.put(`/lead/${profile._id}`, {
-                      ...profile,
-                    }),
-                    httpService.put(
-                      `/project/${selectedProject._id}`,
-                      selectedProject
-                    ),
-                  ]),
-                  {
-                    success: 'Lead added to project',
-                    error: 'Error adding lead to project',
-                    pending: 'Adding lead to project',
-                  }
-                );
-                setAddProject(false);
-                fetchLeadProfile();
-                fetchProjects();
+                toast
+                  .promise(
+                    Promise.all([
+                      httpService.put(`/lead/${profile._id}`, {
+                        ...profile,
+                      }),
+                      httpService.put(
+                        `/project/${selectedProject._id}`,
+                        selectedProject
+                      ),
+                    ]),
+                    {
+                      success: 'Lead added to project',
+                      error: 'Error adding lead to project',
+                      pending: 'Adding lead to project',
+                    }
+                  )
+                  .then(() => {
+                    setAddProject(false);
+                    fetchLeadProfile();
+                    fetchProjects();
+                  });
               }}
               className="btn add-btn"
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </Backdrop>
+      <Backdrop
+        open={projectModal}
+        style={{ zIndex: '9999' }}
+        onClick={() => {
+          setProjectModal(false);
+        }}
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            width: '50%',
+            height: '50%',
+            maxHeight: '50%',
+            overflowY: 'scroll',
+            backgroundColor: 'white',
+            borderRadius: '5px',
+            position: 'relative',
+          }}
+        >
+          <h3
+            style={{
+              textAlign: 'center',
+              margin: 18,
+            }}
+          >
+            Intersted Plots
+          </h3>
+          <div className="p-4">
+            <TableContainer
+              component={Paper}
+              style={{
+                overflowY: 'visible',
+              }}
+            >
+              <Table
+                style={{
+                  overflowY: 'visible',
+                }}
+                sx={{ minWidth: 650 }}
+                aria-label="simple table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Area</TableCell>
+                    <TableCell>Cost</TableCell>
+                    <TableCell>Dimenssions</TableCell>
+                    <TableCell>Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody
+                  style={{
+                    overflowY: 'visible',
+                  }}
+                >
+                  {interstedPlotsInProject.map((row) => (
+                    <TableRow
+                      key={row.name}
+                      style={{
+                        overflowY: 'visible',
+                      }}
+                      sx={{
+                        '&:last-child td, &:last-child th': { border: 0 },
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.area}</TableCell>
+                      <TableCell>₹ {row.cost}</TableCell>
+                      <TableCell>{row.dimension}</TableCell>
+                      <TableCell>
+                        <select
+                          onChange={(e) => {
+                            let temp = projectModal;
+                            temp.subPlots
+                              .find((p) => p._id === row._id)
+                              .leadsInfo.find(
+                                (l) => l.lead === profile._id
+                              ).leadType = e.target.value;
+                            setModifiedProject(temp);
+                            row.leadsInfo.find(
+                              (l) => l.lead === profile._id
+                            ).leadType = e.target.value;
+                          }}
+                          value={
+                            row.leadsInfo.find((l) => l.lead === profile._id)
+                              .leadType || 'New Lead'
+                          }
+                          className="custom-select"
+                        >
+                          <option value="New Lead">New Lead</option>
+                          <option value="Discussions">Discussions</option>
+                          <option value="Negotiations">Negotiations</option>
+                          <option value="Lead Won">Lead Won</option>
+                          <option value="Lead Lost">Lead Lost</option>
+                        </select>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <button
+              className="btn add-btn"
+              style={{
+                position: 'absolute',
+                bottom: '2%',
+                right: '2%',
+              }}
+              onClick={() => {
+                console.log(modifiedProject);
+                // return;
+                toast
+                  .promise(
+                    httpService.put(
+                      `/project/${modifiedProject._id}`,
+                      modifiedProject
+                    ),
+                    {
+                      success: 'Project updated',
+                      error: 'Error updating project',
+                      pending: 'Updating project',
+                    }
+                  )
+                  .then(() => {
+                    setProjectModal(false);
+                    setInterstedPlotsInProject([]);
+                    fetchProjects();
+                  });
+              }}
             >
               Confirm
             </button>
