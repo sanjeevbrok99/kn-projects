@@ -270,7 +270,7 @@ const Leads = () => {
                 }}
               >
                 <div className="row">
-                  <div className="col-sm-6">
+                  <div className="col-12">
                     <div className="form-group">
                       <label className="col-form-label">
                         Name <span className="text-danger">*</span>

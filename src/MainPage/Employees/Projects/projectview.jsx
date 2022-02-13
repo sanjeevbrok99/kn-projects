@@ -1,12 +1,85 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { Avatar_16, Avatar_09, Avatar_10 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
 import { Backdrop } from '@mui/material';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
+import Swal from 'sweetalert2';
+import PlotsTable from './plotsTable';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
+
+const InactiveTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 250,
+  },
+});
+
+const InDisscussionTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 250,
+  },
+});
+
+const InNegotiationTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 250,
+    background: '#89CFF0',
+    color: '#fff',
+  },
+});
+
+const LeadsWontTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 250,
+    background: '#9A66CB',
+    color: '#fff',
+  },
+});
+
+const SoldOutTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 250,
+    background: '#4CBB17',
+    color: '#fff',
+  },
+});
+
+const legends = [
+  {
+    name: 'Inactive',
+    color: '#EF473A',
+  },
+  {
+    name: 'In Discussion',
+    color: '#FEF600',
+  },
+  {
+    name: 'In Negotiation',
+    color: '#89CFF0',
+  },
+  {
+    name: 'Leads Won',
+    color: '#9A66CB',
+  },
+];
 
 const ProjectView = () => {
   const { id } = useParams();
@@ -14,23 +87,22 @@ const ProjectView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [projectDetails, setProjectDetails] = useState({});
   const [projectToEdit, setProjectToEdit] = useState({});
-  const svgRef = useRef(null);
-  const [paths, setPaths] = useState([]);
-  const [fillCanChange, setFillCanChange] = useState(true);
+  const layoutImageRef = useRef(null);
+  const imgRef = useRef(null);
   const [plotInfoBackdrop, setPlotInfoBackdrop] = useState(false);
   const [plotInfo, setPlotInfo] = useState({});
-  const [activeInfoTab, setActiveInfoTab] = useState(1);
+  const [activeInfoTab, setActiveInfoTab] = useState(2);
   const [selectePlotId, setSelectedPlotId] = useState('');
   const [selectedPath, setSelectedPath] = useState('');
   const [customerPurchases, setCustomerPurchases] = useState([]);
+  const [selectedCoordinates, setSelectedCoordinates] = useState([]);
+  const [coordinates, setCoordinates] = useState([]);
+  const addEvent = useRef(null);
+  const [updatedPaths, setUpdatedPaths] = useState(false);
+  const [imageReady, setImageReady] = useState(false);
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
-    if ($('.select').length > 0) {
-      $('.select').select2({
-        minimumResultsForSearch: -1,
-        width: '100%',
-      });
-    }
     fetchProjectDetails();
   }, []);
 
@@ -43,17 +115,21 @@ const ProjectView = () => {
   }, [activeInfoTab, selectePlotId]);
 
   const updateProjectPaths = async () => {
-    await toast.promise(
-      httpService.post(`/project/${projectDetails._id}/landDivision`, {
-        landDivisions: paths,
-      }),
-      {
-        error: 'Something went wrong',
-        success: 'Layout deatils updated successfully',
-        pending: 'Updating Layout Deatils',
-      }
-    );
-    fetchProjectDetails();
+    await toast
+      .promise(
+        httpService.post(`/project/${projectDetails._id}/subPlots`, {
+          subPlots: projectDetails.subPlots,
+        }),
+        {
+          error: 'Something went wrong',
+          success: 'Layout deatils updated successfully',
+          pending: 'Updating Layout Deatils',
+        }
+      )
+      .then(() => {
+        fetchProjectDetails();
+      });
+    setUpdatedPaths(false);
   };
 
   useEffect(() => {
@@ -63,6 +139,10 @@ const ProjectView = () => {
     }
   }, [selectedPath]);
 
+  useEffect(() => {
+    console.log(coordinates);
+  }, [coordinates.length]);
+
   const fetchProjectDetails = async () => {
     if (!id) {
       history.goBack();
@@ -70,24 +150,13 @@ const ProjectView = () => {
     const res = await httpService.get(`/project/${id}`);
     setProjectDetails(res.data);
     setProjectToEdit(res.data);
-    setPaths([]);
-    const div = document.createElement('div');
-    div.innerHTML = res.data.layout;
-    div.querySelectorAll('g *').forEach((e) => {
-      if (e.tagName !== 'title') {
-        setPaths((p) => [
-          ...p,
-          {
-            name: e.id,
-            component: e.outerHTML,
-            area: '',
-            cost: '',
-            description: '',
-          },
-        ]);
-      }
-    });
-    res?.data?.landDivisions
+    if (
+      res?.data?.subPlots.some((p) => !p.component) ||
+      res?.data?.subPlots.length === 0
+    ) {
+      setUpdatedPaths(true);
+    }
+    res?.data?.subPlots
       .filter((l) => l.sold)
       .map((land) => land.soldTo)
       .forEach((c) => {
@@ -106,6 +175,28 @@ const ProjectView = () => {
     await httpService.put(`/project/${projectToEdit._id}`, projectToEdit);
     fetchProjectDetails();
     document.querySelectorAll('.close')?.forEach((e) => e.click());
+  };
+
+  const handleSubPlotFile = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('layout', file);
+    toast
+      .promise(
+        httpService
+          .post(`/project/${projectDetails._id}/landDivision/csv`, formData)
+          .catch(() => {
+            toast.error('Something went wrong');
+          }),
+        {
+          error: 'Something went wrong',
+          success: 'Plot deatils updated successfully',
+          pending: 'Updating Plot Deatils',
+        }
+      )
+      .then(() => {
+        window.location.reload();
+      });
   };
 
   return (
@@ -131,7 +222,12 @@ const ProjectView = () => {
       {!isLoading && (
         <div className="content container-fluid">
           {/* Page Header */}
-          <div className="page-header">
+          <div
+            className="page-header"
+            style={{
+              marginBottom: '1rem',
+            }}
+          >
             <div className="row align-items-center">
               <div className="col">
                 <h3 className="page-title">{projectDetails?.name}</h3>
@@ -154,6 +250,35 @@ const ProjectView = () => {
               </div>
             </div>
           </div>
+          <p>
+            Total Plots({projectDetails?.subPlots?.length})
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Plots under Discussion(
+            {
+              projectDetails?.subPlots?.filter(
+                (l) =>
+                  l.leadsInfo?.some((l) => l.leadType === 'Discussions') &&
+                  !l.sold
+              ).length
+            }
+            ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Plots under Negotiations(
+            {
+              projectDetails?.subPlots?.filter(
+                (l) =>
+                  l.leadsInfo?.some((l) => l.leadType === 'Negotiations') &&
+                  !l.sold
+              ).length
+            }
+            ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Leads Won(
+            {
+              projectDetails?.subPlots?.filter(
+                (l) =>
+                  l.leadsInfo?.some((l) => l.leadType === 'Lead Won') && !l.sold
+              ).length
+            }
+            ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Plots Sold(
+            {projectDetails?.subPlots?.filter((l) => l.sold).length})
+          </p>
+
           {/* /Page Header */}
           <div className="card tab-box">
             <div className="row user-tabs">
@@ -181,25 +306,37 @@ const ProjectView = () => {
                     <a
                       onClick={() => {
                         setTimeout(() => {
-                          projectDetails.landDivisions.forEach((land) => {
-                            const path = document.querySelector(
-                              `#${land.name}`
-                            );
-                            if (path && land.leads.length > 0) {
-                              path.style.fill = '#FFC107';
-                            } else {
-                            }
-                            if (path && land.sold) {
-                              path.style.fill = '#7FFF00';
-                            }
+                          const markers = projectDetails.subPlots?.map((p) => ({
+                            ...p,
+                            component: JSON.parse(p.component),
+                          }));
+                          markers.map((m) => {
+                            m.component.x =
+                              imgRef.current.getBoundingClientRect().x +
+                              m.component.x;
+                            m.component.y =
+                              imgRef.current.getBoundingClientRect().y +
+                              m.component.y;
+                            return m;
                           });
-                        }, 0);
+                          setMarkers(markers);
+                        }, 200);
                       }}
                       href="#layout"
                       data-toggle="tab"
                       className="nav-link"
                     >
-                      Layout
+                      Project Layout
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      onClick={() => {}}
+                      href="#subPlot"
+                      data-toggle="tab"
+                      className="nav-link"
+                    >
+                      Sub Plots
                     </a>
                   </li>
                   <li className="nav-item">
@@ -275,20 +412,23 @@ const ProjectView = () => {
                           <tr>
                             <td>Total subplots:</td>
                             <td className="text-right">
-                              {projectDetails?.landDivisions?.length}
+                              {projectDetails?.subPlots?.length}
                             </td>
                           </tr>
                           <tr>
                             <td>Subplots sold:</td>
                             <td className="text-right">
-                              {projectDetails?.landDivisions?.length}
+                              {
+                                projectDetails?.subPlots?.filter((l) => l.sold)
+                                  .length
+                              }
                             </td>
                           </tr>
                           <tr>
                             <td>Subplots under discussion:</td>
                             <td className="text-right">
                               {
-                                projectDetails?.landDivisions?.filter(
+                                projectDetails?.subPlots?.filter(
                                   (l) => l.leads?.length
                                 ).length
                               }
@@ -311,49 +451,7 @@ const ProjectView = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="card project-user">
-                    <div className="card-body">
-                      <h6 className="card-title m-b-20">Members</h6>
-                      <ul className="list-box">
-                        {projectDetails?.members?.map((member) => (
-                          <li>
-                            <Link
-                              to={`/app/profile/employee-profile/${member._id}`}
-                            >
-                              <div className="list-item">
-                                <div className="list-left">
-                                  <span className="avatar">
-                                    <div
-                                      style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        background: '#5AB9AA',
-                                        borderRadius: '50%',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        fontSize: '1rem',
-                                        color: '#fff',
-                                      }}
-                                    >
-                                      {member.firstName.charAt(0) +
-                                        (member.lastName.charAt(0) || '')}
-                                    </div>
-                                  </span>
-                                </div>
-                                <div className="list-body">
-                                  <span className="message-author">
-                                    {member.firstName} {member.lastName}
-                                  </span>
-                                  <div className="clearfix" />
-                                </div>
-                              </div>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+
                   <div className="card project-user">
                     <div className="card-body">
                       <h6 className="card-title m-b-20">Leads</h6>
@@ -506,8 +604,33 @@ const ProjectView = () => {
               </div>
             </div>
             <div className="tab-pane fade" id="layout">
-              <h2 className="card-title mb-0 h-100 mt-2"> Builder Layout</h2>
+              <h2 className="card-title mb-0 h-100 mt-2">Project Layout</h2>
               <hr />
+              <div
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                }}
+              >
+                {legends.map((legend, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      marginRight: '10px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: legend.color,
+                        display: 'inline-block',
+                        width: '10px',
+                        height: '10px',
+                      }}
+                    ></div>{' '}
+                    {legend.name}
+                  </div>
+                ))}
+              </div>
               <div className="row">
                 {!projectDetails?.layout && (
                   <div className="card-body">
@@ -559,257 +682,276 @@ const ProjectView = () => {
                     </h3>
                   </div>
                 )}
-                {projectDetails?.layout &&
-                  !projectDetails?.landDivisions?.length > 0 && (
-                    <div className="card-body">
+                {projectDetails?.layout && updatedPaths && (
+                  <div className="card-body">
+                    <div className="clearfix">
+                      {
+                        projectDetails?.subPlots?.filter((e) => !e.component)
+                          .length
+                      }{' '}
+                      more plot(s) need to be mapped
                       <button
                         className="btn add-btn"
                         style={{
                           marginLeft: 'auto',
                         }}
                         onClick={() => {
-                          const invalidPaths = paths.filter(
-                            (path) => path.area === ''
-                          );
-                          if (invalidPaths.length > 0) {
-                            invalidPaths.forEach((path) => {
-                              toast.error(
-                                `Area for ${path.name} is not specified`
-                              );
-                            });
-                          } else {
-                            updateProjectPaths();
-                          }
+                          updateProjectPaths();
                         }}
                       >
                         Save Layout
                       </button>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                        }}
-                      ></div>
-                      <div
-                        style={{
-                          position: 'sticky',
-                          top: '65px',
-                          zIndex: 9999,
-                          background: '#fff',
-                        }}
-                        ref={svgRef}
-                        dangerouslySetInnerHTML={{
-                          __html: projectDetails?.layout,
-                        }}
-                      ></div>
-                      <div className="row">
-                        <div className="col-md-12 col-sm-12">
-                          <div className="table-responsive">
-                            <table className="table table-hover table-white">
-                              <thead>
-                                <tr>
-                                  <th className="col-sm-2">Item</th>
-                                  <th className="col-md-3">Size</th>
-                                  <th style={{ width: '180px' }}>Facing</th>
-                                  <th className="col-md-3">Dimensions</th>
-                                  <th style={{ width: '100px' }}>
-                                    Calculated Price
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {paths.map((path, index) => (
-                                  <tr>
-                                    <td>
-                                      <input
-                                        className="form-control"
-                                        style={{ minWidth: '150px' }}
-                                        readOnly
-                                        value={path.name}
-                                      />
-                                    </td>
-                                    <td>
-                                      <input
-                                        onFocus={() => {
-                                          setSelectedPath(path.name);
-                                        }}
-                                        onChange={(e) => {
-                                          const newPaths = [...paths];
-                                          newPaths[index].area = e.target.value;
-                                          setPaths(newPaths);
-                                        }}
-                                        className="form-control"
-                                        type="number"
-                                        style={{ minWidth: '150px' }}
-                                      />
-                                    </td>
-                                    <td>
-                                      <input
-                                        onFocus={() => {
-                                          setSelectedPath(path.name);
-                                        }}
-                                        className="form-control"
-                                        style={{ minWidth: '150px' }}
-                                        onChange={(e) => {
-                                          const newPaths = [...paths];
-                                          newPaths[index].facing =
-                                            e.target.value;
-                                          setPaths(newPaths);
-                                        }}
-                                        type="text"
-                                      />
-                                    </td>
-                                    <td>
-                                      <input
-                                        onFocus={() => {
-                                          setSelectedPath(path.name);
-                                        }}
-                                        onChange={(e) => {
-                                          const newPaths = [...paths];
-                                          newPaths[index].dimensions =
-                                            e.target.value;
-                                          setPaths(newPaths);
-                                        }}
-                                        className="form-control"
-                                        style={{ minWidth: '150px' }}
-                                        type="text"
-                                      />
-                                    </td>
-                                    <td>
-                                      <input
-                                        className="form-control"
-                                        readOnly
-                                        value={
-                                          projectDetails?.estimatedCost *
-                                          path.area
-                                        }
-                                        style={{ width: '120px' }}
-                                        type="text"
-                                      />
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-                      <br />
                     </div>
-                  )}
-                {projectDetails?.landDivisions?.length > 0 && (
-                  <div className="card-body">
-                    <div
-                      onClick={(e) => {
-                        if (!e.target.id) return;
-                        setPlotInfo(
-                          projectDetails.landDivisions.find(
-                            (d) => d.name === e.target.id
-                          )
+                    <img
+                      ref={layoutImageRef}
+                      src={projectDetails?.layout}
+                      draggable="false"
+                      useMap="#layoutMap"
+                      onLoad={(e) => {
+                        layoutImageRef.current.addEventListener(
+                          'click',
+                          (e) => {
+                            Swal.fire({
+                              title: 'Enter plot name',
+                              input: 'text',
+                              preConfirm: (value) => {
+                                return new Promise((resolve) => {
+                                  setTimeout(() => {
+                                    if (value === '') {
+                                      resolve(
+                                        Swal.showValidationMessage(
+                                          'Please enter a name'
+                                        )
+                                      );
+                                    } else {
+                                      resolve();
+                                    }
+                                  }, 400);
+                                });
+                              },
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                const temp = projectDetails.subPlots;
+                                temp.find(
+                                  (v) => v.name === result.value
+                                ).component = JSON.stringify({
+                                  x: e.offsetX,
+                                  y: e.offsetY,
+                                });
+                                setProjectDetails({
+                                  ...projectDetails,
+                                  subPlots: temp,
+                                });
+                                setCoordinates((c) => [
+                                  ...c,
+                                  {
+                                    x: e.offsetX,
+                                    y: e.offsetY,
+                                    name: result.value,
+                                  },
+                                ]);
+                              }
+                            });
+                          }
                         );
-                        setPlotInfoBackdrop(true);
-                        setSelectedPlotId(e.target.id);
-                        setTimeout(() => {
-                          document
-                            .querySelector(`#plot-info #${e.target.id}`)
-                            .classList.add('selected');
-                        }, 0);
                       }}
-                      ref={svgRef}
-                      dangerouslySetInnerHTML={{
-                        __html: projectDetails?.layout,
-                      }}
-                    ></div>
-                    <h4>Legends</h4>
-                    <div>
-                      <div>
-                        <div
-                          style={{
-                            background: '#D0D0D0',
-                            display: 'inline-block',
-                            width: '10px',
-                            height: '10px',
-                          }}
-                        ></div>{' '}
-                        Inactive plots
-                      </div>
-                      <div
-                        style={{
-                          background: '#FFC107',
-                          display: 'inline-block',
-                          width: '10px',
-                          height: '10px',
-                        }}
-                      ></div>{' '}
-                      In Discussion
-                    </div>
-                    <div>
-                      <div
-                        style={{
-                          background: '#7FFF00',
-                          display: 'inline-block',
-                          width: '10px',
-                          height: '10px',
-                        }}
-                      ></div>{' '}
-                      Sold Plots
-                    </div>
+                      className="layout-image"
+                    />
+                    <map name="layoutMap"></map>
                     <br />
-                    <div className="table-responsive">
-                      <table className="table table-striped table-hover">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Plot Name</th>
-                            <th className="d-none d-sm-table-cell">Leads</th>
-                            <th>COST</th>
-                            <th>Facing</th>
-                            <th>Dimensions</th>
-                            <th>Area</th>
-                            <th>Sale Information</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {projectDetails?.landDivisions.map(
-                            (landDivision, index) => (
-                              <tr>
-                                <td>{index + 1}</td>
-                                <td>{landDivision.name}</td>
-                                <td>
-                                  {!landDivision.leads.length && (
-                                    <h5>No Leads</h5>
-                                  )}
-                                  {landDivision.leads.map((lead, i) => (
-                                    <Link
-                                      to={`app/profile/lead-profile/${lead._id}`}
-                                    >
-                                      {lead.name}
-                                      {landDivision.leads[i + 1] ? ', ' : ''}
-                                    </Link>
-                                  ))}
-                                </td>
-                                <td>₹ {landDivision.cost}</td>
-                                <td>
-                                  {landDivision.facing ||
-                                    'No facing information'}
-                                </td>
-                                <td>
-                                  {landDivision.dimension ||
-                                    'No dimensions information'}
-                                </td>
-                                <td>
-                                  {landDivision.area || 'No area information'}{' '}
-                                  Sq ft
-                                </td>
-                                <td>None</td>
-                              </tr>
-                            )
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
+                    {projectDetails.subPlots.map((plot, index) =>
+                      plot.component ? (
+                        <InactiveTooltip key={index} title={plot.name}>
+                          <div
+                            onClick={() => {
+                              setPlotInfoBackdrop(true);
+                              setPlotInfo(plot);
+                            }}
+                            className="pin"
+                            style={{
+                              position: 'absolute',
+                              top:
+                                window.scrollY +
+                                layoutImageRef.current.getBoundingClientRect()
+                                  .y +
+                                JSON.parse(plot.component).y,
+                              left:
+                                window.scrollX +
+                                layoutImageRef.current.getBoundingClientRect()
+                                  .x -
+                                220 +
+                                JSON.parse(plot.component).x,
+                              background: '#EF473A',
+                            }}
+                          ></div>
+                        </InactiveTooltip>
+                      ) : (
+                        <></>
+                      )
+                    )}
                   </div>
+                )}
+                {projectDetails.subPlots && !updatedPaths && (
+                  <div className="card-body">
+                    <img
+                      ref={imgRef}
+                      src={projectDetails?.layout}
+                      draggable="false"
+                      useMap="#layoutMap"
+                      className="layout-image"
+                      onLoad={(e) => {
+                        setImageReady(true);
+                      }}
+                    />
+                    {imageReady &&
+                      markers?.map((plot, index) =>
+                        plot.component ? (
+                          <>
+                            {plot.leadsInfo.length === 0 && !plot.sold && (
+                              <InactiveTooltip key={index} title={plot.name}>
+                                <div
+                                  onClick={() => {
+                                    setPlotInfoBackdrop(true);
+                                    setPlotInfo(plot);
+                                  }}
+                                  className="pin"
+                                  style={{
+                                    position: 'absolute',
+                                    top: plot.component.y - 7,
+                                    left: -220 + plot.component.x,
+                                    background: '#EF473A',
+                                  }}
+                                ></div>
+                              </InactiveTooltip>
+                            )}
+                            {plot.leadsInfo.some(
+                              (l) =>
+                                l.leadType == 'Discussions' ||
+                                l.leadType == 'New Lead'
+                            ) &&
+                              !plot.sold && (
+                                <InDisscussionTooltip
+                                  key={index}
+                                  title={plot.name}
+                                >
+                                  <div
+                                    onClick={() => {
+                                      setPlotInfoBackdrop(true);
+                                      setPlotInfo(plot);
+                                    }}
+                                    className="pin"
+                                    style={{
+                                      position: 'absolute',
+                                      top: plot.component.y - 7,
+                                      left: -220 + plot.component.x,
+                                      background: '#FFF700',
+                                    }}
+                                  ></div>
+                                </InDisscussionTooltip>
+                              )}
+                            {plot.leadsInfo.some(
+                              (l) => l.leadType == 'Negotiations'
+                            ) &&
+                              !plot.sold && (
+                                <InNegotiationTooltip
+                                  key={index}
+                                  title={plot.name}
+                                >
+                                  <div
+                                    onClick={() => {
+                                      setPlotInfoBackdrop(true);
+                                      setPlotInfo(plot);
+                                    }}
+                                    className="pin"
+                                    style={{
+                                      position: 'absolute',
+                                      top: plot.component.y - 7,
+                                      left: -220 + plot.component.x,
+                                      background: '#89CFF0',
+                                    }}
+                                  ></div>
+                                </InNegotiationTooltip>
+                              )}
+                            {plot.leadsInfo.some(
+                              (l) => l.leadType == 'Lead Won'
+                            ) &&
+                              !plot.sold && (
+                                <LeadsWontTooltip key={index} title={plot.name}>
+                                  <div
+                                    onClick={() => {
+                                      setPlotInfoBackdrop(true);
+                                      setPlotInfo(plot);
+                                    }}
+                                    className="pin"
+                                    style={{
+                                      position: 'absolute',
+                                      top: plot.component.y - 7,
+                                      left: -220 + plot.component.x,
+                                      background: '#9A66CB',
+                                    }}
+                                  ></div>
+                                </LeadsWontTooltip>
+                              )}
+                            {plot.sold && (
+                              <SoldOutTooltip key={index} title={plot.name}>
+                                <div
+                                  onClick={() => {
+                                    setPlotInfoBackdrop(true);
+                                    setPlotInfo(plot);
+                                  }}
+                                  className="pin"
+                                  style={{
+                                    position: 'absolute',
+                                    top: plot.component.y - 7,
+                                    left: -220 + plot.component.x,
+                                    background: '#4CBB17',
+                                  }}
+                                ></div>
+                              </SoldOutTooltip>
+                            )}
+                          </>
+                        ) : (
+                          <></>
+                        )
+                      )}
+                    <br />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="tab-pane fade" id="subPlot">
+              <h2 className="card-title mb-0 h-100 mt-2">Sub Plots</h2>
+              <hr />
+              <div className="row">
+                {projectDetails.subPlots.length === 0 && (
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <input
+                      type={'file'}
+                      onChange={handleSubPlotFile}
+                      style={{
+                        display: 'none',
+                      }}
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.target.previousSibling.click();
+                      }}
+                      className="btn btn-primary"
+                    >
+                      Add Plots Details
+                    </button>
+                  </div>
+                )}
+                {projectDetails.subPlots.length > 0 && (
+                  <PlotsTable plots={projectDetails?.subPlots || []} />
                 )}
               </div>
             </div>
@@ -1060,33 +1202,26 @@ const ProjectView = () => {
                 e.stopPropagation();
               }}
               style={{
-                width: '80%',
-                minHeight: '70%',
-                maxHeight: '70%',
+                width: '40%',
+                minHeight: '50%',
+                maxHeight: '50%',
                 backgroundColor: 'white',
                 borderRadius: '10px',
                 padding: '30px',
                 overflow: 'auto',
               }}
             >
+              <h3
+                style={{
+                  textAlign: 'center',
+                }}
+              >
+                {plotInfo.name}
+              </h3>
               <div className="card tab-box">
                 <div className="row user-tabs">
                   <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
                     <ul className="nav nav-tabs nav-tabs-bottom">
-                      <li className="nav-item">
-                        <a
-                          href="#info"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setActiveInfoTab(1);
-                          }}
-                          className={`nav-link ${
-                            activeInfoTab === 1 ? 'active' : ''
-                          }`}
-                        >
-                          Plot Info
-                        </a>
-                      </li>
                       <li className="nav-item">
                         <a
                           href="#lead"
@@ -1119,8 +1254,13 @@ const ProjectView = () => {
                   </div>
                 </div>
               </div>
-              <div className="tab-content">
-                {activeInfoTab === 1 && (
+              <div
+                className="tab-content"
+                style={{
+                  paddingTop: '4px',
+                }}
+              >
+                {/* {activeInfoTab === 1 && (
                   <div id="info" className="">
                     <div>
                       <h4>
@@ -1130,7 +1270,11 @@ const ProjectView = () => {
                         <b>Plot Size</b>: <span>{plotInfo.area} Sq Feet</span>
                       </h4>
                       <h4>
-                        <b>Plot Cost</b>: <span>{plotInfo.cost}</span>
+                        <b>Plot Cost</b>:{' '}
+                        <span>
+                          {plotInfo.cost ||
+                            plotInfo.area * projectDetails.estimatedCost}
+                        </span>
                       </h4>
                       <h4>
                         <b>Description</b>:{' '}
@@ -1144,51 +1288,52 @@ const ProjectView = () => {
                         <b>Status</b>:{' '}
                         <span>{plotInfo.sold ? 'Sold ' : 'Not Sold'}</span>
                       </h4>
-                      <h4>
-                        <b>Plot Location</b>
-                      </h4>
-                      <div
-                        id="plot-info"
-                        dangerouslySetInnerHTML={{
-                          __html: projectDetails?.layout,
-                        }}
-                      ></div>
                     </div>
                   </div>
-                )}
+                )} */}
                 {activeInfoTab === 2 && (
                   <div id="lead" className="">
-                    <h4>Interested leads</h4>
-                    <div
-                      className="task-wrapper"
-                      style={{
-                        padding: '0',
-                      }}
-                    >
-                      <div className="task-list-container">
-                        <div className="task-list-body">
-                          <ul id="task-list">
-                            {plotInfo.leads?.map((lead, i) => (
-                              <li className="task" key={i}>
-                                <div className="task-container">
-                                  <span
-                                    className="task-label"
-                                    suppressContentEditableWarning={true}
-                                  >
-                                    <Link
-                                      to={`/app/profile/lead-profile/${lead._id}`}
-                                    >
-                                      {lead.name}
-                                    </Link>
-                                  </span>
-                                  <span></span>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                    <Box sx={{ margin: 1 }}>
+                      <Table size="small" aria-label="purchases">
+                        {plotInfo.leadsInfo?.length > 0 && (
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Lead</TableCell>
+                              <TableCell>Email</TableCell>
+                              <TableCell>Phone</TableCell>
+                              <TableCell>Status</TableCell>
+                              <TableCell>Managed By</TableCell>
+                            </TableRow>
+                          </TableHead>
+                        )}
+                        <TableBody>
+                          {plotInfo.leadsInfo?.length === 0 && (
+                            <h4
+                              style={{
+                                textAlign: 'center',
+                                marginTop: '1rem',
+                                marginBottom: '1rem',
+                              }}
+                            >
+                              No Leads
+                            </h4>
+                          )}
+                          {plotInfo.leadsInfo?.map((r) => (
+                            <TableRow key={r.lead._id}>
+                              <TableCell component="th" scope="row">
+                                {r.lead.name}
+                              </TableCell>
+                              <TableCell>{r.lead.email}</TableCell>
+                              <TableCell>{r.lead.phone}</TableCell>
+                              <TableCell>{r.leadType}</TableCell>
+                              <TableCell>
+                                {r.lead.assignedTo?.firstName}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Box>
                   </div>
                 )}
                 {activeInfoTab === 3 && plotInfo.sold ? (
