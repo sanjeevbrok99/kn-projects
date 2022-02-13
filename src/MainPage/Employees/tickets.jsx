@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -48,9 +47,19 @@ const Tickets = () => {
     console.log(data);
     let a=0, b=0, c=0;
     data.forEach((ticket) => {
-      console.log(ticket.status.toLowerCase());
       if (ticket.status.toLowerCase() == 'active') c++;
       else b++;
+
+      let date =new Date(ticket.updatedAt);
+      let dateNow = Date.now();
+      date = date.setDate(date.getDate() + 1);
+      console.log(date);
+      if (date >= dateNow) {
+        a++;
+      } else { 
+        console.log("not");
+      }
+      
     });
     console.log(a,b,c);
     setTicketStats([a,b,c]);
