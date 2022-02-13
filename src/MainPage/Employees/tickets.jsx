@@ -50,10 +50,10 @@ const Tickets = () => {
       if (ticket.status.toLowerCase() == 'active') c++;
       else b++;
 
-      let date =new Date(ticket.updatedAt);
+      let date = new Date(ticket.updatedAt);
       let dateNow = Date.now();
       date = date.setDate(date.getDate() + 1);
-      console.log(date);
+
       if (date >= dateNow) {
         a++;
       } else { 
@@ -205,7 +205,12 @@ const Tickets = () => {
 
         <TicketTracker ticketStats={ticketStats} />
 
-        <SearchTicket />
+        <SearchTicket
+          setRerender={setRerender}
+          rerender={rerender}
+          data={data}
+          setData={setData}
+        />
 
         <div className="row">
           <div className="col-md-12">
@@ -482,20 +487,67 @@ const DeleteTicket = (props) => {
   );
 };
 
-const SearchTicket = () => {
+const SearchTicket = ({setRerender,rerender,data,setData}) => {
+
+  const handleSearch = async () => { 
+    const { data } = await fetchTicket();
+    const title = document.getElementById('ticket-title-search').value
+    const employeeName = document.getElementById('ticket-search-empname').value
+    const statue = document.getElementById('search-filter-status').value;
+    const priority = document.getElementById('search-filter-priority').value;
+    
+    let result = data;
+
+    if (title != '') {
+        result = data.filter(ticket => {
+        return ticket.title === title
+      });
+    }
+
+    if (employeeName !== '') {
+      result = result.filter(ticket => {
+        if (ticket.assignee.firstName === employeeName || ticket.assignee.lastName === employeeName || `${ticket.assignee.firstName} ${ticket.assignee.lastName}` == employeeName) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+
+    if (statue != '') {
+      result = result.filter(ticket => {
+        return ticket.status == statue;
+      });
+    }
+
+    if (priority != '') {
+      result = result.filter(ticket => {
+        return ticket.priority == priority;
+      });
+    }
+
+    setData(result);
+  }
+
   return (
     <div className="row filter-row">
+     <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+        <div className="form-group form-focus focused">
+          <input type="text" className="form-control floating" id='ticket-title-search'/>
+          <label className="focus-label">Title</label>
+        </div>
+      </div>
       <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
         <div className="form-group form-focus focused">
-          <input type="text" className="form-control floating" />
+          <input type="text" className="form-control floating" id='ticket-search-empname' />
           <label className="focus-label">Employee Name</label>
         </div>
       </div>
       <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
         <div className="form-group form-focus select-focus">
-          <select className="select floating">
-            <option> -- Select -- </option>
-            <option> Pending </option>
+          <select className="select floating" id="search-filter-status">
+            <option></option>
+            <option> Active </option>
             <option> Approved </option>
             <option> Returned </option>
           </select>
@@ -504,8 +556,8 @@ const SearchTicket = () => {
       </div>
       <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
         <div className="form-group form-focus select-focus">
-          <select className="select floating">
-            <option> -- Select -- </option>
+          <select className="select floating" id='search-filter-priority'>
+            <option></option>
             <option> High </option>
             <option> Low </option>
             <option> Medium </option>
@@ -513,29 +565,7 @@ const SearchTicket = () => {
           <label className="focus-label">Priority</label>
         </div>
       </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus select-focus">
-          <div>
-            <input
-              className="form-control floating datetimepicker"
-              type="date"
-            />
-          </div>
-          <label className="focus-label">From</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus select-focus">
-          <div>
-            <input
-              className="form-control floating datetimepicker"
-              type="date"
-            />
-          </div>
-          <label className="focus-label">To</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12" onClick={handleSearch}>
         <a href="#" className="btn btn-success btn-block">
           Search
         </a>
