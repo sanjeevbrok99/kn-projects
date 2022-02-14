@@ -8890,17 +8890,6 @@ ul.comment-list li ul.children {
   scrollbar-width: thin;
 }
 
-g * {
-  cursor: pointer;
-  stroke: #ffffff;
-  stroke-width: 1.5px;
-  fill: #d0d0d0;
-}
-
-.selected {
-  fill: #ef473a;
-}
-
 .pin {
   width: 20px;
   height: 20px;

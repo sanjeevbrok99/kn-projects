@@ -6,6 +6,7 @@ import 'react-summernote/dist/react-summernote.css'; // import styles
 
 import '../../index.css';
 import httpService from '../../../lib/httpService';
+import { toast } from 'react-toastify';
 
 const ProjectList = () => {
   const [projectList, setProjectList] = React.useState([]);
@@ -38,9 +39,12 @@ const ProjectList = () => {
   const addProjects = async () => {
     const res = await httpService.post('/project', projectToAdd);
     if (res.status < 400) {
+      toast.success('Project Added Successfully');
       fetchData();
       setProjectToAdd({});
       document.querySelectorAll('.close')?.forEach((e) => e.click());
+    } else {
+      toast.error('Something went wrong');
     }
   };
 
