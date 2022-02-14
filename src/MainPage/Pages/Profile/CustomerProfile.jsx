@@ -158,7 +158,7 @@ const Invoices = (props) => {
       title: 'Invoice Number',
       dataIndex: 'invoicenumber',
       render: (text, record) => (
-        <Link to="/app/sales/invoices-view">#{text}</Link>
+        <Link to={`/app/sales/invoices-view/${record._id}`}>#{text}</Link>
       ),
       sorter: (a, b) => a.invoicenumber.length - b.invoicenumber.length,
     },
@@ -289,7 +289,6 @@ const CustomerProfile = () => {
   };
   async function fetchApi() {
     const res = await getACustomer(id);
-
     setCustomer(res.data);
   }
   useEffect(() => {
@@ -312,7 +311,7 @@ const CustomerProfile = () => {
           }}
           className="btn add-btn"
         >
-          Add Invoice
+          Add Purchase
         </button>
 
         <div className="page-header">
@@ -438,17 +437,54 @@ const CustomerProfile = () => {
               e.stopPropagation();
             }}
             style={{
-              width: '90%',
-              height: '90%',
+              width: '50%',
               backgroundColor: 'white',
               borderRadius: '10px',
               padding: '30px',
               position: 'relative',
             }}
           >
+            <div className="row">
+              <div className="col-sm-6 m-b-20">
+                <img className="inv-logo" alt="" />
+                <ul className="list-unstyled">
+                  <li>KN Multiprojects</li>
+                  <li>Plot No-31 Basundhara Complex, Hanspal,</li>
+                  <li> Bhubaneswar, Odisha 752101</li>
+                  <li>GST No:</li>
+                </ul>
+              </div>
+              <div className="col-sm-6 m-b-20">
+                <div className="invoice-details">
+                  <h3 className="text-uppercase">New Invoice</h3>
+                  <ul className="list-unstyled">
+                    <li>
+                      Date:{' '}
+                      <span> {new Date().toISOString().split('T')[0]}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="col-sm-6 col-lg-7 col-xl-8 m-b-20">
+                <ul className="list-unstyled">
+                  <li>
+                    <strong>{customer?.name}</strong>
+                  </li>
+                  <li>
+                    <span>{customer?.company}</span>
+                  </li>
+                  <li>{customer?.address}</li>
+                  <li>{customer?.phone}</li>
+                  <li>
+                    <a href="#">{customer?.email}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <h4>Select Project</h4>
             <select
               onChange={(e) => {
+                setSelectedPlot(null);
                 setSelectedProject(
                   projects.filter((p) => p._id === e.target.value)[0]
                 );
@@ -460,95 +496,30 @@ const CustomerProfile = () => {
                 <option value={project._id}>{project.name}</option>
               ))}
             </select>
-            <div
+            <h4
               style={{
-                height: '77%',
-                marginTop: '20px',
+                marginTop: '12px',
               }}
             >
-              {!selectedProject?.name && (
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: '#DCDCE1',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <h2>
-                    <b>No Project Selected</b>
-                  </h2>
-                </div>
-              )}
-              {selectedProject?.name && (
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!e.target.id) return;
-                    console.log(selectedProject);
-                    document
-                      .querySelector(`.selected`)
-                      ?.classList.remove('selected');
-                    e.target.classList.add('selected');
-                    setSelectedPlot(
-                      selectedProject.landDivisions?.filter(
-                        (p) => p.name === e.target.id
-                      )[0]
-                    );
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: selectedProject?.layout || '',
-                  }}
-                ></div>
-              )}
-            </div>
-            {selectedPlot?.name && (
-              <div
-                id="selected-plot"
-                style={{
-                  position: 'absolute',
-                  top: '20%',
-                  right: '5%',
-                  width: '22%',
-                  cursor: 'move',
-                  zIndex: '9999',
-                  backgroundColor: 'white',
-                  padding: '30px',
-                  borderTop: '1px solid #E7E7E7',
-                  boxShadow:
-                    'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
-                }}
-              >
-                <h4
-                  style={{
-                    textAlign: 'center',
-                  }}
-                >
-                  <b>Plot Details</b>
-                </h4>
-                <h4>
-                  <br />
-                  <b>Plot Name:</b> {selectedPlot.name}
-                </h4>
-                <h4>
-                  <b>Plot Description:</b>{' '}
-                  {selectedPlot.description
-                    ? selectedPlot.description
-                    : 'No Description'}
-                </h4>
-                <h4>
-                  <b>Plot Size:</b> {selectedPlot.area} Sq Ft
-                </h4>
-                <h4>
-                  <b>Plot Price:</b> ₹ {selectedPlot.cost}
-                </h4>
-                <h4>
-                  <b>Interested leads:</b> {selectedPlot.leads?.length || 0}
-                </h4>
-              </div>
-            )}
+              Select Plot
+            </h4>
+            <select
+              value={selectedPlot?._id || ''}
+              onChange={(e) => {
+                setSelectedPlot(
+                  selectedProject?.subPlots?.filter(
+                    (p) => p._id === e.target.value
+                  )[0]
+                );
+              }}
+              className="custom-select"
+            >
+              <option hidden value=""></option>
+              {selectedProject?.subPlots?.map((plot) => (
+                <option value={plot._id}>{plot.name}</option>
+              ))}
+            </select>
+
             <button
               style={{
                 marginTop: '3%',
@@ -573,18 +544,17 @@ const CustomerProfile = () => {
                         {
                           item: selectedProject.name + ' ' + selectedPlot.name,
                           description: selectedPlot.description,
-                          unitCost: selectedPlot.cost,
+                          unitCost: selectedProject.estimatedCost,
                           quantity: 1,
-                          amount: selectedPlot.cost,
+                          amount:
+                            selectedPlot.area * selectedProject.estimatedCost,
                         },
                       ],
-                      total: selectedPlot.cost,
+                      total: selectedPlot.area * selectedProject.estimatedCost,
                     }),
-                    // httpService.put(`/land-division/${selectedPlot._id}`, {
-                    // })
                     httpService.put(`/project/${selectedProject._id}`, {
                       ...selectedProject,
-                      landDivisions: selectedProject.landDivisions.map((p) => {
+                      subPlots: selectedProject.subPlots.map((p) => {
                         if (p._id === selectedPlot._id) {
                           return selectedPlot;
                         }

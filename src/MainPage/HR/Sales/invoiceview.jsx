@@ -165,8 +165,13 @@ const Invoiceview = () => {
                           <th className="col-md-6">Description</th>
                           <th style={{ width: '100px' }}>Unit Cost</th>
                           <th style={{ width: '80px' }}>Qty</th>
-                          <th>Amount</th>
-                          <th> </th>
+                          <th
+                            style={{
+                              textAlign: 'right',
+                            }}
+                          >
+                            Amount
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -177,17 +182,12 @@ const Invoiceview = () => {
                             <td>{item.description}</td>
                             <td> {item.unitCost}</td>
                             <td> {item.quantity}</td>
-                            <td>{item.amount}</td>
-                            <td>
-                              <a
-                                href="javascript:void(0)"
-                                className={`${
-                                  index + 1 !== itemsToAdd.length
-                                    ? 'text-danger'
-                                    : 'text-success'
-                                } font-18`}
-                                title="Add"
-                              ></a>
+                            <td
+                              style={{
+                                textAlign: 'right',
+                              }}
+                            >
+                              {item.amount}
                             </td>
                           </tr>
                         ))}
