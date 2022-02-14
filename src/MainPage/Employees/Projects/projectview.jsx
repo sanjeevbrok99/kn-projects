@@ -15,6 +15,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import PlotsBreakdown from './PlotsBreakdown';
 
 const InactiveTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -97,10 +100,20 @@ const ProjectView = () => {
   const [customerPurchases, setCustomerPurchases] = useState([]);
   const [selectedCoordinates, setSelectedCoordinates] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
-  const addEvent = useRef(null);
   const [updatedPaths, setUpdatedPaths] = useState(false);
   const [imageReady, setImageReady] = useState(false);
   const [markers, setMarkers] = useState([]);
+  const [totalPlotArea, setTotalPlotArea] = useState(0);
+  const [plotAreaUnderDiscussion, setPlotAreaUnderDiscussion] = useState(0);
+  const [plotAreaInNegotiation, setPlotAreaInNegotiation] = useState(0);
+  const [plotAreaLeadsWon, setPlotAreaLeadsWon] = useState(0);
+  const [plotAreaSoldOut, setPlotAreaSoldOut] = useState(0);
+  const [totalPlots, setTotalPlots] = useState(0);
+  const [totalPlotsSoldOut, setTotalPlotsSoldOut] = useState(0);
+  const [totalPlotsInDiscussion, setTotalPlotsInDiscussion] = useState(0);
+  const [totalPlotsInNegotiation, setTotalPlotsInNegotiation] = useState(0);
+  const [totalPlotsLeadsWon, setTotalPlotsLeadsWon] = useState(0);
+  const [showPlotsBreakdown, setShowPlotsBreakdown] = useState(false);
 
   useEffect(() => {
     fetchProjectDetails();
@@ -127,7 +140,7 @@ const ProjectView = () => {
         }
       )
       .then(() => {
-        fetchProjectDetails();
+        window.location.reload();
       });
     setUpdatedPaths(false);
   };
@@ -168,6 +181,54 @@ const ProjectView = () => {
           return temp;
         });
       });
+    const totalArea = res?.data?.subPlots.reduce((a, b) => a + b.area, 0);
+    const totalAreaSold = res?.data?.subPlots
+      .filter((l) => l.sold)
+      .reduce((a, b) => a + b.area, 0);
+    const totalAreaInDiscussion = res?.data?.subPlots
+      .filter(
+        (p) =>
+          !p.sold &&
+          p.leadsInfo.some(
+            (l) => l.leadType === 'Discussions' || l.leadType === 'New Lead'
+          )
+      )
+      .reduce((a, b) => a + b.area, 0);
+    const totalAreaInNegotiation = res?.data?.subPlots
+      .filter(
+        (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Negotiations')
+      )
+      .reduce((a, b) => a + b.area, 0);
+    const totalAreaLeadsWons = res?.data?.subPlots
+      .filter(
+        (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Lead Won')
+      )
+      .reduce((a, b) => a + b.area, 0);
+    const totalPlots = res?.data?.subPlots.length;
+    const totalPlotsSoldOut = res?.data?.subPlots.filter((l) => l.sold).length;
+    const totalPlotsInDiscussion = res?.data?.subPlots.filter(
+      (p) =>
+        !p.sold &&
+        p.leadsInfo.some(
+          (l) => l.leadType === 'Discussions' || l.leadType === 'New Lead'
+        )
+    ).length;
+    const totalPlotsInNegotiation = res?.data?.subPlots.filter(
+      (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Negotiations')
+    ).length;
+    const totalPlotsLeadsWons = res?.data?.subPlots.filter(
+      (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Lead Won')
+    ).length;
+    setTotalPlotArea(totalArea);
+    setPlotAreaSoldOut(totalAreaSold);
+    setPlotAreaInNegotiation(totalAreaInNegotiation);
+    setPlotAreaLeadsWon(totalAreaLeadsWons);
+    setPlotAreaUnderDiscussion(totalAreaInDiscussion);
+    setTotalPlots(totalPlots);
+    setTotalPlotsSoldOut(totalPlotsSoldOut);
+    setTotalPlotsInDiscussion(totalPlotsInDiscussion);
+    setTotalPlotsInNegotiation(totalPlotsInNegotiation);
+    setTotalPlotsLeadsWon(totalPlotsLeadsWons);
     setIsLoading(false);
   };
 
@@ -195,7 +256,7 @@ const ProjectView = () => {
         }
       )
       .then(() => {
-        window.location.reload();
+        fetchProjectDetails();
       });
   };
 
@@ -250,34 +311,35 @@ const ProjectView = () => {
               </div>
             </div>
           </div>
-          <p>
-            Total Plots({projectDetails?.subPlots?.length})
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Plots under Discussion(
-            {
-              projectDetails?.subPlots?.filter(
-                (l) =>
-                  l.leadsInfo?.some((l) => l.leadType === 'Discussions') &&
-                  !l.sold
-              ).length
-            }
-            ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Plots under Negotiations(
-            {
-              projectDetails?.subPlots?.filter(
-                (l) =>
-                  l.leadsInfo?.some((l) => l.leadType === 'Negotiations') &&
-                  !l.sold
-              ).length
-            }
-            ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Leads Won(
-            {
-              projectDetails?.subPlots?.filter(
-                (l) =>
-                  l.leadsInfo?.some((l) => l.leadType === 'Lead Won') && !l.sold
-              ).length
-            }
-            ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Plots Sold(
-            {projectDetails?.subPlots?.filter((l) => l.sold).length})
-          </p>
+          <Stack
+            sx={{
+              marginBottom: '1rem',
+            }}
+            direction="row"
+            spacing={1}
+          >
+            <Chip label={`Total Plots (${totalPlots})`} color="warning" />
+            <Chip
+              label={`Plots under Negotiations(${totalPlotsInNegotiation})`}
+              color="primary"
+            />
+            <Chip
+              label={`Plots under Discussions(${totalPlotsInDiscussion})`}
+              color="secondary"
+            />
+            <Chip label={`Leads Won(${totalPlotsLeadsWon})`} color="error" />
+            <Chip label={`Plots Sold(${totalPlotsSoldOut})`} color="info" />
+            {/* <Chip
+              onClick={() => {
+                setShowPlotsBreakdown(true);
+              }}
+              label="Detailed Breakdown"
+              sx={{
+                cursor: 'pointer',
+              }}
+              color="success"
+            /> */}
+          </Stack>
 
           {/* /Page Header */}
           <div className="card tab-box">
@@ -436,19 +498,6 @@ const ProjectView = () => {
                           </tr>
                         </tbody>
                       </table>
-                      <p className="m-b-5">
-                        Progress
-                        <span className="text-success float-right">40%</span>
-                      </p>
-                      <div className="progress progress-xs mb-0">
-                        <div
-                          className="progress-bar bg-success"
-                          role="progressbar"
-                          data-toggle="tooltip"
-                          title="40%"
-                          style={{ width: '40%' }}
-                        />
-                      </div>
                     </div>
                   </div>
 
@@ -696,6 +745,16 @@ const ProjectView = () => {
                           marginLeft: 'auto',
                         }}
                         onClick={() => {
+                          if (
+                            projectDetails?.subPlots?.filter(
+                              (e) => !e.component
+                            ).length
+                          ) {
+                            toast.error(
+                              'All plots needs to be mapped before saving'
+                            );
+                            return;
+                          }
                           updateProjectPaths();
                         }}
                       >
@@ -1302,7 +1361,7 @@ const ProjectView = () => {
                               <TableCell>Email</TableCell>
                               <TableCell>Phone</TableCell>
                               <TableCell>Status</TableCell>
-                              <TableCell>Managed By</TableCell>
+                              <TableCell>Managed By (Employee ID)</TableCell>
                             </TableRow>
                           </TableHead>
                         )}
@@ -1326,9 +1385,7 @@ const ProjectView = () => {
                               <TableCell>{r.lead.email}</TableCell>
                               <TableCell>{r.lead.phone}</TableCell>
                               <TableCell>{r.leadType}</TableCell>
-                              <TableCell>
-                                {r.lead.assignedTo?.firstName}
-                              </TableCell>
+                              <TableCell>{r.lead.assignedTo}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -1364,6 +1421,28 @@ const ProjectView = () => {
               </div>
             </div>
           )}
+        </div>
+      </Backdrop>
+      <Backdrop
+        open={showPlotsBreakdown}
+        sx={{
+          zIndex: 999999999999,
+        }}
+        onClick={() => {
+          setShowPlotsBreakdown(false);
+        }}
+      >
+        <div
+          style={{
+            width: '90%',
+            height: '90%',
+            background: 'white',
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <PlotsBreakdown subPlots={projectDetails.subPlots} />
         </div>
       </Backdrop>
       {/* /Edit Project Modal */}

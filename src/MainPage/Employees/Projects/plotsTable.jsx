@@ -55,10 +55,13 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.name}
         </TableCell>
-        <TableCell align="right">{row.facing}</TableCell>
         <TableCell align="right">{row.dimension}</TableCell>
         <TableCell align="right">{row.area}</TableCell>
         <TableCell align="right">{row.sold ? 'Sold' : 'Not Sold'}</TableCell>
+        <TableCell align="right">{row.facing}</TableCell>
+        {/* <TableCell align="right">{row.leadsInfo.length}
+        
+        </TableCell> */}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -109,24 +112,6 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
-
 export default function PlotsTable({ plots }) {
   return (
     <TableContainer component={Paper}>
@@ -135,10 +120,11 @@ export default function PlotsTable({ plots }) {
           <TableRow>
             <TableCell>Leads</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell align="right">Facing</TableCell>
             <TableCell align="right">Dimensions</TableCell>
             <TableCell align="right">Area</TableCell>
             <TableCell align="right">Sold</TableCell>
+            <TableCell align="right">Facing</TableCell>
+            {/* <TableCell align="right">Leads</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
