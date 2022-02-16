@@ -195,11 +195,29 @@ export async function fetchJobs() {
   return fetchJobsResponse;
 }
 
+export async function fetchJob(_id) {
+  const fetchJobsResponse = new Promise(async (resolve) => {
+    httpService
+      .get(`/job/${_id}`)
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchJobsResponse;
+}
+
 
 export async function deleteJob(_id) {
   const fetchJobsResponse = new Promise(async (resolve) => {
     httpService
-      .delete( `/job${_id}`)
+      .delete( `/job/${_id}`)
       .then((response) => {
         console.log(response);
         return resolve(response.data);
@@ -232,7 +250,7 @@ export async function addJob(data) {
   return addJobResponse;
 }
 
-export async function editJob(data,_id) {
+export async function updateJob(data,_id) {
   const addJobResponse = new Promise(async (resolve) => {
     httpService
       .put(`/job/${_id}`, data)

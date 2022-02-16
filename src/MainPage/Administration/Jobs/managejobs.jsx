@@ -16,7 +16,6 @@ const ManageJobs = () => {
   const [currentJob, setCurrentJob] = useState({});
 
 
-
   useEffect(() => {
     (
       async () => {
@@ -113,7 +112,7 @@ const ManageJobs = () => {
       title: 'Job Title',
       dataIndex: 'title',
       render: (text, record) => (
-        <Link to="/app/administrator/job-details">{text}</Link>
+        <Link to={`/app/administrator/job-details/${record._id}`}>{text}</Link>
       ),
       sorter: (a, b) => a.jobtitle.length - b.jobtitle.length,
     },

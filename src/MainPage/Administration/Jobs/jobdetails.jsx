@@ -1,11 +1,71 @@
 /**
  * Signin Firebase
  */
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
+import { fetchJob,fetchdepartment,fetchLocations,updateJob } from '../../../lib/api';
+
 
 const JobDetails = () => {
+  let { id } = useParams();
+  const [job, setJob] = useState({});
+  const [department, setDepartment] = useState([]);
+  const [location, setLocation] = useState([]);
+  const [rerender, setRerender] = useState(false);
+
+  
+  useEffect(() => {
+    (
+      async () => {
+      const res_d = await fetchdepartment();
+      setDepartment(res_d);
+        
+      const res_l = await fetchLocations();
+      setLocation(res_l);
+      }
+    )();
+  }, []);
+  
+
+  useEffect(() => {
+    (
+      async () => {
+      const res = await fetchJob(id);
+      setJob({
+          ...res,
+          startDate: res.startDate?.split('T')[0],
+          endDate: res.endDate?.split('T')[0]
+      });
+    }
+    )();
+  }, [rerender]);
+
+  const editJob = async (e) => {
+    console.log(e);
+    e.preventDefault();
+    const newJob = {}
+    newJob.title = e.target.title.value;
+    newJob.location = e.target.location.value;
+    newJob.numberOfVacancies = Number(e.target.numberOfVacancies.value);
+    newJob.experience = e.target.experience.value;
+    newJob.salaryFrom =Number(e.target.salaryFrom.value);
+    newJob.salaryTo = Number(e.target.salaryTo.value);
+    newJob.jobType = e.target.jobType.value;
+    newJob.status = Boolean(e.target.status.value);
+    newJob.startDate = new Date(e.target.startDate.value);
+    newJob.endDate = new Date(e.target.endDate.value);
+    newJob.description = e.target.description.value;
+    newJob.department = e.target.department.value;
+    document.getElementById("edit-job-btn").innerText = "Submitting...";
+    const res = await updateJob(newJob, id);
+    document.getElementById("edit-job-btn").innerText = "Submit";
+    console.log(res);
+    setRerender(!rerender);
+    $('#edit_job').modal('hide')
+  }
+
+
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -14,6 +74,8 @@ const JobDetails = () => {
       });
     }
   });
+
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -40,74 +102,31 @@ const JobDetails = () => {
         <div className="row">
           <div className="col-md-8">
             <div className="job-info job-widget">
-              <h3 className="job-title">Product Manager</h3>
-              <span className="job-dept">App Development</span>
+              <h3 className="job-title">{job.title}</h3>
+              <br />
               <ul className="job-post-det">
                 <li>
-                  <i className="fa fa-calendar" /> Post Date:{' '}
-                  <span className="text-blue">Feb 18, 2021</span>
+                  <i className="fa fa-calendar" /> Post Date:{'  '}
+                  <span className="text-blue">{job.startDate}</span>
                 </li>
                 <li>
-                  <i className="fa fa-calendar" /> Last Date:{' '}
-                  <span className="text-blue">May 31, 2021</span>
+                  <i className="fa fa-calendar" /> Last Date:{'  '}
+                  <span className="text-blue">{job.endDate}</span>
                 </li>
                 <li>
                   <i className="fa fa-user-o" /> Applications:{' '}
                   <span className="text-blue">4</span>
                 </li>
-                <li>
-                  <i className="fa fa-eye" /> Views:{' '}
-                  <span className="text-blue">3806</span>
-                </li>
               </ul>
             </div>
             <div className="job-content job-widget">
               <div className="job-desc-title">
-                <h4>Job Description</h4>
+                <h4>Description:</h4>
               </div>
               <div className="job-description">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum
+                  {job.description}
                 </p>
-              </div>
-              <div className="job-desc-title">
-                <h4>Job Description</h4>
-              </div>
-              <div className="job-description">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum
-                </p>
-                <ul className="square-list">
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
@@ -126,28 +145,28 @@ const JobDetails = () => {
                   <i className="fa fa-bar-chart" />
                 </span>
                 <h5>Job Type</h5>
-                <p> Full Time</p>
+                <p> {job.jobType}</p>
               </div>
               <div className="info-list">
                 <span>
                   <i className="fa fa-money" />
                 </span>
                 <h5>Salary</h5>
-                <p>₹32k - $38k</p>
+                <p>₹{job.salaryFrom} - ${job.salaryTo}</p>
               </div>
               <div className="info-list">
                 <span>
                   <i className="fa fa-suitcase" />
                 </span>
                 <h5>Experience</h5>
-                <p>2 Years</p>
+                <p>{job.experience}</p>
               </div>
               <div className="info-list">
                 <span>
                   <i className="fa fa-ticket" />
                 </span>
                 <h5>Vacancy</h5>
-                <p>5</p>
+                <p>{job.numberOfVacancies}</p>
               </div>
               <div className="info-list">
                 <span>
@@ -156,37 +175,8 @@ const JobDetails = () => {
                 <h5>Location</h5>
                 <p>
                   {' '}
-                  Oboroi Real Estates
-                  <br /> 3864 Quiet Valley Lane,
-                  <br /> Sherman Oaks,
-                  <br /> California, 91403
+                  {job.location?.name}
                 </p>
-              </div>
-              <div className="info-list">
-                <p className="text-truncate">
-                  {' '}
-                  818-978-7102
-                  <br />{' '}
-                  <a
-                    href="mailto:danielporter@example.com"
-                    title="danielporter@example.com"
-                  >
-                    danielporter@example.com
-                  </a>
-                  <br />{' '}
-                  <a
-                    href="https://www.example.com"
-                    target="_blank"
-                    title="https://www.example.com"
-                  >
-                    https://www.example.com
-                  </a>
-                </p>
-              </div>
-              <div className="info-list text-center">
-                <a className="app-ends" href="#">
-                  Application ends in 2d 7h 6m
-                </a>
               </div>
             </div>
           </div>
@@ -199,9 +189,6 @@ const JobDetails = () => {
           className="modal-dialog modal-dialog-centered modal-lg"
           role="document"
         >
-          <button type="button" className="close" data-dismiss="modal">
-            ×
-          </button>
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Edit Job</h5>
@@ -215,29 +202,25 @@ const JobDetails = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={(e) => {editJob(e,id)}}>
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Title</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="Product Manager"
-                      />
+                      <input className="form-control" defaultValue={job.title} type="text" name="title" />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Department</label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
+                      <select className="select" name="department" value={job.department}>
+                        {
+                          department.map((dep) => {
+                            return (
+                              <option value={dep._id} key={dep._id}>{dep.name}</option>
+                            )
+                          })
+                        }
                       </select>
                     </div>
                   </div>
@@ -245,22 +228,22 @@ const JobDetails = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      <label>Job Location</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="California"
-                      />
+                      <label>Location</label>
+                      <select className="select" name="location" value={job.location?._id}>
+                        {
+                          location.map((dep) => {
+                            return (
+                              <option value={dep._id} key={dep._id}>{dep.name}</option>
+                            )
+                          })
+                        }
+                      </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>No of Vacancies</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue={5}
-                      />
+                      <input className="form-control" type="text" name='numberOfVacancies' defaultValue={job.numberOfVacancies} />
                     </div>
                   </div>
                 </div>
@@ -268,21 +251,10 @@ const JobDetails = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Experience</label>
-                      <input
-                        className="form-control"
+                      <input className="form-control"
+                        name='experience'
                         type="text"
-                        defaultValue="2 Years"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="-"
-                      />
+                        defaultValue={job.experience} />
                     </div>
                   </div>
                 </div>
@@ -290,21 +262,13 @@ const JobDetails = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary From</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="32k"
-                      />
+                      <input type="text" className="form-control" name="salaryFrom" defaultValue={job.salaryFrom} />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary To</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="38k"
-                      />
+                      <input type="text" className="form-control" name="salaryTo" defaultValue={job.salaryTo} />
                     </div>
                   </div>
                 </div>
@@ -312,23 +276,22 @@ const JobDetails = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
-                      <select className="select">
-                        <option>Full Time</option>
-                        <option>Part Time</option>
-                        <option>Internship</option>
-                        <option>Temporary</option>
-                        <option>Remote</option>
-                        <option>Others</option>
+                      <select className="select" name='jobType' value={job.jobType}>
+                        <option value="Full Time">Full Time</option>
+                        <option value="Part Time">Part Time</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Temporary">Temporary</option>
+                        <option value="Remote">Remote</option>
+                        <option value="Remote">Remote</option>
                       </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Status</label>
-                      <select className="select">
-                        <option>Open</option>
-                        <option>Closed</option>
-                        <option>Cancelled</option>
+                      <select className="select" name="status" value={job.status}>
+                        <option value="true">Open</option>
+                        <option value="false">Closed</option>
                       </select>
                     </div>
                   </div>
@@ -338,9 +301,10 @@ const JobDetails = () => {
                     <div className="form-group">
                       <label>Start Date</label>
                       <input
-                        type="text"
-                        className="form-control datetimepicker"
-                        defaultValue="3 Mar 2021"
+                        type="date"
+                        className="form-control"
+                        name="startDate"
+                        defaultValue={job.startDate}
                       />
                     </div>
                   </div>
@@ -348,9 +312,10 @@ const JobDetails = () => {
                     <div className="form-group">
                       <label>Expired Date</label>
                       <input
-                        type="text"
-                        className="form-control datetimepicker"
-                        defaultValue="31 May 2021"
+                        type="date"
+                        className="form-control"
+                        name="endDate"
+                        defaultValue={job.endDate}
                       />
                     </div>
                   </div>
@@ -359,12 +324,15 @@ const JobDetails = () => {
                   <div className="col-md-12">
                     <div className="form-group">
                       <label>Description</label>
-                      <textarea className="form-control" defaultValue={''} />
+                      <textarea className="form-control" defaultValue={job.description}
+                        name="description" />
                     </div>
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn" id="edit-job-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
