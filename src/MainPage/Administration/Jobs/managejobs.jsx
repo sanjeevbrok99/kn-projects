@@ -6,7 +6,7 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
-import { fetchdepartment, fetchJobs, addJob, editJob, fetchLocations, deleteJob } from '../../../lib/api';
+import { fetchdepartment, fetchJobs, addJob, updateJob, fetchLocations, deleteJob } from '../../../lib/api';
 
 const ManageJobs = () => {
   const [job, setJob] = useState([]);
@@ -38,8 +38,8 @@ const ManageJobs = () => {
         res.map((v, i) => ({
           ...v,
           id: i + 1,
-          startdate: v.startDate?.split('T')[0],
-          expirydate: v.endDate?.split('T')[0],
+          startDate: v.startDate?.split('T')[0],
+          endDate: v.endDate?.split('T')[0],
           jobLocation: v.location?.name,
         }))
       );
@@ -95,7 +95,7 @@ const ManageJobs = () => {
     newJob.description = e.target.description.value;
     newJob.department = e.target.department.value;
     document.getElementById("edit-job-btn").innerText = "Submitting...";
-    const res = await editJob(newJob, _id);
+    const res = await updateJob(newJob, _id);
     document.getElementById("edit-job-btn").innerText = "Submit";
     console.log(res);
     setRerender(!rerender);
@@ -124,14 +124,14 @@ const ManageJobs = () => {
     },
     {
       title: 'Start Date',
-      dataIndex: 'startdate',
-      sorter: (a, b) => a.startdate.length - b.startdate.length,
+      dataIndex: 'startDate',
+      sorter: (a, b) => a.startDate.length - b.startDate.length,
     },
 
     {
       title: 'Expiry Date',
-      dataIndex: 'expirydate',
-      sorter: (a, b) => a.expirydate.length - b.expirydate.length,
+      dataIndex: 'endDate',
+      sorter: (a, b) => a.endDate.length - b.endDate.length,
     },
     {
       title: 'Job Type',
