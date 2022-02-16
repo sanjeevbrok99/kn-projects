@@ -160,6 +160,23 @@ export async function fetchOvertime() {
   return overtimeResponse;
 }
 
+export async function fetchLocations() {
+  const fetchJobsResponse = new Promise(async (resolve) => {
+    httpService
+      .get('/location')
+      .then((response) => {
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchJobsResponse;
+}
+
 export async function fetchJobs() {
   const fetchJobsResponse = new Promise(async (resolve) => {
     httpService
@@ -178,12 +195,48 @@ export async function fetchJobs() {
   return fetchJobsResponse;
 }
 
+
+export async function deleteJob(_id) {
+  const fetchJobsResponse = new Promise(async (resolve) => {
+    httpService
+      .delete( `/job${_id}`)
+      .then((response) => {
+        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return fetchJobsResponse;
+}
+
+
 export async function addJob(data) {
   const addJobResponse = new Promise(async (resolve) => {
     httpService
       .post('/job', data)
       .then((response) => {
-        console.log(response);
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return addJobResponse;
+}
+
+export async function editJob(data,_id) {
+  const addJobResponse = new Promise(async (resolve) => {
+    httpService
+      .put(`/job/${_id}`, data)
+      .then((response) => {
         return resolve(response.data);
       })
       .catch((err) => {

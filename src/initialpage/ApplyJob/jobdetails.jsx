@@ -3,11 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import {
-  headerlogo,
-  lnEnglish,
-  lnFrench,
-  lnSpanish,
-  lnGerman,
+  headerlogo
 } from '../../Entryfile/imagepath.jsx';
 
 const Jobdetails = () => {
@@ -21,13 +17,6 @@ const Jobdetails = () => {
       if (this._isMounted) {
         localStorage.removeItem('jobview');
         window.location.reload();
-        // const { hash } = location;
-        // if(hash.indexOf('home')>-1 && this.state.value!==0)
-        //   this.setState({value: 0})
-        // if(hash.indexOf('users')>-1 && this.state.value!==1)
-        //   this.setState({value: 1})
-        // if(hash.indexOf('data')>-1 && this.state.value!==2)
-        //   this.setState({value: 2})
       }
     };
   });

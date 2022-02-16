@@ -1,12 +1,11 @@
 /**
  * Signin Firebase
  */
-
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
-const Jobdetails = () => {
+const JobDetails = () => {
   useEffect(() => {
     if ($('.select').length > 0) {
       $('.select').select2({
@@ -377,4 +376,4 @@ const Jobdetails = () => {
   );
 };
 
-export default Jobdetails;
+export default JobDetails;
