@@ -979,7 +979,7 @@ const EmployeeProfile = () => {
                     <h4>
                       <b>Plot Price:</b> ₹{' '}
                       {selectedPlot.cost ||
-                        selectedPlot.area * selectedProject.estimatedCost}
+                        selectedPlot.area * selectedProject.costPerSqFeet}
                     </h4>
                     <h4>
                       <b>Interested leads:</b>{' '}

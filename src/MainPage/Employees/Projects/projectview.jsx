@@ -4,7 +4,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import httpService from '../../../lib/httpService';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
-import { Backdrop } from '@mui/material';
+import { Backdrop, Paper, TableContainer } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import Swal from 'sweetalert2';
@@ -17,7 +17,17 @@ import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import PlotsBreakdown from './PlotsBreakdown';
+import EditProjectModal from './popups/EditProjectModal';
+
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+];
 
 const InactiveTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -311,36 +321,358 @@ const ProjectView = () => {
               </div>
             </div>
           </div>
-          <Stack
+
+          <TableContainer
             sx={{
               marginBottom: '1rem',
             }}
-            direction="row"
-            spacing={1}
+            component={Paper}
           >
-            <Chip label={`Total Plots (${totalPlots})`} color="warning" />
-            <Chip
-              label={`Plots under Negotiations(${totalPlotsInNegotiation})`}
-              color="primary"
-            />
-            <Chip
-              label={`Plots under Discussions(${totalPlotsInDiscussion})`}
-              color="secondary"
-            />
-            <Chip label={`Leads Won(${totalPlotsLeadsWon})`} color="error" />
-            <Chip label={`Plots Sold(${totalPlotsSoldOut})`} color="info" />
-            {/* <Chip
-              onClick={() => {
-                setShowPlotsBreakdown(true);
-              }}
-              label="Detailed Breakdown"
-              sx={{
-                cursor: 'pointer',
-              }}
-              color="success"
-            /> */}
-          </Stack>
-
+            <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                    }}
+                    align="center"
+                  ></TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#D5D5D5',
+                      border: '1px solid #fff',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#0376BA',
+                    }}
+                    align="center"
+                  >
+                    AVAILABLE PLOTS TO SELL
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#D5D5D5',
+                      border: '1px solid #fff',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#0376BA',
+                    }}
+                    align="center"
+                  >
+                    PLOTS SOLD
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                    }}
+                    component="th"
+                    scope="row"
+                  >
+                    <Table>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
+                            TOTAL AREA <br />
+                            (SQFT)
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotArea}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table
+                      style={{
+                        height: '105px',
+                      }}
+                    >
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            DISCUSSION <br />
+                            AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            {plotAreaUnderDiscussion}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            NEGOTIATION <br />
+                            AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            {plotAreaInNegotiation}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            LEADS WON <br />
+                            AREA{' '}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            {plotAreaLeadsWon}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table
+                      sx={{
+                        height: '105px',
+                      }}
+                    >
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            SOLD AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            {plotAreaSoldOut}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                </TableRow>
+                <TableRow
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                    }}
+                    component="th"
+                    scope="row"
+                  >
+                    <Table>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
+                            TOTAL PLOTS <br />
+                            (UNITS)
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlots}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table
+                      style={{
+                        height: '105px',
+                      }}
+                    >
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            DISCUSSION <br />
+                            PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            {totalPlotsInDiscussion}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            NEGOTIATION <br />
+                            PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            {totalPlotsInNegotiation}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            LEADS WON <br />
+                            PLOTS{' '}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            {totalPlotsLeadsWon}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table
+                      sx={{
+                        height: '105px',
+                      }}
+                    >
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            SOLD PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            {totalPlotsSoldOut}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
           {/* /Page Header */}
           <div className="card tab-box">
             <div className="row user-tabs">
@@ -439,7 +771,7 @@ const ProjectView = () => {
                           <tr>
                             <td>Cost:</td>
                             <td className="text-right">
-                              ₹{projectDetails.estimatedCost}
+                              ₹{projectDetails.costPerSqFeet}
                             </td>
                           </tr>
                           <tr>
@@ -451,14 +783,6 @@ const ProjectView = () => {
                             </td>
                           </tr>
                           <tr>
-                            <td>Deadline:</td>
-                            <td className="text-right">
-                              {new Date(
-                                projectDetails?.endDate
-                              ).toLocaleDateString()}
-                            </td>
-                          </tr>
-                          <tr>
                             <td>Created by:</td>
                             <td className="text-right">
                               <Link to="/app/profile/employee-profile">
@@ -466,10 +790,6 @@ const ProjectView = () => {
                                   'Admin'}
                               </Link>
                             </td>
-                          </tr>
-                          <tr>
-                            <td>Status:</td>
-                            <td className="text-right">Working</td>
                           </tr>
                           <tr>
                             <td>Total subplots:</td>
@@ -487,7 +807,17 @@ const ProjectView = () => {
                             </td>
                           </tr>
                           <tr>
-                            <td>Subplots under discussion:</td>
+                            <td>Under discussion:</td>
+                            <td className="text-right">
+                              {
+                                projectDetails?.subPlots?.filter(
+                                  (l) => l.leads?.length
+                                ).length
+                              }
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Under Negotiations:</td>
                             <td className="text-right">
                               {
                                 projectDetails?.subPlots?.filter(
@@ -1104,139 +1434,11 @@ const ProjectView = () => {
         </div>
       )}
       {/* /Page Content */}
-      <div id="edit_project" className="modal custom-modal fade" role="dialog">
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Edit Project</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  editProject();
-                }}
-              >
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Project Name</label>
-                      <input
-                        defaultValue={projectToEdit.name}
-                        onChange={(e) => {
-                          setProjectToEdit((d) => ({
-                            ...d,
-                            name: e.target.value,
-                          }));
-                        }}
-                        className="form-control"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <div className="form-group">
-                        <label>Cost</label>
-                        <input
-                          value={projectToEdit.estimatedCost}
-                          onChange={(e) => {
-                            setProjectToAdd((d) => ({
-                              ...d,
-                              estimatedCost: e.target.value,
-                            }));
-                          }}
-                          className="form-control"
-                          type="text"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Start Date</label>
-                      <div>
-                        <input
-                          className="form-control"
-                          value={
-                            projectToEdit.startDate
-                              ? new Date(projectToEdit.startDate)
-                                  .toISOString()
-                                  .split('T')[0]
-                              : ''
-                          }
-                          onChange={(e) => {
-                            setProjectToEdit((d) => ({
-                              ...d,
-                              startDate: e.target.value,
-                            }));
-                          }}
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>End Date</label>
-                      <div>
-                        <input
-                          value={
-                            projectToEdit.startDate
-                              ? new Date(projectToEdit.endDate)
-                                  .toISOString()
-                                  .split('T')[0]
-                              : ''
-                          }
-                          onChange={(e) => {
-                            setProjectToEdit((d) => ({
-                              ...d,
-                              endDate: e.target.value,
-                            }));
-                          }}
-                          className="form-control"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Description</label>
-                  <textarea
-                    rows={4}
-                    className="form-control"
-                    placeholder="Description"
-                    defaultValue={projectToEdit.description}
-                    onChange={(e) => {
-                      setProjectToEdit((d) => ({
-                        ...d,
-                        description: e.target.value,
-                      }));
-                    }}
-                  />
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+      <EditProjectModal
+        onSubmit={editProject}
+        projectToEdit={projectToEdit}
+        setProjectToEdit={setProjectToEdit}
+      />
       <Backdrop
         style={{
           zIndex: '9999',
@@ -1319,37 +1521,6 @@ const ProjectView = () => {
                   paddingTop: '4px',
                 }}
               >
-                {/* {activeInfoTab === 1 && (
-                  <div id="info" className="">
-                    <div>
-                      <h4>
-                        <b>Plot Name</b>: <span>{plotInfo.name}</span>
-                      </h4>
-                      <h4>
-                        <b>Plot Size</b>: <span>{plotInfo.area} Sq Feet</span>
-                      </h4>
-                      <h4>
-                        <b>Plot Cost</b>:{' '}
-                        <span>
-                          {plotInfo.cost ||
-                            plotInfo.area * projectDetails.estimatedCost}
-                        </span>
-                      </h4>
-                      <h4>
-                        <b>Description</b>:{' '}
-                        <span>
-                          {plotInfo.description
-                            ? plotInfo.description
-                            : 'No Description Given'}
-                        </span>
-                      </h4>
-                      <h4>
-                        <b>Status</b>:{' '}
-                        <span>{plotInfo.sold ? 'Sold ' : 'Not Sold'}</span>
-                      </h4>
-                    </div>
-                  </div>
-                )} */}
                 {activeInfoTab === 2 && (
                   <div id="lead" className="">
                     <Box sx={{ margin: 1 }}>
@@ -1423,29 +1594,6 @@ const ProjectView = () => {
           )}
         </div>
       </Backdrop>
-      <Backdrop
-        open={showPlotsBreakdown}
-        sx={{
-          zIndex: 999999999999,
-        }}
-        onClick={() => {
-          setShowPlotsBreakdown(false);
-        }}
-      >
-        <div
-          style={{
-            width: '90%',
-            height: '90%',
-            background: 'white',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <PlotsBreakdown subPlots={projectDetails.subPlots} />
-        </div>
-      </Backdrop>
-      {/* /Edit Project Modal */}
     </div>
   );
 };
