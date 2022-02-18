@@ -121,21 +121,21 @@ const Leads = () => {
       title: 'Assigned Staff',
       dataIndex: 'assignedstaff',
     },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      render: (text, record) => (
-        <span
-          className={
-            text === 'Negotiations' || text === 'New Lead'
-              ? 'badge bg-inverse-success'
-              : 'badge bg-inverse-danger'
-          }
-        >
-          {text}
-        </span>
-      ),
-    },
+    // {
+    //   title: 'Status',
+    //   dataIndex: 'status',
+    //   render: (text, record) => (
+    //     <span
+    //       className={
+    //         text === 'Negotiations' || text === 'New Lead'
+    //           ? 'badge bg-inverse-success'
+    //           : 'badge bg-inverse-danger'
+    //       }
+    //     >
+    //       {text}
+    //     </span>
+    //   ),
+    // },
     {
       title: 'Action',
       render: (text, record) => (
