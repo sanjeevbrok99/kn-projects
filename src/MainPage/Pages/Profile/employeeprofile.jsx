@@ -248,37 +248,37 @@ const EmployeeProfile = () => {
                       <ul className="personal-info">
                         <li>
                           <div className="title">Passport No.</div>
-                          <div className="text">9876543210</div>
+                                <div className="text">{employee.personalInformation.passport}</div>
                         </li>
                         <li>
                           <div className="title">Passport Exp Date.</div>
-                          <div className="text">9876543210</div>
+                                <div className="text">{employee.personalInformation.passportExp}</div>
                         </li>
                         <li>
                           <div className="title">Tel</div>
                           <div className="text">
-                            <a href="">9876543210</a>
+                            <a href="">{employee.personalInformation.phoneNo}</a>
                           </div>
                         </li>
                         <li>
                           <div className="title">Nationality</div>
-                          <div className="text">Indian</div>
+                          <div className="text">{employee.personalInformation.nationality}</div>
                         </li>
                         <li>
                           <div className="title">Religion</div>
-                          <div className="text">Christian</div>
+                          <div className="text">{employee.personalInformation.religion}</div>
                         </li>
                         <li>
                           <div className="title">Marital status</div>
-                          <div className="text">Married</div>
+                          <div className="text">{employee.personalInformation.maritalStatus}</div>
                         </li>
                         <li>
                           <div className="title">Employment of spouse</div>
-                          <div className="text">No</div>
+                          <div className="text">{employee.personalInformation.employmentOfSpouse}</div>
                         </li>
                         <li>
                           <div className="title">No. of children</div>
-                          <div className="text">2</div>
+                          <div className="text">{employee.personalInformation.numberOfChildren}</div>
                         </li>
                       </ul>
                     </div>
@@ -288,7 +288,7 @@ const EmployeeProfile = () => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Emergency Contact{' '}
+                        Emergency Contact
                         <a
                           href="#"
                           className="edit-icon"
@@ -302,15 +302,15 @@ const EmployeeProfile = () => {
                       <ul className="personal-info">
                         <li>
                           <div className="title">Name</div>
-                          <div className="text">Prateek Tiwari</div>
+                                <div className="text">{ employee.emergencyContact[0].name }</div>
                         </li>
                         <li>
                           <div className="title">Relationship</div>
-                          <div className="text">Father</div>
+                          <div className="text">{employee.emergencyContact[0].relationship}</div>
                         </li>
                         <li>
                           <div className="title">Phone </div>
-                          <div className="text">9876543210, 9876543210</div>
+                          <div className="text">{employee.emergencyContact[0].phone}</div>
                         </li>
                       </ul>
                       <hr />
@@ -318,15 +318,15 @@ const EmployeeProfile = () => {
                       <ul className="personal-info">
                         <li>
                           <div className="title">Name</div>
-                          <div className="text">Karen Wills</div>
+                          <div className="text">{ employee.emergencyContact[0].name }</div>
                         </li>
                         <li>
                           <div className="title">Relationship</div>
-                          <div className="text">Brother</div>
+                          <div className="text">{employee.emergencyContact[0].relationship}</div>
                         </li>
                         <li>
                           <div className="title">Phone </div>
-                          <div className="text">9876543210, 9876543210</div>
+                          <div className="text">{employee.emergencyContact[0].phone}</div>
                         </li>
                       </ul>
                     </div>
@@ -341,19 +341,27 @@ const EmployeeProfile = () => {
                       <ul className="personal-info">
                         <li>
                           <div className="title">Bank name</div>
-                          <div className="text">ICICI Bank</div>
+                                <div className="text">{employee.bankDetails.accountHoldersName}</div>
                         </li>
                         <li>
                           <div className="title">Bank account No.</div>
-                          <div className="text">159843014641</div>
+                                <div className="text">{employee.bankDetails.accountNumber}</div>
                         </li>
                         <li>
                           <div className="title">IFSC Code</div>
-                          <div className="text">ICI24504</div>
+                          <div className="text">{employee.bankDetails.IFSC}</div>
                         </li>
                         <li>
-                          <div className="title">PAN No</div>
-                          <div className="text">TC000Y56</div>
+                          <div className="title">UPI</div>
+                                <div className="text">{employee.bankDetails.upi}</div>
+                        </li>
+                        <li>
+                          <div className="title">PAN Number</div>
+                                <div className="text">{employee.bankDetails.pan}</div>
+                        </li>
+                        <li>
+                          <div className="title">Aadhar Number</div>
+                                <div className="text">{employee.bankDetails.aadhar}</div>
                         </li>
                       </ul>
                     </div>
@@ -363,7 +371,7 @@ const EmployeeProfile = () => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Family Informations{' '}
+                        Family Informations
                         <a
                           href="#"
                           className="edit-icon"
@@ -385,32 +393,37 @@ const EmployeeProfile = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>Leo</td>
-                              <td>Brother</td>
-                              <td>Feb 16th, 2021</td>
-                              <td>9876543210</td>
-                              <td className="text-right">
-                                <div className="dropdown dropdown-action">
-                                  <a
-                                    aria-expanded="false"
-                                    data-toggle="dropdown"
-                                    className="action-icon dropdown-toggle"
-                                    href="#"
-                                  >
-                                    <i className="material-icons">more_vert</i>
-                                  </a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a href="#" className="dropdown-item">
-                                      <i className="fa fa-pencil m-r-5" /> Edit
-                                    </a>
-                                    <a href="#" className="dropdown-item">
-                                      <i className="fa fa-trash-o m-r-5" /> Delete
-                                    </a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
+                                  {
+                                    employee.familyInformation.map((e) => {
+                                      return (
+                                        <tr>
+                                          <td>{ e.name}</td>
+                                          <td>{e.relationship}</td>
+                                          <td>{e.phone}</td>
+                                          <td className="text-right">
+                                            <div className="dropdown dropdown-action">
+                                              <a
+                                                aria-expanded="false"
+                                                data-toggle="dropdown"
+                                                className="action-icon dropdown-toggle"
+                                                href="#"
+                                              >
+                                                <i className="material-icons">more_vert</i>
+                                              </a>
+                                              <div className="dropdown-menu dropdown-menu-right">
+                                                <a href="#" className="dropdown-item">
+                                                  <i className="fa fa-pencil m-r-5" /> Edit
+                                                </a>
+                                                <a href="#" className="dropdown-item">
+                                                  <i className="fa fa-trash-o m-r-5" /> Delete
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      );
+                                     })
+                                  }
                           </tbody>
                         </table>
                       </div>
@@ -423,7 +436,7 @@ const EmployeeProfile = () => {
                   <div className="card profile-box flex-fill">
                     <div className="card-body">
                       <h3 className="card-title">
-                        Education Informations{' '}
+                        Education information
                         <a
                           href="#"
                           className="edit-icon"
@@ -435,34 +448,29 @@ const EmployeeProfile = () => {
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  International College of Arts and Science (UG)
-                                </a>
-                                <div>Bsc Computer Science</div>
-                                <span className="time">2000 - 2003</span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  International College of Arts and Science (PG)
-                                </a>
-                                <div>Msc Computer Science</div>
-                                <span className="time">2000 - 2003</span>
-                              </div>
-                            </div>
-                          </li>
+                          {
+                              employee.education.map((e) => {
+                                return (
+                                  <li>
+                                    <div className="experience-user">
+                                      <div className="before-circle" />
+                                    </div>
+                                    <div className="experience-content">
+                                      <div className="timeline-content">
+                                        <a href="/" className="name">
+                                          {e.university}
+                                        </a>
+                                          
+                                        <div>{e.specialization}</div>
+                                        <div>GPA: {e.score}</div>
+
+                                        <span className="time">{e.startDate.split('T')[0]} To {e.endDate.split('T')[0]}</span>
+                                      </div>
+                                    </div>
+                                  </li>
+                                );
+                              })
+                          }
                         </ul>
                       </div>
                     </div>
@@ -484,51 +492,31 @@ const EmployeeProfile = () => {
                       </h3>
                       <div className="experience-box">
                         <ul className="experience-list">
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  CIO at Zen Corporation
-                                </a>
-                                <span className="time">
-                                  Jan 2023 - Present (5 years 2 months)
-                                </span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  CIO at Ron-tech
-                                </a>
-                                <span className="time">
-                                  Jan 2023 - Present (5 years 2 months)
-                                </span>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="experience-user">
-                              <div className="before-circle" />
-                            </div>
-                            <div className="experience-content">
-                              <div className="timeline-content">
-                                <a href="/" className="name">
-                                  CIO at Dalt Technology
-                                </a>
-                                <span className="time">
-                                  Jan 2023 - Present (5 years 2 months)
-                                </span>
-                              </div>
-                            </div>
-                          </li>
+                          {
+                              employee.previousExperience.map((exp) => { 
+                                return (
+                                  <li>
+                                    <div className="experience-user">
+                                      <div className="before-circle" />
+                                    </div>
+                                    <div className="experience-content">
+                                      <div className="timeline-content">
+                                        {exp.designation}{' '}at{' '}
+                                         <a href="/" className="name">
+                                          {exp.company}
+                                        </a>
+                                        <span className="time">
+                                          Start Date: { exp.startDate.split('T')[0] }
+                                        </span>
+                                        <span className="time">
+                                          End Date: { exp.endDate.split('T')[0] }
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </li>
+                                );
+                              })
+                          }
                         </ul>
                       </div>
                     </div>
