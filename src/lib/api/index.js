@@ -54,6 +54,24 @@ export async function allemployee() {
   return employeeResponse;
 }
 
+export async function getEmployee(id) {
+  const employeeResponse = new Promise(async (resolve) => {
+    httpService
+      .get(`/employee/${id}`)
+      .then((response) => {
+        return resolve(response.data);
+      })
+      .catch((err) => {
+        return resolve({
+          error: true,
+          message: err.response.message || 'Internal Server Error',
+        });
+      });
+  });
+  return employeeResponse;
+}
+
+
 export async function addemployee(data) {
   const addEmployeeResponse = new Promise(async (resolve) => {
     httpService
