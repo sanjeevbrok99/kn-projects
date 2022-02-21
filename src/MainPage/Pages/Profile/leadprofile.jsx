@@ -1,6 +1,3 @@
-/**
- * TermsCondition Page
- */
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useParams } from 'react-router-dom';
@@ -139,16 +136,6 @@ const EmployeeProfile = () => {
       confirmButtonColor: '#3085d6',
     }).then((result) => {
       if (result.isConfirmed) {
-        setLeadInterest((leadInterest) =>
-          leadInterest.map((interest) =>
-            interest.plot._id === plot && interest.project._id === project
-              ? {
-                  ...interest,
-                  leadType: status,
-                }
-              : interest
-          )
-        );
         const projectToModify = projects.find((p) => p._id === project);
         projectToModify.subPlots
           .find((p) => p._id === plot)
@@ -156,11 +143,24 @@ const EmployeeProfile = () => {
         setProjects((d) =>
           d.map((p) => (p._id === project ? projectToModify : p))
         );
-        toast.promise(httpService.put(`/project/${project}`, projectToModify), {
-          pending: 'Updating Leas Status',
-          success: 'Lead Status Updated',
-          error: 'Error Updating Lead Status',
-        });
+        toast
+          .promise(httpService.put(`/project/${project}`, projectToModify), {
+            pending: 'Updating Leas Status',
+            success: 'Lead Status Updated',
+            error: 'Error Updating Lead Status',
+          })
+          .then(() => {
+            setLeadInterest((leadInterest) =>
+              leadInterest.map((interest) =>
+                interest.plot._id === plot && interest.project._id === project
+                  ? {
+                      ...interest,
+                      leadType: status,
+                    }
+                  : interest
+              )
+            );
+          });
       }
     });
   };
@@ -412,7 +412,7 @@ const EmployeeProfile = () => {
                       data-toggle="modal"
                       data-target="#add_note"
                     >
-                      <i className="fa fa-plus" /> Add
+                      <i className="fa fa-plus" /> Note
                     </a>
                   </div>
                   <hr />
