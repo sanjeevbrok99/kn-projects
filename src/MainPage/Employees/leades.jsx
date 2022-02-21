@@ -200,7 +200,7 @@ const Leads = () => {
             <div className="form-group form-focus focused">
               <select
                 value={projectId ? projectId : ''}
-                className="form-control"
+                className="custom-select"
                 onChange={(e) => {
                   setProjectId(e.target.value);
                 }}

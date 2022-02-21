@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import 'react-summernote/dist/react-summernote.css'; // import styles
 import '../../index.css';
 import httpService from '../../../lib/httpService';
 import { toast } from 'react-toastify';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Paper, TableContainer } from '@mui/material';
 import AddProjectModal from './popups/AddProjectModal';
 import EditProjectModal from './popups/EditProjectModal';
 import DeleteProjectModal from './popups/DeleteProjectModal';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Table from '@mui/material/Table';
 
 const ProjectList = () => {
   const [projectList, setProjectList] = React.useState([]);
@@ -16,7 +21,17 @@ const ProjectList = () => {
   const [projectToAdd, setProjectToAdd] = React.useState({});
   const [projectToEdit, setProjectToEdit] = React.useState({});
   const [projectNameToSearch, setProjectNameToSearch] = React.useState('');
-  const [isLoading, setLoading] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(true);
+  const [totalPlotArea, setTotalPlotArea] = useState(0);
+  const [plotAreaUnderDiscussion, setPlotAreaUnderDiscussion] = useState(0);
+  const [plotAreaInNegotiation, setPlotAreaInNegotiation] = useState(0);
+  const [plotAreaLeadsWon, setPlotAreaLeadsWon] = useState(0);
+  const [plotAreaSoldOut, setPlotAreaSoldOut] = useState(0);
+  const [totalPlots, setTotalPlots] = useState(0);
+  const [totalPlotsSoldOut, setTotalPlotsSoldOut] = useState(0);
+  const [totalPlotsInDiscussion, setTotalPlotsInDiscussion] = useState(0);
+  const [totalPlotsInNegotiation, setTotalPlotsInNegotiation] = useState(0);
+  const [totalPlotsLeadsWon, setTotalPlotsLeadsWon] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -27,6 +42,58 @@ const ProjectList = () => {
     try {
       const result = await httpService.get('/project');
       setProjectsFromServer(result.data);
+      result.data.forEach((project) => {
+        const totalArea = project.subPlots.reduce((a, b) => a + b.area, 0);
+        const totalAreaSold = project.subPlots
+          .filter((l) => l.sold)
+          .reduce((a, b) => a + b.area, 0);
+        const totalAreaInDiscussion = project.subPlots
+          .filter(
+            (p) =>
+              !p.sold &&
+              p.leadsInfo.some(
+                (l) => l.leadType === 'Discussions' || l.leadType === 'New Lead'
+              )
+          )
+          .reduce((a, b) => a + b.area, 0);
+        const totalAreaInNegotiation = project.subPlots
+          .filter(
+            (p) =>
+              !p.sold && p.leadsInfo.some((l) => l.leadType === 'Negotiations')
+          )
+          .reduce((a, b) => a + b.area, 0);
+        const totalAreaLeadsWons = project.subPlots
+          .filter(
+            (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Lead Won')
+          )
+          .reduce((a, b) => a + b.area, 0);
+        const totalPlots = project.subPlots.length;
+        const totalPlotsSoldOut = project.subPlots.filter((l) => l.sold).length;
+        const totalPlotsInDiscussion = project.subPlots.filter(
+          (p) =>
+            !p.sold &&
+            p.leadsInfo.some(
+              (l) => l.leadType === 'Discussions' || l.leadType === 'New Lead'
+            )
+        ).length;
+        const totalPlotsInNegotiation = project.subPlots.filter(
+          (p) =>
+            !p.sold && p.leadsInfo.some((l) => l.leadType === 'Negotiations')
+        ).length;
+        const totalPlotsLeadsWons = project.subPlots.filter(
+          (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Lead Won')
+        ).length;
+        setTotalPlotArea((d) => d + totalArea);
+        setPlotAreaSoldOut((d) => d + totalAreaSold);
+        setPlotAreaInNegotiation((d) => d + totalAreaInNegotiation);
+        setPlotAreaLeadsWon((d) => d + totalAreaLeadsWons);
+        setPlotAreaUnderDiscussion((d) => d + totalAreaInDiscussion);
+        setTotalPlots((d) => d + totalPlots);
+        setTotalPlotsSoldOut((d) => d + totalPlotsSoldOut);
+        setTotalPlotsInDiscussion((d) => d + totalPlotsInDiscussion);
+        setTotalPlotsInNegotiation((d) => d + totalPlotsInNegotiation);
+        setTotalPlotsLeadsWon((d) => d + totalPlotsLeadsWons);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -176,6 +243,318 @@ const ProjectList = () => {
               </div>
             </div>
           </div>
+          <TableContainer
+            sx={{
+              marginBottom: '1rem',
+            }}
+            component={Paper}
+          >
+            <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                    }}
+                    align="center"
+                  ></TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#D5D5D5',
+                      border: '1px solid #fff',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#0376BA',
+                    }}
+                    align="center"
+                  >
+                    AVAILABLE PLOTS TO SELL
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#D5D5D5',
+                      border: '1px solid #fff',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#0376BA',
+                    }}
+                    align="center"
+                  >
+                    PLOTS SOLD
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
+                            TOTAL AREA <br />
+                            (SQFT)
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotArea}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
+                            TOTAL PLOTS <br />
+                            (UNITS)
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlots}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table style={{}}>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            DISCUSSION <br />
+                            AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaUnderDiscussion}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            NEGOTIATION <br />
+                            AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaInNegotiation}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            LEADS WON <br />
+                            AREA{' '}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaLeadsWon}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            DISCUSSION <br />
+                            PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsInDiscussion}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            NEGOTIATION <br />
+                            PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsInNegotiation}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            LEADS WON <br />
+                            PLOTS{' '}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsLeadsWon}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table
+                      sx={{
+                        height: '144px',
+                      }}
+                    >
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            SOLD AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaSoldOut}
+                          </TableCell>
+                        </TableRow>
+
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': {
+                              border: 0,
+                            },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            SOLD PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsSoldOut}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
           <div className="row filter-row">
             <div className="col-9">
               <div className="form-group form-focus focused">
