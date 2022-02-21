@@ -20,13 +20,16 @@ import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import { toast } from 'react-toastify';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import { red } from '@mui/material/colors';
+import Swal from 'sweetalert2';
 
 const InactiveTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -103,6 +106,7 @@ const EmployeeProfile = () => {
   const [projectModal, setProjectModal] = useState(false);
   const [interstedPlotsInProject, setInterstedPlotsInProject] = useState([]);
   const [modifiedProject, setModifiedProject] = useState({});
+  const [leadInterest, setLeadInterest] = useState([]);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -126,15 +130,57 @@ const EmployeeProfile = () => {
     }
   }, [projectModal]);
 
-  useEffect(() => {
-    if (document.getElementById('selected-plot'))
-      dragElement(document.getElementById('selected-plot'));
-  }, [selectedPlot?.name]);
+  const updateLeadInterest = (plot, project, status) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to change the lead interest status',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLeadInterest((leadInterest) =>
+          leadInterest.map((interest) =>
+            interest.plot._id === plot && interest.project._id === project
+              ? {
+                  ...interest,
+                  leadType: status,
+                }
+              : interest
+          )
+        );
+        const projectToModify = projects.find((p) => p._id === project);
+        projectToModify.subPlots
+          .find((p) => p._id === plot)
+          .leadsInfo.find((l) => l.lead === profile._id).leadType = status;
+        setProjects((d) =>
+          d.map((p) => (p._id === project ? projectToModify : p))
+        );
+        toast.promise(httpService.put(`/project/${project}`, projectToModify), {
+          pending: 'Updating Leas Status',
+          success: 'Lead Status Updated',
+          error: 'Error Updating Lead Status',
+        });
+      }
+    });
+  };
 
   const fetchLeadProfile = async () => {
     const response = await httpService.get(`/lead/${id}`);
     setProfile(response.data);
     setProfileFetched(true);
+    const projects = response.data.project;
+    projects.forEach((project) => {
+      project.subPlots.forEach((plot) => {
+        const interest = plot.leadsInfo.filter(
+          (l) => l.lead == response.data._id
+        );
+        setLeadInterest((d) => [
+          ...d,
+          ...interest.map((v) => ({ ...v, plot, project })),
+        ]);
+      });
+    });
   };
 
   const fetchProjects = async () => {
@@ -215,355 +261,239 @@ const EmployeeProfile = () => {
           {/* /Page Header */}
           <div className="card mb-0">
             <div className="card-body">
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="profile-view">
-                    <div className="profile-img-wrap">
-                      <div className="profile-img">
-                        <div
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            background: '#E33F3B',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            fontSize: '4rem',
-                            color: '#fff',
-                          }}
-                        >
-                          {profile.name.split(' ')[0].charAt(0) +
-                            (profile.name.split(' ')[1]?.charAt(0) || '')}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="profile-basic">
-                      <div className="row">
-                        <div className="col-md-5">
-                          <div className="profile-info-left">
-                            <h3 className="user-name m-t-0 mb-0">
-                              {profile.name}
-                            </h3>
-                          </div>
-
-                          <div className="mt-3">
-                            <ul
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                              }}
-                              className="personal-info profile-info-left"
-                            >
-                              <li>
-                                <div className="title">Phone:</div>
-                                <div className="text">{profile.phone}</div>
-                              </li>
-                              <li>
-                                <div className="title">Email:</div>
-                                <div className="text">{profile.email}</div>
-                              </li>
-                              <li>
-                                <div className="title">Created At</div>
-                                <div className="text">
-                                  {new Date(
-                                    profile.createdAt
-                                  ).toLocaleDateString()}
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div className="col-md-5">
-                          <div className="mt-3">
-                            <ul
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                              }}
-                              className="personal-info"
-                            >
-                              <li>
-                                <div className="title">Address:</div>
-                                <div className="text">{profile.address}</div>
-                              </li>
-                              <li>
-                                <div className="title">Assigned Employee</div>
-                                <div className="text">
-                                  <Link to="/app/profile/employee-profile">
-                                    {profile.assignedTo?.firstName}
-                                  </Link>
-                                </div>
-                              </li>
-                              <li>
-                                <div className="title">Created By</div>
-                                <div className="text">
-                                  <Link to="/app/profile/employee-profile">
-                                    {profile.createdBy?.firstName}
-                                  </Link>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="pro-edit">
-                      <a
-                        data-target="#profile_"
-                        data-toggle="modal"
-                        className="edit-icon"
-                        href="#"
-                      >
-                        <i className="fa fa-pencil" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div className="row"></div>
             </div>
           </div>
-          <div className="card tab-box">
-            <div className="row user-tabs">
-              <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
-                <ul className="nav nav-tabs nav-tabs-bottom">
-                  <li className="nav-item">
-                    <a
-                      href="#emp_profile"
-                      data-toggle="tab"
-                      className="nav-link active"
-                    >
-                      Timeline
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="#emp_notes" data-toggle="tab" className="nav-link">
-                      Notes
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="#bank_statutory"
-                      data-toggle="tab"
-                      className="nav-link"
-                    >
-                      Activities
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="#projects" data-toggle="tab" className="nav-link">
-                      Projects
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="tab-content">
+          <div className="row">
             <div
-              id="emp_profile"
-              className="pro-overview tab-pane fade show active"
+              style={{
+                paddingRight: '0px',
+              }}
+              className="col-md-4"
             >
-              <h3>Timeline</h3>
-              <Timeline align="alternate">
-                {profile.activities?.map((n) => (
-                  <TimelineItem>
-                    <TimelineOppositeContent>
-                      <h6
-                        style={{
-                          marginTop: '16px',
-                        }}
-                        className="mb-0"
-                      >
-                        <span
-                          style={{
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {new Date(n.dateTime).toLocaleDateString()}
-                        </span>{' '}
-                        at {new Date(n.dateTime).toLocaleTimeString()}
-                      </h6>
-                    </TimelineOppositeContent>
-                    <TimelineSeparator>
-                      <TimelineDot>
-                        <LaptopMacIcon />
-                      </TimelineDot>
-                      <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>
-                      <Paper
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                        }}
-                        elevation={1}
-                        className={classes.paper}
-                      >
-                        <h5>{n.activityType}</h5>
-                        <p>{n.description}</p>
-                      </Paper>
-                    </TimelineContent>
-                  </TimelineItem>
-                ))}
-                {profile.notes?.length > 0 && (
-                  <h3
-                    style={{
-                      textAlign: 'center',
-                      marginTop: '20px',
-                      marginBottom: '20px',
-                    }}
-                  >
-                    Notes
-                  </h3>
-                )}
-                {profile.notes?.map((n) => (
-                  <TimelineItem>
-                    <TimelineOppositeContent>
-                      <h6
-                        style={{
-                          marginTop: '16px',
-                        }}
-                        className="mb-0"
-                      >
-                        <span
-                          style={{
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {new Date(n.dateTime).toLocaleDateString()}
-                        </span>{' '}
-                        at {new Date(n.dateTime).toLocaleTimeString()}
-                      </h6>
-                    </TimelineOppositeContent>
-                    <TimelineSeparator>
-                      <TimelineDot>
-                        <LaptopMacIcon />
-                      </TimelineDot>
-                      <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>
-                      <Paper
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                        }}
-                        elevation={1}
-                        className={classes.paper}
-                      >
-                        <h5>{n.title}</h5>
-                        <p>{n.description}</p>
-                      </Paper>
-                    </TimelineContent>
-                  </TimelineItem>
-                ))}
-              </Timeline>
-            </div>
-            {/* /Profile Info Tab */}
-            {/* Notes Tab */}
-            <div className="tab-pane fade" id="emp_notes">
-              <div className="row">
-                <div className="input-group mb-3 pl-3">
-                  <h3>Notes</h3>
-                  <div
-                    style={{
-                      marginLeft: 'auto',
-                    }}
-                    className="input-group-append"
-                  >
-                    <div className="col-auto ml-auto">
-                      <a
-                        href="#"
-                        className="btn btn-primary"
-                        data-toggle="modal"
-                        data-target="#add_note"
-                      >
-                        <i className="fa fa-plus" /> Add
-                      </a>
-                    </div>
-                  </div>
-                </div>
+              <div className="card">
                 <div
-                  id="add_note"
-                  className="modal custom-modal fade"
-                  role="dialog"
+                  className="card-body"
+                  style={{
+                    height: '70vh',
+                  }}
+                ></div>
+              </div>
+            </div>
+            <div
+              style={{
+                paddingLeft: '0px',
+              }}
+              className="col-md-8 p-r-0"
+            >
+              <div className="card tab-box">
+                <div className="row user-tabs">
+                  <div className="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                    <ul className="nav nav-tabs nav-tabs-bottom">
+                      <li className="nav-item">
+                        <a
+                          href="#emp_profile"
+                          data-toggle="tab"
+                          className="nav-link active"
+                        >
+                          Timeline
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          href="#emp_notes"
+                          data-toggle="tab"
+                          className="nav-link"
+                        >
+                          Notes
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          href="#bank_statutory"
+                          data-toggle="tab"
+                          className="nav-link"
+                        >
+                          Activities
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          href="#projects"
+                          data-toggle="tab"
+                          className="nav-link"
+                        >
+                          Plot Interests
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  minHeight: '65vh',
+                  maxHeight: '65vh',
+                  overflowY: 'auto',
+                }}
+                className="card p-4 tab-content"
+              >
+                <div
+                  id="emp_profile"
+                  className="pro-overview tab-pane fade show active"
                 >
+                  <h3>Timeline</h3>
+                  <hr />
+                  <Timeline>
+                    {profile.activities?.map((n) => (
+                      <TimelineItem>
+                        <TimelineOppositeContent>
+                          <h6
+                            style={{
+                              marginTop: '16px',
+                            }}
+                            className="mb-0"
+                          >
+                            <span
+                              style={{
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              {new Date(n.dateTime).toLocaleDateString()}
+                            </span>{' '}
+                            at {new Date(n.dateTime).toLocaleTimeString()}
+                          </h6>
+                        </TimelineOppositeContent>
+                        <TimelineSeparator>
+                          <TimelineDot>
+                            <LaptopMacIcon />
+                          </TimelineDot>
+                          <TimelineConnector />
+                        </TimelineSeparator>
+                        <TimelineContent>
+                          <Paper
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'center',
+                            }}
+                            elevation={1}
+                            className={classes.paper}
+                          >
+                            <h5>{n.activityType}</h5>
+                            <hr
+                              style={{
+                                margin: '0px',
+                                marginBottom: '8px',
+                              }}
+                            />
+                            <p>{n.description}</p>
+                          </Paper>
+                        </TimelineContent>
+                      </TimelineItem>
+                    ))}
+                  </Timeline>
+                </div>
+                {/* /Profile Info Tab */}
+                {/* Notes Tab */}
+                <div className="tab-pane fade" id="emp_notes">
                   <div
-                    className="modal-dialog modal-dialog-centered modal-lg"
-                    role="document"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
                   >
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h5 className="modal-title">Add Note</h5>
-                        <button
-                          type="button"
-                          className="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">×</span>
-                        </button>
-                      </div>
-                      <div className="modal-body">
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            addNote();
-                          }}
-                        >
-                          <div className="row">
-                            <div className="col-12">
-                              <div className="form-group">
-                                <label className="col-form-label">
-                                  Title
-                                  <span className="text-danger">*</span>
-                                </label>
-                                <input
-                                  onChange={(e) => {
-                                    setNoteToAdd({
-                                      ...noteToAdd,
-                                      title: e.target.value,
-                                    });
-                                  }}
-                                  className="form-control"
-                                  type="text"
-                                />
+                    <h3>Notes</h3>
+
+                    <a
+                      href="#"
+                      className="btn btn-primary"
+                      data-toggle="modal"
+                      data-target="#add_note"
+                    >
+                      <i className="fa fa-plus" /> Add
+                    </a>
+                  </div>
+                  <hr />
+                  <div
+                    id="add_note"
+                    className="modal custom-modal fade"
+                    role="dialog"
+                  >
+                    <div
+                      className="modal-dialog modal-dialog-centered modal-lg"
+                      role="document"
+                    >
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title">Add Note</h5>
+                          <button
+                            type="button"
+                            className="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div className="modal-body">
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              addNote();
+                            }}
+                          >
+                            <div className="row">
+                              <div className="col-12">
+                                <div className="form-group">
+                                  <label className="col-form-label">
+                                    Title
+                                    <span className="text-danger">*</span>
+                                  </label>
+                                  <input
+                                    onChange={(e) => {
+                                      setNoteToAdd({
+                                        ...noteToAdd,
+                                        title: e.target.value,
+                                      });
+                                    }}
+                                    className="form-control"
+                                    type="text"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-12">
+                                <div className="form-group">
+                                  <label className="col-form-label">
+                                    Description
+                                    <span className="text-danger">*</span>
+                                  </label>
+                                  <textarea
+                                    onChange={(e) =>
+                                      setNoteToAdd({
+                                        ...noteToAdd,
+                                        description: e.target.value,
+                                      })
+                                    }
+                                    rows={4}
+                                    className="form-control"
+                                    defaultValue={''}
+                                  />
+                                </div>
                               </div>
                             </div>
-                            <div className="col-12">
-                              <div className="form-group">
-                                <label className="col-form-label">
-                                  Description
-                                  <span className="text-danger">*</span>
-                                </label>
-                                <textarea
-                                  onChange={(e) =>
-                                    setNoteToAdd({
-                                      ...noteToAdd,
-                                      description: e.target.value,
-                                    })
-                                  }
-                                  rows={4}
-                                  className="form-control"
-                                  defaultValue={''}
-                                />
-                              </div>
+                            <div className="submit-section">
+                              <button className="btn btn-primary submit-btn">
+                                Submit
+                              </button>
                             </div>
-                          </div>
-                          <div className="submit-section">
-                            <button className="btn btn-primary submit-btn">
-                              Submit
-                            </button>
-                          </div>
-                        </form>
+                          </form>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                {profile?.notes?.map((p) => (
-                  <div className="col-lg-4 col-sm-6 col-md-4 col-xl-3">
+                  {profile?.notes?.map((p) => (
                     <div className="card">
                       <div className="card-body">
                         <div className="dropdown profile-action">
@@ -594,32 +524,14 @@ const EmployeeProfile = () => {
                             </a>
                           </div>
                         </div>
-                        <h4 className="project-title">
-                          {/* <Link to="/app/projects/projects-view">
-                         Office Management
-                       </Link> */}
-                          {p.title}
-                        </h4>
-                        <small className="block text-ellipsis m-b-15">
-                          {/* <span className="text-xs">1</span>{' '}
-                       <span className="text-muted">open tasks, </span> */}
-                          <span className="text-muted mr-3">
-                            {new Date(p.dateTime).toLocaleDateString()}
-                          </span>
-                          <span className="text-xs">
-                            {new Date(p.dateTime).toLocaleTimeString()}
-                          </span>{' '}
-                        </small>
-                        <p className="text-muted">{p.description}</p>
+                        <h4 className="project-title">{p.title}</h4>
+                        <hr />
+                        <p className="text-muted m-0">{p.description}</p>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="tab-pane fade" id="bank_statutory">
-              <div className="card">
-                <div className="card-body">
+                  ))}
+                </div>
+                <div className="tab-pane fade" id="bank_statutory">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex align-items-center">
                       <h2 className="card-title mb-0 h-100 mt-2">
@@ -627,20 +539,14 @@ const EmployeeProfile = () => {
                         Activities
                       </h2>
                     </div>
-                    <div className="d-flex">
-                      <div>
-                        <div className="col-auto ml-auto">
-                          <a
-                            href="#"
-                            className="btn btn-primary"
-                            data-toggle="modal"
-                            data-target="#add_activity"
-                          >
-                            <i className="fa fa-plus" /> Activity
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                    <a
+                      href="#"
+                      className="btn btn-primary"
+                      data-toggle="modal"
+                      data-target="#add_activity"
+                    >
+                      <i className="fa fa-plus" /> Activity
+                    </a>
                   </div>
                   <hr />
                   <div
@@ -725,83 +631,91 @@ const EmployeeProfile = () => {
                     </div>
                   </div>
                   {profile.activities?.map((activity) => (
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">{activity.activityType}</h5>
-                        <small className="block text-ellipsis m-b-15">
-                          {/* <span className="text-xs">1</span>{' '}
-                       <span className="text-muted">open tasks, </span> */}
-                          <span className="text-muted mr-1">
-                            {new Date(activity.dateTime).toLocaleDateString()}{' '}
-                            at
-                          </span>
-                          <span className="text-muted">
-                            {new Date(activity.dateTime).toLocaleTimeString()}
-                          </span>{' '}
-                        </small>
-                        <p class="card-text">{activity.description}</p>
+                    <div className="card">
+                      <div className="card-body">
+                        <h4 className="project-title">
+                          {activity.activityType}
+                        </h4>
+                        <hr />
+                        <p className="card-text m-0">{activity.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-            <div id="projects" className="tab-pane fade">
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <h3>Projects</h3>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setAddProject(true);
-                  }}
-                  className="btn btn-primary"
-                >
-                  Add Project
-                </button>
-              </div>
-              <div
-                className="task-wrapper"
-                style={{
-                  padding: '0',
-                  marginTop: '20px',
-                }}
-              >
-                <div className="task-list-container">
-                  <div className="task-list-body">
-                    <ul id="task-list">
-                      {profile.project?.map((project, i) => (
-                        <li className="task" key={i}>
-                          <div className="task-container">
-                            <span
-                              className="task-label"
-                              suppressContentEditableWarning={true}
-                            >
-                              <Link
-                                to={`/app/projects/projects-view/${project._id}`}
-                              >
-                                {project.name}
-                              </Link>
-                            </span>
-                            <span className="task-action-btn task-btn-right">
-                              <VisibilityIcon
-                                onClick={() => {
-                                  setProjectModal(project);
-                                }}
-                                style={{
-                                  cursor: 'pointer',
-                                }}
-                              />
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                <div id="projects" className="tab-pane fade">
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <h3>Interests</h3>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setAddProject(true);
+                      }}
+                      className="btn btn-primary"
+                    >
+                      Add Plot
+                    </button>
                   </div>
+                  <hr />
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Plot Name</TableCell>
+                          <TableCell>Project</TableCell>
+                          <TableCell>Managed By</TableCell>
+                          <TableCell>Status</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {leadInterest.map((interest, i) => (
+                          <TableRow key={i}>
+                            <TableCell>{interest.plot.name}</TableCell>
+                            <TableCell>{interest.project.name}</TableCell>
+                            <TableCell>
+                              <Stack
+                                direction="row"
+                                sx={{
+                                  alignItems: 'center',
+                                }}
+                                spacing={1}
+                              >
+                                <Avatar sx={{ bgcolor: red[400] }}>
+                                  {profile.assignedTo?.firstName?.substr(0, 1)}
+                                </Avatar>
+                                <div>{profile.assignedTo.firstName}</div>
+                              </Stack>
+                            </TableCell>
+                            <TableCell>
+                              <select
+                                value={interest.leadType}
+                                onChange={(e) => {
+                                  updateLeadInterest(
+                                    interest.plot._id,
+                                    interest.project._id,
+                                    e.target.value
+                                  );
+                                }}
+                                className="custom-select"
+                              >
+                                <option value="New Lead">New Lead</option>
+                                <option value="Discussions">Discussions</option>
+                                <option value="Negotiations">
+                                  Negotiations
+                                </option>
+                                <option value="Lead Won">Lead Won</option>
+                                <option value="Lead Lost">Lead Lost</option>
+                              </select>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </div>
               </div>
             </div>
@@ -932,8 +846,8 @@ const EmployeeProfile = () => {
                       className="pin"
                       style={{
                         position: 'absolute',
-                        top: JSON.parse(selectedPlot.component)?.y,
-                        left: JSON.parse(selectedPlot.component)?.x + 12,
+                        top: JSON.parse(selectedPlot.component.y) + 'px',
+                        left: 7 + JSON.parse(selectedPlot.component.x) + 'px',
                         background: '#EF473A',
                       }}
                     ></div>
@@ -944,8 +858,8 @@ const EmployeeProfile = () => {
                     id="selected-plot"
                     style={{
                       position: 'absolute',
-                      top: JSON.parse(selectedPlot.component).y + 6,
-                      left: JSON.parse(selectedPlot.component).x + 10,
+                      top: 3 + JSON.parse(selectedPlot.component.y) + 'px',
+                      left: 3 + JSON.parse(selectedPlot.component.x) + 'px',
                       width: '22%',
                       cursor: 'move',
                       zIndex: '9999',
@@ -979,7 +893,7 @@ const EmployeeProfile = () => {
                     <h4>
                       <b>Plot Price:</b> ₹{' '}
                       {selectedPlot.cost ||
-                        selectedPlot.area * selectedProject.estimatedCost}
+                        selectedPlot.area * selectedProject.costPerSqFeet}
                     </h4>
                     <h4>
                       <b>Interested leads:</b>{' '}

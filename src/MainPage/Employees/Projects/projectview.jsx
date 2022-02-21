@@ -4,7 +4,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import httpService from '../../../lib/httpService';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
-import { Backdrop } from '@mui/material';
+import { Backdrop, Paper, TableContainer } from '@mui/material';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import Swal from 'sweetalert2';
@@ -15,9 +15,17 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import PlotsBreakdown from './PlotsBreakdown';
+import EditProjectModal from './popups/EditProjectModal';
+
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+];
 
 const InactiveTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -113,7 +121,9 @@ const ProjectView = () => {
   const [totalPlotsInDiscussion, setTotalPlotsInDiscussion] = useState(0);
   const [totalPlotsInNegotiation, setTotalPlotsInNegotiation] = useState(0);
   const [totalPlotsLeadsWon, setTotalPlotsLeadsWon] = useState(0);
-  const [showPlotsBreakdown, setShowPlotsBreakdown] = useState(false);
+  const [projectLeads, setProjectLeads] = useState([]);
+  const [projectLeadsWon, setProjectLeadsWon] = useState([]);
+  const [projectLeadsLost, setProjectLeadsLost] = useState([]);
 
   useEffect(() => {
     fetchProjectDetails();
@@ -151,10 +161,6 @@ const ProjectView = () => {
       document.querySelector(`#${selectedPath}`)?.classList.add('selected');
     }
   }, [selectedPath]);
-
-  useEffect(() => {
-    console.log(coordinates);
-  }, [coordinates.length]);
 
   const fetchProjectDetails = async () => {
     if (!id) {
@@ -219,6 +225,30 @@ const ProjectView = () => {
     const totalPlotsLeadsWons = res?.data?.subPlots.filter(
       (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Lead Won')
     ).length;
+    res?.data?.subPlots.forEach((p) => {
+      console.log(p.name);
+      p.leadsInfo.forEach((l) => {
+        if (l.leadType === 'Lead Won') {
+          setProjectLeadsWon((d) => [
+            ...d,
+            {
+              lead: l.lead,
+              leadType: l.leadType,
+              plotName: p.name,
+            },
+          ]);
+        } else if (l.leadType === 'Lead Lost') {
+          setProjectLeadsLost((d) => [
+            ...d,
+            {
+              lead: l.lead,
+              leadType: l.leadType,
+              plotName: p.name,
+            },
+          ]);
+        }
+      });
+    });
     setTotalPlotArea(totalArea);
     setPlotAreaSoldOut(totalAreaSold);
     setPlotAreaInNegotiation(totalAreaInNegotiation);
@@ -231,6 +261,10 @@ const ProjectView = () => {
     setTotalPlotsLeadsWon(totalPlotsLeadsWons);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    console.log(projectLeadsWon);
+  }, [projectLeadsWon.length]);
 
   const editProject = async () => {
     await httpService.put(`/project/${projectToEdit._id}`, projectToEdit);
@@ -311,36 +345,318 @@ const ProjectView = () => {
               </div>
             </div>
           </div>
-          <Stack
+          <TableContainer
             sx={{
               marginBottom: '1rem',
             }}
-            direction="row"
-            spacing={1}
+            component={Paper}
           >
-            <Chip label={`Total Plots (${totalPlots})`} color="warning" />
-            <Chip
-              label={`Plots under Negotiations(${totalPlotsInNegotiation})`}
-              color="primary"
-            />
-            <Chip
-              label={`Plots under Discussions(${totalPlotsInDiscussion})`}
-              color="secondary"
-            />
-            <Chip label={`Leads Won(${totalPlotsLeadsWon})`} color="error" />
-            <Chip label={`Plots Sold(${totalPlotsSoldOut})`} color="info" />
-            {/* <Chip
-              onClick={() => {
-                setShowPlotsBreakdown(true);
-              }}
-              label="Detailed Breakdown"
-              sx={{
-                cursor: 'pointer',
-              }}
-              color="success"
-            /> */}
-          </Stack>
+            <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                    }}
+                    align="center"
+                  ></TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#D5D5D5',
+                      border: '1px solid #fff',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#0376BA',
+                    }}
+                    align="center"
+                  >
+                    AVAILABLE PLOTS TO SELL
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#D5D5D5',
+                      border: '1px solid #fff',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#0376BA',
+                    }}
+                    align="center"
+                  >
+                    PLOTS SOLD
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
+                            TOTAL AREA <br />
+                            (SQFT)
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotArea}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
+                            TOTAL PLOTS <br />
+                            (UNITS)
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlots}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table style={{}}>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            DISCUSSION <br />
+                            AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaUnderDiscussion}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            NEGOTIATION <br />
+                            AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaInNegotiation}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            LEADS WON <br />
+                            AREA{' '}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaLeadsWon}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            DISCUSSION <br />
+                            PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsInDiscussion}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            NEGOTIATION <br />
+                            PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsInNegotiation}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            LEADS WON <br />
+                            PLOTS{' '}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsLeadsWon}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table
+                      sx={{
+                        height: '144px',
+                      }}
+                    >
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            SOLD AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaSoldOut}
+                          </TableCell>
+                        </TableRow>
 
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': {
+                              border: 0,
+                            },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            SOLD PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsSoldOut}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
           {/* /Page Header */}
           <div className="card tab-box">
             <div className="row user-tabs">
@@ -370,17 +686,8 @@ const ProjectView = () => {
                         setTimeout(() => {
                           const markers = projectDetails.subPlots?.map((p) => ({
                             ...p,
-                            component: JSON.parse(p.component),
+                            component: p.component,
                           }));
-                          markers.map((m) => {
-                            m.component.x =
-                              imgRef.current.getBoundingClientRect().x +
-                              m.component.x;
-                            m.component.y =
-                              imgRef.current.getBoundingClientRect().y +
-                              m.component.y;
-                            return m;
-                          });
                           setMarkers(markers);
                         }, 200);
                       }}
@@ -402,8 +709,13 @@ const ProjectView = () => {
                     </a>
                   </li>
                   <li className="nav-item">
-                    <a href="#leads" data-toggle="tab" className="nav-link">
-                      Leads
+                    <a href="#leadsWon" data-toggle="tab" className="nav-link">
+                      Leads Won
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="#leadsLost" data-toggle="tab" className="nav-link">
+                      Leads Lost
                     </a>
                   </li>
                   <li className="nav-item">
@@ -439,7 +751,7 @@ const ProjectView = () => {
                           <tr>
                             <td>Cost:</td>
                             <td className="text-right">
-                              ₹{projectDetails.estimatedCost}
+                              ₹{projectDetails.costPerSqFeet}
                             </td>
                           </tr>
                           <tr>
@@ -447,14 +759,6 @@ const ProjectView = () => {
                             <td className="text-right">
                               {new Date(
                                 projectDetails?.startDate
-                              ).toLocaleDateString()}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Deadline:</td>
-                            <td className="text-right">
-                              {new Date(
-                                projectDetails?.endDate
                               ).toLocaleDateString()}
                             </td>
                           </tr>
@@ -468,10 +772,6 @@ const ProjectView = () => {
                             </td>
                           </tr>
                           <tr>
-                            <td>Status:</td>
-                            <td className="text-right">Working</td>
-                          </tr>
-                          <tr>
                             <td>Total subplots:</td>
                             <td className="text-right">
                               {projectDetails?.subPlots?.length}
@@ -479,90 +779,22 @@ const ProjectView = () => {
                           </tr>
                           <tr>
                             <td>Subplots sold:</td>
+                            <td className="text-right">{totalPlotsSoldOut}</td>
+                          </tr>
+                          <tr>
+                            <td>Under discussion:</td>
                             <td className="text-right">
-                              {
-                                projectDetails?.subPlots?.filter((l) => l.sold)
-                                  .length
-                              }
+                              {totalPlotsInDiscussion}
                             </td>
                           </tr>
                           <tr>
-                            <td>Subplots under discussion:</td>
+                            <td>Under Negotiations:</td>
                             <td className="text-right">
-                              {
-                                projectDetails?.subPlots?.filter(
-                                  (l) => l.leads?.length
-                                ).length
-                              }
+                              {totalPlotsInNegotiation}
                             </td>
                           </tr>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-
-                  <div className="card project-user">
-                    <div className="card-body">
-                      <h6 className="card-title m-b-20">Leads</h6>
-                      <ul className="list-box">
-                        {projectDetails?.leads
-                          .filter(
-                            (lead) =>
-                              lead.status !== 'Lead Won' &&
-                              lead.status !== 'Lead Lost'
-                          )
-                          ?.reverse()
-                          .slice(0, 4)
-                          .map((lead) => (
-                            <li>
-                              <Link to="/app/profile/employee-profile">
-                                <div className="list-item">
-                                  <div className="list-left">
-                                    <span className="avatar">
-                                      <div
-                                        style={{
-                                          width: '100%',
-                                          height: '100%',
-                                          background: '#5AB9AA',
-                                          borderRadius: '50%',
-                                          display: 'flex',
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
-                                          fontSize: '1.2rem',
-                                          color: '#fff',
-                                        }}
-                                      >
-                                        {lead.name.split(' ')[0].charAt(0) +
-                                          (lead.name.split(' ')[1]?.charAt(0) ||
-                                            '')}
-                                      </div>
-                                    </span>
-                                  </div>
-                                  <div className="list-body">
-                                    <span className="message-author">
-                                      {lead.name}
-                                    </span>
-                                    <div className="clearfix" />
-                                    <span className="message-content">
-                                      {lead.status}
-                                    </span>
-                                  </div>
-                                </div>
-                              </Link>
-                            </li>
-                          ))}
-                        <span className="message-content">
-                          <Link
-                            to={`/app/employees/leads?projectId=${projectDetails._id}`}
-                          >
-                            {projectDetails.leads?.length > 4 && (
-                              <>
-                                + {projectDetails?.leads?.length - 4} more leads
-                              </>
-                            )}
-                          </Link>
-                        </span>
-                      </ul>
                     </div>
                   </div>
                 </div>
@@ -793,10 +1025,10 @@ const ProjectView = () => {
                                 const temp = projectDetails.subPlots;
                                 temp.find(
                                   (v) => v.name === result.value
-                                ).component = JSON.stringify({
+                                ).component = {
                                   x: e.offsetX,
                                   y: e.offsetY,
-                                });
+                                };
                                 setProjectDetails({
                                   ...projectDetails,
                                   subPlots: temp,
@@ -822,7 +1054,9 @@ const ProjectView = () => {
                       plot.component ? (
                         <InactiveTooltip key={index} title={plot.name}>
                           <div
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
                               setPlotInfoBackdrop(true);
                               setPlotInfo(plot);
                             }}
@@ -833,13 +1067,13 @@ const ProjectView = () => {
                                 window.scrollY +
                                 layoutImageRef.current.getBoundingClientRect()
                                   .y +
-                                JSON.parse(plot.component).y,
+                                plot.component.y,
                               left:
                                 window.scrollX +
                                 layoutImageRef.current.getBoundingClientRect()
                                   .x -
                                 220 +
-                                JSON.parse(plot.component).x,
+                                plot.component.x,
                               background: '#EF473A',
                             }}
                           ></div>
@@ -851,7 +1085,12 @@ const ProjectView = () => {
                   </div>
                 )}
                 {projectDetails.subPlots && !updatedPaths && (
-                  <div className="card-body">
+                  <div
+                    className="card-body"
+                    style={{
+                      position: 'relative',
+                    }}
+                  >
                     <img
                       ref={imgRef}
                       src={projectDetails?.layout}
@@ -862,117 +1101,141 @@ const ProjectView = () => {
                         setImageReady(true);
                       }}
                     />
-                    {imageReady &&
-                      markers?.map((plot, index) =>
-                        plot.component ? (
-                          <>
-                            {plot.leadsInfo.length === 0 && !plot.sold && (
-                              <InactiveTooltip key={index} title={plot.name}>
+                    {markers?.map((plot, index) =>
+                      plot.component ? (
+                        <>
+                          {plot.leadsInfo.length === 0 && !plot.sold && (
+                            <InactiveTooltip key={index} title={plot.name}>
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+
+                                  setPlotInfoBackdrop(true);
+                                  setPlotInfo(plot);
+                                }}
+                                className="pin"
+                                style={{
+                                  position: 'absolute',
+                                  top: 16 + parseInt(plot.component.y) + 'px',
+                                  left: 32 + parseInt(plot.component.x) + 'px',
+                                  background: '#EF473A',
+                                }}
+                              ></div>
+                            </InactiveTooltip>
+                          )}
+                          {plot.leadsInfo.length > 0 &&
+                            plot.leadsInfo.some(
+                              (l) =>
+                                l.leadType === 'Discussions' ||
+                                l.leadType === 'New Lead'
+                            ) &&
+                            plot.leadsInfo.every(
+                              (l) =>
+                                l.leadType !== 'Lead Won' &&
+                                l.leadType !== 'Negotiations'
+                            ) &&
+                            !plot.sold && (
+                              <InDisscussionTooltip
+                                key={index}
+                                title={plot.name}
+                              >
                                 <div
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+
                                     setPlotInfoBackdrop(true);
                                     setPlotInfo(plot);
                                   }}
                                   className="pin"
                                   style={{
                                     position: 'absolute',
-                                    top: plot.component.y - 7,
-                                    left: -220 + plot.component.x,
-                                    background: '#EF473A',
+                                    top: 16 + parseInt(plot.component.y) + 'px',
+                                    left:
+                                      32 + parseInt(plot.component.x) + 'px',
+                                    background: '#FFF700',
                                   }}
                                 ></div>
-                              </InactiveTooltip>
+                              </InDisscussionTooltip>
                             )}
-                            {plot.leadsInfo.some(
-                              (l) =>
-                                l.leadType == 'Discussions' ||
-                                l.leadType == 'New Lead'
-                            ) &&
-                              !plot.sold && (
-                                <InDisscussionTooltip
-                                  key={index}
-                                  title={plot.name}
-                                >
-                                  <div
-                                    onClick={() => {
-                                      setPlotInfoBackdrop(true);
-                                      setPlotInfo(plot);
-                                    }}
-                                    className="pin"
-                                    style={{
-                                      position: 'absolute',
-                                      top: plot.component.y - 7,
-                                      left: -220 + plot.component.x,
-                                      background: '#FFF700',
-                                    }}
-                                  ></div>
-                                </InDisscussionTooltip>
-                              )}
-                            {plot.leadsInfo.some(
+                          {plot.leadsInfo.length > 0 &&
+                            plot.leadsInfo.some(
                               (l) => l.leadType == 'Negotiations'
                             ) &&
-                              !plot.sold && (
-                                <InNegotiationTooltip
-                                  key={index}
-                                  title={plot.name}
-                                >
-                                  <div
-                                    onClick={() => {
-                                      setPlotInfoBackdrop(true);
-                                      setPlotInfo(plot);
-                                    }}
-                                    className="pin"
-                                    style={{
-                                      position: 'absolute',
-                                      top: plot.component.y - 7,
-                                      left: -220 + plot.component.x,
-                                      background: '#89CFF0',
-                                    }}
-                                  ></div>
-                                </InNegotiationTooltip>
-                              )}
-                            {plot.leadsInfo.some(
-                              (l) => l.leadType == 'Lead Won'
-                            ) &&
-                              !plot.sold && (
-                                <LeadsWontTooltip key={index} title={plot.name}>
-                                  <div
-                                    onClick={() => {
-                                      setPlotInfoBackdrop(true);
-                                      setPlotInfo(plot);
-                                    }}
-                                    className="pin"
-                                    style={{
-                                      position: 'absolute',
-                                      top: plot.component.y - 7,
-                                      left: -220 + plot.component.x,
-                                      background: '#9A66CB',
-                                    }}
-                                  ></div>
-                                </LeadsWontTooltip>
-                              )}
-                            {plot.sold && (
-                              <SoldOutTooltip key={index} title={plot.name}>
+                            !plot.sold && (
+                              <InNegotiationTooltip
+                                key={index}
+                                title={plot.name}
+                              >
                                 <div
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+
                                     setPlotInfoBackdrop(true);
                                     setPlotInfo(plot);
                                   }}
                                   className="pin"
                                   style={{
                                     position: 'absolute',
-                                    top: plot.component.y - 7,
-                                    left: -220 + plot.component.x,
-                                    background: '#4CBB17',
+                                    top: 16 + parseInt(plot.component.y) + 'px',
+                                    left:
+                                      32 + parseInt(plot.component.x) + 'px',
+                                    background: '#89CFF0',
                                   }}
                                 ></div>
-                              </SoldOutTooltip>
+                              </InNegotiationTooltip>
                             )}
-                          </>
-                        ) : (
-                          <></>
-                        )
-                      )}
+                          {plot.leadsInfo.some(
+                            (l) => l.leadType == 'Lead Won'
+                          ) &&
+                            !plot.sold && (
+                              <LeadsWontTooltip key={index} title={plot.name}>
+                                <div
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+
+                                    setPlotInfoBackdrop(true);
+                                    setPlotInfo(plot);
+                                  }}
+                                  className="pin"
+                                  style={{
+                                    position: 'absolute',
+                                    top: 16 + parseInt(plot.component.y) + 'px',
+                                    left:
+                                      32 + parseInt(plot.component.x) + 'px',
+                                    background: '#9A66CB',
+                                  }}
+                                ></div>
+                              </LeadsWontTooltip>
+                            )}
+                          {plot.sold && (
+                            <SoldOutTooltip key={index} title={plot.name}>
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+
+                                  setPlotInfoBackdrop(true);
+                                  setPlotInfo(plot);
+                                }}
+                                className="pin"
+                                style={{
+                                  position: 'absolute',
+                                  top: 16 + parseInt(plot.component.y) + 'px',
+                                  left: 32 + parseInt(plot.component.x) + 'px',
+                                  background: '#4CBB17',
+                                }}
+                              ></div>
+                            </SoldOutTooltip>
+                          )}
+                        </>
+                      ) : (
+                        <></>
+                      )
+                    )}
                     <br />
                   </div>
                 )}
@@ -1014,50 +1277,81 @@ const ProjectView = () => {
                 )}
               </div>
             </div>
-            <div id="leads" className="tab-pane fade">
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <h3>Leads</h3>
-              </div>
-              <div
-                className="row"
-                style={{
-                  padding: '15px',
-                }}
-              >
-                {projectDetails?.leads
-                  .filter(
-                    (l) => l.status !== 'Lead Won' && l.status !== 'Lead Lost'
-                  )
-                  .map((lead) => (
-                    <div
-                      key={lead._id}
-                      className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-                    >
-                      <div className="profile-widget">
-                        <div className="profile-img">
-                          <Link
-                            to={`/app/profile/lead-profile/${lead._id}`}
-                            className="avatar"
-                          >
-                            <img src={''} alt="" />
-                          </Link>
-                        </div>
-                        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                          <Link to="/app/profile/employee-profile">
-                            {lead.name}
-                          </Link>
-                        </h4>
-                        <div className="small text-muted">{lead.phone}</div>
-                        <div className="small text-muted">{lead.email}</div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
+            <div id="leadsWon" className="tab-pane fade">
+              <h2 className="card-title mb-0 h-100 mt-2">Leads Won</h2>
+              <hr />
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Phone</TableCell>
+                      <TableCell>Plot</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {projectLeadsWon.map((l, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{l.lead.name}</TableCell>
+                        <TableCell>{l.lead.email}</TableCell>
+                        <TableCell>{l.lead.phone}</TableCell>
+                        <TableCell>{l.plotName}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                {projectLeadsWon.length === 0 && (
+                  <div
+                    style={{
+                      height: '35vh',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <h4>No Leads</h4>
+                  </div>
+                )}
+              </TableContainer>
+            </div>
+            <div id="leadsLost" className="tab-pane fade">
+              <h2 className="card-title mb-0 h-100 mt-2">Leads Lost</h2>
+              <hr />
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Phone</TableCell>
+                      <TableCell>Plot</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {projectLeadsLost.map((l, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{l.lead.name}</TableCell>
+                        <TableCell>{l.lead.email}</TableCell>
+                        <TableCell>{l.lead.phone}</TableCell>
+                        <TableCell>{l.plotName}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                {projectLeadsLost.length === 0 && (
+                  <div
+                    style={{
+                      height: '35vh',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <h4>No Leads</h4>
+                  </div>
+                )}
+              </TableContainer>
             </div>
             <div id="customers" className="tab-pane fade">
               <div
@@ -1104,139 +1398,11 @@ const ProjectView = () => {
         </div>
       )}
       {/* /Page Content */}
-      <div id="edit_project" className="modal custom-modal fade" role="dialog">
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Edit Project</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  editProject();
-                }}
-              >
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Project Name</label>
-                      <input
-                        defaultValue={projectToEdit.name}
-                        onChange={(e) => {
-                          setProjectToEdit((d) => ({
-                            ...d,
-                            name: e.target.value,
-                          }));
-                        }}
-                        className="form-control"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <div className="form-group">
-                        <label>Cost</label>
-                        <input
-                          value={projectToEdit.estimatedCost}
-                          onChange={(e) => {
-                            setProjectToAdd((d) => ({
-                              ...d,
-                              estimatedCost: e.target.value,
-                            }));
-                          }}
-                          className="form-control"
-                          type="text"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Start Date</label>
-                      <div>
-                        <input
-                          className="form-control"
-                          value={
-                            projectToEdit.startDate
-                              ? new Date(projectToEdit.startDate)
-                                  .toISOString()
-                                  .split('T')[0]
-                              : ''
-                          }
-                          onChange={(e) => {
-                            setProjectToEdit((d) => ({
-                              ...d,
-                              startDate: e.target.value,
-                            }));
-                          }}
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>End Date</label>
-                      <div>
-                        <input
-                          value={
-                            projectToEdit.startDate
-                              ? new Date(projectToEdit.endDate)
-                                  .toISOString()
-                                  .split('T')[0]
-                              : ''
-                          }
-                          onChange={(e) => {
-                            setProjectToEdit((d) => ({
-                              ...d,
-                              endDate: e.target.value,
-                            }));
-                          }}
-                          className="form-control"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Description</label>
-                  <textarea
-                    rows={4}
-                    className="form-control"
-                    placeholder="Description"
-                    defaultValue={projectToEdit.description}
-                    onChange={(e) => {
-                      setProjectToEdit((d) => ({
-                        ...d,
-                        description: e.target.value,
-                      }));
-                    }}
-                  />
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+      <EditProjectModal
+        onSubmit={editProject}
+        projectToEdit={projectToEdit}
+        setProjectToEdit={setProjectToEdit}
+      />
       <Backdrop
         style={{
           zIndex: '9999',
@@ -1319,37 +1485,6 @@ const ProjectView = () => {
                   paddingTop: '4px',
                 }}
               >
-                {/* {activeInfoTab === 1 && (
-                  <div id="info" className="">
-                    <div>
-                      <h4>
-                        <b>Plot Name</b>: <span>{plotInfo.name}</span>
-                      </h4>
-                      <h4>
-                        <b>Plot Size</b>: <span>{plotInfo.area} Sq Feet</span>
-                      </h4>
-                      <h4>
-                        <b>Plot Cost</b>:{' '}
-                        <span>
-                          {plotInfo.cost ||
-                            plotInfo.area * projectDetails.estimatedCost}
-                        </span>
-                      </h4>
-                      <h4>
-                        <b>Description</b>:{' '}
-                        <span>
-                          {plotInfo.description
-                            ? plotInfo.description
-                            : 'No Description Given'}
-                        </span>
-                      </h4>
-                      <h4>
-                        <b>Status</b>:{' '}
-                        <span>{plotInfo.sold ? 'Sold ' : 'Not Sold'}</span>
-                      </h4>
-                    </div>
-                  </div>
-                )} */}
                 {activeInfoTab === 2 && (
                   <div id="lead" className="">
                     <Box sx={{ margin: 1 }}>
@@ -1423,29 +1558,6 @@ const ProjectView = () => {
           )}
         </div>
       </Backdrop>
-      <Backdrop
-        open={showPlotsBreakdown}
-        sx={{
-          zIndex: 999999999999,
-        }}
-        onClick={() => {
-          setShowPlotsBreakdown(false);
-        }}
-      >
-        <div
-          style={{
-            width: '90%',
-            height: '90%',
-            background: 'white',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <PlotsBreakdown subPlots={projectDetails.subPlots} />
-        </div>
-      </Backdrop>
-      {/* /Edit Project Modal */}
     </div>
   );
 };

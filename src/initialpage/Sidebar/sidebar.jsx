@@ -158,10 +158,6 @@ const bar = [
             link: '/sales/invoices',
           },
           {
-            name: 'Payment Received',
-            link: '/sales/payment-received',
-          },
-          {
             name: 'Projects',
             link: '/projects/projects-list',
           },
@@ -184,10 +180,6 @@ const bar = [
           {
             name: 'Expenses',
             link: '/purchase/expenses',
-          },
-          {
-            name: 'Payment Made',
-            link: '/purchase/payment-made',
           },
           {
             name: 'Vendor Credits',

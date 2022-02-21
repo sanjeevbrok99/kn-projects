@@ -1,72 +1,190 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css'; // import styles
-
 import '../../index.css';
 import httpService from '../../../lib/httpService';
 import { toast } from 'react-toastify';
+import { CircularProgress, Paper, TableContainer } from '@mui/material';
+import AddProjectModal from './popups/AddProjectModal';
+import EditProjectModal from './popups/EditProjectModal';
+import DeleteProjectModal from './popups/DeleteProjectModal';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Table from '@mui/material/Table';
 
 const ProjectList = () => {
   const [projectList, setProjectList] = React.useState([]);
+  const [projectsFromServer, setProjectsFromServer] = React.useState([]);
   const [projectToAdd, setProjectToAdd] = React.useState({});
   const [projectToEdit, setProjectToEdit] = React.useState({});
   const [projectNameToSearch, setProjectNameToSearch] = React.useState('');
-
-  useEffect(() => {
-    if ($('.select').length > 0) {
-      $('.select').select2({
-        minimumResultsForSearch: -1,
-        width: '100%',
-      });
-    }
-  }, []);
+  const [isLoading, setLoading] = React.useState(true);
+  const [totalPlotArea, setTotalPlotArea] = useState(0);
+  const [plotAreaUnderDiscussion, setPlotAreaUnderDiscussion] = useState(0);
+  const [plotAreaInNegotiation, setPlotAreaInNegotiation] = useState(0);
+  const [plotAreaLeadsWon, setPlotAreaLeadsWon] = useState(0);
+  const [plotAreaSoldOut, setPlotAreaSoldOut] = useState(0);
+  const [totalPlots, setTotalPlots] = useState(0);
+  const [totalPlotsSoldOut, setTotalPlotsSoldOut] = useState(0);
+  const [totalPlotsInDiscussion, setTotalPlotsInDiscussion] = useState(0);
+  const [totalPlotsInNegotiation, setTotalPlotsInNegotiation] = useState(0);
+  const [totalPlotsLeadsWon, setTotalPlotsLeadsWon] = useState(0);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const result = await httpService.get('/project');
-      setProjectList(result.data);
+      setProjectsFromServer(result.data);
+      result.data.forEach((project) => {
+        const totalArea = project.subPlots.reduce((a, b) => a + b.area, 0);
+        const totalAreaSold = project.subPlots
+          .filter((l) => l.sold)
+          .reduce((a, b) => a + b.area, 0);
+        const totalAreaInDiscussion = project.subPlots
+          .filter(
+            (p) =>
+              !p.sold &&
+              p.leadsInfo.some(
+                (l) => l.leadType === 'Discussions' || l.leadType === 'New Lead'
+              )
+          )
+          .reduce((a, b) => a + b.area, 0);
+        const totalAreaInNegotiation = project.subPlots
+          .filter(
+            (p) =>
+              !p.sold && p.leadsInfo.some((l) => l.leadType === 'Negotiations')
+          )
+          .reduce((a, b) => a + b.area, 0);
+        const totalAreaLeadsWons = project.subPlots
+          .filter(
+            (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Lead Won')
+          )
+          .reduce((a, b) => a + b.area, 0);
+        const totalPlots = project.subPlots.length;
+        const totalPlotsSoldOut = project.subPlots.filter((l) => l.sold).length;
+        const totalPlotsInDiscussion = project.subPlots.filter(
+          (p) =>
+            !p.sold &&
+            p.leadsInfo.some(
+              (l) => l.leadType === 'Discussions' || l.leadType === 'New Lead'
+            )
+        ).length;
+        const totalPlotsInNegotiation = project.subPlots.filter(
+          (p) =>
+            !p.sold && p.leadsInfo.some((l) => l.leadType === 'Negotiations')
+        ).length;
+        const totalPlotsLeadsWons = project.subPlots.filter(
+          (p) => !p.sold && p.leadsInfo.some((l) => l.leadType === 'Lead Won')
+        ).length;
+        setTotalPlotArea((d) => d + totalArea);
+        setPlotAreaSoldOut((d) => d + totalAreaSold);
+        setPlotAreaInNegotiation((d) => d + totalAreaInNegotiation);
+        setPlotAreaLeadsWon((d) => d + totalAreaLeadsWons);
+        setPlotAreaUnderDiscussion((d) => d + totalAreaInDiscussion);
+        setTotalPlots((d) => d + totalPlots);
+        setTotalPlotsSoldOut((d) => d + totalPlotsSoldOut);
+        setTotalPlotsInDiscussion((d) => d + totalPlotsInDiscussion);
+        setTotalPlotsInNegotiation((d) => d + totalPlotsInNegotiation);
+        setTotalPlotsLeadsWon((d) => d + totalPlotsLeadsWons);
+      });
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
-  const addProjects = async () => {
-    const res = await httpService.post('/project', projectToAdd);
-    if (res.status < 400) {
-      toast.success('Project Added Successfully');
-      fetchData();
-      setProjectToAdd({});
-      document.querySelectorAll('.close')?.forEach((e) => e.click());
+  const searchProject = async (e) => {
+    e.preventDefault();
+    const filteredProjects = projectsFromServer.filter((project) =>
+      project.name.toLowerCase().includes(projectNameToSearch.toLowerCase())
+    );
+    setProjectList(filteredProjects);
+  };
+
+  useEffect(() => {
+    if (!isLoading && projectNameToSearch) {
+      const filteredProjects = projectsFromServer.filter((project) =>
+        project.name.toLowerCase().includes(projectNameToSearch.toLowerCase())
+      );
+      setProjectList(filteredProjects);
     } else {
-      toast.error('Something went wrong');
+      setProjectList(projectsFromServer);
     }
+  }, [isLoading, projectNameToSearch]);
+
+  const addProjects = async () => {
+    toast.promise(
+      new Promise((resolve, reject) => {
+        httpService
+          .post('/project', projectToAdd)
+          .then((res) => {
+            fetchData();
+            document.querySelectorAll('.close')?.forEach((e) => e.click());
+            resolve();
+          })
+          .catch((err) => {
+            reject();
+          });
+      }),
+      {
+        error: 'Something went wrong!',
+        success: 'Project added successfully!',
+        pending: 'Adding project...',
+      }
+    );
   };
 
   const editProjects = async () => {
-    const res = await httpService.put(
-      `/project/${projectToEdit._id}`,
-      projectToEdit
+    toast.promise(
+      new Promise((resolve, reject) => {
+        httpService
+          .put(`/project/${projectToEdit._id}`, projectToEdit)
+          .then((res) => {
+            fetchData();
+            setProjectToEdit({});
+            document.querySelectorAll('.close')?.forEach((e) => e.click());
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      }),
+      {
+        pending: 'Updating Project...',
+        success: 'Project Updated Successfully',
+        error: 'Something went wrong',
+      }
     );
-    if (res.status < 400) {
-      fetchData();
-      setProjectToEdit({});
-      document.querySelectorAll('.close')?.forEach((e) => e.click());
-    }
   };
 
   const deleteProject = async () => {
-    const res = await httpService.delete(`/project/${projectToEdit._id}`);
-    if (res.status < 400) {
-      fetchData();
-      setProjectToEdit({});
-      document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
-    }
+    toast.promise(
+      new Promise((resolve, reject) => {
+        httpService.delete(`/project/${projectToEdit._id}`).then((res) => {
+          if (res.status < 400) {
+            fetchData();
+            document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
+            setProjectToEdit({});
+            resolve();
+          } else {
+            reject();
+          }
+        });
+      }),
+      {
+        pending: 'Deleting Project...',
+        success: 'Project Deleted Successfully',
+        error: 'Something went wrong',
+      }
+    );
   };
 
   const convertDate = (date) => {
@@ -87,495 +205,512 @@ const ProjectList = () => {
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
-      <div className="content container-fluid">
-        {/* Page Header */}
-        <div className="page-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h3 className="page-title">Projects</h3>
-              <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Projects</li>
-              </ul>
+      {isLoading && (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
+        </div>
+      )}
+      {!isLoading && (
+        <div className="content container-fluid">
+          <div className="page-header">
+            <div className="row align-items-center">
+              <div className="col">
+                <h3 className="page-title">Projects</h3>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/app/main/dashboard">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Projects</li>
+                </ul>
+              </div>
+              <div className="col-auto float-right ml-auto">
+                <a
+                  href="#"
+                  className="btn add-btn"
+                  data-toggle="modal"
+                  data-target="#create_project"
+                >
+                  <i className="fa fa-plus" /> Create Project
+                </a>
+              </div>
             </div>
-            <div className="col-auto float-right ml-auto">
+          </div>
+          <TableContainer
+            sx={{
+              marginBottom: '1rem',
+            }}
+            component={Paper}
+          >
+            <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                    }}
+                    align="center"
+                  ></TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#D5D5D5',
+                      border: '1px solid #fff',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#0376BA',
+                    }}
+                    align="center"
+                  >
+                    AVAILABLE PLOTS TO SELL
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#D5D5D5',
+                      border: '1px solid #fff',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#0376BA',
+                    }}
+                    align="center"
+                  >
+                    PLOTS SOLD
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell
+                    sx={{
+                      backgroundColor: '#BEC0BF',
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
+                            TOTAL AREA <br />
+                            (SQFT)
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotArea}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
+                            TOTAL PLOTS <br />
+                            (UNITS)
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlots}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table style={{}}>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            DISCUSSION <br />
+                            AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaUnderDiscussion}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            NEGOTIATION <br />
+                            AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaInNegotiation}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            LEADS WON <br />
+                            AREA{' '}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaLeadsWon}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                            }}
+                          >
+                            DISCUSSION <br />
+                            PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#FFD932',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsInDiscussion}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                            }}
+                          >
+                            NEGOTIATION <br />
+                            PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#F27200',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsInNegotiation}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                            }}
+                          >
+                            LEADS WON <br />
+                            PLOTS{' '}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#00A2FF',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsLeadsWon}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      padding: 0,
+                    }}
+                    scope="row"
+                  >
+                    <Table
+                      sx={{
+                        height: '144px',
+                      }}
+                    >
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            SOLD AREA
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {plotAreaSoldOut}
+                          </TableCell>
+                        </TableRow>
+
+                        <TableRow
+                          sx={{
+                            '&:last-child td, &:last-child th': {
+                              border: 0,
+                            },
+                          }}
+                        >
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                            }}
+                          >
+                            SOLD PLOTS
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontWeight: 700,
+                              backgroundColor: '#61D836',
+                              color: '#fff',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {totalPlotsSoldOut}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div className="row filter-row">
+            <div className="col-9">
+              <div className="form-group form-focus focused">
+                <input
+                  onChange={(e) => {
+                    setProjectNameToSearch(e.target.value);
+                  }}
+                  type="text"
+                  placeholder="Project Name"
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div className="col-sm-6 col-md-3">
               <a
                 href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#create_project"
+                onClick={searchProject}
+                className="btn btn-success btn-block"
               >
-                <i className="fa fa-plus" /> Create Project
+                {' '}
+                Search{' '}
               </a>
             </div>
           </div>
-        </div>
-        {/* /Page Header */}
-        {/* Search Filter */}
-        <div className="row filter-row">
-          <div className="col-9">
-            <div className="form-group form-focus focused">
-              <input
-                onChange={(e) => {
-                  setProjectNameToSearch(e.target.value);
-                }}
-                type="text"
-                className="form-control floating"
-              />
-              <label className="focus-label">Project Name</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <a href="#" className="btn btn-success btn-block">
-              {' '}
-              Search{' '}
-            </a>
-          </div>
-        </div>
-        {/* /Search Filter */}
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive">
-              <table className="table table-striped custom-table datatable">
-                <thead>
-                  <tr>
-                    <th
-                      style={{
-                        width: '25%',
-                      }}
-                    >
-                      Project
-                    </th>
-                    <th
-                      style={{
-                        width: '25%',
-                      }}
-                    >
-                      Project Type
-                    </th>
-                    <th
-                      style={{
-                        width: '25%',
-                      }}
-                    >
-                      Deadline
-                    </th>
-                    <th
-                      style={{
-                        width: '25%',
-                      }}
-                    >
-                      Leads
-                    </th>
-                    <th className="text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {projectList &&
-                    projectList.map((project) => (
-                      <tr key={project._id}>
-                        <td>
-                          <Link
-                            to={`/app/projects/projects-view/${project._id}`}
-                          >
-                            {project.name}
-                          </Link>
-                        </td>
-                        <td>{project && project.type}</td>
-
-                        <td>{convertDate(project.endDate)} </td>
-
-                        <td>
-                          <div className="action-label">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="table-responsive">
+                <table className="table table-striped custom-table datatable">
+                  <thead>
+                    <tr>
+                      <th
+                        style={{
+                          width: '25%',
+                        }}
+                      >
+                        Project
+                      </th>
+                      <th
+                        style={{
+                          width: '25%',
+                        }}
+                      >
+                        Project Type
+                      </th>
+                      <th
+                        style={{
+                          width: '25%',
+                        }}
+                      >
+                        Start Date
+                      </th>
+                      <th
+                        style={{
+                          width: '25%',
+                        }}
+                      >
+                        Leads
+                      </th>
+                      <th className="text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projectList &&
+                      projectList.map((project) => (
+                        <tr key={project._id}>
+                          <td>
                             <Link
-                              to={`/app/employees/leads?projectId=${project._id}`}
+                              to={`/app/projects/projects-view/${project._id}`}
                             >
-                              {
-                                project.leads?.filter(
-                                  (lead) =>
-                                    lead.status !== 'Lead Won' &&
-                                    lead.status !== 'Lead Lost'
-                                ).length
-                              }{' '}
-                              Leads
+                              {project.name}
                             </Link>
-                          </div>
-                        </td>
-                        <td className="text-right">
-                          <div className="dropdown dropdown-action">
-                            <a
-                              href="#"
-                              className="action-icon dropdown-toggle"
-                              data-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              <i className="material-icons">more_vert</i>
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                              <a
-                                className="dropdown-item"
-                                href="#"
-                                data-toggle="modal"
-                                data-target="#edit_project"
-                                onClick={() => setProjectToEdit(project)}
+                          </td>
+                          <td>{project && project.type}</td>
+
+                          <td>{convertDate(project.startDate)} </td>
+
+                          <td>
+                            <div className="action-label">
+                              <Link
+                                to={`/app/employees/leads?projectId=${project._id}`}
                               >
-                                <i className="fa fa-pencil m-r-5" /> Edit
-                              </a>
-                              <a
-                                className="dropdown-item"
-                                href="#"
-                                data-toggle="modal"
-                                data-target="#delete_project"
-                              >
-                                <i className="fa fa-trash-o m-r-5" /> Delete
-                              </a>
+                                {
+                                  project.leads?.filter(
+                                    (lead) =>
+                                      lead.status !== 'Lead Won' &&
+                                      lead.status !== 'Lead Lost'
+                                  ).length
+                                }{' '}
+                                Leads
+                              </Link>
                             </div>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Page Content */}
-      {/* Create Project Modal */}
-      <div
-        id="create_project"
-        className="modal custom-modal fade"
-        role="dialog"
-      >
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Create Project</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  addProjects();
-                }}
-              >
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Project Name</label>
-                      <input
-                        onChange={(e) => {
-                          setProjectToAdd((d) => ({
-                            ...d,
-                            name: e.target.value,
-                          }));
-                        }}
-                        className="form-control"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Cost</label>
-                      <input
-                        onChange={(e) => {
-                          setProjectToAdd((d) => ({
-                            ...d,
-                            estimatedCost: e.target.value,
-                          }));
-                        }}
-                        className="form-control"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Start Date</label>
-                      <div>
-                        <input
-                          className="form-control"
-                          onChange={(e) => {
-                            setProjectToAdd((d) => ({
-                              ...d,
-                              startDate: e.target.value,
-                            }));
-                          }}
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>End Date</label>
-                      <div>
-                        <input
-                          onChange={(e) => {
-                            setProjectToAdd((d) => ({
-                              ...d,
-                              endDate: e.target.value,
-                            }));
-                          }}
-                          className="form-control"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Type</label>
-                      <select
-                        onChange={(e) => {
-                          setProjectToAdd((d) => ({
-                            ...d,
-                            type: e.target.value,
-                          }));
-                        }}
-                        className="custom-select"
-                      >
-                        <option value={''}>Select type</option>
-                        <option value={'Plot'}>Plot for sale</option>
-                        <option value={'Flat'}>Flat for sale</option>
-                        <option value={'Simplex'}>Simplex for sale</option>
-                        <option value={'Duplex'}>Duplex for sale</option>
-                        <option value={'Triplex'}>Triplex for sale</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Description</label>
-                  <textarea
-                    rows={4}
-                    className="form-control"
-                    placeholder="Description"
-                    defaultValue={''}
-                    onChange={(e) => {
-                      setProjectToAdd((d) => ({
-                        ...d,
-                        description: e.target.value,
-                      }));
+                          </td>
+                          <td className="text-right">
+                            <div className="dropdown dropdown-action">
+                              <a
+                                href="#"
+                                className="action-icon dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <i className="material-icons">more_vert</i>
+                              </a>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                <a
+                                  className="dropdown-item"
+                                  href="#"
+                                  data-toggle="modal"
+                                  data-target="#edit_project"
+                                  onClick={() => setProjectToEdit(project)}
+                                >
+                                  <i className="fa fa-pencil m-r-5" /> Edit
+                                </a>
+                                <a
+                                  className="dropdown-item"
+                                  href="#"
+                                  data-toggle="modal"
+                                  data-target="#delete_project"
+                                  onClick={() => setProjectToEdit(project)}
+                                >
+                                  <i className="fa fa-trash-o m-r-5" /> Delete
+                                </a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+                {!projectList.length && (
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '300px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
-                  />
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Create Project Modal */}
-      {/* Edit Project Modal */}
-      <div id="edit_project" className="modal custom-modal fade" role="dialog">
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Edit Project</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  editProjects();
-                }}
-              >
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Project Name</label>
-                      <input
-                        defaultValue={projectToEdit.name}
-                        onChange={(e) => {
-                          setProjectToEdit((d) => ({
-                            ...d,
-                            name: e.target.value,
-                          }));
-                        }}
-                        className="form-control"
-                        type="text"
-                      />
-                    </div>
+                  >
+                    <h3>No Projects</h3>
                   </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <div className="form-group">
-                        <label>Cost</label>
-                        <input
-                          onChange={(e) => {
-                            setProjectToAdd((d) => ({
-                              ...d,
-                              estimatedCost: e.target.value,
-                            }));
-                          }}
-                          className="form-control"
-                          type="text"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Start Date</label>
-                      <div>
-                        <input
-                          className="form-control"
-                          defaultValue={projectToEdit.startDate}
-                          onChange={(e) => {
-                            setProjectToEdit((d) => ({
-                              ...d,
-                              startDate: e.target.value,
-                            }));
-                          }}
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>End Date</label>
-                      <div>
-                        <input
-                          defaultValue={projectToEdit.endDate}
-                          onChange={(e) => {
-                            setProjectToEdit((d) => ({
-                              ...d,
-                              endDate: e.target.value,
-                            }));
-                          }}
-                          className="form-control"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>Type</label>
-                      <select
-                        value={projectToEdit.type}
-                        onChange={(e) => {
-                          setProjectToEdit((d) => ({
-                            ...d,
-                            type: e.target.value,
-                          }));
-                        }}
-                        className="custom-select"
-                      >
-                        <option value={''}>Select type</option>
-                        <option value={'Plot'}>Plot for sale</option>
-                        <option value={'Flat'}>Flat for sale</option>
-                        <option value={'Simplex'}>Simplex for sale</option>
-                        <option value={'Duplex'}>Duplex for sale</option>
-                        <option value={'Triplex'}>Triplex for sale</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Description</label>
-                  <textarea
-                    rows={4}
-                    className="form-control"
-                    placeholder="Description"
-                    defaultValue={projectToEdit.description}
-                    onChange={(e) => {
-                      setProjectToEdit((d) => ({
-                        ...d,
-                        description: e.target.value,
-                      }));
-                    }}
-                  />
-                </div>
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Edit Project Modal */}
-      {/* Delete Project Modal */}
-      <div
-        className="modal custom-modal fade"
-        id="delete_project"
-        role="dialog"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-body">
-              <div className="form-header">
-                <h3>Delete Project</h3>
-                <p>Are you sure want to delete?</p>
-              </div>
-              <div className="modal-btn delete-action">
-                <div className="row">
-                  <div className="col-6">
-                    <a
-                      href=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        deleteProject();
-                      }}
-                      className="btn btn-primary continue-btn"
-                    >
-                      Delete
-                    </a>
-                  </div>
-                  <div className="col-6">
-                    <a
-                      href=""
-                      data-dismiss="modal"
-                      className="btn btn-primary cancel-btn"
-                    >
-                      Cancel
-                    </a>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* /Delete Project Modal */}
+      )}
+      <AddProjectModal
+        onSubmit={addProjects}
+        setProjectToAdd={setProjectToAdd}
+      />
+      <EditProjectModal
+        onSubmit={editProjects}
+        setProjectToEdit={setProjectToEdit}
+        projectToEdit={projectToEdit}
+      />
+      <DeleteProjectModal onSubmit={deleteProject} />
     </div>
   );
 };

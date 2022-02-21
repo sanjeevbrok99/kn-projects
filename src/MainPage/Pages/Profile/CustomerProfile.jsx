@@ -544,13 +544,13 @@ const CustomerProfile = () => {
                         {
                           item: selectedProject.name + ' ' + selectedPlot.name,
                           description: selectedPlot.description,
-                          unitCost: selectedProject.estimatedCost,
+                          unitCost: selectedProject.costPerSqFeet,
                           quantity: 1,
                           amount:
-                            selectedPlot.area * selectedProject.estimatedCost,
+                            selectedPlot.area * selectedProject.costPerSqFeet,
                         },
                       ],
-                      total: selectedPlot.area * selectedProject.estimatedCost,
+                      total: selectedPlot.area * selectedProject.costPerSqFeet,
                     }),
                     httpService.put(`/project/${selectedProject._id}`, {
                       ...selectedProject,
