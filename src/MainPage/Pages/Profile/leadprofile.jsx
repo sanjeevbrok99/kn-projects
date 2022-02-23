@@ -27,6 +27,9 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { red } from '@mui/material/colors';
 import Swal from 'sweetalert2';
+import EditIcon from '@mui/icons-material/Edit';
+import EmailIcon from '@mui/icons-material/EmailOutlined';
+import { Button } from '@mui/material';
 
 const InactiveTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -230,7 +233,6 @@ const EmployeeProfile = () => {
         <title>Lead Profile </title>
         <meta name="description" content="Reactify Blank Page" />
       </Helmet>
-      {/* Page Content */}
       {!profileFetched && (
         <div
           style={{
@@ -246,7 +248,6 @@ const EmployeeProfile = () => {
       )}
       {profileFetched && (
         <div className="content container-fluid">
-          {/* Page Header */}
           <div className="page-header">
             <div className="row">
               <div className="col-sm-12">
@@ -258,10 +259,46 @@ const EmployeeProfile = () => {
               </div>
             </div>
           </div>
-          {/* /Page Header */}
           <div className="card mb-0">
             <div className="card-body">
-              <div className="row"></div>
+              <div className="row">
+                <div className="col-12">
+                  <Stack justifyContent={'space-between'} direction={'row'}>
+                    <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                      <Avatar sx={{ bgcolor: red[400], height: 52, width: 52 }}>
+                        {profile.name?.substr(0, 1)}
+                      </Avatar>
+                      <Stack>
+                        <div
+                          style={{
+                            fontSize: '1.1rem',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {profile.name}
+                        </div>
+                        <div>
+                          {profile.assignedTo.firstName +
+                            ' ' +
+                            profile.assignedTo.lastName}
+                        </div>
+                      </Stack>
+                    </Stack>
+                    <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                      <Button
+                        sx={{
+                          color: 'black',
+                          width: '18px',
+                          height: '30px',
+                          fontSize: '1rem',
+                        }}
+                      >
+                        <EditIcon />
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </div>
+              </div>
             </div>
           </div>
           <div className="row">
@@ -277,7 +314,42 @@ const EmployeeProfile = () => {
                   style={{
                     height: '70vh',
                   }}
-                ></div>
+                >
+                  <h4
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    Stats
+                  </h4>
+                  <hr />
+                  <div
+                    style={{
+                      marginBottom: '15px',
+                      marginBottom: '50px',
+                    }}
+                  >
+                    {leadInterest.length} Interested Plots
+                  </div>
+                  <h4
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    Basic Info
+                  </h4>
+                  <hr />
+                  <div
+                    style={{
+                      marginBottom: '15px',
+                      marginBottom: '50px',
+                    }}
+                  >
+                    {leadInterest.length} Interested Plots
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -394,8 +466,6 @@ const EmployeeProfile = () => {
                     ))}
                   </Timeline>
                 </div>
-                {/* /Profile Info Tab */}
-                {/* Notes Tab */}
                 <div className="tab-pane fade" id="emp_notes">
                   <div
                     style={{
