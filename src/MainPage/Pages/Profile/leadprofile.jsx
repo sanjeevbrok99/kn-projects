@@ -28,8 +28,11 @@ import Stack from '@mui/material/Stack';
 import { red } from '@mui/material/colors';
 import Swal from 'sweetalert2';
 import EditIcon from '@mui/icons-material/Edit';
-import EmailIcon from '@mui/icons-material/EmailOutlined';
 import { Button } from '@mui/material';
+import PhoneIcon from '@mui/icons-material/PhoneOutlined';
+import EmailIcon from '@mui/icons-material/EmailOutlined';
+import AddressIcon from '@mui/icons-material/LocationOnOutlined';
+import PersonIcon from '@mui/icons-material/PersonOutlined';
 
 const InactiveTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -344,10 +347,94 @@ const EmployeeProfile = () => {
                   <div
                     style={{
                       marginBottom: '15px',
+                      fontSize: '1rem',
+                      color: '#8c8c8c',
                       marginBottom: '50px',
                     }}
                   >
-                    {leadInterest.length} Interested Plots
+                    <Stack
+                      direction={'row'}
+                      marginBottom={2}
+                      alignItems={'flex-end'}
+                    >
+                      <PhoneIcon />
+                      <span>&nbsp;&nbsp;&nbsp;&nbsp;{profile.phone}</span>
+                    </Stack>
+                    <Stack
+                      direction={'row'}
+                      marginBottom={2}
+                      alignItems={'flex-end'}
+                    >
+                      <EmailIcon />
+                      <span>&nbsp;&nbsp;&nbsp;&nbsp;{profile.email}</span>
+                    </Stack>
+                    <Stack
+                      direction={'row'}
+                      marginBottom={2}
+                      alignItems={'flex-end'}
+                    >
+                      <AddressIcon />
+                      <span>&nbsp;&nbsp;&nbsp;&nbsp;{profile.address}</span>
+                    </Stack>
+                    <Stack
+                      direction={'row'}
+                      marginBottom={2}
+                      alignItems={'flex-end'}
+                    >
+                      <PersonIcon />
+                      <span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        {profile.assignedTo.firstName +
+                          ' ' +
+                          profile.assignedTo.lastName}
+                      </span>
+                    </Stack>
+                  </div>
+                  <h4
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    Other Details
+                  </h4>
+                  <hr />
+                  <div
+                    style={{
+                      marginBottom: '15px',
+                      fontSize: '1rem',
+                      color: '#8c8c8c',
+                      marginBottom: '50px',
+                    }}
+                  >
+                    <Stack
+                      direction={'row'}
+                      marginBottom={2}
+                      alignItems={'flex-end'}
+                    >
+                      <span>
+                        Created by{' '}
+                        {profile.createdBy.firstName +
+                          ' ' +
+                          profile.createdBy.lastName}{' '}
+                        on{' '}
+                        {new Date(profile.createdAt).toLocaleDateString() +
+                          ' at ' +
+                          new Date(profile.createdAt).toLocaleTimeString()}
+                      </span>
+                    </Stack>
+                    <Stack
+                      direction={'row'}
+                      marginBottom={2}
+                      alignItems={'flex-end'}
+                    >
+                      <span>
+                        Last Updated on{' '}
+                        {new Date(profile.updatedAt).toLocaleDateString() +
+                          ' at ' +
+                          new Date(profile.updatedAt).toLocaleTimeString()}
+                      </span>
+                    </Stack>
                   </div>
                 </div>
               </div>
