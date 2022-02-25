@@ -6,25 +6,46 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
-import { fetchJobs } from '../../../lib/api';
+import { fetchdepartment, fetchJobs, addJob, updateJob, fetchLocations, deleteJob } from '../../../lib/api';
 
-const Managedjobs = () => {
+const ManageJobs = () => {
   const [job, setJob] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const res = await fetchJobs();
+  const [department, setDepartment] = useState([]);
+  const [location, setLocation] = useState([]);
+  const [rerender, setRerender] = useState(false);
+  const [currentJob, setCurrentJob] = useState({});
 
+
+  useEffect(() => {
+    (
+      async () => {
+      const res_d = await fetchdepartment();
+      setDepartment(res_d);
+        
+      const res_l = await fetchLocations();
+      setLocation(res_l);
+      }
+    )();
+  }, []);
+  
+
+  useEffect(() => {
+    (
+      async () => {
+      const res = await fetchJobs();
+      console.log(res);
       setJob(
         res.map((v, i) => ({
           ...v,
           id: i + 1,
-          startdate: v.startDate.split('T')[0],
-          expirydate: v.endDate.split('T')[0],
+          startDate: v.startDate?.split('T')[0],
+          endDate: v.endDate?.split('T')[0],
           jobLocation: v.location?.name,
         }))
       );
-    })();
-  }, []);
+    }
+    )();
+  }, [rerender]);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -34,6 +55,52 @@ const Managedjobs = () => {
       });
     }
   }, []);
+
+  const submitJob = async (e) => {
+    e.preventDefault();
+    const newJob = {}
+    newJob.title = e.target.title.value;
+    newJob.location = e.target.location.value;
+    newJob.numberOfVacancies = Number(e.target.numberOfVacancies.value);
+    newJob.experience = e.target.experience.value;
+    newJob.salaryFrom =Number(e.target.salaryFrom.value);
+    newJob.salaryTo = Number(e.target.salaryTo.value);
+    newJob.jobType = e.target.jobType.value;
+    newJob.status = Boolean(e.target.status.value);
+    newJob.startDate = new Date(e.target.startDate.value);
+    newJob.endDate = new Date(e.target.endDate.value);
+    newJob.description = e.target.description.value;
+    newJob.department = e.target.department.value;
+    document.getElementById("submit-job-btn").innerText = "Submitting...";
+    const res = await addJob(newJob);
+    document.getElementById("submit-job-btn").innerText = "Submit";
+    console.log(res);
+    setRerender(!rerender);
+    $('#add_job').modal('hide');
+  }
+
+  const submitEditJob = async (e,_id) => {
+    e.preventDefault();
+    const newJob = {}
+    newJob.title = e.target.title.value;
+    newJob.location = e.target.location.value;
+    newJob.numberOfVacancies = Number(e.target.numberOfVacancies.value);
+    newJob.experience = e.target.experience.value;
+    newJob.salaryFrom =Number(e.target.salaryFrom.value);
+    newJob.salaryTo = Number(e.target.salaryTo.value);
+    newJob.jobType = e.target.jobType.value;
+    newJob.status = Boolean(e.target.status.value);
+    newJob.startDate = new Date(e.target.startDate.value);
+    newJob.endDate = new Date(e.target.endDate.value);
+    newJob.description = e.target.description.value;
+    newJob.department = e.target.department.value;
+    document.getElementById("edit-job-btn").innerText = "Submitting...";
+    const res = await updateJob(newJob, _id);
+    document.getElementById("edit-job-btn").innerText = "Submit";
+    console.log(res);
+    setRerender(!rerender);
+    $('#edit_job').modal('hide')
+  }
 
   const columns = [
     {
@@ -45,7 +112,7 @@ const Managedjobs = () => {
       title: 'Job Title',
       dataIndex: 'title',
       render: (text, record) => (
-        <Link to="/app/administrator/job-details">{text}</Link>
+        <Link to={`/app/administrator/job-details/${record._id}`}>{text}</Link>
       ),
       sorter: (a, b) => a.jobtitle.length - b.jobtitle.length,
     },
@@ -57,14 +124,14 @@ const Managedjobs = () => {
     },
     {
       title: 'Start Date',
-      dataIndex: 'startdate',
-      sorter: (a, b) => a.startdate.length - b.startdate.length,
+      dataIndex: 'startDate',
+      sorter: (a, b) => a.startDate.length - b.startDate.length,
     },
 
     {
       title: 'Expiry Date',
-      dataIndex: 'expirydate',
-      sorter: (a, b) => a.expirydate.length - b.expirydate.length,
+      dataIndex: 'endDate',
+      sorter: (a, b) => a.endDate.length - b.endDate.length,
     },
     {
       title: 'Job Type',
@@ -147,14 +214,21 @@ const Managedjobs = () => {
               className="dropdown-item"
               data-toggle="modal"
               data-target="#edit_job"
+              onClick={() => {
+                setCurrentJob(record);
+                console.log(record);
+              }}
             >
               <i className="fa fa-pencil m-r-5" /> Edit
             </a>
             <a
               href="#"
               className="dropdown-item"
-              data-toggle="modal"
-              data-target="#delete_job"
+              onClick={
+                async () => { 
+                  await deleteJob(record._id);
+                }
+              }
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -221,6 +295,8 @@ const Managedjobs = () => {
         </div>
       </div>
       {/* /Page Content */}
+
+
       {/* Add Job Modal */}
       <div id="add_job" className="modal custom-modal fade" role="dialog">
         <div
@@ -240,40 +316,50 @@ const Managedjobs = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={(e) => { submitJob(e) }}>
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Title</label>
-                      <input className="form-control" type="text" />
+                      <input className="form-control" type="text" name="title"/>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Department</label>
-                      <select className="select">
+                      <select className="select" name="department">
                         <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
+                        {
+                          department.map((dep) => {
+                            return (
+                              <option value={dep._id} key={dep._id}>{dep.name}</option>
+                            )
+                          })
+                        }
                       </select>
                     </div>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Job Location</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
+                <div className="col-md-6">
+                <div className="form-group">
+                  <label>Location</label>
+                  <select className="select" name="location">
+                    <option>-</option>
+                    {
+                      location.map((dep) => {
+                        return (
+                          <option value={dep._id} key={dep._id}>{dep.name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
+              </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>No of Vacancies</label>
-                      <input className="form-control" type="text" />
+                      <input className="form-control" type="text" name='numberOfVacancies'/>
                     </div>
                   </div>
                 </div>
@@ -281,13 +367,7 @@ const Managedjobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Experience</label>
-                      <input className="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input className="form-control" type="text" />
+                      <input className="form-control" type="text" name='experience'/>
                     </div>
                   </div>
                 </div>
@@ -295,13 +375,13 @@ const Managedjobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary From</label>
-                      <input type="text" className="form-control" />
+                      <input type="text" className="form-control" name="salaryFrom"/>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary To</label>
-                      <input type="text" className="form-control" />
+                      <input type="text" className="form-control" name="salaryTo"/>
                     </div>
                   </div>
                 </div>
@@ -309,7 +389,7 @@ const Managedjobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
-                      <select className="select">
+                      <select className="select" name='jobType'>
                         <option>Full Time</option>
                         <option>Part Time</option>
                         <option>Internship</option>
@@ -322,10 +402,9 @@ const Managedjobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Status</label>
-                      <select className="select">
-                        <option>Open</option>
-                        <option>Closed</option>
-                        <option>Cancelled</option>
+                      <select className="select" name="status">
+                        <option value="true">Open</option>
+                        <option value="false">Closed</option>
                       </select>
                     </div>
                   </div>
@@ -335,8 +414,10 @@ const Managedjobs = () => {
                     <div className="form-group">
                       <label>Start Date</label>
                       <input
-                        type="text"
-                        className="form-control datetimepicker"
+                        type="date"
+                        className="form-control"
+                        placeholder="yyyy-dd-mm" 
+                        name="startDate"
                       />
                     </div>
                   </div>
@@ -344,8 +425,9 @@ const Managedjobs = () => {
                     <div className="form-group">
                       <label>Expired Date</label>
                       <input
-                        type="text"
-                        className="form-control datetimepicker"
+                        type="date"
+                        className="form-control"
+                        name="endDate"
                       />
                     </div>
                   </div>
@@ -354,12 +436,13 @@ const Managedjobs = () => {
                   <div className="col-md-12">
                     <div className="form-group">
                       <label>Description</label>
-                      <textarea className="form-control" defaultValue={''} />
+                      <textarea className="form-control" defaultValue=""
+                      name="description"/>
                     </div>
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn" type="submit">
+                  <button className="btn btn-primary submit-btn" id="submit-job-btn" type="submit">
                     Submit
                   </button>
                 </div>
@@ -369,15 +452,13 @@ const Managedjobs = () => {
         </div>
       </div>
       {/* /Add Job Modal */}
+
       {/* Edit Job Modal */}
       <div id="edit_job" className="modal custom-modal fade" role="dialog">
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
           role="document"
         >
-          <button type="button" className="close" data-dismiss="modal">
-            ×
-          </button>
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Edit Job</h5>
@@ -391,52 +472,48 @@ const Managedjobs = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={(e) => { submitEditJob(e,currentJob._id) }}>
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Title</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="Product Manager"
-                      />
+                      <input className="form-control" defaultValue={currentJob.title} type="text" name="title"/>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Department</label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Marketing Head</option>
-                        <option>Application Development</option>
-                        <option>IT Management</option>
-                        <option>Accounts Management</option>
-                        <option>Support Management</option>
-                        <option>Marketing</option>
+                      <select className="select" name="department" value={currentJob.department}>
+                        {
+                          department.map((dep) => {
+                            return (
+                              <option value={dep._id} key={dep._id}>{dep.name}</option>
+                            )
+                          })
+                        }
                       </select>
                     </div>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Job Location</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="California"
-                      />
-                    </div>
-                  </div>
+                <div className="col-md-6">
+                <div className="form-group">
+                  <label>Location</label>
+                  <select className="select" name="location" value={currentJob.location?._id}>
+                    {
+                      location.map((dep) => {
+                        return (
+                          <option value={dep._id} key={dep._id}>{dep.name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
+              </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>No of Vacancies</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue={5}
-                      />
+                      <input className="form-control" type="text" name='numberOfVacancies' defaultValue={currentJob.numberOfVacancies}/>
                     </div>
                   </div>
                 </div>
@@ -444,21 +521,10 @@ const Managedjobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Experience</label>
-                      <input
-                        className="form-control"
+                      <input className="form-control"
+                        name='experience'
                         type="text"
-                        defaultValue="2 Years"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Age</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="-"
-                      />
+                        defaultValue={currentJob.experience} />
                     </div>
                   </div>
                 </div>
@@ -466,21 +532,13 @@ const Managedjobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary From</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="32k"
-                      />
+                      <input type="text" className="form-control" name="salaryFrom" defaultValue={currentJob.salaryFrom}/>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary To</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="38k"
-                      />
+                      <input type="text" className="form-control" name="salaryTo" defaultValue={currentJob.salaryTo}/>
                     </div>
                   </div>
                 </div>
@@ -488,23 +546,22 @@ const Managedjobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
-                      <select className="select">
-                        <option>Full Time</option>
-                        <option>Part Time</option>
-                        <option>Internship</option>
-                        <option>Temporary</option>
-                        <option>Remote</option>
-                        <option>Others</option>
+                      <select className="select" name='jobType' value={currentJob.jobType}>
+                        <option value="Full Time">Full Time</option>
+                        <option value="Part Time">Part Time</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Temporary">Temporary</option>
+                        <option value="Remote">Remote</option>
+                        <option value="Remote">Remote</option>
                       </select>
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Status</label>
-                      <select className="select">
-                        <option>Open</option>
-                        <option>Closed</option>
-                        <option>Cancelled</option>
+                      <select className="select" name="status" value={currentJob.status}>
+                        <option value="true">Open</option>
+                        <option value="false">Closed</option>
                       </select>
                     </div>
                   </div>
@@ -514,9 +571,10 @@ const Managedjobs = () => {
                     <div className="form-group">
                       <label>Start Date</label>
                       <input
-                        type="text"
-                        className="form-control datetimepicker"
-                        defaultValue="3 Mar 2021"
+                        type="date"
+                        className="form-control"
+                        name="startDate"
+                        defaultValue={currentJob.startDate}
                       />
                     </div>
                   </div>
@@ -524,9 +582,10 @@ const Managedjobs = () => {
                     <div className="form-group">
                       <label>Expired Date</label>
                       <input
-                        type="text"
-                        className="form-control datetimepicker"
-                        defaultValue="31 May 2021"
+                        type="date"
+                        className="form-control"
+                        name="endDate"
+                        defaultValue={currentJob.endDate}
                       />
                     </div>
                   </div>
@@ -535,12 +594,15 @@ const Managedjobs = () => {
                   <div className="col-md-12">
                     <div className="form-group">
                       <label>Description</label>
-                      <textarea className="form-control" defaultValue={''} />
+                      <textarea className="form-control" defaultValue={currentJob.description}
+                      name="description"/>
                     </div>
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Save</button>
+                  <button className="btn btn-primary submit-btn" id="edit-job-btn" type="submit">
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
@@ -584,4 +646,4 @@ const Managedjobs = () => {
   );
 };
 
-export default Managedjobs;
+export default ManageJobs;

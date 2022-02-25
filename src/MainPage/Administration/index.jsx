@@ -77,7 +77,7 @@ const Uiinterfaceroute = ({ match }) => {
         path={`${match.url}/interview-questions`}
         component={Interviewquestion}
       />
-      <Route path={`${match.url}/job-details`} component={jobdetails} />
+      <Route path={`${match.url}/job-details/:id`} component={jobdetails} />
       <Route
         path={`${match.url}/job-applicants`}
         component={AppliedCandidate}
