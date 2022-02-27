@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
-
-import { Avatar_02 } from '../../../Entryfile/imagepath';
-
+import Avatar from '@mui/material/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  appendEmployee,
-  setEmployeeStore,
-  setFetched,
-} from '../../../features/employee/employeeSlice';
-
 import httpService from '../../../lib/httpService';
 import { allemployee } from '../../../lib/api';
+import { red } from '@mui/material/colors';
 
 const Employeeslist = () => {
   const [data, setData] = useState([]);
@@ -31,6 +23,8 @@ const Employeeslist = () => {
   const [employeeToModify, setEmployeeToModify] = useState(null);
   const [employeeIdToSearch, setEmployeeIdToSearch] = useState('');
   const [employeeNameToSearch, setEmployeeNameToSearch] = useState('');
+  const [roles, setRoles] = useState([]);
+  const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -40,6 +34,7 @@ const Employeeslist = () => {
       });
     }
     fetchemployeeslist();
+    fetchRolesAndDepartments();
   }, []);
 
   const fetchemployeeslist = async () => {
@@ -54,6 +49,13 @@ const Employeeslist = () => {
     );
     set_employees(res);
     setisLoading(false);
+  };
+
+  const fetchRolesAndDepartments = async () => {
+    const roles = await httpService.get('/role');
+    const departments = await httpService.get('/department');
+    setRoles(roles.data);
+    setDepartments(departments.data);
   };
 
   const handleSearch = () => {
@@ -95,15 +97,21 @@ const Employeeslist = () => {
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link
-            to={`/app/profile/employee-profile/${record._id}`}
-            className="avatar"
-          >
-            <img alt="" src={record.image} />
-          </Link>
           <Link to={`/app/profile/employee-profile/${record._id}`}>
-            {text} <span>{record.role}</span>
+            <Avatar sx={{ bgcolor: red[400] }}>
+              {record.firstName?.substr(0, 1).toUpperCase()}
+            </Avatar>
           </Link>
+          <div
+            style={{
+              display: 'inline-block',
+              marginLeft: '10px',
+            }}
+          >
+            <Link to={`/app/profile/employee-profile/${record._id}`}>
+              {text} <span>{record.role}</span>
+            </Link>
+          </div>
         </h2>
       ),
       sorter: (a, b) => a.name.length - b.name.length,
@@ -195,14 +203,14 @@ const Employeeslist = () => {
               </ul>
             </div>
             <div className="col-auto float-right ml-auto">
-              {/* <a
+              <a
                 href="#"
                 className="btn add-btn"
                 data-toggle="modal"
                 data-target="#add_employee"
               >
                 <i className="fa fa-plus" /> Add Employee
-              </a> */}
+              </a>
               <div className="view-icons">
                 <Link
                   to="/app/employee/allemployees"
@@ -223,42 +231,41 @@ const Employeeslist = () => {
         {/* /Page Header */}
         {/* Search Filter */}
         <div className="row filter-row">
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-6">
             <div className="form-group form-focus focused">
               <input
                 type="text"
-                className="form-control floating"
-                value={employeeIdToSearch}
-                onChange={(e) => setEmployeeIdToSearch(e.target.value)}
-              />
-              <label className="focus-label">Employee ID</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus focused">
-              <input
-                type="text"
-                className="form-control floating"
+                className="form-control"
+                placeholder="Employee Name"
+                style={{
+                  padding: '10px',
+                }}
                 value={employeeNameToSearch}
                 onChange={(e) => setEmployeeNameToSearch(e.target.value)}
               />
-              <label className="focus-label">Employee Name</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option>Select Designation</option>
-                <option>Product Manager</option>
-                <option>CIO</option>
-                <option>Product Manager</option>
-                <option>Marketing Head</option>
+              <select
+                onChange={(e) => setDesignationToFilter(e.target.value)}
+                className="custom-select"
+                style={{
+                  height: '100%',
+                  border: '1px solid #CED4DA',
+                }}
+              >
+                <option value={''}>All Designations</option>
+                {roles.map((role) => (
+                  <option key={role._id} value={role._id}>
+                    {role.name}
+                  </option>
+                ))}
               </select>
-              <label className="focus-label">Designation</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3" onClick={handleSearch}>
-            <a className="btn btn-success btn-block"> Search </a>
+            <a className="btn btn-success btn-block"> Filter </a>
           </div>
         </div>
         {/* /Search Filter */}
