@@ -181,7 +181,6 @@ const Leads = () => {
                   <li className="breadcrumb-item active">Leads</li>
                 </ul>
               </div>
-              {/* jin - pasted button here */}
               <div className="col-auto float-right ml-auto">
                 <a
                   href="#"

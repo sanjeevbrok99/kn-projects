@@ -92,10 +92,6 @@ const bar = [
             name: 'Skill Development',
             link: '/administrator/skill-development',
           },
-          {
-            name: 'Benefits Management',
-            link: '/administrator/benefits-management',
-          },
         ],
       },
       // jin - updated leads and deleted lead status and contacts

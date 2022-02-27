@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Avatar_02 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
 import { allemployee } from '../../../lib/api';
+import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
 
 const AllEmployees = () => {
   const [employees, setEmployees] = React.useState([]);
@@ -222,9 +224,7 @@ const AllEmployees = () => {
               >
                 <div className="profile-widget">
                   <div className="profile-img">
-                    <Link to="/app/profile/employee-profile" className="avatar">
-                      <img src={Avatar_02} alt="" />
-                    </Link>
+                    <Skeleton />
                   </div>
                   <div className="dropdown profile-action">
                     <a
@@ -272,8 +272,12 @@ const AllEmployees = () => {
             >
               <div className="profile-widget">
                 <div className="profile-img">
-                  <Link to="/app/profile/employee-profile" className="avatar">
-                    <img src={Avatar_02} alt="" />
+                  <Link
+                    to={'/app/profile/employee-profile' + '/' + employee._id}
+                  >
+                    <Avatar sx={{ bgcolor: red[400], height: 70, width: 70 }}>
+                      {employee.firstName?.substr(0, 1).toUpperCase()}
+                    </Avatar>
                   </Link>
                 </div>
                 <div className="dropdown profile-action">

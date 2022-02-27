@@ -3379,6 +3379,9 @@ table.dataTable thead > tr > td.sorting {
   margin: 0 auto;
   position: relative;
   width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .profile-img .avatar {
   font-size: 24px;
