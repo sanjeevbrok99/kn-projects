@@ -85,9 +85,7 @@ const Employeeslist = () => {
           return employee;
         })
       );
-      // setEmployeeToModify(null);
       document.querySelectorAll('.close')?.forEach((e) => e.click());
-      // console.log(myModal);
     }
   };
 
@@ -97,7 +95,10 @@ const Employeeslist = () => {
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to={`/app/profile/employee-profile/${record._id}`} className="avatar">
+          <Link
+            to={`/app/profile/employee-profile/${record._id}`}
+            className="avatar"
+          >
             <img alt="" src={record.image} />
           </Link>
           <Link to={`/app/profile/employee-profile/${record._id}`}>
