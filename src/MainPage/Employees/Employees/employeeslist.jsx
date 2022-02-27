@@ -8,12 +8,14 @@ import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
 
 import { Avatar_02 } from '../../../Entryfile/imagepath';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {
   appendEmployee,
   setEmployeeStore,
   setFetched,
 } from '../../../features/employee/employeeSlice';
+
 import httpService from '../../../lib/httpService';
 import { allemployee } from '../../../lib/api';
 
@@ -83,9 +85,7 @@ const Employeeslist = () => {
           return employee;
         })
       );
-      // setEmployeeToModify(null);
       document.querySelectorAll('.close')?.forEach((e) => e.click());
-      // console.log(myModal);
     }
   };
 
@@ -95,10 +95,13 @@ const Employeeslist = () => {
       dataIndex: 'name',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to="/app/profile/employee-profile" className="avatar">
+          <Link
+            to={`/app/profile/employee-profile/${record._id}`}
+            className="avatar"
+          >
             <img alt="" src={record.image} />
           </Link>
-          <Link to="/app/profile/employee-profile">
+          <Link to={`/app/profile/employee-profile/${record._id}`}>
             {text} <span>{record.role}</span>
           </Link>
         </h2>
@@ -884,90 +887,6 @@ const Employeeslist = () => {
                           <input type="checkbox" />
                         </td>
                       </tr>
-                      {/* <tr>
-                        <td>Tasks</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Chats</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Assets</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Timing Sheets</td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input defaultChecked type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="text-center">
-                          <input type="checkbox" />
-                        </td>
-                      </tr> */}
                     </tbody>
                   </table>
                 </div>

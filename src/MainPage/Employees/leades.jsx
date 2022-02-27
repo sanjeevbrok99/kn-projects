@@ -7,6 +7,7 @@ import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
 import httpService from '../../lib/httpService';
 import { toast } from 'react-toastify';
+import { CircularProgress } from '@mui/material';
 
 function useQuery() {
   const { search } = useLocation();
@@ -15,6 +16,7 @@ function useQuery() {
 
 const Leads = () => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [leadToAdd, setLeadToAdd] = useState({});
   const [projects, setProjects] = useState([]);
   let query = useQuery();
@@ -28,8 +30,8 @@ const Leads = () => {
   }, []);
 
   const fetchLeads = async () => {
+    setIsLoading(true);
     const leads = await httpService.get('/lead');
-    console.log(query.get('projectId'));
     setData(
       leads.data.map((lead, i) => ({
         ...lead,
@@ -41,6 +43,7 @@ const Leads = () => {
         created: new Date(lead.createdAt).toGMTString().substring(4, 16),
       }))
     );
+    setIsLoading(false);
   };
 
   const fetchProjects = async () => {
@@ -121,21 +124,6 @@ const Leads = () => {
       title: 'Assigned Staff',
       dataIndex: 'assignedstaff',
     },
-    // {
-    //   title: 'Status',
-    //   dataIndex: 'status',
-    //   render: (text, record) => (
-    //     <span
-    //       className={
-    //         text === 'Negotiations' || text === 'New Lead'
-    //           ? 'badge bg-inverse-success'
-    //           : 'badge bg-inverse-danger'
-    //       }
-    //     >
-    //       {text}
-    //     </span>
-    //   ),
-    // },
     {
       title: 'Action',
       render: (text, record) => (
@@ -166,87 +154,100 @@ const Leads = () => {
         <title>Leads </title>
         <meta name="description" content="Login page" />
       </Helmet>
-
-      {/* Page Content */}
-      <div className="content container-fluid">
-        {/* Page Header */}
-        <div className="page-header">
+      {isLoading ? (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="content container-fluid">
+          {/* Page Header */}
+          <div className="page-header">
+            <div className="row">
+              {/* jin - changed col-sm-12 to col-sm-8  */}
+              <div className="col-sm-8">
+                <h3 className="page-title">Leads</h3>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/app/main/dashboard">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Leads</li>
+                </ul>
+              </div>
+              {/* jin - pasted button here */}
+              <div className="col-auto float-right ml-auto">
+                <a
+                  href="#"
+                  className="btn add-btn"
+                  data-toggle="modal"
+                  data-target="#add_lead"
+                >
+                  <i className="fa fa-plus" /> Add Lead
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="row filter-row">
+            <div className="col-12">
+              <div className="form-group form-focus focused">
+                <select
+                  value={projectId ? projectId : ''}
+                  className="custom-select"
+                  onChange={(e) => {
+                    setProjectId(e.target.value);
+                  }}
+                >
+                  <option value={''}>All Projects</option>
+                  {projects.map((project) => (
+                    <option key={project._id} value={project._id}>
+                      {project.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+          {/* /Page Header */}
           <div className="row">
-            {/* jin - changed col-sm-12 to col-sm-8  */}
-            <div className="col-sm-8">
-              <h3 className="page-title">Leads</h3>
-              <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Leads</li>
-              </ul>
-            </div>
-            {/* jin - pasted button here */}
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_lead"
-              >
-                <i className="fa fa-plus" /> Add Lead
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="row filter-row">
-          <div className="col-12">
-            <div className="form-group form-focus focused">
-              <select
-                value={projectId ? projectId : ''}
-                className="custom-select"
-                onChange={(e) => {
-                  setProjectId(e.target.value);
-                }}
-              >
-                <option value={''}>All Projects</option>
-                {projects.map((project) => (
-                  <option key={project._id} value={project._id}>
-                    {project.name}
-                  </option>
-                ))}
-              </select>
+            <div className="col-md-12">
+              <div className="table-responsive">
+                <Table
+                  className="table-striped"
+                  pagination={{
+                    total: data.length,
+                    showTotal: (total, range) =>
+                      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                    showSizeChanger: true,
+                    onShowSizeChange: onShowSizeChange,
+                    itemRender: itemRender,
+                  }}
+                  style={{ overflowX: 'auto' }}
+                  columns={columns}
+                  // bordered
+                  dataSource={data.filter((lead) => {
+                    if (projectId) {
+                      console.log(projectId);
+                      return lead.project.some((p) =>
+                        p._id.includes(projectId)
+                      );
+                    }
+                    return lead;
+                  })}
+                  rowKey={(record) => record.id}
+                  onChange={console.log('change value')}
+                />
+              </div>
             </div>
           </div>
         </div>
-        {/* /Page Header */}
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive">
-              <Table
-                className="table-striped"
-                pagination={{
-                  total: data.length,
-                  showTotal: (total, range) =>
-                    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                  showSizeChanger: true,
-                  onShowSizeChange: onShowSizeChange,
-                  itemRender: itemRender,
-                }}
-                style={{ overflowX: 'auto' }}
-                columns={columns}
-                // bordered
-                dataSource={data.filter((lead) => {
-                  if (projectId) {
-                    console.log(projectId);
-                    return lead.project.some((p) => p._id.includes(projectId));
-                  }
-                  return lead;
-                })}
-                rowKey={(record) => record.id}
-                onChange={console.log('change value')}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* /Page Content */}
+      )}
       <div id="add_lead" className="modal custom-modal fade" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">

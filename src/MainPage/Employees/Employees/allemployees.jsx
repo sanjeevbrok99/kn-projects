@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Avatar_02 } from '../../../Entryfile/imagepath';
 import httpService from '../../../lib/httpService';
 import { allemployee } from '../../../lib/api';
-import { addemployee } from '../../../lib/api';
 
 const AllEmployees = () => {
   const [employees, setEmployees] = React.useState([]);
@@ -176,46 +175,41 @@ const AllEmployees = () => {
         {/* /Page Header */}
         {/* Search Filter */}
         <div className="row filter-row">
-          <div className="col-sm-6 col-md-3">
+          <div className="col-sm-6 col-md-6">
             <div className="form-group form-focus focused">
               <input
                 type="text"
-                className="form-control floating"
-                value={employeeIdToSearch}
-                onChange={(e) => setEmployeeIdToSearch(e.target.value)}
-              />
-              <label className="focus-label">Employee ID</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus focused">
-              <input
-                type="text"
-                className="form-control floating"
+                className="form-control"
+                placeholder="Employee Name"
+                style={{
+                  padding: '10px',
+                }}
                 value={employeeNameToSearch}
                 onChange={(e) => setEmployeeNameToSearch(e.target.value)}
               />
-              <label className="focus-label">Employee Name</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
               <select
                 onChange={(e) => setDesignationToFilter(e.target.value)}
-                className="select form-control floating"
+                className="custom-select"
+                style={{
+                  height: '100%',
+                  border: '1px solid #CED4DA',
+                }}
               >
-                <option value={''}>Select Designation</option>
+                <option value={''}>All Designations</option>
                 {roles.map((role) => (
                   <option key={role._id} value={role._id}>
                     {role.name}
                   </option>
                 ))}
               </select>
-              <label className="focus-label">Designation</label>
             </div>
           </div>
           <div className="col-sm-6 col-md-3" onClick={handleSearch}>
-            <a className="btn btn-success btn-block"> Search </a>
+            <a className="btn btn-success btn-block"> Filter </a>
           </div>
         </div>
         {/* Search Filter */}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-// import { Avatar_03, Avatar_04 } from '../../../Entryfile/imagepath';
 import { Avatar_03, Avatar_04 } from '../../Entryfile/imagepath';
 
 import { Table } from 'antd';
@@ -9,7 +8,8 @@ import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
 
-const BenifitManagement = () => {
+const BenefitManagement = () => {
+  
   const [data, setData] = useState([
     {
       id: 1,
@@ -147,28 +147,6 @@ const BenifitManagement = () => {
         {/* /Page Header */}
         {/* Search Filter */}
         <div className="row filter-row">
-          {/* <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <div>
-                <input
-                  className="form-control floating datetimepicker"
-                  type="date"
-                />
-              </div>
-              <label className="focus-label">From</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <div>
-                <input
-                  className="form-control floating datetimepicker"
-                  type="date"
-                />
-              </div>
-              <label className="focus-label">To</label>
-            </div>
-          </div> */}
           <div className="col-sm-6 col-md-9">
             <div className="form-group form-focus focused">
               <input type="text" className="form-control floating" />
@@ -177,8 +155,7 @@ const BenifitManagement = () => {
           </div>
           <div className="col-sm-6 col-md-3">
             <a href="#" className="btn btn-success btn-block">
-              {' '}
-              Search{' '}
+              Search
             </a>
           </div>
         </div>
@@ -198,10 +175,8 @@ const BenifitManagement = () => {
                 }}
                 style={{ overflowX: 'auto' }}
                 columns={columns}
-                // bordered
                 dataSource={data}
                 rowKey={(record) => record.id}
-                // onChange={this.handleTableChange}
               />
             </div>
           </div>
@@ -220,14 +195,6 @@ const BenifitManagement = () => {
             </button>
             <div className="modal-header">
               <h5 className="modal-title">Add Benifits</h5>
-              {/* <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">×</span>
-              </button> */}
             </div>
             <div className="modal-body">
               <form>
@@ -259,75 +226,7 @@ const BenifitManagement = () => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Job Location</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="California"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>No of Vacancies</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue={5}
-                      />
-                    </div>
-                  </div>
-                </div> */}
-                {/* <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Salary From</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="32k"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Salary To</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="38k"
-                      />
-                    </div>
-                  </div>
-                </div> */}
                 <div className="row">
-                  {/* <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Job Type</label>
-                      <select className="select">
-                        <option>Full Time</option>
-                        <option>Part Time</option>
-                        <option>Internship</option>
-                        <option>Temporary</option>
-                        <option>Remote</option>
-                        <option>Others</option>
-                      </select>
-                    </div>
-                  </div> */}
-                  {/* <div className="col-md-12">
-                    <div className="form-group">
-                      <label>Status</label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Not Started</option>
-                        <option>Learned</option>
-                        <option>Learning</option>
-                      </select>
-                    </div>
-                  </div> */}
                 </div>
                 <div className="row">
                   <div className="col-md-6">
@@ -351,14 +250,6 @@ const BenifitManagement = () => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="row">
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label>Description</label>
-                      <textarea className="form-control" defaultValue={''} />
-                    </div>
-                  </div>
-                </div> */}
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Save</button>
                 </div>
@@ -368,6 +259,7 @@ const BenifitManagement = () => {
         </div>
       </div>
       {/* /Add Job Modal */}
+
       {/* Edit Job Modal */}
       <div id="edit_benefits" className="modal custom-modal fade" role="dialog">
         <div
@@ -416,75 +308,8 @@ const BenifitManagement = () => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Job Location</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue="California"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>No of Vacancies</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        defaultValue={5}
-                      />
-                    </div>
-                  </div>
-                </div> */}
-                {/* <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Salary From</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="32k"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Salary To</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue="38k"
-                      />
-                    </div>
-                  </div>
-                </div> */}
+            
                 <div className="row">
-                  {/* <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Job Type</label>
-                      <select className="select">
-                        <option>Full Time</option>
-                        <option>Part Time</option>
-                        <option>Internship</option>
-                        <option>Temporary</option>
-                        <option>Remote</option>
-                        <option>Others</option>
-                      </select>
-                    </div>
-                  </div> */}
-                  {/* <div className="col-md-12">
-                    <div className="form-group">
-                      <label>Status</label>
-                      <select className="select">
-                        <option>-</option>
-                        <option>Not Started</option>
-                        <option>Learned</option>
-                        <option>Learning</option>
-                      </select>
-                    </div>
-                  </div> */}
                 </div>
                 <div className="row">
                   <div className="col-md-6">
@@ -508,14 +333,6 @@ const BenifitManagement = () => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="row">
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label>Description</label>
-                      <textarea className="form-control" defaultValue={''} />
-                    </div>
-                  </div>
-                </div> */}
                 <div className="submit-section">
                   <button className="btn btn-primary submit-btn">Save</button>
                 </div>
@@ -565,4 +382,4 @@ const BenifitManagement = () => {
   );
 };
 
-export default BenifitManagement;
+export default BenefitManagement;
