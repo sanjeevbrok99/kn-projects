@@ -316,8 +316,101 @@ const EmployeeProfile = () => {
                             >
                               Payroll
                             </a>
-                          </li>
-                        </ul>
+                          </div>
+                        </div>
+                        <h4 className="project-title">
+                          <Link to="/app/projects/projects-view">
+                            Video Calling App
+                          </Link>
+                        </h4>
+                        <small className="block text-ellipsis m-b-15">
+                          <span className="text-xs">3</span>{' '}
+                          <span className="text-muted">open tasks, </span>
+                          <span className="text-xs">3</span>{' '}
+                          <span className="text-muted">tasks completed</span>
+                        </small>
+                        <p className="text-muted">
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry. When an unknown printer took a
+                          galley of type and scrambled it...
+                        </p>
+                        <div className="pro-deadline m-b-15">
+                          <div className="sub-title">Deadline:</div>
+                          <div className="text-muted">17 Apr 2021</div>
+                        </div>
+                        <div className="project-members m-b-15">
+                          <div>Project Leader :</div>
+                          <ul className="team-members">
+                            <li>
+                              <a
+                                href="#"
+                                data-toggle="tooltip"
+                                title="Sushmita Singh"
+                              >
+                                <img alt="" src={Avatar_16} />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="project-members m-b-15">
+                          <div>Team :</div>
+                          <ul className="team-members">
+                            <li>
+                              <a
+                                href="#"
+                                data-toggle="tooltip"
+                                title="Prateek Tiwari"
+                              >
+                                <img alt="" src={Avatar_02} />
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="#"
+                                data-toggle="tooltip"
+                                title="Shital Agarwal"
+                              >
+                                <img alt="" src={Avatar_09} />
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="#"
+                                data-toggle="tooltip"
+                                title="Harvinder"
+                              >
+                                <img alt="" src={Avatar_10} />
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="#"
+                                data-toggle="tooltip"
+                                title="Shreya Singh"
+                              >
+                                <img alt="" src={Avatar_05} />
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#" className="all-users">
+                                +15
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <p className="m-b-5">
+                          Progress{' '}
+                          <span className="text-success float-right">40%</span>
+                        </p>
+                        <div className="progress progress-xs mb-0">
+                          <div
+                            style={{ width: '40%' }}
+                            data-toggle="tooltip"
+                            role="progressbar"
+                            className="progress-bar bg-success"
+                            data-original-title="40%"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -382,6 +475,7 @@ const EmployeeProfile = () => {
                   </div>
                 </div>
               </div>
+              {/* /Bank Statutory Tab */}
             </div>
           </>
         )}
@@ -601,7 +695,7 @@ const EmployeeProfile = () => {
                       <label>Passport Expiry Date</label>
                       <div>
                         <input
-                          className="form-control datetimepicker"
+                          className="form-control datetimepick"
                           type="date"
                         />
                       </div>
