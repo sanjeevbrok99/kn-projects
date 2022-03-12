@@ -81,20 +81,11 @@ const bar = [
             link: '/administrator/onboarding',
           },
           {
-            name: 'Employee Activities',
-            link: '/administrator/daily-activity',
-          },
-          {
             name: 'Payroll',
             link: '/administrator/payroll',
           },
-          {
-            name: 'Skill Development',
-            link: '/administrator/skill-development',
-          },
         ],
       },
-      // jin - updated leads and deleted lead status and contacts
       {
         name: 'Leads',
         hasChildren: true,
@@ -150,10 +141,6 @@ const bar = [
             link: '/sales/customers',
           },
           {
-            name: 'Invoices',
-            link: '/sales/invoices',
-          },
-          {
             name: 'Projects',
             link: '/projects/projects-list',
           },
@@ -176,10 +163,6 @@ const bar = [
           {
             name: 'Expenses',
             link: '/purchase/expenses',
-          },
-          {
-            name: 'Vendor Credits',
-            link: '/purchase/vendor-credits',
           },
         ],
       },

@@ -6,7 +6,15 @@ import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
-import { fetchdepartment, fetchJobs, addJob, updateJob, fetchLocations, deleteJob } from '../../../lib/api';
+import {
+  fetchdepartment,
+  fetchJobs,
+  addJob,
+  updateJob,
+  fetchLocations,
+  deleteJob,
+} from '../../../lib/api';
+import { CircularProgress } from '@mui/material';
 
 const ManageJobs = () => {
   const [job, setJob] = useState([]);
@@ -14,24 +22,20 @@ const ManageJobs = () => {
   const [location, setLocation] = useState([]);
   const [rerender, setRerender] = useState(false);
   const [currentJob, setCurrentJob] = useState({});
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    (
-      async () => {
+    (async () => {
       const res_d = await fetchdepartment();
       setDepartment(res_d);
-        
+
       const res_l = await fetchLocations();
       setLocation(res_l);
-      }
-    )();
+    })();
   }, []);
-  
 
   useEffect(() => {
-    (
-      async () => {
+    (async () => {
       const res = await fetchJobs();
       console.log(res);
       setJob(
@@ -43,8 +47,8 @@ const ManageJobs = () => {
           jobLocation: v.location?.name,
         }))
       );
-    }
-    )();
+      setIsLoading(false);
+    })();
   }, [rerender]);
 
   useEffect(() => {
@@ -58,12 +62,12 @@ const ManageJobs = () => {
 
   const submitJob = async (e) => {
     e.preventDefault();
-    const newJob = {}
+    const newJob = {};
     newJob.title = e.target.title.value;
     newJob.location = e.target.location.value;
     newJob.numberOfVacancies = Number(e.target.numberOfVacancies.value);
     newJob.experience = e.target.experience.value;
-    newJob.salaryFrom =Number(e.target.salaryFrom.value);
+    newJob.salaryFrom = Number(e.target.salaryFrom.value);
     newJob.salaryTo = Number(e.target.salaryTo.value);
     newJob.jobType = e.target.jobType.value;
     newJob.status = Boolean(e.target.status.value);
@@ -71,22 +75,22 @@ const ManageJobs = () => {
     newJob.endDate = new Date(e.target.endDate.value);
     newJob.description = e.target.description.value;
     newJob.department = e.target.department.value;
-    document.getElementById("submit-job-btn").innerText = "Submitting...";
+    document.getElementById('submit-job-btn').innerText = 'Submitting...';
     const res = await addJob(newJob);
-    document.getElementById("submit-job-btn").innerText = "Submit";
+    document.getElementById('submit-job-btn').innerText = 'Submit';
     console.log(res);
     setRerender(!rerender);
     $('#add_job').modal('hide');
-  }
+  };
 
-  const submitEditJob = async (e,_id) => {
+  const submitEditJob = async (e, _id) => {
     e.preventDefault();
-    const newJob = {}
+    const newJob = {};
     newJob.title = e.target.title.value;
     newJob.location = e.target.location.value;
     newJob.numberOfVacancies = Number(e.target.numberOfVacancies.value);
     newJob.experience = e.target.experience.value;
-    newJob.salaryFrom =Number(e.target.salaryFrom.value);
+    newJob.salaryFrom = Number(e.target.salaryFrom.value);
     newJob.salaryTo = Number(e.target.salaryTo.value);
     newJob.jobType = e.target.jobType.value;
     newJob.status = Boolean(e.target.status.value);
@@ -94,13 +98,13 @@ const ManageJobs = () => {
     newJob.endDate = new Date(e.target.endDate.value);
     newJob.description = e.target.description.value;
     newJob.department = e.target.department.value;
-    document.getElementById("edit-job-btn").innerText = "Submitting...";
+    document.getElementById('edit-job-btn').innerText = 'Submitting...';
     const res = await updateJob(newJob, _id);
-    document.getElementById("edit-job-btn").innerText = "Submit";
+    document.getElementById('edit-job-btn').innerText = 'Submit';
     console.log(res);
     setRerender(!rerender);
-    $('#edit_job').modal('hide')
-  }
+    $('#edit_job').modal('hide');
+  };
 
   const columns = [
     {
@@ -184,19 +188,6 @@ const ManageJobs = () => {
       sorter: (a, b) => a.numberOfVacancies - b.numberOfVacancies,
     },
     {
-      title: 'Applicants',
-      dataIndex: 'applicants',
-      render: (text, record) => (
-        <Link
-          to="/app/administrator/job-applicants"
-          className="btn btn-sm btn-primary"
-        >
-          0 Applicants
-        </Link>
-      ),
-      sorter: (a, b) => a.applicants.length - b.applicants.length,
-    },
-    {
       title: 'Action',
       render: (text, record) => (
         <div className="dropdown dropdown-action text-right">
@@ -224,11 +215,9 @@ const ManageJobs = () => {
             <a
               href="#"
               className="dropdown-item"
-              onClick={
-                async () => { 
-                  await deleteJob(record._id);
-                }
-              }
+              onClick={async () => {
+                await deleteJob(record._id);
+              }}
             >
               <i className="fa fa-trash-o m-r-5" /> Delete
             </a>
@@ -244,58 +233,71 @@ const ManageJobs = () => {
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
-      <div className="content container-fluid">
-        {/* Page Header */}
-        <div className="page-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h3 className="page-title">Jobs</h3>
-              <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Jobs</li>
-              </ul>
+      {isLoading ? (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="content container-fluid">
+          {/* Page Header */}
+          <div className="page-header">
+            <div className="row align-items-center">
+              <div className="col">
+                <h3 className="page-title">Jobs</h3>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/app/main/dashboard">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Jobs</li>
+                </ul>
+              </div>
+              <div className="col-auto float-right ml-auto">
+                <a
+                  href="#"
+                  className="btn add-btn"
+                  data-toggle="modal"
+                  data-target="#add_job"
+                >
+                  <i className="fa fa-plus" /> Add Job
+                </a>
+              </div>
             </div>
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_job"
-              >
-                <i className="fa fa-plus" /> Add Job
-              </a>
+          </div>
+          {/* /Page Header */}
+          <div className="row">
+            <div className="col-md-12">
+              <div className="table-responsive">
+                <Table
+                  className="table-striped"
+                  pagination={{
+                    total: job.length,
+                    showTotal: (total, range) =>
+                      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                    showSizeChanger: true,
+                    onShowSizeChange: onShowSizeChange,
+                    itemRender: itemRender,
+                  }}
+                  style={{ overflowX: 'auto' }}
+                  columns={columns}
+                  // bordered
+                  dataSource={job}
+                  rowKey={(record) => record._id}
+                  // onChange={this.handleTableChange}
+                />
+              </div>
             </div>
           </div>
         </div>
-        {/* /Page Header */}
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive">
-              <Table
-                className="table-striped"
-                pagination={{
-                  total: job.length,
-                  showTotal: (total, range) =>
-                    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                  showSizeChanger: true,
-                  onShowSizeChange: onShowSizeChange,
-                  itemRender: itemRender,
-                }}
-                style={{ overflowX: 'auto' }}
-                columns={columns}
-                // bordered
-                dataSource={job}
-                rowKey={(record) => record._id}
-                // onChange={this.handleTableChange}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
       {/* /Page Content */}
-
 
       {/* Add Job Modal */}
       <div id="add_job" className="modal custom-modal fade" role="dialog">
@@ -316,12 +318,20 @@ const ManageJobs = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form onSubmit={(e) => { submitJob(e) }}>
+              <form
+                onSubmit={(e) => {
+                  submitJob(e);
+                }}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Title</label>
-                      <input className="form-control" type="text" name="title"/>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="title"
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -329,37 +339,41 @@ const ManageJobs = () => {
                       <label>Department</label>
                       <select className="select" name="department">
                         <option>-</option>
-                        {
-                          department.map((dep) => {
-                            return (
-                              <option value={dep._id} key={dep._id}>{dep.name}</option>
-                            )
-                          })
-                        }
+                        {department.map((dep) => {
+                          return (
+                            <option value={dep._id} key={dep._id}>
+                              {dep.name}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   </div>
                 </div>
                 <div className="row">
-                <div className="col-md-6">
-                <div className="form-group">
-                  <label>Location</label>
-                  <select className="select" name="location">
-                    <option>-</option>
-                    {
-                      location.map((dep) => {
-                        return (
-                          <option value={dep._id} key={dep._id}>{dep.name}</option>
-                        )
-                      })
-                    }
-                  </select>
-                </div>
-              </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Location</label>
+                      <select className="select" name="location">
+                        <option>-</option>
+                        {location.map((dep) => {
+                          return (
+                            <option value={dep._id} key={dep._id}>
+                              {dep.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>No of Vacancies</label>
-                      <input className="form-control" type="text" name='numberOfVacancies'/>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="numberOfVacancies"
+                      />
                     </div>
                   </div>
                 </div>
@@ -367,7 +381,11 @@ const ManageJobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Experience</label>
-                      <input className="form-control" type="text" name='experience'/>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="experience"
+                      />
                     </div>
                   </div>
                 </div>
@@ -375,13 +393,21 @@ const ManageJobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary From</label>
-                      <input type="text" className="form-control" name="salaryFrom"/>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="salaryFrom"
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary To</label>
-                      <input type="text" className="form-control" name="salaryTo"/>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="salaryTo"
+                      />
                     </div>
                   </div>
                 </div>
@@ -389,7 +415,7 @@ const ManageJobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
-                      <select className="select" name='jobType'>
+                      <select className="select" name="jobType">
                         <option>Full Time</option>
                         <option>Part Time</option>
                         <option>Internship</option>
@@ -416,7 +442,7 @@ const ManageJobs = () => {
                       <input
                         type="date"
                         className="form-control"
-                        placeholder="yyyy-dd-mm" 
+                        placeholder="yyyy-dd-mm"
                         name="startDate"
                       />
                     </div>
@@ -436,13 +462,20 @@ const ManageJobs = () => {
                   <div className="col-md-12">
                     <div className="form-group">
                       <label>Description</label>
-                      <textarea className="form-control" defaultValue=""
-                      name="description"/>
+                      <textarea
+                        className="form-control"
+                        defaultValue=""
+                        name="description"
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn" id="submit-job-btn" type="submit">
+                  <button
+                    className="btn btn-primary submit-btn"
+                    id="submit-job-btn"
+                    type="submit"
+                  >
                     Submit
                   </button>
                 </div>
@@ -472,48 +505,70 @@ const ManageJobs = () => {
               </button>
             </div>
             <div className="modal-body">
-              <form onSubmit={(e) => { submitEditJob(e,currentJob._id) }}>
+              <form
+                onSubmit={(e) => {
+                  submitEditJob(e, currentJob._id);
+                }}
+              >
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Title</label>
-                      <input className="form-control" defaultValue={currentJob.title} type="text" name="title"/>
+                      <input
+                        className="form-control"
+                        defaultValue={currentJob.title}
+                        type="text"
+                        name="title"
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Department</label>
-                      <select className="select" name="department" value={currentJob.department}>
-                        {
-                          department.map((dep) => {
-                            return (
-                              <option value={dep._id} key={dep._id}>{dep.name}</option>
-                            )
-                          })
-                        }
+                      <select
+                        className="select"
+                        name="department"
+                        value={currentJob.department}
+                      >
+                        {department.map((dep) => {
+                          return (
+                            <option value={dep._id} key={dep._id}>
+                              {dep.name}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   </div>
                 </div>
                 <div className="row">
-                <div className="col-md-6">
-                <div className="form-group">
-                  <label>Location</label>
-                  <select className="select" name="location" value={currentJob.location?._id}>
-                    {
-                      location.map((dep) => {
-                        return (
-                          <option value={dep._id} key={dep._id}>{dep.name}</option>
-                        )
-                      })
-                    }
-                  </select>
-                </div>
-              </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label>Location</label>
+                      <select
+                        className="select"
+                        name="location"
+                        value={currentJob.location?._id}
+                      >
+                        {location.map((dep) => {
+                          return (
+                            <option value={dep._id} key={dep._id}>
+                              {dep.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>No of Vacancies</label>
-                      <input className="form-control" type="text" name='numberOfVacancies' defaultValue={currentJob.numberOfVacancies}/>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="numberOfVacancies"
+                        defaultValue={currentJob.numberOfVacancies}
+                      />
                     </div>
                   </div>
                 </div>
@@ -521,10 +576,12 @@ const ManageJobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Experience</label>
-                      <input className="form-control"
-                        name='experience'
+                      <input
+                        className="form-control"
+                        name="experience"
                         type="text"
-                        defaultValue={currentJob.experience} />
+                        defaultValue={currentJob.experience}
+                      />
                     </div>
                   </div>
                 </div>
@@ -532,13 +589,23 @@ const ManageJobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary From</label>
-                      <input type="text" className="form-control" name="salaryFrom" defaultValue={currentJob.salaryFrom}/>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="salaryFrom"
+                        defaultValue={currentJob.salaryFrom}
+                      />
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Salary To</label>
-                      <input type="text" className="form-control" name="salaryTo" defaultValue={currentJob.salaryTo}/>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="salaryTo"
+                        defaultValue={currentJob.salaryTo}
+                      />
                     </div>
                   </div>
                 </div>
@@ -546,7 +613,11 @@ const ManageJobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Job Type</label>
-                      <select className="select" name='jobType' value={currentJob.jobType}>
+                      <select
+                        className="select"
+                        name="jobType"
+                        value={currentJob.jobType}
+                      >
                         <option value="Full Time">Full Time</option>
                         <option value="Part Time">Part Time</option>
                         <option value="Internship">Internship</option>
@@ -559,7 +630,11 @@ const ManageJobs = () => {
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Status</label>
-                      <select className="select" name="status" value={currentJob.status}>
+                      <select
+                        className="select"
+                        name="status"
+                        value={currentJob.status}
+                      >
                         <option value="true">Open</option>
                         <option value="false">Closed</option>
                       </select>
@@ -594,13 +669,20 @@ const ManageJobs = () => {
                   <div className="col-md-12">
                     <div className="form-group">
                       <label>Description</label>
-                      <textarea className="form-control" defaultValue={currentJob.description}
-                      name="description"/>
+                      <textarea
+                        className="form-control"
+                        defaultValue={currentJob.description}
+                        name="description"
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn" id="edit-job-btn" type="submit">
+                  <button
+                    className="btn btn-primary submit-btn"
+                    id="edit-job-btn"
+                    type="submit"
+                  >
                     Submit
                   </button>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import httpService from '../../../lib/httpService';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Backdrop, makeStyles, Paper } from '@material-ui/core';
@@ -110,6 +110,7 @@ const EmployeeProfile = () => {
   const [interstedPlotsInProject, setInterstedPlotsInProject] = useState([]);
   const [modifiedProject, setModifiedProject] = useState({});
   const [leadInterest, setLeadInterest] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -168,6 +169,17 @@ const EmployeeProfile = () => {
             );
           });
       }
+      const leadProfile = profile;
+
+      leadProfile.status = status;
+      httpService.put(`/lead/${id}`, leadProfile).then(() => {
+        if (status === 'Lead Won') {
+          history.push('/app/sales/customers', {
+            new: true,
+            lead: profile,
+          });
+        }
+      });
     });
   };
 
@@ -315,7 +327,7 @@ const EmployeeProfile = () => {
                 <div
                   className="card-body"
                   style={{
-                    height: '70vh',
+                    minHeight: '70vh',
                   }}
                 >
                   <h4

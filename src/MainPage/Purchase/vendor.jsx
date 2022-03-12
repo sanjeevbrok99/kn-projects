@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { Avatar_07 } from '../../Entryfile/imagepath';
-
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
 import httpService from '../../lib/httpService';
+import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
 
 function Vendor() {
   const [data, setData] = useState([]);
   const [vendorToAdd, setVendorToAdd] = useState({});
   const [vendorToEdit, setVendorToEdit] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchVendors();
   }, []);
   const fetchVendors = async () => {
-    const res = await fetchVendor();
-    console.log(res);
+    const res = await httpService.get('/vendor').then((res) => res.data);
     setData(
       res.map((item) => ({
         ...item,
         date: item.createdAt.split('T')[0],
       }))
     );
+    setIsLoading(false);
   };
   useEffect(() => {
     if ($('.select')?.length > 0) {
@@ -38,24 +39,44 @@ function Vendor() {
   }, []);
 
   const addVendor = async () => {
-    await httpService.post('/vendor', {
-      ...vendorToAdd,
-    });
-    fetchVendors();
+    toast
+      .promise(
+        httpService.post('/vendor', {
+          ...vendorToAdd,
+        }),
+        {
+          error: 'Failed to add vendor',
+          success: 'Vendor added successfully',
+          pending: 'Adding vendor',
+        }
+      )
+      .then(() => fetchVendors());
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
   const editVendor = async () => {
-    await httpService.put(`/vendor/${vendorToEdit._id}`, {
-      ...vendorToEdit,
-    });
-    fetchVendors();
+    toast
+      .promise(
+        httpService.put(`/vendor/${vendorToEdit._id}`, {
+          ...vendorToEdit,
+        }),
+        {
+          error: 'Failed to edit vendor',
+          success: 'Vendor edited successfully',
+          pending: 'Editing vendor',
+        }
+      )
+      .then(() => fetchVendors());
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
   const deleteVendor = async () => {
-    await httpService.delete(`/vendor/${vendorToEdit._id}`);
-    fetchVendors();
+    toast
+      .promise(httpService.delete(`/vendor/${vendorToEdit._id}`), {
+        success: 'Vendor deleted successfully',
+        pending: 'Deleting vendor',
+      })
+      .then(() => fetchVendors());
     document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
   };
 
@@ -66,9 +87,23 @@ function Vendor() {
       render: (text, record) => (
         <h2 className="table-avatar">
           <Link to="/app/profile/employee-profile" className="avatar">
-            <img alt="" src={record.image} />
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                background: '#E33F3B',
+                borderRadius: '50%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '1.2rem',
+                color: '#fff',
+              }}
+            >
+              {record.name.split(' ')[0].charAt(0)}
+            </div>
           </Link>
-          <Link to="/app/profile/employee-profile">{text}</Link>
+          <Link to={`/app/profile/vendor-profile/${record._id}`}>{text}</Link>
         </h2>
       ),
       // sorter: (a, b) => a.name.length - b.name.length,
@@ -76,12 +111,10 @@ function Vendor() {
     {
       title: 'Company',
       dataIndex: 'company',
-      // sorter: (a, b) => a.contactperson.length - b.contactperson.length,
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      // sorter: (a, b) => a.email.length - b.email.length,
     },
 
     {
@@ -106,7 +139,7 @@ function Vendor() {
               className="dropdown-item"
               href="#"
               data-toggle="modal"
-              data-target="#edit_client"
+              data-target="#edit_vendor"
               onClick={(e) => {
                 setVendorToEdit(record);
               }}
@@ -137,87 +170,103 @@ function Vendor() {
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
-      <div className="content container-fluid">
-        {/* Page Header */}
-        <div className="page-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h3 className="page-title">Vendors</h3>
-              <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Vendors</li>
-              </ul>
+      {isLoading ? (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="content container-fluid">
+          {/* Page Header */}
+          <div className="page-header">
+            <div className="row align-items-center">
+              <div className="col">
+                <h3 className="page-title">Vendors</h3>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/app/main/dashboard">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Vendors</li>
+                </ul>
+              </div>
+              <div className="col-auto float-right ml-auto">
+                <a
+                  href="#"
+                  className="btn add-btn"
+                  data-toggle="modal"
+                  data-target="#add_vendor"
+                >
+                  <i className="fa fa-plus" /> Add Vendor
+                </a>
+              </div>
             </div>
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_vendor"
-              >
-                <i className="fa fa-plus" /> Add Vendor
+          </div>
+          {/* /Page Header */}
+          {/* Search Filter */}
+          <div className="row filter-row">
+            <div className="col-sm-6 col-md-6">
+              <div className="form-group form-focus focused">
+                <input
+                  type="text"
+                  style={{
+                    padding: '10px',
+                  }}
+                  placeholder={'Vendor Name'}
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div className="col-sm-6 col-md-3">
+              <div className="form-group form-focus focused">
+                <input
+                  type="email"
+                  style={{
+                    padding: '10px',
+                  }}
+                  placeholder={'Vendor Email'}
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div className="col-sm-6 col-md-3">
+              <a href="#" className="btn btn-success btn-block">
+                {' '}
+                Search{' '}
               </a>
             </div>
           </div>
-        </div>
-        {/* /Page Header */}
-        {/* Search Filter */}
-        <div className="row filter-row">
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
-              <label className="focus-label">Vendor ID</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
-              <label className="focus-label">Vendor Name</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option>Select Company</option>
-                <option>Sunteck Realty Ltd</option>
-                <option>Godrej Properties Ltd</option>
-              </select>
-              <label className="focus-label">Company</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <a href="#" className="btn btn-success btn-block">
-              {' '}
-              Search{' '}
-            </a>
-          </div>
-        </div>
-        {/* Search Filter */}
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive">
-              <Table
-                className="table-striped"
-                pagination={{
-                  total: data?.length,
-                  showTotal: (total, range) =>
-                    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                  showSizeChanger: true,
-                  onShowSizeChange: onShowSizeChange,
-                  itemRender: itemRender,
-                }}
-                style={{ overflowX: 'auto' }}
-                columns={columns}
-                // bordered
-                dataSource={data}
-                rowKey={(record) => record.id}
-              />
+          {/* Search Filter */}
+          <div className="row">
+            <div className="col-md-12">
+              <div className="table-responsive">
+                <Table
+                  className="table-striped"
+                  pagination={{
+                    total: data?.length,
+                    showTotal: (total, range) =>
+                      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                    showSizeChanger: true,
+                    onShowSizeChange: onShowSizeChange,
+                    itemRender: itemRender,
+                  }}
+                  style={{ overflowX: 'auto' }}
+                  columns={columns}
+                  // bordered
+                  dataSource={data}
+                  rowKey={(record) => record.id}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       {/* /Page Content */}
       {/* Add Client Modal */}
       <div id="add_vendor" className="modal custom-modal fade" role="dialog">
@@ -295,7 +344,7 @@ function Vendor() {
                       />
                     </div>
                   </div>
-                  <div className="col-12">
+                  <div className="col-md-6">
                     <div className="form-group">
                       <label className="col-form-label">Comapny</label>
                       <input
@@ -346,7 +395,7 @@ function Vendor() {
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Edit Customer</h5>
+              <h5 className="modal-title">Edit Vendor</h5>
               <button
                 type="button"
                 className="close"
