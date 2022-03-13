@@ -88,49 +88,10 @@ const bar = [
       },
       {
         name: 'Leads',
-        hasChildren: true,
+        hasChildren: false,
         icon: 'la la-users',
-        children: [
-          {
-            name: 'All Leads',
-            link: '/employees/leads',
-          },
-          {
-            name: 'Lead Status',
-            link: '/leads/lead-status',
-          },
-        ],
+        link: '/employees/leads',
       },
-      // {
-      //   name: 'Contacts',
-      //   hasChildren: true,
-      //   icon: 'la la-users',
-      //   children: [
-      //     {
-      //       name: 'Lead Assignment',
-      //       link: '/contacts/lead-assignment',
-      //     },
-      //     {
-      //       name: 'Lead Reporting',
-      //       link: '/contacts/lead-reporting',
-      //     },
-      //   ],
-      // },
-      // {
-      //   name: 'Lead Status',
-      //   hasChildren: true,
-      //   icon: 'la la-id-badge',
-      //   children: [
-      //     {
-      //       name: 'Lead Status',
-      //       link: '/leads/lead-status',
-      //     },
-      //     {
-      //       name: 'Lead Status',
-      //       link: '/leads/lead-status',
-      //     },
-      //   ],
-      // },
       {
         name: 'Sales',
         hasChildren: true,
@@ -188,17 +149,9 @@ const bar = [
             link: '/accounts/general-ledger',
           },
           {
-            name: 'Customer Balances',
-            link: '/accounts/customer-balances',
-          },
-          {
             name: 'Fixed Assets',
             link: '/accounts/fixed-assets',
           },
-          // {
-          //   name: 'Project Sales',
-          //   link: '/accounts/project-sales',
-          // },
         ],
       },
       {

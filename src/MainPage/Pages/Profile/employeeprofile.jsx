@@ -301,7 +301,7 @@ const EmployeeProfile = () => {
                         <ul className="nav nav-tabs nav-tabs-bottom">
                           <li className="nav-item">
                             <a
-                              href="#bank_statutory"
+                              href="#activities"
                               data-toggle="tab"
                               className="nav-link active"
                             >
@@ -310,7 +310,7 @@ const EmployeeProfile = () => {
                           </li>
                           <li className="nav-item">
                             <a
-                              href="#projects"
+                              href="#payroll"
                               data-toggle="tab"
                               className="nav-link"
                             >
@@ -320,155 +320,30 @@ const EmployeeProfile = () => {
                         </ul>
                       </div>
                     </div>
-                    <h4 className="project-title">
-                      <Link to="/app/projects/projects-view">
-                        Video Calling App
-                      </Link>
-                    </h4>
-                    <small className="block text-ellipsis m-b-15">
-                      <span className="text-xs">3</span>{' '}
-                      <span className="text-muted">open tasks, </span>
-                      <span className="text-xs">3</span>{' '}
-                      <span className="text-muted">tasks completed</span>
-                    </small>
-                    <p className="text-muted">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. When an unknown printer took a
-                      galley of type and scrambled it...
-                    </p>
-                    <div className="pro-deadline m-b-15">
-                      <div className="sub-title">Deadline:</div>
-                      <div className="text-muted">17 Apr 2021</div>
-                    </div>
-                    <div className="project-members m-b-15">
-                      <div>Project Leader :</div>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            data-toggle="tooltip"
-                            title="Sushmita Singh"
-                          >
-                            <img alt="" src={Avatar_16} />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="project-members m-b-15">
-                      <div>Team :</div>
-                      <ul className="team-members">
-                        <li>
-                          <a
-                            href="#"
-                            data-toggle="tooltip"
-                            title="Prateek Tiwari"
-                          >
-                            <img alt="" src={Avatar_02} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            data-toggle="tooltip"
-                            title="Shital Agarwal"
-                          >
-                            <img alt="" src={Avatar_09} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" data-toggle="tooltip" title="Harvinder">
-                            <img alt="" src={Avatar_10} />
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            data-toggle="tooltip"
-                            title="Shreya Singh"
-                          >
-                            <img alt="" src={Avatar_05} />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" className="all-users">
-                            +15
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <p className="m-b-5">
-                      Progress{' '}
-                      <span className="text-success float-right">40%</span>
-                    </p>
-                    <div className="progress progress-xs mb-0">
-                      <div
-                        style={{ width: '40%' }}
-                        data-toggle="tooltip"
-                        role="progressbar"
-                        className="progress-bar bg-success"
-                        data-original-title="40%"
-                      />
-                    </div>
                   </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  minHeight: '65vh',
-                  maxHeight: '65vh',
-                  overflowY: 'auto',
-                }}
-                className="card p-4 tab-content"
-              >
-                <div
-                  id="emp_profile"
-                  className="pro-overview tab-pane fade show active"
-                >
-                  <h3>Activities</h3>
-                  <hr />
-                </div>
-                <div className="tab-pane fade" id="emp_notes">
                   <div
                     style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
+                      minHeight: '65vh',
+                      maxHeight: '65vh',
+                      overflowY: 'auto',
                     }}
+                    className="card p-4 tab-content"
                   >
-                    <h3>Notes</h3>
-
-                    <a
-                      href="#"
-                      className="btn btn-primary"
-                      data-toggle="modal"
-                      data-target="#add_note"
+                    <div
+                      id="activities"
+                      className="pro-overview tab-pane fade show active"
                     >
-                      <i className="fa fa-plus" /> Note
-                    </a>
-                  </div>
-                  <hr />
-                </div>
-                <div className="tab-pane fade" id="bank_statutory">
-                  <div className="d-flex justify-content-between">
-                    <div className="d-flex align-items-center">
-                      <h2 className="card-title mb-0 h-100 mt-2">
-                        {' '}
-                        Activities
-                      </h2>
+                      <h3>Activities</h3>
+                      <hr />
+                    </div>
+                    <div
+                      id="payroll"
+                      className="pro-overview tab-pane fade show"
+                    >
+                      <h3>Payroll</h3>
+                      <hr />
                     </div>
                   </div>
-                  <hr />
-                </div>
-                <div id="projects" className="tab-pane fade">
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <h3>Payroll</h3>
-                  </div>
-                  <hr />
                 </div>
               </div>
             </div>

@@ -60,9 +60,9 @@ const ManualJournals = () => {
       <div className="content container-fluid">
         {/* Page Header */}
         <div className="page-header">
-          <div className="row">
-            <div className="col-sm-12">
-              <h3 className="page-title">Manual Journals</h3>
+          <div className="row align-items-center">
+            <div className="col">
+              <h3 className="page-title">Ledgers</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
@@ -70,302 +70,18 @@ const ManualJournals = () => {
                 <li className="breadcrumb-item active">Manual Journals</li>
               </ul>
             </div>
+            <div className="col-auto float-right ml-auto">
+              <a
+                href="#"
+                className="btn add-btn"
+                data-toggle="modal"
+                data-target="#add_job"
+              >
+                <i className="fa fa-plus" /> Add Journals
+              </a>
+            </div>
           </div>
         </div>
-        <hr></hr>
-        <div className="content">
-          <div className="modal-body">
-            <form>
-              {/* <div className="form-group">
-                <label>Budget Title</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="budget_title"
-                  placeholder="Budgets Title"
-                />
-              </div> */}
-              {/* <label>Choose Budget Respect Type</label>
-              <div className="form-group">
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input BudgetType"
-                    type="radio"
-                    name="budget_type"
-                    id="project2"
-                    defaultValue="project"
-                  />
-                  <label className="form-check-label" htmlFor="project2">
-                    Project
-                  </label>
-                </div>
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input BudgetType"
-                    type="radio"
-                    name="budget_type"
-                    id="category1"
-                    defaultValue="category"
-                  />
-                  <label className="form-check-label" htmlFor="category1">
-                    Category
-                  </label>
-                </div>
-              </div> */}
-
-              <div className="AllExpensesClass">
-                <div className="row AlLExpenses">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>
-                        Date <span className="text-danger">*</span>
-                      </label>
-                      <div>
-                        <input
-                          className="form-control datetimepicker"
-                          type="date"
-                          name="budget_start_date"
-                          placeholder="Start Date"
-                          data-date-format="dd-mm-yyyy"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>
-                        Journals <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="expenses_amount[]"
-                        placeholder="Amount"
-                        defaultValue
-                        className="form-control EXpensesAmount"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Reference</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="budget_title"
-                  placeholder="Reference"
-                />
-              </div>
-              <label>Choose Journal Type</label>
-              <div className="form-group">
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input BudgetType"
-                    type="radio"
-                    name="budget_type"
-                    id="project2"
-                    defaultValue="project"
-                  />
-                  <label className="form-check-label" htmlFor="project2">
-                    Cashbased Journals
-                  </label>
-                </div>
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input BudgetType"
-                    type="radio"
-                    name="budget_type"
-                    id="category1"
-                    defaultValue="category"
-                  />
-                  <label className="form-check-label" htmlFor="category1">
-                    Cashless Journals
-                  </label>
-                </div>
-              </div>
-              {/* <div className="form-group">
-                <label>End Date</label>
-                <div>
-                  <input
-                    className="form-control datetimepicker"
-                    type="date"
-                    name="budget_end_date"
-                    placeholder="End Date"
-                    data-date-format="dd-mm-yyyy"
-                  />
-                </div>
-              </div> */}
-              {/* <div className="form-group">
-                <label>Expected Revenues</label>
-              </div>
-              <div className="AllRevenuesClass">
-                <div className="row AlLRevenues">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>
-                        Revenue Title <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control RevenuETitle"
-                        defaultValue
-                        placeholder="Revenue Title"
-                        name="revenue_title[]"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-5">
-                    <div className="form-group">
-                      <label>
-                        Revenue Amount <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="revenue_amount[]"
-                        placeholder="Amount"
-                        defaultValue
-                        className="form-control RevenuEAmount"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-1">
-                    <div className="add-more">
-                      <a
-                        className="add_more_revenue"
-                        title="Add Revenue"
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <i className="fa fa-plus-circle" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className="form-group">
-                <label>
-                  Overall Revenues <span className="text-danger">(A)</span>
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="overall_revenues"
-                  id="overall_revenues1"
-                  placeholder="Overall Revenues"
-                  readOnly
-                  style={{ cursor: 'not-allowed' }}
-                />
-              </div>
-              <div className="form-group">
-                <label>Expected Expenses</label>
-              </div>
-              <div className="AllExpensesClass">
-                <div className="row AlLExpenses">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label>
-                        Expenses Title <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control EXpensesTItle"
-                        defaultValue
-                        placeholder="Expenses Title"
-                        name="expenses_title[]"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-5">
-                    <div className="form-group">
-                      <label>
-                        Expenses Amount <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="expenses_amount[]"
-                        placeholder="Amount"
-                        defaultValue
-                        className="form-control EXpensesAmount"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-1">
-                    <div className="add-more">
-                      <a
-                        className="add_more_expenses"
-                        title="Add Expenses"
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <i className="fa fa-plus-circle" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className="form-group">
-                <label>
-                  Overall Expense <span className="text-danger">(B)</span>
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="overall_expenses"
-                  id="overall_expenses1"
-                  placeholder="Overall Expenses"
-                  readOnly
-                  style={{ cursor: 'not-allowed' }}
-                />
-              </div>
-              <div className="form-group">
-                <label>
-                  Expected Profit{' '}
-                  <span className="text-danger">( C = A - B )</span>{' '}
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="expected_profit"
-                  id="expected_profit1"
-                  placeholder="Expected Profit"
-                  readOnly
-                  style={{ cursor: 'not-allowed' }}
-                />
-              </div>
-              <div className="form-group">
-                <label>
-                  Tax <span className="text-danger">(D)</span>
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="tax_amount"
-                  id="tax_amount1"
-                  placeholder="Tax Amount"
-                />
-              </div>
-              <div className="form-group">
-                <label>
-                  Budget Amount{' '}
-                  <span className="text-danger">( E = C - D )</span>{' '}
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  name="budget_amount"
-                  id="budget_amount1"
-                  placeholder="Budget Amount"
-                  readOnly
-                  style={{ cursor: 'not-allowed' }}
-                />
-              </div> */}
-            </form>
-          </div>
-        </div>
-        {/* /Page Header */}
         <div className="row">
           <div className="col-md-12">
             <div className="table-responsive">
@@ -386,19 +102,10 @@ const ManualJournals = () => {
                 rowKey={(record) => record.id}
                 // onChange={this.handleTableChange}
               />
-              <div
-                className=" submit-section"
-                style={{ display: 'flex', justifyContent: 'flex-start' }}
-              >
-                <button className="btn btn-primary submit-btn">
-                  Add another line
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      {/* /Page Content */}
     </div>
   );
 };
