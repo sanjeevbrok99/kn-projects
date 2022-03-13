@@ -62,7 +62,7 @@ const ManualJournals = () => {
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
-              <h3 className="page-title">Ledgers</h3>
+              <h3 className="page-title">Manual Journals</h3>
               <ul className="breadcrumb">
                 <li className="breadcrumb-item">
                   <Link to="/app/main/dashboard">Dashboard</Link>
