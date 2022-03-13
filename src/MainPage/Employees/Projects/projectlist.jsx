@@ -564,6 +564,9 @@ const ProjectList = () => {
                   }}
                   type="text"
                   placeholder="Project Name"
+                  style={{
+                    padding: '10px',
+                  }}
                   className="form-control"
                 />
               </div>

@@ -71,7 +71,7 @@ const ExpenseCreate = () => {
           <div className="col-sm-12">
             <form onSubmit={handleSubmit}>
               <div className="row">
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group">
                     <label>
                       Customer <span className="text-danger">*</span>
@@ -94,7 +94,7 @@ const ExpenseCreate = () => {
                     </select>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group">
                     <label>
                       Expense date <span className="text-danger">*</span>
@@ -113,7 +113,7 @@ const ExpenseCreate = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
+                <div className="col-sm-6 col-md-4">
                   <div className="form-group">
                     <label>
                       Due Date <span className="text-danger">*</span>
@@ -132,33 +132,6 @@ const ExpenseCreate = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-sm-6 col-md-3">
-                  <div className="form-group">
-                    <label>
-                      Expense Type<span className="text-danger">*</span>
-                    </label>
-                    <div
-                      onChange={(e) => {
-                        setInvoiceType(e.target.value);
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        name="type"
-                        id="ONE_TIME"
-                        value={'ONE_TIME'}
-                      />{' '}
-                      One Time{' '}
-                      <input
-                        type="radio"
-                        name="type"
-                        id="RECURRING"
-                        value={'RECURRING'}
-                      />{' '}
-                      Recurring
-                    </div>
-                  </div>
-                </div>
               </div>
               <div className="row">
                 <div className="col-md-12 col-sm-12">
@@ -172,7 +145,7 @@ const ExpenseCreate = () => {
                           <th style={{ width: '100px' }}>Unit Cost</th>
                           <th style={{ width: '80px' }}>Qty</th>
                           <th>Amount</th>
-                          <th> </th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -280,7 +253,8 @@ const ExpenseCreate = () => {
                                       item: '',
                                       description: '',
                                       unitCost: 0,
-                                      quantity: '',
+                                      quantity: 0,
+                                      amount: 0,
                                     },
                                   ]);
                                 }}

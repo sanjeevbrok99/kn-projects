@@ -23,7 +23,6 @@ import { Button } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/PhoneOutlined';
 import EmailIcon from '@mui/icons-material/EmailOutlined';
 import AddressIcon from '@mui/icons-material/LocationOnOutlined';
-import PersonIcon from '@mui/icons-material/PersonOutlined';
 
 function dragElement(elmnt) {
   var pos1 = 0,
@@ -494,14 +493,9 @@ const VendorProfile = () => {
                     }}
                   >
                     <h3>Purchase</h3>
-                    <button
-                      onClick={() => {
-                        setAddInvoiceModal(true);
-                      }}
-                      className="btn add-btn"
-                    >
-                      Add Purchase
-                    </button>
+                    <Link to={'/app/sales/expenses-create'}>
+                      <button className="btn add-btn">Add Purchase</button>
+                    </Link>
                   </div>
                   <hr />
                   {/* <Invoices invoice={customer.invoices} /> */}
