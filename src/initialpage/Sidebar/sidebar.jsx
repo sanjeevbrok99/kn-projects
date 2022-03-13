@@ -10,6 +10,11 @@ const employeeMenu = [
     icon: 'la la-users',
   },
   {
+    name: 'Leave Request',
+    link: '/employees/leave request',
+    icon: ''
+  },
+  {
     name: 'Leads',
     hasChildren: true,
     icon: 'la la-users',
@@ -156,14 +161,9 @@ const bar = [
       },
       {
         name: 'Tickets',
-        hasChildren: true,
+        hasChildren: false,
         icon: 'la la-ticket',
-        children: [
-          {
-            name: 'Tickets',
-            link: '/employees/tickets',
-          },
-        ],
+        link: '/employees/tickets',
       },
       {
         name: 'Reports',

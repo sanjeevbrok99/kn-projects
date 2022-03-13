@@ -1,30 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import {
-  Avatar_11,
-  Avatar_09,
-  Avatar_02,
-  Avatar_10,
-  Avatar_05,
-} from '../../Entryfile/imagepath';
-
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../paginationfunction';
 import '../antdstyle.css';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   fetchTicket,
   addTicket,
   updateTicket,
   deleteTicket,
-  fetchSingleTicket,
   fetchdepartment,
   fetchClient,
-  allemployee
+  allemployee,
 } from '../../lib/api';
-
 
 const Tickets = () => {
   const [data, setData] = useState([]);
@@ -33,7 +23,7 @@ const Tickets = () => {
   const [employees, setEmployees] = useState([]);
   const [ticketStats, setTicketStats] = useState([0, 0, 0]);
   const [selectedTicketData, setSelectedTicketData] = useState({});
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -46,7 +36,9 @@ const Tickets = () => {
 
   const updateTracker = (data) => {
     console.log(data);
-    let a=0, b=0, c=0;
+    let a = 0,
+      b = 0,
+      c = 0;
     data.forEach((ticket) => {
       if (ticket.status.toLowerCase() == 'active') c++;
       else b++;
@@ -57,36 +49,29 @@ const Tickets = () => {
 
       if (date >= dateNow) {
         a++;
-      } else { 
-        console.log("not");
+      } else {
+        console.log('not');
       }
-      
     });
-    console.log(a,b,c);
-    setTicketStats([a,b,c]);
-  }
+    console.log(a, b, c);
+    setTicketStats([a, b, c]);
+  };
 
   const [rerender, setRerender] = useState(false);
 
   useEffect(() => {
-    (
-      async () => {
-        
-        const res = await fetchTicket();
-        setData(res.data);
-        updateTracker(res.data);
-        
-        const res_d = await fetchdepartment();
-        setDepartment(res_d);
-        
-        const res_c = await fetchClient();
-        setClient(res_c);
-
-        const res_e = await allemployee();
-        setEmployees(res_e);
-      
-      }
-    )();
+    (async () => {
+      const res = await fetchTicket();
+      setData(res.data);
+      updateTracker(res.data);
+      const res_d = await fetchdepartment();
+      setDepartment(res_d);
+      const res_c = await fetchClient();
+      setClient(res_c);
+      const res_e = await allemployee();
+      setEmployees(res_e);
+      setIsLoading(false);
+    })();
   }, [rerender]);
   const columns = [
     {
@@ -96,23 +81,13 @@ const Tickets = () => {
       render: (text, record) => <p>{text}</p>,
     },
     {
-      title: 'Ticket Id',
-      dataIndex: '_id',
-      render: (text, record) => (
-        <Link
-          onClick={() => localStorage.setItem('minheight', 'true')}
-          to="/app/employees/ticket-view"
-        >
-          {text}
-        </Link>
-      ),
-    },
-    {
       title: 'Assigned Staff',
       dataIndex: 'assignee',
       render: (text, record) => (
         <h2 className="table-avatar">
-          <Link to="/app/profile/employee-profile"><p>{text.firstName}</p></Link>
+          <Link to="/app/profile/employee-profile">
+            <p>{text.firstName}</p>
+          </Link>
         </h2>
       ),
       sorter: (a, b) => a.assignee.firstName < b.assignee.firstName,
@@ -126,7 +101,7 @@ const Tickets = () => {
     {
       title: 'Last Reply',
       dataIndex: 'updatedAt',
-      render: (text, record) => <p>{text}</p>,
+      render: (text, record) => <p>{text.split('T')[0]}</p>,
       sorter: (a, b) => {
         return a.updatedAt < b.updatedAt;
       },
@@ -134,7 +109,7 @@ const Tickets = () => {
     {
       title: 'Priority',
       dataIndex: 'priority',
-      render: (text, record) => <p>{text.toLowerCase()}</p>,
+      render: (text, record) => <p>{text.toUpperCase()}</p>,
     },
     {
       title: 'Status',
@@ -198,33 +173,47 @@ const Tickets = () => {
       </Helmet>
 
       {/* Page Content */}
-      <div className="content container-fluid">
-        <TicketHeader />
+      {isLoading ? (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="content container-fluid">
+          <TicketHeader />
 
-        <TicketTracker ticketStats={ticketStats} />
+          <TicketTracker ticketStats={ticketStats} />
 
-        <SearchTicket
-          setRerender={setRerender}
-          rerender={rerender}
-          data={data}
-          setData={setData}
-        />
+          <SearchTicket
+            setRerender={setRerender}
+            rerender={rerender}
+            data={data}
+            setData={setData}
+          />
 
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive">
-              <Table
-                className="table-striped"
-                pagination={paginationControl}
-                style={{ overflowX: 'auto' }}
-                columns={columns}
-                dataSource={data}
-                rowKey={(record) => record.id}
-              />
+          <div className="row">
+            <div className="col-md-12">
+              <div className="table-responsive">
+                <Table
+                  className="table-striped"
+                  pagination={paginationControl}
+                  style={{ overflowX: 'auto' }}
+                  columns={columns}
+                  dataSource={data}
+                  rowKey={(record) => record.id}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       {/* /Page Content */}
 
       <AddTicket
@@ -249,8 +238,6 @@ const Tickets = () => {
   );
 };
 
-
-
 const AddTicket = (props) => {
   const form = useRef();
   const btn = useRef();
@@ -259,7 +246,7 @@ const AddTicket = (props) => {
     form.current.reset();
     btn.current.innerHTML = 'Submit';
     props.setRerender(!props.rerender);
-    $('#add_ticket').modal('hide')
+    $('#add_ticket').modal('hide');
   };
 
   const handleSubmit = async (e) => {
@@ -267,7 +254,7 @@ const AddTicket = (props) => {
     const newTicket = {};
     btn.current.innerHTML = 'Submitting...';
     newTicket.title = e.target.title.value;
-    newTicket.status = "Active";
+    newTicket.status = 'Active';
     newTicket.priority = e.target.priority.value;
     newTicket.description = e.target.description.value;
     newTicket.department = e.target.department.value;
@@ -304,24 +291,18 @@ const AddTicket = (props) => {
           </div>
           <div className="modal-body">
             <form ref={form} onSubmit={handleSubmit}>
-
               <div className="row">
-                
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Ticket Title</label>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="title"
-                    />
+                    <input className="form-control" type="text" name="title" />
                   </div>
                 </div>
 
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Status</label>
-                      <option >active</option>
+                    <option>active</option>
                   </div>
                 </div>
               </div>
@@ -344,18 +325,17 @@ const AddTicket = (props) => {
                   <div className="form-group">
                     <label>Client</label>
                     <select className="select" name="client">
-                      {
-                        props.client.map((client) => {
-                          return (
-                            <option value={client._id}>{`${client.firstName} ${client.lastName}`}</option>
-                          )
-                        })
-                      }
+                      {props.client.map((client) => {
+                        return (
+                          <option
+                            value={client._id}
+                          >{`${client.firstName} ${client.lastName}`}</option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>
 
-              
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Priority</label>
@@ -369,18 +349,17 @@ const AddTicket = (props) => {
               </div>
 
               <div className="row">
-                
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Assign Staff</label>
                     <select className="select" name="assignee">
-                      {
-                        props.employees.map((emp) => {
-                          return (
-                            <option value={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
-                          )
-                        })
-                      }
+                      {props.employees.map((emp) => {
+                        return (
+                          <option
+                            value={emp._id}
+                          >{`${emp.firstName} ${emp.lastName}`}</option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>
@@ -389,41 +368,35 @@ const AddTicket = (props) => {
                   <div className="form-group">
                     <label>Department</label>
                     <select className="select" name="department">
-                      {
-                        props.department.map((dep) => {
-                          return (
-                            <option value={dep._id}>{dep.name}</option>
-                          )
-                        })
-                      }
+                      {props.department.map((dep) => {
+                        return <option value={dep._id}>{dep.name}</option>;
+                      })}
                     </select>
                   </div>
                 </div>
               </div>
 
               <div className="row">
-                
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Add Followers</label>
                     <select className="select" name="followers">
-                      {
-                        props.employees.map((emp) => {
-                          return (
-                            <option value={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
-                          )
-                        })
-                      }
+                      {props.employees.map((emp) => {
+                        return (
+                          <option
+                            value={emp._id}
+                          >{`${emp.firstName} ${emp.lastName}`}</option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>
                 <div className="form-group">
-                <label>Upload Files</label>
-                <input className="form-control" type="file" name="file" />
+                  <label>Upload Files</label>
+                  <input className="form-control" type="file" name="file" />
+                </div>
               </div>
-              </div>
-          
-           
+
               <div className="submit-section">
                 <button
                   className="btn btn-primary"
@@ -434,7 +407,6 @@ const AddTicket = (props) => {
                   Submit
                 </button>
               </div>
-              
             </form>
           </div>
         </div>
@@ -484,26 +456,30 @@ const DeleteTicket = (props) => {
   );
 };
 
-const SearchTicket = ({setData}) => {
-
-  const handleSearch = async () => { 
+const SearchTicket = ({ setData }) => {
+  const handleSearch = async () => {
     const { data } = await fetchTicket();
-    const title = document.getElementById('ticket-title-search').value
-    const employeeName = document.getElementById('ticket-search-empname').value
+    const title = document.getElementById('ticket-title-search').value;
+    const employeeName = document.getElementById('ticket-search-empname').value;
     const statue = document.getElementById('search-filter-status').value;
     const priority = document.getElementById('search-filter-priority').value;
-    
+
     let result = data;
 
     if (title != '') {
-        result = data.filter(ticket => {
-        return ticket.title === title
+      result = data.filter((ticket) => {
+        return ticket.title === title;
       });
     }
 
     if (employeeName !== '') {
-      result = result.filter(ticket => {
-        if (ticket.assignee.firstName === employeeName || ticket.assignee.lastName === employeeName || `${ticket.assignee.firstName} ${ticket.assignee.lastName}` == employeeName) {
+      result = result.filter((ticket) => {
+        if (
+          ticket.assignee.firstName === employeeName ||
+          ticket.assignee.lastName === employeeName ||
+          `${ticket.assignee.firstName} ${ticket.assignee.lastName}` ==
+            employeeName
+        ) {
           return true;
         } else {
           return false;
@@ -512,56 +488,61 @@ const SearchTicket = ({setData}) => {
     }
 
     if (statue != '') {
-      result = result.filter(ticket => {
+      result = result.filter((ticket) => {
         return ticket.status == statue;
       });
     }
 
     if (priority != '') {
-      result = result.filter(ticket => {
+      result = result.filter((ticket) => {
         return ticket.priority == priority;
       });
     }
     setData(result);
-  }
+  };
 
   return (
     <div className="row filter-row">
-     <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus focused">
-          <input type="text" className="form-control floating" id='ticket-title-search'/>
-          <label className="focus-label">Title</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-        <div className="form-group form-focus focused">
-          <input type="text" className="form-control floating" id='ticket-search-empname' />
-          <label className="focus-label">Employee Name</label>
-        </div>
-      </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+      <div className="col-sm-5 col-12">
         <div className="form-group form-focus select-focus">
-          <select className="select floating" id="search-filter-status">
-            <option></option>
+          <select
+            className="custom-select"
+            id="search-filter-status"
+            style={{
+              height: '100%',
+            }}
+          >
+            <option value={''} hidden>
+              Select Status
+            </option>
             <option> Active </option>
             <option> Approved </option>
             <option> Returned </option>
           </select>
-          <label className="focus-label">Status</label>
         </div>
       </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+      <div className="col-sm-5 col-12">
         <div className="form-group form-focus select-focus">
-          <select className="select floating" id='search-filter-priority'>
-            <option></option>
+          <select
+            className="custom-select"
+            id="search-filter-status"
+            style={{
+              height: '100%',
+            }}
+          >
+            <option value={''} hidden>
+              Select Priority
+            </option>
             <option> High </option>
             <option> Low </option>
             <option> Medium </option>
           </select>
-          <label className="focus-label">Priority</label>
         </div>
       </div>
-      <div className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12" onClick={handleSearch}>
+      <div
+        className="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12"
+        onClick={handleSearch}
+      >
         <a href="#" className="btn btn-success btn-block">
           Search
         </a>
@@ -598,7 +579,7 @@ const TicketHeader = () => {
   );
 };
 
-const TicketTracker = ({ticketStats}) => {
+const TicketTracker = ({ ticketStats }) => {
   return (
     <div className="row">
       <div className="col-md-12">
@@ -669,7 +650,14 @@ const TicketTracker = ({ticketStats}) => {
   );
 };
 
-const EditTicket = ({ selectedTicketData, rerender, setRerender, client, department, employees}) => {
+const EditTicket = ({
+  selectedTicketData,
+  rerender,
+  setRerender,
+  client,
+  department,
+  employees,
+}) => {
   const form = useRef();
   const btn = useRef();
 
@@ -694,7 +682,7 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender, client, departm
     }
     btn.current.innerHTML = 'Submit';
     setRerender(!rerender);
-    $('#edit_ticket').modal('hide')
+    $('#edit_ticket').modal('hide');
   };
 
   return (
@@ -717,9 +705,7 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender, client, departm
           </div>
           <div className="modal-body">
             <form ref={form} onSubmit={handleSubmit}>
-
               <div className="row">
-                
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Ticket Title</label>
@@ -735,7 +721,9 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender, client, departm
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Status</label>
-                    <select className="select" name="status"
+                    <select
+                      className="select"
+                      name="status"
                       value={selectedTicketData.status}
                     >
                       <option value="Active">Active</option>
@@ -745,7 +733,6 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender, client, departm
                   </div>
                 </div>
               </div>
-
 
               <div className="row">
                 <div className="col-sm-12">
@@ -757,33 +744,37 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender, client, departm
                       name="description"
                     />
                   </div>
-
                 </div>
               </div>
 
               <div className="row">
-                
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Client</label>
-                    <select className="select" name="client"
-                      defaultValue={selectedTicketData.client?._id}>
-                      {
-                        client.map((client) => {
-                          return (
-                            <option value={client._id}>{`${client.firstName} ${client.lastName}`}</option>
-                          )
-                        })
-                      }
+                    <select
+                      className="select"
+                      name="client"
+                      defaultValue={selectedTicketData.client?._id}
+                    >
+                      {client.map((client) => {
+                        return (
+                          <option
+                            value={client._id}
+                          >{`${client.firstName} ${client.lastName}`}</option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>
 
-              
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Priority</label>
-                    <select className="select" name="priority" value={selectedTicketData.priority}>
+                    <select
+                      className="select"
+                      name="priority"
+                      value={selectedTicketData.priority}
+                    >
                       <option value="High">High</option>
                       <option Value="Medium">Medium</option>
                       <option value="Low">Low</option>
@@ -793,18 +784,21 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender, client, departm
               </div>
 
               <div className="row">
-                
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Assign Staff</label>
-                    <select className="select" name="assignee" value={selectedTicketData.assignee?._id}>
-                      {
-                        employees.map((emp) => {
-                          return (
-                            <option value={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
-                          )
-                        })
-                      }
+                    <select
+                      className="select"
+                      name="assignee"
+                      value={selectedTicketData.assignee?._id}
+                    >
+                      {employees.map((emp) => {
+                        return (
+                          <option
+                            value={emp._id}
+                          >{`${emp.firstName} ${emp.lastName}`}</option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>
@@ -812,42 +806,44 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender, client, departm
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Department</label>
-                    <select className="select" name="department" value={selectedTicketData.department?._id}>
-                      {
-                        department.map((dep) => {
-                          return (
-                            <option value={dep._id}>{dep.name}</option>
-                          )
-                        })
-                      }
+                    <select
+                      className="select"
+                      name="department"
+                      value={selectedTicketData.department?._id}
+                    >
+                      {department.map((dep) => {
+                        return <option value={dep._id}>{dep.name}</option>;
+                      })}
                     </select>
                   </div>
                 </div>
               </div>
 
               <div className="row">
-                
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label>Add Followers</label>
-                    <select className="select" name="followers"  value={selectedTicketData.followers?._id}>
-                      {
-                        employees.map((emp) => {
-                          return (
-                            <option value={emp._id}>{`${emp.firstName} ${emp.lastName}`}</option>
-                          )
-                        })
-                      }
+                    <select
+                      className="select"
+                      name="followers"
+                      value={selectedTicketData.followers?._id}
+                    >
+                      {employees.map((emp) => {
+                        return (
+                          <option
+                            value={emp._id}
+                          >{`${emp.firstName} ${emp.lastName}`}</option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>
                 <div className="form-group">
-                <label>Upload Files</label>
-                <input className="form-control" type="file" name="file" />
+                  <label>Upload Files</label>
+                  <input className="form-control" type="file" name="file" />
+                </div>
               </div>
-              </div>
-          
-           
+
               <div className="submit-section">
                 <button
                   className="btn btn-primary"
@@ -858,7 +854,6 @@ const EditTicket = ({ selectedTicketData, rerender, setRerender, client, departm
                   Submit
                 </button>
               </div>
-              
             </form>
           </div>
         </div>
