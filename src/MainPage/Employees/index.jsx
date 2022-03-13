@@ -10,7 +10,7 @@ import ClientsList from './clientslist';
 import Leades from './leades';
 import Tickets from './tickets';
 import TicketView from './ticketview';
-import LeaveRequest from './LeaveRequest';
+import LeaveRequest from './leaveRequest';
 
 const EmployeeRoute = ({ match }) => (
   <Switch>
