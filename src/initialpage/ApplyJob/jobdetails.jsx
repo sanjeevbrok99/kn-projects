@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import {
-  headerlogo
-} from '../../Entryfile/imagepath.jsx';
+import { headerlogo } from '../../Entryfile/imagepath.jsx';
 
 const Jobdetails = () => {
   const [jobslist, setjobslist] = useState([]),

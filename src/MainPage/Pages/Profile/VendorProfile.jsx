@@ -278,7 +278,7 @@ const Invoices = (props) => {
   );
 };
 
-const CustomerProfile = () => {
+const VendorProfile = () => {
   const [customer, setCustomer] = useState(null);
   const user = useSelector((state) => state.authentication.value.user);
   let { id } = useParams();
@@ -292,7 +292,7 @@ const CustomerProfile = () => {
   };
   const [isLoading, setIsLoading] = useState(true);
   async function fetchApi() {
-    const res = await getACustomer(id);
+    const res = await httpService.get('/vendor/' + id);
     setCustomer(res.data);
     setIsLoading(false);
   }
@@ -407,7 +407,7 @@ const CustomerProfile = () => {
                       marginBottom: '50px',
                     }}
                   >
-                    {customer.invoices.length} Invoices
+                    {/* {customer.invoices.length} Invoices */}
                   </div>
                   <h4
                     style={{
@@ -504,7 +504,7 @@ const CustomerProfile = () => {
                     </button>
                   </div>
                   <hr />
-                  <Invoices invoice={customer.invoices} />
+                  {/* <Invoices invoice={customer.invoices} /> */}
                 </div>
               </div>
             </div>
@@ -680,4 +680,4 @@ const CustomerProfile = () => {
     </div>
   );
 };
-export default CustomerProfile;
+export default VendorProfile;

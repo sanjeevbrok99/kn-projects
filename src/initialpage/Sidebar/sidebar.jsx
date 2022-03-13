@@ -81,65 +81,17 @@ const bar = [
             link: '/administrator/onboarding',
           },
           {
-            name: 'Employee Activities',
-            link: '/administrator/daily-activity',
-          },
-          {
             name: 'Payroll',
             link: '/administrator/payroll',
           },
-          {
-            name: 'Skill Development',
-            link: '/administrator/skill-development',
-          },
         ],
       },
-      // jin - updated leads and deleted lead status and contacts
       {
         name: 'Leads',
-        hasChildren: true,
+        hasChildren: false,
         icon: 'la la-users',
-        children: [
-          {
-            name: 'All Leads',
-            link: '/employees/leads',
-          },
-          {
-            name: 'Lead Status',
-            link: '/leads/lead-status',
-          },
-        ],
+        link: '/employees/leads',
       },
-      // {
-      //   name: 'Contacts',
-      //   hasChildren: true,
-      //   icon: 'la la-users',
-      //   children: [
-      //     {
-      //       name: 'Lead Assignment',
-      //       link: '/contacts/lead-assignment',
-      //     },
-      //     {
-      //       name: 'Lead Reporting',
-      //       link: '/contacts/lead-reporting',
-      //     },
-      //   ],
-      // },
-      // {
-      //   name: 'Lead Status',
-      //   hasChildren: true,
-      //   icon: 'la la-id-badge',
-      //   children: [
-      //     {
-      //       name: 'Lead Status',
-      //       link: '/leads/lead-status',
-      //     },
-      //     {
-      //       name: 'Lead Status',
-      //       link: '/leads/lead-status',
-      //     },
-      //   ],
-      // },
       {
         name: 'Sales',
         hasChildren: true,
@@ -148,10 +100,6 @@ const bar = [
           {
             name: 'Customers',
             link: '/sales/customers',
-          },
-          {
-            name: 'Invoices',
-            link: '/sales/invoices',
           },
           {
             name: 'Projects',
@@ -177,10 +125,6 @@ const bar = [
             name: 'Expenses',
             link: '/purchase/expenses',
           },
-          {
-            name: 'Vendor Credits',
-            link: '/purchase/vendor-credits',
-          },
         ],
       },
       {
@@ -205,17 +149,9 @@ const bar = [
             link: '/accounts/general-ledger',
           },
           {
-            name: 'Customer Balances',
-            link: '/accounts/customer-balances',
-          },
-          {
             name: 'Fixed Assets',
             link: '/accounts/fixed-assets',
           },
-          // {
-          //   name: 'Project Sales',
-          //   link: '/accounts/project-sales',
-          // },
         ],
       },
       {

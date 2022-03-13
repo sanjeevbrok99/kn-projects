@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Table } from 'antd';
 import 'antd/dist/antd.css';
 import { itemRender, onShowSizeChange } from '../../paginationfunction';
 import '../../antdstyle.css';
 import httpService from '../../../lib/httpService';
+import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
+import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
 
 function Customer() {
   const [data, setData] = useState([]);
   const [customerToAdd, setCustomerToAdd] = useState({});
   const [customerToEdit, setCustomerToEdit] = useState({});
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if ($('.select').length > 0) {
@@ -20,11 +26,22 @@ function Customer() {
       });
     }
     fetchCsutomer();
+    const routState = location.state;
+    if (routState && routState.new) {
+      setCustomerToAdd(routState.lead);
+      location.state = {};
+    }
   }, []);
 
   const fetchCsutomer = async () => {
     const customers = await httpService.get('/customer');
     setData(customers.data);
+    setIsLoading(false);
+    setTimeout(() => {
+      const routState = location.state;
+      if (routState && routState.new)
+        document.querySelector('.add-btn')?.click();
+    }, 400);
   };
 
   const handleAdd = async () => {
@@ -35,20 +52,27 @@ function Customer() {
   };
 
   const handleEdit = async () => {
-    console.log(customerToEdit);
-    await httpService.put(`/customer/${customerToEdit._id}`, customerToEdit);
-    setData(
-      data.map((customer) =>
-        customer._id === customerToEdit._id ? customerToEdit : customer
+    toast
+      .promise(
+        httpService.put(`/customer/${customerToEdit._id}`, customerToEdit),
+        {
+          error: 'Customer Updated Failed',
+          success: 'Customer Updated Sucessfully',
+          pending: 'Upadting Customer',
+        }
       )
-    );
+      .then(() => {
+        setData(
+          data.map((customer) =>
+            customer._id === customerToEdit._id ? customerToEdit : customer
+          )
+        );
+      });
     document.querySelectorAll('.close')?.forEach((e) => e.click());
   };
 
   const handleDelete = async () => {
-    await httpService.delete(
-      `http://localhost:3000/api/v1/customer/${customerToEdit._id}`
-    );
+    await httpService.delete(`/customer/${customerToEdit._id}`);
     setData(data.filter((customer) => customer._id !== customerToEdit._id));
     document.querySelectorAll('.cancel-btn')?.forEach((e) => e.click());
   };
@@ -63,7 +87,9 @@ function Customer() {
             to={`/app/profile/customer-profile/${record._id}`}
             className="avatar"
           >
-            <img alt="" src={record.image} />
+            <Avatar sx={{ bgcolor: red[400] }}>
+              {record.name.charAt(0).toUpperCase()}
+            </Avatar>
           </Link>
           <Link to={`/app/profile/customer-profile/${record._id}`}>{text}</Link>
         </h2>
@@ -75,11 +101,18 @@ function Customer() {
       dataIndex: 'email',
       sorter: (a, b) => a.email.length - b.email.length,
     },
-
     {
       title: 'Mobile',
       dataIndex: 'phone',
       sorter: (a, b) => a.mobile.length - b.mobile.length,
+    },
+    {
+      title: 'Created At',
+      render: (text, record) => (
+        <div>
+          <span>{record.createdAt.split('T')[0]}</span>
+        </div>
+      ),
     },
     {
       title: 'Action',
@@ -129,77 +162,105 @@ function Customer() {
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
-      <div className="content container-fluid">
-        {/* Page Header */}
-        <div className="page-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h3 className="page-title">Customers</h3>
-              <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Customers</li>
-              </ul>
-            </div>
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_client"
-              >
-                <i className="fa fa-plus" /> Add Customer
-              </a>
-            </div>
-          </div>
+      {isLoading ? (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
         </div>
-        {/* /Page Header */}
-        {/* Search Filter */}
-        <div className="row filter-row">
-          <div className="col-sm-6 col-md-4">
-            <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
-              <label className="focus-label">Customer Name</label>
+      ) : (
+        <>
+          <div className="content container-fluid">
+            {/* Page Header */}
+            <div className="page-header">
+              <div className="row align-items-center">
+                <div className="col">
+                  <h3 className="page-title">Customers</h3>
+                  <ul className="breadcrumb">
+                    <li className="breadcrumb-item">
+                      <Link to="/app/main/dashboard">Dashboard</Link>
+                    </li>
+                    <li className="breadcrumb-item active">Customers</li>
+                  </ul>
+                </div>
+                <div className="col-auto float-right ml-auto">
+                  <a
+                    href="#"
+                    className="btn add-btn"
+                    data-toggle="modal"
+                    data-target="#add_client"
+                  >
+                    <i className="fa fa-plus" /> Add Customer
+                  </a>
+                </div>
+              </div>
+            </div>
+            {/* /Page Header */}
+            {/* Search Filter */}
+            <div className="row filter-row">
+              <div className="col-sm-6 col-md-4">
+                <div className="form-group form-focus focused">
+                  <input
+                    type="text"
+                    placeholder="Customer Name"
+                    className="form-control"
+                    style={{
+                      padding: '10px',
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-4">
+                <div className="form-group form-focus focused">
+                  <input
+                    type="text"
+                    placeholder="Customer Email"
+                    className="form-control"
+                    style={{
+                      padding: '10px',
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-4">
+                <a href="#" className="btn btn-success btn-block">
+                  {' '}
+                  Search{' '}
+                </a>
+              </div>
+            </div>
+            {/* Search Filter */}
+            <div className="row">
+              <div className="col-md-12">
+                <div className="table-responsive">
+                  <Table
+                    className="table-striped"
+                    pagination={{
+                      total: data.length,
+                      showTotal: (total, range) =>
+                        `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                      showSizeChanger: true,
+                      onShowSizeChange: onShowSizeChange,
+                      itemRender: itemRender,
+                    }}
+                    style={{ overflowX: 'auto' }}
+                    columns={columns}
+                    // bordered
+                    dataSource={data}
+                    rowKey={(record) => record._id}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <div className="col-sm-6 col-md-4">
-            <div className="form-group form-focus focused">
-              <input type="text" className="form-control floating" />
-              <label className="focus-label">Customer Email</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-4">
-            <a href="#" className="btn btn-success btn-block">
-              {' '}
-              Search{' '}
-            </a>
-          </div>
-        </div>
-        {/* Search Filter */}
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive">
-              <Table
-                className="table-striped"
-                pagination={{
-                  total: data.length,
-                  showTotal: (total, range) =>
-                    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                  showSizeChanger: true,
-                  onShowSizeChange: onShowSizeChange,
-                  itemRender: itemRender,
-                }}
-                style={{ overflowX: 'auto' }}
-                columns={columns}
-                // bordered
-                dataSource={data}
-                rowKey={(record) => record._id}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
       {/* /Page Content */}
       {/* Add Customer Modal */}
       <div id="add_client" className="modal custom-modal fade" role="dialog">
@@ -234,6 +295,7 @@ function Customer() {
                         Name <span className="text-danger">*</span>
                       </label>
                       <input
+                        defaultValue={customerToAdd.name}
                         onChange={(e) => {
                           setCustomerToAdd({
                             ...customerToAdd,
@@ -249,6 +311,7 @@ function Customer() {
                     <div className="form-group">
                       <label className="col-form-label">Phone </label>
                       <input
+                        defaultValue={customerToAdd.phone}
                         onChange={(e) => {
                           setCustomerToAdd({
                             ...customerToAdd,
@@ -266,6 +329,7 @@ function Customer() {
                         Email <span className="text-danger">*</span>
                       </label>
                       <input
+                        defaultValue={customerToAdd.email}
                         onChange={(e) => {
                           setCustomerToAdd({
                             ...customerToAdd,
@@ -295,17 +359,17 @@ function Customer() {
                 </div>
                 <div>
                   <div className="form-group">
-                    <label>Description</label>
+                    <label>Address</label>
                     <textarea
+                      defaultValue={customerToAdd.address}
                       onChange={(e) => {
                         setCustomerToAdd({
                           ...customerToAdd,
-                          description: e.target.value,
+                          address: e.target.value,
                         });
                       }}
                       className="form-control"
                       rows={4}
-                      defaultValue={''}
                     />
                   </div>
                 </div>
@@ -415,13 +479,13 @@ function Customer() {
                 </div>
                 <div>
                   <div className="form-group">
-                    <label>Description</label>
+                    <label>Address</label>
                     <textarea
-                      defaultValue={customerToEdit.description}
+                      defaultValue={customerToEdit.address}
                       onChange={(e) => {
                         setCustomerToEdit({
                           ...customerToEdit,
-                          description: e.target.value,
+                          address: e.target.value,
                         });
                       }}
                       className="form-control"

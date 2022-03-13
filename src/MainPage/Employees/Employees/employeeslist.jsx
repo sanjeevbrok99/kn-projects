@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import httpService from '../../../lib/httpService';
 import { allemployee } from '../../../lib/api';
 import { red } from '@mui/material/colors';
+import { CircularProgress } from '@mui/material';
 
 const Employeeslist = () => {
   const [data, setData] = useState([]);
@@ -189,110 +190,124 @@ const Employeeslist = () => {
         <meta name="description" content="Login page" />
       </Helmet>
       {/* Page Content */}
-      <div className="content container-fluid">
-        {/* Page Header */}
-        <div className="page-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h3 className="page-title">Employee</h3>
-              <ul className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <Link to="/app/main/dashboard">Dashboard</Link>
-                </li>
-                <li className="breadcrumb-item active">Employee</li>
-              </ul>
+      {isLoading ? (
+        <div
+          style={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          className="content container-fluid"
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="content container-fluid">
+          {/* Page Header */}
+          <div className="page-header">
+            <div className="row align-items-center">
+              <div className="col">
+                <h3 className="page-title">Employee</h3>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/app/main/dashboard">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Employee</li>
+                </ul>
+              </div>
+              <div className="col-auto float-right ml-auto">
+                <a
+                  href="#"
+                  className="btn add-btn"
+                  data-toggle="modal"
+                  data-target="#add_employee"
+                >
+                  <i className="fa fa-plus" /> Add Employee
+                </a>
+                <div className="view-icons">
+                  <Link
+                    to="/app/employee/allemployees"
+                    className="grid-view btn btn-link"
+                  >
+                    <i className="fa fa-th" />
+                  </Link>
+                  <Link
+                    to="/app/employee/employees-list"
+                    className="list-view btn btn-link active"
+                  >
+                    <i className="fa fa-bars" />
+                  </Link>
+                </div>
+              </div>
             </div>
-            <div className="col-auto float-right ml-auto">
-              <a
-                href="#"
-                className="btn add-btn"
-                data-toggle="modal"
-                data-target="#add_employee"
-              >
-                <i className="fa fa-plus" /> Add Employee
-              </a>
-              <div className="view-icons">
-                <Link
-                  to="/app/employee/allemployees"
-                  className="grid-view btn btn-link"
+          </div>
+          {/* /Page Header */}
+          {/* Search Filter */}
+          <div className="row filter-row">
+            <div className="col-sm-6 col-md-6">
+              <div className="form-group form-focus focused">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Employee Name"
+                  style={{
+                    padding: '10px',
+                  }}
+                  value={employeeNameToSearch}
+                  onChange={(e) => setEmployeeNameToSearch(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="col-sm-6 col-md-3">
+              <div className="form-group form-focus select-focus">
+                <select
+                  onChange={(e) => setDesignationToFilter(e.target.value)}
+                  className="custom-select"
+                  style={{
+                    height: '100%',
+                    border: '1px solid #CED4DA',
+                  }}
                 >
-                  <i className="fa fa-th" />
-                </Link>
-                <Link
-                  to="/app/employee/employees-list"
-                  className="list-view btn btn-link active"
-                >
-                  <i className="fa fa-bars" />
-                </Link>
+                  <option value={''}>All Designations</option>
+                  {roles.map((role) => (
+                    <option key={role._id} value={role._id}>
+                      {role.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="col-sm-6 col-md-3" onClick={handleSearch}>
+              <a className="btn btn-success btn-block"> Filter </a>
+            </div>
+          </div>
+          {/* /Search Filter */}
+          <div className="row">
+            <div className="col-md-12">
+              <div className="table-responsive">
+                <Table
+                  className="table-striped"
+                  pagination={{
+                    total: data.length,
+                    showTotal: (total, range) =>
+                      `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                    showSizeChanger: true,
+                    onShowSizeChange: onShowSizeChange,
+                    itemRender: itemRender,
+                  }}
+                  style={{ overflowX: 'auto' }}
+                  columns={columns}
+                  // bordered
+                  dataSource={employees}
+                  rowKey={(record) => record.id}
+                  onChange={console.log('change')}
+                />
               </div>
             </div>
           </div>
         </div>
-        {/* /Page Header */}
-        {/* Search Filter */}
-        <div className="row filter-row">
-          <div className="col-sm-6 col-md-6">
-            <div className="form-group form-focus focused">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Employee Name"
-                style={{
-                  padding: '10px',
-                }}
-                value={employeeNameToSearch}
-                onChange={(e) => setEmployeeNameToSearch(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <select
-                onChange={(e) => setDesignationToFilter(e.target.value)}
-                className="custom-select"
-                style={{
-                  height: '100%',
-                  border: '1px solid #CED4DA',
-                }}
-              >
-                <option value={''}>All Designations</option>
-                {roles.map((role) => (
-                  <option key={role._id} value={role._id}>
-                    {role.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3" onClick={handleSearch}>
-            <a className="btn btn-success btn-block"> Filter </a>
-          </div>
-        </div>
-        {/* /Search Filter */}
-        <div className="row">
-          <div className="col-md-12">
-            <div className="table-responsive">
-              <Table
-                className="table-striped"
-                pagination={{
-                  total: data.length,
-                  showTotal: (total, range) =>
-                    `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                  showSizeChanger: true,
-                  onShowSizeChange: onShowSizeChange,
-                  itemRender: itemRender,
-                }}
-                style={{ overflowX: 'auto' }}
-                columns={columns}
-                // bordered
-                dataSource={employees}
-                rowKey={(record) => record.id}
-                onChange={console.log('change')}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
       {/* /Page Content */}
       {/* Add Employee Modal */}
       <div id="add_employee" className="modal custom-modal fade" role="dialog">
