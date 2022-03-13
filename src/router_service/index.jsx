@@ -24,6 +24,7 @@ import Purchase from '../MainPage/Purchase';
 import Accounts from '../MainPage/Accounts/';
 import Leads from '../MainPage/Lead';
 
+
 export default [
   {
     path: 'dashboard',
