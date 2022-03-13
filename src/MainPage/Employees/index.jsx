@@ -10,6 +10,7 @@ import ClientsList from './clientslist';
 import Leades from './leades';
 import Tickets from './tickets';
 import TicketView from './ticketview';
+import LeaveRequest from './LeaveRequest';
 
 const EmployeeRoute = ({ match }) => (
   <Switch>
@@ -19,6 +20,7 @@ const EmployeeRoute = ({ match }) => (
     <Route path={`${match.url}/leads`} component={Leades} />
     <Route path={`${match.url}/tickets`} component={Tickets} />
     <Route path={`${match.url}/ticket-view`} component={TicketView} />
+    <Route path={`${match.url}/leave request`} component={LeaveRequest} />
   </Switch>
 );
 
